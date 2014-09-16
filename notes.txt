@@ -1,0 +1,16 @@
+Classes / Modules
+
+    Player
+	100 x 100 
+    Enemy
+	100 x 100 (or bigger)
+    Setup
+	create a screen
+		800 x 600
+	set up sprites
+	move them (velocities)
+	process input events
+	esc key implemented
+
+
+
