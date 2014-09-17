@@ -17,7 +17,10 @@ TO DO
     esc key implemented
 	Wall - no sprite we can just use Surface
 	Sound
-
+	Game Design
+	    Enemies in each level
+	Projectile weapons design
+	
 GIT
 add everything in a dir
     git add Documentation/\*.txt
