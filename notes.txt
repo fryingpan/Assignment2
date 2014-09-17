@@ -1,3 +1,10 @@
+Schedule for meetings
+	Tues 6-9p Lab
+	Thurs 6pm
+	Sunday 10am
+
+STIR FRY SAMURAI  (like samurai jack)
+
 Classes / Modules
 
     Player
@@ -46,4 +53,8 @@ Master and Beta branch
     Push and pull on beta branch.
 
 
+9-17 notes
+
+Sound with .mod files
+	"A tutorial for sound in pygame", "QQ Pygame tutorial"
 

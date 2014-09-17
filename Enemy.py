@@ -4,8 +4,6 @@
 import pygame
 import sys
 
-pygame.init()
-
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self):
@@ -13,8 +11,8 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("fbwall.png").convert()
         self.image_rect = self.image.get_rect()
-        self.x = 0
-        self.y = 0
+        self.x = 100
+        self.y = 100
 
     def draw(self, surface):
         """ Draw on surface """
