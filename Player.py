@@ -2,14 +2,15 @@
 
 import pygame
 import sys
-pygame.init()
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, color, width, height):
+    def __init__(self):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("test.png")
-        self.velocity = 10
+        self.velocity = 3
+        self.x = 0
+        self.y = 0
 
     def handle_keys(self):
         """ Handles Keys """
@@ -24,3 +25,11 @@ class Player(pygame.sprite.Sprite):
         elif key[pygame.K_LEFT]: # left key
             self.x -= dist # move left
 
+    def draw(self, surface):
+        """ Draw on surface """
+        # blit yourself at your current position
+        surface.blit(self.image, (self.x, self.y))
+        
+pygame.init()        
+        
+        
