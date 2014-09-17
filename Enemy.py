@@ -6,16 +6,24 @@ import sys
 
 pygame.init()
 
-def __init__(self, color, width, height):
-    # Call the parent class (Sprite) constructor
-    pygame.sprite.Sprite.__init__(self)
+class Enemy(pygame.sprite.Sprite):
 
-    # Create an image of the block, and fill it with a color.
-    # This could also be an image loaded from the disk.
-    self.image = pygame.Surface([width, height])
-    self.image.fill(color)
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("fbwall.png").convert()
+        self.image_rect = self.image.get_rect()
+        self.x = 0
+        self.y = 0
 
-    # Fetch the rectangle object that has the dimensions of the image
-    # Update the position of this object by setting the values of rect.x and rect.y
-    self.rect = self.image.get_rect()
+    def draw(self, surface):
+        """ Draw on surface """
+        # blit yourself at your current position
+        surface.blit(self.image, (self.x, self.y))
+        
+pygame.init()        
+        
+        
+    
+    
 

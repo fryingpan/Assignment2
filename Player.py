@@ -7,7 +7,8 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("test.png")
+        self.image = pygame.image.load("test.png").convert()
+        self.image_rect = self.image.get_rect()
         self.velocity = 3
         self.x = 0
         self.y = 0

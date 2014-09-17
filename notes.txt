@@ -5,13 +5,18 @@ Classes / Modules
     Enemy
 	100 x 100 (or bigger)
     Setup
-	create a screen
+	create a screen DONE
 		800 x 600
-	set up sprites
-	move them (velocities)
-	process input events
-	esc key implemented
+	set up sprites DONE(copy from player)
+	move them (velocities) DONE(player)
+	process input events DONE(player)
+	
 
+TO DO
+    Boundaries / collision against walls.
+    esc key implemented
+	Wall - no sprite we can just use Surface
+	Sound
 
 GIT
 add everything in a dir
