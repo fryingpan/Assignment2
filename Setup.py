@@ -5,7 +5,6 @@ import pygame
 import sys
 import Player
 import Enemy
-import Wall
 
 screen = pygame.display.set_mode((800, 600))
 
