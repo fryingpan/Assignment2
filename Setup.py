@@ -18,10 +18,6 @@ pygame.init()
 running = True
 while running:
     # handle every event since the last frame.
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit() # quit the screen
-            running = False
 
     character.handle_keys() # handle the keys
 
@@ -30,6 +26,12 @@ while running:
     i = 0
     j = 0
     pygame.display.update() # update the screen
-
+    
+    # handle every event since the last frame.
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            pygame.quit() # quit the screen
     # clock.tick(40)
+
 
