@@ -42,7 +42,7 @@ class Game(object):
         pygame.event.set_allowed([QUIT, KEYDOWN])
 
         self.clock = ptime.Clock()
-        self.current_time = ptime.ticks()
+        self.current_time = ptime.get_ticks()
         self.updates = 0
         self.interval = interval
     
@@ -56,7 +56,7 @@ class Game(object):
 
             running = self.handleEvents()
             #Key Handling----------------------------
-            self.character.handle_keys() # handle the keys
+            # self.character.handle_keys() # handle the keys
 
             self.screen.fill((255,255,255)) # fill the screen with white
             #move and draw the enemies
@@ -68,9 +68,12 @@ class Game(object):
             
             self.updates = 0
             while frame_time > 0.0:
-                delta = min(frame_time, INTERVAL)
+                delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
                     enemy.update(delta)
+                self.character.handle_keys(delta)
+                frame_time -= delta
+                self.updates += 1
 
             pygame.display.update() # update the screen
             
@@ -89,6 +92,6 @@ class Game(object):
 # create a game and run it
 if __name__ == '__main__':
     num_enemies = 13
-    game = Game(num_enemies)
+    game = Game(0.005, num_enemies)
     game.run()
 

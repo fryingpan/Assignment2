@@ -42,13 +42,8 @@ class Enemy(pygame.sprite.Sprite):
         self.move()
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
-            # print "COLLIDED"
             self.direction = random.randint(0, 1)
             self.angle = random.randint(0, 360) * (math.pi/180) 
-
-        # self.move()
-        # print "THE X COMPONENT: " + str(self.x)
-        # print "THE Y COMPONENT: " + str(self.y)
 
 
     def move(self):
