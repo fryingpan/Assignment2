@@ -16,13 +16,16 @@ except ImportError, err:
 
 class Game(object):
 
-    def __init__(self, interval, num_enemies):
+    def __init__(self, interval, fps, num_enemies):
     
         pygame.init()
         self.screen = pygame.display.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Master Chef's wicked adventure with his ice cream buddies")
         
+        self.fps = fps
+        self.speed = 4*self.fps
+
         #Initialize objects on screen----------------
         self.character = Player.Player()
         # bad = Enemy()
@@ -34,7 +37,7 @@ class Game(object):
 
         #add all the enemies to the list of enemies
         for e in range(num_enemies):  
-            enemy = Enemy.Enemy(self.screen)
+            enemy = Enemy.Enemy(self.screen, self.speed)
             self.enemy_list.add(enemy)
 
 
@@ -66,7 +69,10 @@ class Game(object):
                 enemy.draw()
             self.character.draw(self.screen) # draw the character to the screen
             
+            pygame.display.flip()
+
             self.updates = 0
+            print frame_time
             while frame_time > 0.0:
                 delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
@@ -91,6 +97,8 @@ class Game(object):
 # create a game and run it
 if __name__ == '__main__':
     num_enemies = 13
-    game = Game(0.005, num_enemies)
+    interval = 0.005
+    fps = 20
+    game = Game(interval, fps, num_enemies)
     game.run()
 

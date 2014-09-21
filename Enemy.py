@@ -11,7 +11,7 @@ class Enemy(pygame.sprite.Sprite):
     IMAGE_RIGHT = None
     IMAGE_LEFT = None
 
-    def __init__(self, screen):
+    def __init__(self, screen, speed):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
         if not Enemy.IMAGE_UP and not Enemy.IMAGE_DOWN and not Enemy.IMAGE_LEFT and not Enemy.IMAGE_RIGHT:
@@ -31,29 +31,31 @@ class Enemy(pygame.sprite.Sprite):
         self.x = random.randint(0, self.swidth - self.image_left.get_width())
         self.y = random.randint(0, self.sheight - self.image_up.get_height())
 
-        self.speed = 1
+        self.speed = speed
         self.direction = random.randint(0, 1)
         self.angle = random.randint(0, 360) * (math.pi/180)
         self.face = 'u' 
 
 
     def update(self, interval = 1):
-        self.speed = interval
-        self.move()
+        self.speed
+        self.move(interval)
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
             self.direction = random.randint(0, 1)
             self.angle = random.randint(0, 360) * (math.pi/180) 
 
 
-    def move(self):
+    def move(self, interval):
         dist = self.speed
         if self.direction == 0:
-            self.x += dist * math.sin(self.angle)
-            self.y -= dist * math.cos(self.angle)
+            self.x += dist * interval
+            self.y -= dist * interval
+            # self.x += dist * math.sin(self.angle)
+            # self.y -= dist * math.cos(self.angle)
         elif self.direction == 1:
-            self.x -= dist * math.sin(self.angle)
-            self.y += dist * math.cos(self.angle)
+            self.x -= dist * interval
+            self.y += dist * interval
         # elif self.direction == 2:
         #     self.y += dist * math.cos(self.angle)
         # elif self.direction == 3:
