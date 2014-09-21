@@ -32,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
         self.y = random.randint(0, self.sheight - self.image_up.get_height())
 
         self.speed = 1
-        self.direction = random.randint(0, 3)
+        self.direction = random.randint(0, 1)
         self.angle = random.randint(0, 360) * (math.pi/180)
         self.face = 'u' 
 
@@ -42,10 +42,9 @@ class Enemy(pygame.sprite.Sprite):
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
             # print "COLLIDED"
-            self.direction = random.randint(0, 3)
+            self.direction = random.randint(0, 1)
             self.angle = random.randint(0, 360) * (math.pi/180) 
 
-            print "RANDINT" + str(self.direction)
         # self.move()
         # print "THE X COMPONENT: " + str(self.x)
         # print "THE Y COMPONENT: " + str(self.y)
@@ -56,12 +55,14 @@ class Enemy(pygame.sprite.Sprite):
         dist = self.speed
         if self.direction == 0:
             self.x += dist * math.sin(self.angle)
+            self.y -= dist * math.cos(self.angle)
         elif self.direction == 1:
             self.x -= dist * math.sin(self.angle)
-        elif self.direction == 2:
             self.y += dist * math.cos(self.angle)
-        elif self.direction == 3:
-            self.y -= dist * math.cos(self.angle)
+        # elif self.direction == 2:
+        #     self.y += dist * math.cos(self.angle)
+        # elif self.direction == 3:
+        #     self.y -= dist * math.cos(self.angle)
 
     def set_face(self, player_face):
         if player_face == 'u':
