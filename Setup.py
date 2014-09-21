@@ -76,7 +76,7 @@ class Game(object):
                   
 # create a game and run it
 if __name__ == '__main__':
-    num_enemies = 1
+    num_enemies = 10
     game = Game(num_enemies)
     game.run()
 

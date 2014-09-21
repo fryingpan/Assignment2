@@ -46,7 +46,7 @@ class Enemy(pygame.sprite.Sprite):
             self.angle = random.randint(0, 360) * (math.pi/180) 
 
             print "RANDINT" + str(self.direction)
-            self.move()
+        # self.move()
         # print "THE X COMPONENT: " + str(self.x)
         # print "THE Y COMPONENT: " + str(self.y)
         self.draw()
@@ -85,7 +85,7 @@ class Enemy(pygame.sprite.Sprite):
             collide = True
         elif self.x > (self.swidth - self.image_right.get_width()):
             self.x = self.swidth - self.image_right.get_width()
-            Collide = True
+            collide = True
         if self.y < 0:
             self.y = 0
             collide = True
