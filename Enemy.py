@@ -31,13 +31,13 @@ class Enemy(pygame.sprite.Sprite):
         self.x = random.randint(0, self.swidth - self.image_left.get_width())
         self.y = random.randint(0, self.sheight - self.image_up.get_height())
 
-        self.speed = 0
+        self.speed = 1
         self.direction = random.randint(0, 1)
         self.angle = random.randint(0, 360) * (math.pi/180)
         self.face = 'u' 
 
 
-    def update(self, interval):
+    def update(self, interval = 1):
         self.speed = interval
         self.move()
         #check that the new movement is within the boundaries

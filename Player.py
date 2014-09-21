@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()
         self.image_rect = self.image.get_rect()
-        self.speed = 0
+        self.speed = 1
         self.x = 0
         self.y = 0
         self.face = 'd'
@@ -24,10 +24,10 @@ class Player(pygame.sprite.Sprite):
     def get_face(self):
         return self.face
 
-    def handle_keys(self, interval):
+    def handle_keys(self):
         """ Handles Keys """
         key = pygame.key.get_pressed()
-        dist = interval # distance moved in 1 frame, try changing it to 5
+        dist = self.speed # distance moved in 1 frame, try changing it to 5
         if key[pygame.K_DOWN]: # down key
             self.y += dist # move down
             self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()

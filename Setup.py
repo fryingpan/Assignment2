@@ -56,7 +56,7 @@ class Game(object):
 
             running = self.handleEvents()
             #Key Handling----------------------------
-            # self.character.handle_keys() # handle the keys
+            self.character.handle_keys() # handle the keys
 
             self.screen.fill((255,255,255)) # fill the screen with white
             #move and draw the enemies
@@ -71,7 +71,6 @@ class Game(object):
                 delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
                     enemy.update(delta)
-                self.character.handle_keys(delta)
                 frame_time -= delta
                 self.updates += 1
 
