@@ -4,6 +4,7 @@
 try:
     import pygame
     from pygame.locals import *
+    import pygame.time as ptime
     import sys
     import Player
     import Enemy
@@ -15,10 +16,9 @@ except ImportError, err:
 
 class Game(object):
 
-    def __init__(self, num_enemies):
+    def __init__(self, interval, num_enemies):
     
         pygame.init()
-        self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
         pygame.display.set_caption("Master Chef's wicked adventure with his ice cream buddies")
@@ -40,26 +40,38 @@ class Game(object):
 
         #I don't actually know what this does
         pygame.event.set_allowed([QUIT, KEYDOWN])
+
+        self.clock = ptime.Clock()
+        self.current_time = ptime.ticks()
+        self.updates = 0
+        self.interval = interval
     
     def run(self):
         running = True
         while running:
+            new_time = ptime.get_ticks()
+            frame_time = (new_time - self.current_time)/1000.0
+            self.current_time = new_time
             self.clock.tick()
+
             running = self.handleEvents()
             #Key Handling----------------------------
-
             self.character.handle_keys() # handle the keys
-            #----------------------------------------
-            #Display Handling------------------------
+
             self.screen.fill((255,255,255)) # fill the screen with white
             #move and draw the enemies
             player_face = self.character.get_face()
             for enemy in self.enemy_list.sprites():
                 enemy.set_face(player_face)
-                enemy.update()
-
-            self.character.draw(self.screen) # draw the bird to the screen
+                enemy.draw()
+            self.character.draw(self.screen) # draw the character to the screen
             
+            self.updates = 0
+            while frame_time > 0.0:
+                delta = min(frame_time, INTERVAL)
+                for enemy in self.enemy_list.sprites():
+                    enemy.update(delta)
+
             pygame.display.update() # update the screen
             
     def handleEvents(self):
@@ -76,7 +88,7 @@ class Game(object):
                   
 # create a game and run it
 if __name__ == '__main__':
-    num_enemies = 10
+    num_enemies = 13
     game = Game(num_enemies)
     game.run()
 

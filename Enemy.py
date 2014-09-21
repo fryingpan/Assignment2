@@ -31,13 +31,14 @@ class Enemy(pygame.sprite.Sprite):
         self.x = random.randint(0, self.swidth - self.image_left.get_width())
         self.y = random.randint(0, self.sheight - self.image_up.get_height())
 
-        self.speed = 1
+        self.speed = 0
         self.direction = random.randint(0, 1)
         self.angle = random.randint(0, 360) * (math.pi/180)
         self.face = 'u' 
 
 
-    def update(self):
+    def update(self, interval):
+        self.speed = interval
         self.move()
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
@@ -48,7 +49,6 @@ class Enemy(pygame.sprite.Sprite):
         # self.move()
         # print "THE X COMPONENT: " + str(self.x)
         # print "THE Y COMPONENT: " + str(self.y)
-        self.draw()
 
 
     def move(self):
