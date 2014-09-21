@@ -7,7 +7,7 @@ import pygame.mixer as PM
 pygame.init()
 
 #loading sound
-sound = PM.Sound("hitWall.mod")
+PM.music.load("hitWall.mod")
 
 class Player(pygame.sprite.Sprite):
 
@@ -53,17 +53,25 @@ class Player(pygame.sprite.Sprite):
 
     def check_boundary(self, screen):
         if self.x < 0:
+            PM.music.stop()
             self.x = 0
-            sound.play()
+            PM.music.play(0)
+            PM.music.fadeout(4500)
         elif self.x > (screen.get_width() - self.image.get_width()):
+            PM.music.stop()
             self.x = screen.get_width() - self.image.get_width()
-            sound.play()
+            PM.music.play(0)
+            PM.music.fadeout(4500)
         if self.y < 0:
+            PM.music.stop()
             self.y = 0
-            sound.play()
+            PM.music.play(0)
+            PM.music.fadeout(4500)
         elif self.y > (screen.get_height() - self.image.get_height()):
+            PM.music.stop()
             self.y = (screen.get_height() - self.image.get_height())
-            sound.play()
+            PM.music.play(0)
+            PM.music.fadeout(4500)
         
         
         
