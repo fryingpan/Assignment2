@@ -27,7 +27,7 @@ class Game(object):
         self.speed = 4*self.fps
 
         #Initialize objects on screen----------------
-        self.character = Player.Player()
+        self.character = Player.Player(self.speed)
         # bad = Enemy()
         self.charrect = self.character.image_rect
         # badrect = bad.image.get_rect()
@@ -59,7 +59,7 @@ class Game(object):
 
             running = self.handleEvents()
             #Key Handling----------------------------
-            self.character.handle_keys() # handle the keys
+            # self.character.handle_keys() # handle the keys
 
             self.screen.fill((255,255,255)) # fill the screen with white
             #move and draw the enemies
@@ -72,11 +72,11 @@ class Game(object):
             pygame.display.flip()
 
             self.updates = 0
-            print frame_time
             while frame_time > 0.0:
                 delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
                     enemy.update(delta)
+                self.character.handle_keys(interval)
                 frame_time -= delta
                 self.updates += 1
 
@@ -98,7 +98,7 @@ class Game(object):
 if __name__ == '__main__':
     num_enemies = 13
     interval = 0.005
-    fps = 20
+    fps = 40
     game = Game(interval, fps, num_enemies)
     game.run()
 

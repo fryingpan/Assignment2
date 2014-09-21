@@ -49,17 +49,13 @@ class Enemy(pygame.sprite.Sprite):
     def move(self, interval):
         dist = self.speed
         if self.direction == 0:
-            self.x += dist * interval
-            self.y -= dist * interval
-            # self.x += dist * math.sin(self.angle)
-            # self.y -= dist * math.cos(self.angle)
+            self.x += dist*interval*math.sin(self.angle)
+            self.y -= dist*interval*math.cos(self.angle)
+
         elif self.direction == 1:
-            self.x -= dist * interval
-            self.y += dist * interval
-        # elif self.direction == 2:
-        #     self.y += dist * math.cos(self.angle)
-        # elif self.direction == 3:
-        #     self.y -= dist * math.cos(self.angle)
+            self.x -= dist * interval*math.cos(self.angle)
+            self.y += dist * interval*math.cos(self.angle)
+
 
     def set_face(self, player_face):
         if player_face == 'u':

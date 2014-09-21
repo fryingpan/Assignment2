@@ -1,4 +1,11 @@
-# Assignment 2
+'''
+Assignment 2
+Fryingpan
+Carla Castro
+Mary Yen
+Katie Chang
+Josh Holstein
+'''
 
 import pygame
 import sys
@@ -11,12 +18,12 @@ PM.music.load("hitWall.mod")
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, speed = 1):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()
         self.image_rect = self.image.get_rect()
-        self.speed = 1
+        self.speed = speed
         self.x = 0
         self.y = 0
         self.face = 'd'
@@ -24,24 +31,24 @@ class Player(pygame.sprite.Sprite):
     def get_face(self):
         return self.face
 
-    def handle_keys(self):
+    def handle_keys(self, interval = 1):
         """ Handles Keys """
         key = pygame.key.get_pressed()
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         if key[pygame.K_DOWN]: # down key
-            self.y += dist # move down
+            self.y += dist*interval# move down
             self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()
             self.face = 'd'
         elif key[pygame.K_UP]: # up key
-            self.y -= dist # move up
+            self.y -= dist*interval # move up
             self.image = pygame.image.load("FPGraphics/MC/MCBack.png").convert_alpha()
             self.face = 'u'
         if key[pygame.K_RIGHT]: # right key
-            self.x += dist # move right
+            self.x += dist*interval # move right
             self.image = pygame.image.load("FPGraphics/MC/MCRight.png").convert_alpha()
             self.face = 'r'
         elif key[pygame.K_LEFT]: # left key
-            self.x -= dist # move left
+            self.x -= dist*interval# move left
             self.image = pygame.image.load("FPGraphics/MC/MCLeft.png").convert_alpha()
             self.face = 'l'
 
