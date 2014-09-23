@@ -1,0 +1,49 @@
+Classes / Modules
+
+    Player
+	100 x 100 
+    Enemy
+	100 x 100 (or bigger)
+    Setup
+	create a screen DONE
+		800 x 600
+	set up sprites DONE(copy from player)
+	move them (velocities) DONE(player)
+	process input events DONE(player)
+	
+
+TO DO
+    Boundaries / collision against walls.
+    esc key implemented
+	Wall - no sprite we can just use Surface
+	Sound
+	Game Design
+	    Enemies in each level
+	Projectile weapons design
+	
+GIT
+add everything in a dir
+    git add Documentation/\*.txt
+    
+updating files -u
+    flag will clear the files in the index
+       do this when you've added files and then changed them before committing
+    
+--no-all, --ignore-removal
+    adds all NEW files.   
+    
+
+directory is pygame
+cd to directory
+git add \*.*
+git commit -m "message description"
+git push
+
+git pull
+    always pull before pushing.
+    
+Master and Beta branch
+    Push and pull on beta branch.
+
+
+

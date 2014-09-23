@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, speed = 1):
         # Call the parent class (Sprite) constructor
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+        self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()
         self.image_rect = self.image.get_rect()
         self.speed = speed
         self.x = 0
@@ -37,19 +37,19 @@ class Player(pygame.sprite.Sprite):
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         if key[pygame.K_DOWN]: # down key
             self.y += dist*interval# move down
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+            self.image = pygame.image.load("FPGraphics/MC/MCFront.png").convert_alpha()
             self.face = 'd'
         elif key[pygame.K_UP]: # up key
             self.y -= dist*interval # move up
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCBack.png").convert_alpha()
+            self.image = pygame.image.load("FPGraphics/MC/MCBack.png").convert_alpha()
             self.face = 'u'
         if key[pygame.K_RIGHT]: # right key
             self.x += dist*interval # move right
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCRight.png").convert_alpha()
+            self.image = pygame.image.load("FPGraphics/MC/MCRight.png").convert_alpha()
             self.face = 'r'
         elif key[pygame.K_LEFT]: # left key
             self.x -= dist*interval# move left
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCLeft.png").convert_alpha()
+            self.image = pygame.image.load("FPGraphics/MC/MCLeft.png").convert_alpha()
             self.face = 'l'
 
     def draw(self, screen):
