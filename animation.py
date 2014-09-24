@@ -5,17 +5,15 @@ import pygame.display as PD
 import pygame.color as PC
 import pygame.time as PT
 import pygame.event as PE
-from Chef import Chef
+from Player import Player
 
 PG.init()
 screen = PD.set_mode((800, 600))
-WIDTH = screen.get_width()
-HEIGHT = screen.get_height()
 
 clock = PT.Clock()
 
 chefGroup = PS.Group()
-chefGroup.add(Chef())
+chefGroup.add(Player())
 #make other groups for animated enemies
 
 while True:
