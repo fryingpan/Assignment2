@@ -34,17 +34,17 @@ class Chef(PS.Sprite):
         key = sheet.get_at((0,0))
         #hereeeeee
         for i in range(3,7):
-            surface = PG.Surface((i*100, 100)).convert_alpha()
+            surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             Chef.IMAGES.append(surface)
         for i in range(5,0,-1):
-            surface = PG.Surface((i*100, 100)).convert_alpha()
+            surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             Chef.IMAGES.append(surface)
         for i in range(0,3):
-            surface = PG.Surface((i*100, 100)).convert_alpha()
+            surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             Chef.IMAGES.append(surface)
