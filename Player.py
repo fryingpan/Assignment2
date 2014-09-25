@@ -7,49 +7,61 @@ Katie Chang
 Josh Holstein
 '''
 
-import pygame
+import pygame as PG
 import sys
 import pygame.mixer as PM
+import pygame.display as PD
+import pygame.sprite as PS
+import pygame.image as PI
 
-pygame.init()
+PG.init()
 
 #loading sound
 PM.music.load("hitWall.mod")
 
-class Player(pygame.sprite.Sprite):
+class Player(PS.Sprite):
+
+    IMAGES = None
+    CYCLE = 0.6
 
     def __init__(self, speed = 1):
         # Call the parent class (Sprite) constructor
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-        self.image_rect = self.image.get_rect()
+        PS.Sprite.__init__(self)
+        #self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+        #self.image_rect = self.image.get_rect()
         self.speed = speed
         self.x = 0
         self.y = 0
         self.face = 'd'
+        if not Player.IMAGES:
+            self.load_images()
+        self.time = 0.0
+        self.frame = 0
+        self.update_image()
+
 
     def get_face(self):
         return self.face
 
     def handle_keys(self, interval = 1):
         """ Handles Keys """
-        key = pygame.key.get_pressed()
+        key = PG.key.get_pressed()
         dist = self.speed # distance moved in 1 frame, try changing it to 5
-        if key[pygame.K_DOWN]: # down key
+        if key[PG.K_DOWN]: # down key
             self.y += dist*interval# move down
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+            self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
             self.face = 'd'
-        elif key[pygame.K_UP]: # up key
+        elif key[PG.K_UP]: # up key
             self.y -= dist*interval # move up
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCBack.png").convert_alpha()
+            self.image = PI.load("FPGraphics/MC/MCwalk/MCBack.png").convert_alpha()
             self.face = 'u'
-        if key[pygame.K_RIGHT]: # right key
+        if key[PG.K_RIGHT]: # right key
             self.x += dist*interval # move right
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCRight.png").convert_alpha()
+            self.image = PI.load("FPGraphics/MC/MCwalk/MCRight.png").convert_alpha()
             self.face = 'r'
-        elif key[pygame.K_LEFT]: # left key
+        elif key[PG.K_LEFT]: # left key
             self.x -= dist*interval# move left
-            self.image = pygame.image.load("FPGraphics/MC/MCwalk/MCLeft.png").convert_alpha()
+            self.image = PI.load("FPGraphics/MC/MCwalk/MCLeft.png").convert_alpha()
             self.face = 'l'
 
     def draw(self, screen):
@@ -80,5 +92,40 @@ class Player(pygame.sprite.Sprite):
             PM.music.play(0)
             PM.music.fadeout(4500)
         
-        
-        
+    def update(self, delta):
+        #update time
+        self.time = self.time + delta
+        if self.time > Player.CYCLE:
+            self.time = 0.0
+        #update frame?
+        frame = int(self.time / (Player.CYCLE / len(Player.IMAGES)))
+        if frame != self.frame:
+            self.frame = frame
+            self.update_image()
+
+    def load_images(self):
+        Player.IMAGES = []
+        sheet = PI.load("MCRightWalk.png").convert_alpha()
+        key = sheet.get_at((0,0))
+        #hereeeeee
+        for i in range(3,7):
+            surface = PG.Surface((100, 100)).convert_alpha()
+            surface.set_colorkey(key)
+            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            Player.IMAGES.append(surface)
+        for i in range(5,0,-1):
+            surface = PG.Surface((100, 100)).convert_alpha()
+            surface.set_colorkey(key)
+            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            Player.IMAGES.append(surface)
+        for i in range(0,3):
+            surface = PG.Surface((100, 100)).convert_alpha()
+            surface.set_colorkey(key)
+            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            Player.IMAGES.append(surface)
+
+    def update_image(self):
+        self.image = Player.IMAGES[self.frame]
+        self.rect = self.image.get_rect()
+        #self.rect.center = (WIDTH/2, HEIGHT/2)
+
