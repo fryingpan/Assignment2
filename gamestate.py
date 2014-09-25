@@ -35,6 +35,21 @@ class State(object):
     def event(self, event):
         pass
 
+
+textBoxList = {"null":0}
+
+
+def drawtextbox(text, color, x, y, referencestr):
+
+    surf = Globals.FONT.render(text, True, color)
+
+    Globals.SCREEN.blit(surf, (x,y))
+    textBoxList[referencestr] = surf.get_rect()
+    
+
+
+
+
 class Title(State):
     #Constants for the state
     FADEINTIME = 5.0
@@ -88,7 +103,55 @@ class Title(State):
            # Globals.STATE = Menu()
 
 
-           
+class Menu(State):
+    #Constants for the state
+    FADEINTIME = 5.0
+    FADEOUTTIME = 0.2
+
+    #Declares variables for first creation of state and intializes very basic sound and color modules
+    def __init__(self):
+        State.__init__(self)
+        self.color = PC.Color("blue")
+        self.time = 0.0
+        self.sound = PX.Sound("thx.wav")
+        self.sound.play()
+        Globals.SCREEN.fill(PC.Color("black"))
+
+                
+    def render(self):
+      
+       drawtextbox("Hello Screen", PC.Color("red"), 20, 20, "hello")
+
+       drawtextbox("Hello Test 1", PC.Color("blue"), 100, 100, "test1")
+       
+       
+
+        
+    def update(self, time):
+        self.time += time
+        #Fade in code, linear fade based on time
+        if self.time < Title.FADEINTIME:
+            ratio = self.time / Title.FADEINTIME
+            value = int(ratio * 255)
+            self.color = PC.Color(value, value, value)
+    def event(self, event):
+        mousePress = PG.mouse.get_pressed()
+        M_M1 = mousePress[0]
+        #Allows quitting pygame and changing states, added changes for multiple states to allow testing
+        if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
+            Globals.RUNNING = False
+        elif M_M1 == 1:
+            if textBoxList['hello'].collidepoint(PG.mouse.get_pos()) == 1:
+                print("success")
+                PG.quit()
+            elif textBoxList['test1'].collidepoint(PG.mouse.get_pos()) == 1:
+                print('this is a test')
+
+        
+        print(textBoxList['hello'].collidepoint(PG.mouse.get_pos()))
+        print(textBoxList['test1'].collidepoint(PG.mouse.get_pos()))
+        print(textBoxList['hello'])
+        
 
 
 
