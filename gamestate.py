@@ -36,17 +36,21 @@ class State(object):
         pass
 
 
-textBoxList = {"null":0}
+objectList = {"null":0}
 
+#Draw Text Box, Adds Rect to objectList
+def drawtextbox(text, textcolor, boxcolor, x1, x2, y1, y2, referencestr):
 
-def drawtextbox(text, color, x, y, referencestr):
-
-    surf = Globals.FONT.render(text, True, color)
-
-    Globals.SCREEN.blit(surf, (x,y))
-    textBoxList[referencestr] = surf.get_rect()
     
-
+    rect = PG.rect.Rect(x1,y1,(x2-x1),(y2-y1))
+    
+    surf = PG.Surface([rect.width,rect.height])
+    surf.fill(boxcolor)
+    Globals.SCREEN.blit(surf,rect)
+    surf = Globals.FONT.render(text, True, textcolor)
+    Globals.SCREEN.blit(surf, rect)
+   
+    objectList[referencestr] = rect
 
 
 
@@ -119,13 +123,8 @@ class Menu(State):
 
                 
     def render(self):
-      
-       drawtextbox("Hello Screen", PC.Color("red"), 20, 20, "hello")
-
-       drawtextbox("Hello Test 1", PC.Color("blue"), 100, 100, "test1")
-       
-       
-
+        
+        drawtextbox("hello",PC.Color("red"),PC.Color("blue"),0,400,0,300,"hello")
         
     def update(self, time):
         self.time += time
@@ -141,18 +140,16 @@ class Menu(State):
         if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
             Globals.RUNNING = False
         elif M_M1 == 1:
-            if textBoxList['hello'].collidepoint(PG.mouse.get_pos()) == 1:
+            if objectList['hello'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
-                PG.quit()
-            elif textBoxList['test1'].collidepoint(PG.mouse.get_pos()) == 1:
-                print('this is a test')
+                #PG.quit()
+            #elif objectList['test1'].collidepoint(PG.mouse.get_pos()) == 1:
+                #print('this is a test')
 
         
-        print(textBoxList['hello'].collidepoint(PG.mouse.get_pos()))
-        print(textBoxList['test1'].collidepoint(PG.mouse.get_pos()))
-        print(textBoxList['hello'])
-        
-
+       
+        print(objectList['hello'].collidepoint(PG.mouse.get_pos()))
+        #print(objectList['test1'].collidepoint(PG.mouse.get_pos()))
 
 
 
