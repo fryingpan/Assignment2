@@ -10,6 +10,8 @@ from pygame.locals import *
 	
 from Globals import Globals
 
+
+
 class Title:
 	FADEINTIME = 5.0
 	FADEOUTTIME = 0.2
@@ -25,6 +27,7 @@ class Title:
 		Globals.HEIGHT = Globals.SCREEN.get_height()	
 
 		self.images = Title.IMAGES
+
 		self.enemyx = Globals.WIDTH 
 		self.enemyy = Globals.HEIGHT - self.images[0].get_height()
 		self.playerx = 0 - self.images[1].get_width()
@@ -32,7 +35,7 @@ class Title:
 
 		Globals.SCREEN.fill(PC.Color("white"))
 		bigfont = PG.font.Font(None, 60)
-		self.renderer = textWavey(bigfont, "Frying Pan", PC.Color("white"), 7)
+		self.renderer = textWavey(bigfont, "Frying Pan", (100, 200, 100), 7)
 
 
 	def load_images(self):
@@ -46,15 +49,16 @@ class Title:
 	def render(self):
 		# surf = Globals.FONT.render("Title Screen", True, self.color)
 		Globals.SCREEN.fill(self.color)
-		self.text = self.renderer.animate().convert()
+		self.text = self.renderer.animate().convert_alpha()
 
 		player_moves = self.move_player()
 		self.move_enemy()
 
 		width, height = self.text.get_size()
-		Globals.SCREEN.blit(self.text, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/4))
 		Globals.SCREEN.blit(self.images[0], (self.enemyx, self.enemyy))
 		Globals.SCREEN.blit(self.images[1], (self.playerx, self.playery))
+		Globals.SCREEN.blit(self.text, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/15))
+
 
 	def move_player(self):
 		moves = False
