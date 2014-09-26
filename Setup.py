@@ -25,6 +25,7 @@ class Game(object):
         PG.init()
         self.screen = PD.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
+        self.screen.fill((255,255,255))
         PD.set_caption("Master Chef's wicked adventure with his ice cream buddies")
         
         self.fps = fps
@@ -98,7 +99,8 @@ class Game(object):
                 PD.flip()
 
                 elapsed = (PT.get_ticks() - last) / 1000.0
-                self.update(self.character, elapsed)
+                if (PG.key.get_pressed()):
+                    self.update(self.character, elapsed)
 
             #Here's animation code...
             '''clock = PT.Clock()

@@ -139,10 +139,10 @@ class Player(PS.Sprite):
         Player.IMAGES_LEFT = []
         Player.IMAGES_FRONT = []
         Player.IMAGES_BACK = []
-        sheetR = PI.load("MCRightWalk.png").convert_alpha()
-        sheetL = PI.load("MCLeftWalk.png").convert_alpha()
-        sheetF = PI.load("MCFrontWalk.png").convert_alpha()
-        sheetB = PI.load("MCBackWalk.png").convert_alpha()
+        sheetR = PI.load("MCRightWalk.png").convert()
+        sheetL = PI.load("MCLeftWalk.png").convert()
+        sheetF = PI.load("MCFrontWalk.png").convert()
+        sheetB = PI.load("MCBackWalk.png").convert()
         Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
         Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
         Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
