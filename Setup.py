@@ -76,6 +76,10 @@ class Game(object):
             PD.flip()
 
             self.updates = 0
+
+            #clock is added
+            clock = PT.Clock()
+
             while frame_time > 0.0:
                 delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
@@ -83,33 +87,61 @@ class Game(object):
                 self.character.handle_keys(interval)
                 frame_time -= delta
                 self.updates += 1
+                #adding animantion here?
 
-            #Here's animation code...
-            clock = PT.Clock()
-
-            chefGroup = PS.Group()
-            chefGroup.add(Player())
-
-            while True:
                 last = PT.get_ticks()
 
-                chefGroup.draw(self.screen)
+                self.character.draw(self.screen)
 
                 clock.tick()
 
                 PD.flip()
 
                 elapsed = (PT.get_ticks() - last) / 1000.0
-                chefGroup.update(elapsed)
+                self.update(self.character, elapsed)
+
+            #Here's animation code...
+            '''clock = PT.Clock()
+
+            while PG.key.get_pressed():
+                last = PT.get_ticks()
+
+                self.character.draw(self.screen)
+
+                clock.tick()
+
+                PD.flip()
+
+                elapsed = (PT.get_ticks() - last) / 1000.0
+                self.character.update(elapsed)
 
                 for event in PE.get():
                     if event.type == PG.QUIT:
                         sys.exit()
                     elif event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
                         sys.exit()
-
+'''
             PD.update() # update the screen
             
+    def update(self, player, delta):
+            PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
+            #update time
+            player.time = player.time + delta
+            if player.time > Player.CYCLE:
+                player.time = 0.0
+            #update frame?
+            frame = int(player.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
+            if frame != player.frame:
+                player.frame = frame
+                if (player.face == 'r'):
+                    player.update_image(Player.IMAGES_RIGHT)
+                elif (player.face == 'u'):
+                    player.update_image(Player.IMAGES_BACK)
+                elif (player.face == 'l'):
+                    player.update_image(Player.IMAGES_LEFT)
+                else:
+                    player.update_image(Player.IMAGES_FRONT)
+
     def handleEvents(self):
         for event in PE.get():
             if event.type == PG.QUIT:
