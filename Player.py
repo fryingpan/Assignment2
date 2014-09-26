@@ -22,22 +22,28 @@ PM.music.load("hitWall.mod")
 class Player(PS.Sprite):
 
     IMAGES = None
+    IMAGES_RIGHT = None
+    IMAGES_LEFT = None
+    IMAGES_FRONT = None
+    IMAGES_BACK = None
     CYCLE = 0.6
+    WIDTH = 100
+    HEIGHT = 100
 
     def __init__(self, speed = 1):
         # Call the parent class (Sprite) constructor
         PS.Sprite.__init__(self)
-        #self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-        #self.image_rect = self.image.get_rect()
+        self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+        self.rect = self.image.get_rect()
         self.speed = speed
         self.x = 0
         self.y = 0
         self.face = 'd'
-        if not Player.IMAGES:
-            self.load_images()
+        #if not Player.IMAGES_FRONT:
+        self.load_images()
         self.time = 0.0
         self.frame = 0
-        self.update_image()
+        #self.update_image(Player.IMAGES_FRONT)
 
 
     def get_face(self):
@@ -49,19 +55,23 @@ class Player(PS.Sprite):
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         if key[PG.K_DOWN]: # down key
             self.y += dist*interval# move down
-            self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+            self.image = self.IMAGES_FRONT[0]
+            self.rect = self.image.get_rect()
             self.face = 'd'
         elif key[PG.K_UP]: # up key
             self.y -= dist*interval # move up
-            self.image = PI.load("FPGraphics/MC/MCwalk/MCBack.png").convert_alpha()
+            self.image = self.IMAGES_BACK[0]
+            self.rect = self.image.get_rect()
             self.face = 'u'
         if key[PG.K_RIGHT]: # right key
             self.x += dist*interval # move right
-            self.image = PI.load("FPGraphics/MC/MCwalk/MCRight.png").convert_alpha()
+            self.image = self.IMAGES_RIGHT[0]
+            self.rect = self.image.get_rect()
             self.face = 'r'
         elif key[PG.K_LEFT]: # left key
             self.x -= dist*interval# move left
-            self.image = PI.load("FPGraphics/MC/MCwalk/MCLeft.png").convert_alpha()
+            self.image = self.IMAGES_LEFT[0]
+            self.rect = self.image.get_rect()
             self.face = 'l'
 
     def draw(self, screen):
@@ -92,40 +102,55 @@ class Player(PS.Sprite):
             PM.music.play(0)
             PM.music.fadeout(4500)
         
-    def update(self, delta):
+    '''def update(self, delta):
+        PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
         #update time
         self.time = self.time + delta
         if self.time > Player.CYCLE:
             self.time = 0.0
         #update frame?
-        frame = int(self.time / (Player.CYCLE / len(Player.IMAGES)))
+        frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
         if frame != self.frame:
             self.frame = frame
-            self.update_image()
+            self.update_image(Player.IMAGES_FRONT)'''
 
-    def load_images(self):
-        Player.IMAGES = []
-        sheet = PI.load("MCRightWalk.png").convert_alpha()
+    def load_images_helper(self, imageArray, sheet):
         key = sheet.get_at((0,0))
         #hereeeeee
         for i in range(3,7):
             surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
-            Player.IMAGES.append(surface)
+            imageArray.append(surface)
         for i in range(5,0,-1):
             surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
-            Player.IMAGES.append(surface)
+            imageArray.append(surface)
         for i in range(0,3):
             surface = PG.Surface((100, 100)).convert_alpha()
             surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
-            Player.IMAGES.append(surface)
+            imageArray.append(surface)
+        return imageArray
 
-    def update_image(self):
-        self.image = Player.IMAGES[self.frame]
+    def load_images(self):
+        Player.IMAGES_RIGHT = []
+        Player.IMAGES_LEFT = []
+        Player.IMAGES_FRONT = []
+        Player.IMAGES_BACK = []
+        sheetR = PI.load("MCRightWalk.png").convert_alpha()
+        sheetL = PI.load("MCLeftWalk.png").convert_alpha()
+        sheetF = PI.load("MCFrontWalk.png").convert_alpha()
+        sheetB = PI.load("MCBackWalk.png").convert_alpha()
+        Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
+        Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
+        Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
+        Player.IMAGES_BACK = self.load_images_helper(Player.IMAGES_BACK, sheetB)
+
+#this will all end up in the key handler
+    def update_image(self, imageArray):
+        self.image = imageArray[self.frame]
         self.rect = self.image.get_rect()
-        #self.rect.center = (WIDTH/2, HEIGHT/2)
+        self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
 
