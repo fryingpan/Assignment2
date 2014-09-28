@@ -4,7 +4,19 @@ from pygame import color as PC
 from pygame import display as PDI
 from pygame.locals import *
 
-from Globals import Globals
+
+#Container for Local variables
+class Locals(object):
+    RUNNING = True
+    SCREEN = None
+    WIDTH = None
+    HEIGHT = None
+    FONT = None
+    STATE = None
+    FADEINTIME = 5.0
+    FADEOUTTIME = 0.2
+    CHANGESTATE = "None"
+    
 
 class HighScores:
 	def __init__(self):
@@ -24,7 +36,6 @@ class HighScores:
 		Globals.SCREEN.blit(self.text_surface, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 - height/2))
 
 	def update(self, time):
-
 		self.time += time
 		fadein = 2.0
 		if self.time < fadein:
@@ -38,7 +49,7 @@ class HighScores:
 			Globals.RUNNING = False
 		elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
 			PX.music.fadeout(int(fadeout*1000))
-			Globals.STATE = Menu()
+			Locals.STATE = Menu()
 
 	def get_text_surface(self):
 		rect = Rect(100, 100, 300, 300)
@@ -50,9 +61,6 @@ class HighScores:
 			scores = f.read()
 			surface = render_text(scores, font, rect, text_color, self.color)
 		return surface		
-
-				
-
 
 def render_text(string, font, rect, text_color, background_color):	
 	final_lines = []

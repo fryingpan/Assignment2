@@ -13,7 +13,7 @@ import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
-from newgamestate import Globals as Globals
+from masterfile import Globals as Globals
 
 
 #Container for Local variables
@@ -70,8 +70,6 @@ class Menu(State):
         self.time = 0.0
         self.sound = PX.Sound("thx.wav")
         self.sound.play()
-        
-
                 
     def render(self):
 
@@ -116,10 +114,6 @@ class Menu(State):
                 Locals.CHANGESTATE = "Quit"
                 print(Locals.CHANGESTATE)
                 
-
-
-
-
 
 #####################################################################################################
 #Main Run Method and Initialization                
