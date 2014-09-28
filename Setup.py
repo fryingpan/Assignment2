@@ -19,9 +19,25 @@ except ImportError, err:
     import sys
     sys.exit(1)
 
+
+
+
+
+
+def initialize():
+    num_enemies = 13
+    interval = 0.005
+    fps = 40
+    game = Game(interval, fps, num_enemies)
+    
+
+
 class Game(object):
 
     def __init__(self, interval, fps, num_enemies):
+        self.interval = interval
+        self.fps = fps
+        self.num_enemies=num_enemies
     
         PG.init()
         self.screen = PD.set_mode((800, 600))
@@ -87,7 +103,7 @@ class Game(object):
                 delta = min(frame_time, self.interval)
                 for enemy in self.enemy_list.sprites():
                     enemy.update(delta)
-                self.character.handle_keys(interval)
+                self.character.handle_keys(self.interval)
                 frame_time -= delta
                 self.updates += 1
                 #adding animantion here?
@@ -160,10 +176,5 @@ class Game(object):
         return True
                   
 # create a game and run it
-if __name__ == '__main__':
-    num_enemies = 13
-    interval = 0.005
-    fps = 40
-    game = Game(interval, fps, num_enemies)
-    game.run()
+
 
