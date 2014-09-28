@@ -99,12 +99,16 @@ class Enemy(PG.sprite.Sprite):
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
             self.update_image(self.IMAGES_FRONT)
+            self.face = 'd'
         elif Enemy_face == 'd':
-            self.update_image(self.IMAGES_BACK)            
+            self.update_image(self.IMAGES_BACK)
+            self.face = 'u'
         elif Enemy_face == 'l':
             self.update_image(self.IMAGES_RIGHT)
+            self.face = 'r'
         elif Enemy_face == 'r':
-            self.update_image(self.IMAGES_LEFT)       
+            self.update_image(self.IMAGES_LEFT)
+            self.face = 'l'       
         elif(self.face == 'rs'):
             self.update_image(self.IMAGES_LEFT)
         elif(self.face == 'us'):
