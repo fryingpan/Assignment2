@@ -15,6 +15,7 @@ import pygame.color as PC
 import pygame.mixer as PX
 
 from title import Title
+from highscores import HighScores
 
 
 #Container for global variables
@@ -53,60 +54,6 @@ def drawtextbox(text, textcolor, boxcolor, x1, x2, y1, y2, referencestr):
     Globals.SCREEN.blit(surf, rect)
    
     objectList[referencestr] = rect
-
-
-
-# class Title(State):
-#     #Constants for the state
-#     FADEINTIME = 5.0
-#     FADEOUTTIME = 0.2
-
-#     #Declares variables for first creation of state and intializes very basic sound and color modules
-#     def __init__(self):
-#         State.__init__(self)
-#         self.color = PC.Color("black")
-#         self.time = 0.0
-#         self.sound = PX.Sound("thx.wav")
-#         self.sound.play()
-#         Globals.SCREEN.fill(PC.Color("black"))
-
-        
-#     def render(self):
-#         #Creates a surface that is simple text, uses rendering method of FONT basic var
-#         surf = Globals.FONT.render("Title Screen", True, self.color)
-#         #Loads image in same folder titleimg.png
-#         titleimg = PG.image.load('titleimg.png')
-#         #Retreive size of surface
-#         width, height = surf.get_size()
-#         #Draw surf to screen, can do this with any number of things, image added for example
-#         Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 - height/2))
-#         #Renders titleimg
-#         Globals.SCREEN.blit(titleimg,(0,0))
-
-        
-#     def update(self, time):
-#         self.time += time
-#         #Fade in code, linear fade based on time
-#         if self.time < Title.FADEINTIME:
-#             ratio = self.time / Title.FADEINTIME
-#             value = int(ratio * 255)
-#             self.color = PC.Color(value, value, value)
-#     def event(self, event):
-#         #Allows quitting pygame and changing states, added changes for multiple states to allow testing
-#         if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
-#             Globals.RUNNING = False
-#         elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-#             self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-#             Globals.STATE = Menu()
-#         elif event.type == PG.KEYDOWN and event.key == PG.K_I:
-#             self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-#             #Globals.STATE = Menu()
-#         elif event.type == PG.KEYDOWN and event.key == PG.K_O:
-#             self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-#             #Globals.STATE = Menu()
-#         elif event.type == PG.KEYDOWN and event.key == PG.K_P:
-#             self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-#            # Globals.STATE = Menu()
 
 
 class Menu(State):
@@ -152,10 +99,6 @@ class Menu(State):
        
         print(objectList['hello'].collidepoint(PG.mouse.get_pos()))
         #print(objectList['test1'].collidepoint(PG.mouse.get_pos()))
-
-
-
-
 
 #Main Executable entry point
 def main():

@@ -4,6 +4,8 @@ import pygame as PG
 from pygame import color as PC
 import pygame.display as PDI
 import pygame.image as PI
+import pygame.font as PF
+
 
 from pygame import image 
 from pygame.locals import *
@@ -35,13 +37,15 @@ class Title:
 
 		Globals.SCREEN.fill(PC.Color("white"))
 		bigfont = PG.font.Font(None, 60)
-		self.renderer = textWavey(bigfont, "Frying Pan", (100, 200, 100), 7)
+		self.renderer = textWavey(bigfont, "Frying Pan", (252, 222, 128), 7)
+		self.inst_surf = PF.Font(None, 35)
 
 
 	def load_images(self):
 		images = []
 		images.append(PI.load("FPGraphics/Title/TitleFood.png").convert_alpha())
 		images.append(PI.load("FPGraphics/Title/TitlePlayer.png").convert_alpha())
+		images.append(PI.load("FPGraphics/Title/TitleBG.png").convert_alpha())
 		return images
 
 
@@ -49,15 +53,21 @@ class Title:
 	def render(self):
 		# surf = Globals.FONT.render("Title Screen", True, self.color)
 		Globals.SCREEN.fill(self.color)
-		self.text = self.renderer.animate().convert_alpha()
+		self.text = self.renderer.animate().convert()
 
 		player_moves = self.move_player()
 		self.move_enemy()
 
 		width, height = self.text.get_size()
+		Globals.SCREEN.blit(self.images[2], (0,0))
 		Globals.SCREEN.blit(self.images[0], (self.enemyx, self.enemyy))
 		Globals.SCREEN.blit(self.images[1], (self.playerx, self.playery))
 		Globals.SCREEN.blit(self.text, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/15))
+
+		surf = self.inst_surf.render("Press SPACE to Continue", True, self.color)
+		surf_width, surf_height = surf.get_size()
+		Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - surf_width/2, Globals.HEIGHT/2 - surf_height*7))
+
 
 
 	def move_player(self):
@@ -97,15 +107,16 @@ class Title:
 
 class textWavey:
 	def __init__(self, font, message, fontcolor, amount=10):
-		self.background = PC.Color("white")
-		self.base = font.render(message, 0, fontcolor, self.background)
+		# 42, 5, 2
+		self.background = (42, 5, 2)
+		self.base = font.render(message, 0, fontcolor, self.background).convert_alpha()
 		self.steps = range(0, self.base.get_width(), 2)
 		self.amount = amount
 		self.size = self.base.get_rect().inflate(0, amount).size
 		self.offset = 0.0
 		
 	def animate(self):
-		s = PG.Surface(self.size)
+		s = PG.Surface(self.size).convert_alpha()
 		s.fill(self.background)
 		height = self.size[1]
 		self.offset += 0.5
