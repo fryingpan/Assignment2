@@ -151,19 +151,20 @@ class Player(PS.Sprite):
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
         #hereeeeee
+        alphabg = (23,23,23)
         for i in range(3,7):
             surface = PG.Surface((100, 100))
-            #surface.set_colorkey(key)
+            surface.set_colorkey(alphabg)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         for i in range(5,0,-1):
             surface = PG.Surface((100, 100))
-            #surface.set_colorkey(key)
+            surface.set_colorkey(alphabg)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         for i in range(0,3):
             surface = PG.Surface((100, 100))
-            #surface.set_colorkey(key)
+            surface.set_colorkey(alphabg)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         return imageArray
@@ -184,7 +185,7 @@ class Player(PS.Sprite):
 
 #this will all end up in the key handler
     def update_image(self, imageArray):
-        self.image = imageArray[self.frame]
+        self.image = imageArray[self.frame].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
 

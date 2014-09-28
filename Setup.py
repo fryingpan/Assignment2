@@ -13,6 +13,7 @@ try:
     import pygame.color as PC
     import pygame.event as PE
     
+    
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
     import sys
@@ -70,6 +71,7 @@ class Game(object):
             #move and draw the enemies
             player_face = self.character.get_face()
             for enemy in self.enemy_list.sprites():
+                Enemy_face = enemy.get_face()
                 enemy.set_face(player_face)
                 enemy.draw()
             self.character.draw(self.screen) # draw the character to the screen
