@@ -126,7 +126,8 @@ class Game(object):
             PD.update() # update the screen
             
     def update(self, player, delta):
-            PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
+            player.update(delta)
+            """PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
             #update time
             player.time = player.time + delta
             if player.time > Player.CYCLE:
@@ -142,7 +143,7 @@ class Game(object):
                 elif (player.face == 'l'):
                     player.update_image(Player.IMAGES_LEFT)
                 else:
-                    player.update_image(Player.IMAGES_FRONT)
+                    player.update_image(Player.IMAGES_FRONT)"""
 
     def handleEvents(self):
         for event in PE.get():

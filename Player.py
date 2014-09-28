@@ -39,11 +39,9 @@ class Player(PS.Sprite):
         self.x = 0
         self.y = 0
         self.face = 'd'
-        #if not Player.IMAGES_FRONT:
         self.load_images()
         self.time = 0.0
         self.frame = 0
-        #self.update_image(Player.IMAGES_FRONT)
 
 
     def get_face(self):
@@ -55,31 +53,36 @@ class Player(PS.Sprite):
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         if key[PG.K_DOWN]: # down key
             self.y += dist*interval# move down
-            self.image = self.IMAGES_FRONT[0]
             self.rect = self.image.get_rect()
             self.face = 'd'
         elif key[PG.K_UP]: # up key
             self.y -= dist*interval # move up
-            self.image = self.IMAGES_BACK[0]
             self.rect = self.image.get_rect()
             self.face = 'u'
-        if key[PG.K_RIGHT]: # right key
+        elif key[PG.K_RIGHT]: # right key
             self.x += dist*interval # move right
-            self.image = self.IMAGES_RIGHT[0]
             self.rect = self.image.get_rect()
             self.face = 'r'
         elif key[PG.K_LEFT]: # left key
             self.x -= dist*interval# move left
-            self.image = self.IMAGES_LEFT[0]
             self.rect = self.image.get_rect()
             self.face = 'l'
-
+        else: #ds = down 'standing' (not moving)
+            if self.face == 'd':
+                self.face = 'ds'
+            if self.face == 'u':
+                self.face = 'us'
+            if self.face == 'r':
+                self.face = 'rs'
+            if self.face == 'l':
+                self.face = 'ls'
     def draw(self, screen):
         """ Draw on surface """
         self.check_boundary(screen)
         # blit yourself at your current position
         screen.blit(self.image, (self.x, self.y))
-
+        PD.flip()
+        
     def check_boundary(self, screen):
         if self.x < 0:
             PM.music.stop()
@@ -102,7 +105,7 @@ class Player(PS.Sprite):
             PM.music.play(0)
             PM.music.fadeout(4500)
         
-    '''def update(self, delta):
+    def update(self, delta):
         PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
         #update time
         self.time = self.time + delta
@@ -111,25 +114,56 @@ class Player(PS.Sprite):
         #update frame?
         frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
         if frame != self.frame:
+                self.frame = frame
+                if (self.face == 'r'):
+                    self.update_image(self.IMAGES_RIGHT)
+                elif (self.face == 'u'):
+                    self.update_image(self.IMAGES_BACK)
+                elif (self.face == 'l'):
+                    self.update_image(self.IMAGES_LEFT)
+                elif (self.face == 'd'):
+                    self.update_image(self.IMAGES_FRONT)
+                elif(self.face == 'rs'):
+                    self.image = self.IMAGES_RIGHT[0]
+                elif(self.face == 'us'):
+                    self.image = self.IMAGES_BACK[0]
+                elif(self.face == 'ls'):
+                    self.image = self.IMAGES_LEFT[0]
+                elif(self.face == 'ds'):
+                    self.image = self.IMAGES_FRONT[0]
+                else:
+                    self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+        """if frame != self.frame:
+                self.frame = frame
+                if (self.face == 'r'):
+                    self.update_image(self.IMAGES_RIGHT)
+                elif (self.face == 'u'):
+                    self.update_image(self.IMAGES_BACK)
+                elif (self.face == 'l'):
+                    self.update_image(self.IMAGES_LEFT)
+                else:
+                    self.update_image(self.IMAGES_FRONT)"""
+        """if frame != self.frame:
+            print "frame: " + repr(frame)
             self.frame = frame
-            self.update_image(Player.IMAGES_FRONT)'''
+            self.update_image(Player.IMAGES_FRONT)"""
 
     def load_images_helper(self, imageArray, sheet):
-        key = sheet.get_at((0,0))
+        #key = sheet.get_at((0,0))
         #hereeeeee
         for i in range(3,7):
-            surface = PG.Surface((100, 100)).convert_alpha()
-            surface.set_colorkey(key)
+            surface = PG.Surface((100, 100))
+            #surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         for i in range(5,0,-1):
-            surface = PG.Surface((100, 100)).convert_alpha()
-            surface.set_colorkey(key)
+            surface = PG.Surface((100, 100))
+            #surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         for i in range(0,3):
-            surface = PG.Surface((100, 100)).convert_alpha()
-            surface.set_colorkey(key)
+            surface = PG.Surface((100, 100))
+            #surface.set_colorkey(key)
             surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         return imageArray
@@ -139,10 +173,10 @@ class Player(PS.Sprite):
         Player.IMAGES_LEFT = []
         Player.IMAGES_FRONT = []
         Player.IMAGES_BACK = []
-        sheetR = PI.load("MCRightWalk.png").convert()
-        sheetL = PI.load("MCLeftWalk.png").convert()
-        sheetF = PI.load("MCFrontWalk.png").convert()
-        sheetB = PI.load("MCBackWalk.png").convert()
+        sheetR = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
+        sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
+        sheetF = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
+        sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
         Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
         Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
         Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
