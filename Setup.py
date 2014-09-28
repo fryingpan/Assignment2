@@ -13,6 +13,7 @@ try:
     import pygame.color as PC
     import pygame.event as PE
     
+    
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
     import sys
@@ -25,6 +26,7 @@ class Game(object):
         PG.init()
         self.screen = PD.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
+        self.screen.fill((255,255,255))
         PD.set_caption("Master Chef's wicked adventure with his ice cream buddies")
         
         self.fps = fps
@@ -69,6 +71,7 @@ class Game(object):
             #move and draw the enemies
             player_face = self.character.get_face()
             for enemy in self.enemy_list.sprites():
+                Enemy_face = enemy.get_face()
                 enemy.set_face(player_face)
                 enemy.draw()
             self.character.draw(self.screen) # draw the character to the screen
@@ -98,7 +101,8 @@ class Game(object):
                 PD.flip()
 
                 elapsed = (PT.get_ticks() - last) / 1000.0
-                self.update(self.character, elapsed)
+                if (PG.key.get_pressed()):
+                    self.update(self.character, elapsed)
 
             #Here's animation code...
             '''clock = PT.Clock()
@@ -124,7 +128,8 @@ class Game(object):
             PD.update() # update the screen
             
     def update(self, player, delta):
-            PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
+            player.update(delta)
+            """PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
             #update time
             player.time = player.time + delta
             if player.time > Player.CYCLE:
@@ -140,7 +145,7 @@ class Game(object):
                 elif (player.face == 'l'):
                     player.update_image(Player.IMAGES_LEFT)
                 else:
-                    player.update_image(Player.IMAGES_FRONT)
+                    player.update_image(Player.IMAGES_FRONT)"""
 
     def handleEvents(self):
         for event in PE.get():

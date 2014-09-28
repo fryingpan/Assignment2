@@ -1,0 +1,14 @@
+FRYING PAN
+Carla Castro
+Katie Chang
+Mary Yen
+Josh Holstein
+
+When you run the game, the first thing that comes up is the Title screen. The title screen has our group name and right below it it tells you to press the spacebar to continue. 
+
+After you press the spacebar, the menu screen comes up. Here you have a couple of options: start a new game, adjust the visual brightness, adjust audio volume, display high-scores, and quit the game. The options to adjust the visual brightness and to adjust the audio volume are not implemented. If you click on start a new game then it takes you to the game screen, if you click on display high-scores then it takes you to the high scores screen and if you click on quit then the program ends. 
+
+If you click on start a new game from the menu screen the game starts. Here the chef samurai is the player and the ice cream surrounding him are the enemies. The enemies move in random directions and the the user can control the player with the arrow keys. The player and the enemies are animated so the player will look like he is walking across the screen and the enemy looks like he is sliding across. 
+
+Lastly, you can get to the high score screen from the menu which just displays four players and their high score. 
+
