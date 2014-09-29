@@ -96,7 +96,7 @@ class Menu(State):
         #Allows quitting pygame and changing states, added changes for multiple states to allow testing
         
         if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
-            Locals.RUNNING = False
+            return False
         elif M_M1 == 1:
             if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
@@ -128,7 +128,8 @@ def run(elapsed,event):
             if event.type == PG.QUIT:
                 return False
             else:
-                Locals.STATE.event(event)
+                if(Locals.STATE.event(event) == False):
+                    return False
                 #print(Locals.CHANGESTATE)
 
 def initialize():
