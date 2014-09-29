@@ -113,6 +113,7 @@ class Menu(State):
             elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
                 Locals.CHANGESTATE = "Quit"
+                return False
                 #print(Locals.CHANGESTATE)
                 
 
