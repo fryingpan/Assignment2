@@ -31,3 +31,8 @@ def run():
     Locals.SCREEN.fill(PC.Color("white"))
     Locals.SCREEN.blit(Locals.FONT.render(Locals.string, True, PC.Color("red")),Locals.rect)
     PDI.flip()
+    for event in PE.get():
+        if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
+            Locals.CHANGESTATE = "Quit"
+        elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
+            Locals.CHANGESTATE = "Menu"

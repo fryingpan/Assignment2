@@ -62,7 +62,7 @@ def initialize():
     Globals.STATE = "Menu"
 
 def loop():
-    while Globals.RUNNING:
+    while Globals.RUNNING and Globals.STATE != "Quit":
     
 
         if Globals.STATE == "Title":
@@ -112,7 +112,9 @@ def loop():
            
                 Scores.run()
 
+        
         elif Globals.STATE == "Quit":
+            quit()
             Globals.Running = False
 
 def finalize():
