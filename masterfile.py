@@ -21,6 +21,7 @@ PG.init()
 #import titlegamestate as Title
 import newmenugamestate as Menu
 import Setup as Game
+import title
 
 
 #Container for global variables
@@ -32,11 +33,6 @@ class Globals(object):
     FONT = None
     STATE = None
     
-
-
-
-
-
 
 
 #Main Executable entry point
@@ -58,22 +54,22 @@ def initialize():
     Globals.WIDTH = Globals.SCREEN.get_width()
     Globals.HEIGHT = Globals.SCREEN.get_height()
     Globals.FONT = PF.Font(None, 48)
-    Globals.STATE = "Menu"
+    Globals.STATE = "Title"
 
 def loop():
     while Globals.RUNNING:
     
         if Globals.STATE == "Title":
-            Title.initialize()
-            Globals.STATE = Title.Locals.STATE
+            title.initialize()
+            Globals.STATE = title.Locals.STATE
             print(3)
             while Globals.STATE == "Title":
-                Globals.STATE = Title.Locals.CHANGESTATE
+                Globals.STATE = title.Locals.CHANGESTATE
                 print (Globals.STATE)
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
-                Title.run(elapsed,event)
+                title.run(elapsed,event)
 
         elif Globals.STATE == "Game":
             gamerino = Game.Game(0.005, 40, 13)

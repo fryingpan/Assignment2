@@ -10,13 +10,27 @@ import pygame.font as PF
 from pygame import image 
 from pygame.locals import *
 	
-from Globals import Globals
+class Globals(object):
+    RUNNING = True
+    SCREEN = None
+    WIDTH = None
+    HEIGHT = None
+    FONT = None
+    STATE = None
 
-
-
-class Title:
+#Container for Local variables
+class Locals(object):
+	RUNNING = True
+	SCREEN = None
+	WIDTH = None
+	HEIGHT = None
+	FONT = None
+	STATE = None
 	FADEINTIME = 5.0
 	FADEOUTTIME = 0.2
+	CHANGESTATE = "None"
+
+class Title:
 	IMAGES = None
 	def __init__(self):
 		self.color = PC.Color("white")
@@ -48,8 +62,6 @@ class Title:
 		images.append(PI.load("FPGraphics/Title/TitleBG.png").convert_alpha())
 		return images
 
-
-
 	def render(self):
 		# surf = Globals.FONT.render("Title Screen", True, self.color)
 		Globals.SCREEN.fill(self.color)
@@ -67,7 +79,6 @@ class Title:
 		surf = self.inst_surf.render("Press SPACE to Continue", True, self.color)
 		surf_width, surf_height = surf.get_size()
 		Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - surf_width/2, Globals.HEIGHT/2 - surf_height*7))
-
 
 
 	def move_player(self):
@@ -88,22 +99,32 @@ class Title:
 			value = int(ratio * 255)
 			self.color = PC.Color(value, value, value)
 
+
 	def event(self, event):
 		#Allows quitting pygame and changing states, added changes for multiple states to allow testing
 		if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
 			Globals.RUNNING = False
 		elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
 			self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-			Globals.STATE = Menu()
-		elif event.type == PG.KEYDOWN and event.key == PG.K_I:
-			self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-			#Globals.STATE = Menu()
-		elif event.type == PG.KEYDOWN and event.key == PG.K_O:
-			self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-			#Globals.STATE = Menu()
-		elif event.type == PG.KEYDOWN and event.key == PG.K_P:
-			self.sound.fadeout(int(Title.FADEOUTTIME*1000))
-		   # Globals.STATE = Menu()
+			Locals.CHANGESTATE = 'Menu'
+
+def initialize():
+	Locals.STATE = Title()
+	# Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
+	Locals.CHANGESTATE = 'Title'
+
+def run(elapsed, event):
+	Locals.STATE.render()
+	Locals.STATE.update(elapsed)
+
+	for event in PE.get():
+		print(PG.QUIT)
+		if event.type == PG.QUIT:
+			return False
+		else:
+			if(Locals.STATE.event(event) == False):
+				return False
+
 
 class textWavey:
 	def __init__(self, font, message, fontcolor, amount=10):
