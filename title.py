@@ -106,7 +106,6 @@ class Title:
 		if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
 			Globals.RUNNING = False
 		elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-			self.sound.fadeout(int(Locals.FADEOUTTIME*1000))
 			Locals.CHANGESTATE = 'Menu'
 
 
