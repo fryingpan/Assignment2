@@ -63,6 +63,7 @@ class Title:
 		return images
 
 	def render(self):
+		print "Rendering"
 		# surf = Globals.FONT.render("Title Screen", True, self.color)
 		Globals.SCREEN.fill(self.color)
 		self.text = self.renderer.animate().convert()
@@ -79,7 +80,7 @@ class Title:
 		surf = self.inst_surf.render("Press SPACE to Continue", True, self.color)
 		surf_width, surf_height = surf.get_size()
 		Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - surf_width/2, Globals.HEIGHT/2 - surf_height*7))
-
+		PDI.flip()
 
 	def move_player(self):
 		moves = False
@@ -115,6 +116,7 @@ def initialize():
 
 def run(elapsed, event):
 	Locals.STATE.render()
+	PDI.flip()
 	Locals.STATE.update(elapsed)
 
 	for event in PE.get():
