@@ -54,7 +54,7 @@ def initialize():
     Globals.WIDTH = Globals.SCREEN.get_width()
     Globals.HEIGHT = Globals.SCREEN.get_height()
     Globals.FONT = PF.Font(None, 48)
-    Globals.STATE = "Title"
+    Globals.STATE = "Menu"
 
 def loop():
     while Globals.RUNNING:
