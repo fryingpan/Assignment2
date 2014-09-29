@@ -63,7 +63,6 @@ def initialize():
 def loop():
     while Globals.RUNNING:
     
-
         if Globals.STATE == "Title":
             Title.initialize()
             Globals.STATE = Title.Locals.STATE
@@ -83,7 +82,8 @@ def loop():
                 num_enemies = 13
                 interval = 0.005
                 fps = 40
-                gamerino.run()
+                if(gamerino.run() == False):
+                    return 0
 
 
         elif Globals.STATE == "Menu":
@@ -97,7 +97,8 @@ def loop():
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
-                Menu.run(elapsed,event)
+                if(Menu.run(elapsed,event) == False):
+                    return 0
             
         elif Globals.STATE == "Scores":
             Scores.run(elapsed,event)

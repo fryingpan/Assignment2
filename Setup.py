@@ -80,6 +80,8 @@ class Game(object):
             self.clock.tick()
 
             running = self.handleEvents()
+            if(running == False):
+                return False
             #Key Handling----------------------------
             # self.character.handle_keys() # handle the keys
 

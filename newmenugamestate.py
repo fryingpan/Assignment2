@@ -94,25 +94,26 @@ class Menu(State):
         mousePress = PG.mouse.get_pressed()
         M_M1 = mousePress[0]
         #Allows quitting pygame and changing states, added changes for multiple states to allow testing
+        
         if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
             Locals.RUNNING = False
         elif M_M1 == 1:
             if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
                 Locals.CHANGESTATE = "Title"
-                print(Locals.CHANGESTATE)
+                #print(Locals.CHANGESTATE)
             elif objectList['scores'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
                 Locals.CHANGESTATE = "Scores"
-                print(Locals.CHANGESTATE)
+                #print(Locals.CHANGESTATE)
             elif objectList['game'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
                 Locals.CHANGESTATE = "Game"
-                print(Locals.CHANGESTATE)
+                #print(Locals.CHANGESTATE)
             elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
                 print("success")
                 Locals.CHANGESTATE = "Quit"
-                print(Locals.CHANGESTATE)
+                #print(Locals.CHANGESTATE)
                 
 
 #####################################################################################################
@@ -123,16 +124,16 @@ def run(elapsed,event):
     Locals.STATE.update(elapsed)
     
     for event in PE.get():
+            print(PG.QUIT)
             if event.type == PG.QUIT:
-                Globals.RUNNING = False
+                return False
             else:
                 Locals.STATE.event(event)
-                print(Locals.CHANGESTATE)
+                #print(Locals.CHANGESTATE)
 
 def initialize():
     #Initializes Local Vars
 
-    print(4)
     Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
 
     Locals.FONT = PF.Font(None, 48)
