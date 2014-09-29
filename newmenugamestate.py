@@ -77,9 +77,9 @@ class Menu(State):
         
         
         drawtextbox("Title",PC.Color("red"),PC.Color("blue"),0,400,0,100,"title")
-        drawtextbox("Scores",PC.Color("red"),PC.Color("blue"),100,500,200,300,"scores")
-        drawtextbox("Game",PC.Color("red"),PC.Color("blue"),200,600,400,500,"game")
-        drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),300,700,600,700,"quit")
+        drawtextbox("Scores",PC.Color("red"),PC.Color("blue"),0,400,105,205,"scores")
+        drawtextbox("Game",PC.Color("red"),PC.Color("blue"),0,400,210,310,"game")
+        drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),0,400,315,415,"quit")
         
         PDI.flip()
         
@@ -133,7 +133,7 @@ def initialize():
     #Initializes Local Vars
 
     print(4)
-    Globals.SCREEN = PDI.set_mode((1280, 1020), PG.DOUBLEBUF|PG.HWSURFACE)
+    Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
 
     Locals.FONT = PF.Font(None, 48)
     Locals.STATE = Menu()
