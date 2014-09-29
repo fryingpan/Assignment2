@@ -54,16 +54,17 @@ def initialize():
     Globals.WIDTH = Globals.SCREEN.get_width()
     Globals.HEIGHT = Globals.SCREEN.get_height()
     Globals.FONT = PF.Font(None, 48)
-    Globals.STATE = "Menu"
+    Globals.STATE = "Title"
 
 def loop():
     while Globals.RUNNING:
     
         if Globals.STATE == "Title":
             title.initialize()
-            Globals.STATE = title.Locals.STATE
+            Globals.STATE = title.Locals.CHANGESTATE
             print(3)
             while Globals.STATE == "Title":
+                print 'going into run'
                 Globals.STATE = title.Locals.CHANGESTATE
                 print (Globals.STATE)
                 last = PT.get_ticks()

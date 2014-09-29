@@ -5,6 +5,7 @@ from pygame import color as PC
 import pygame.display as PDI
 import pygame.image as PI
 import pygame.font as PF
+import pygame.event as PE
 
 
 from pygame import image 
@@ -51,7 +52,7 @@ class Title:
 
 		Globals.SCREEN.fill(PC.Color("white"))
 		bigfont = PG.font.Font(None, 60)
-		self.renderer = textWavey(bigfont, "Frying Pan", (252, 222, 128), 7)
+		self.renderer = textWavey(bigfont, "Frying Pan", (252, 222, 128), 4)
 		self.inst_surf = PF.Font(None, 35)
 
 
@@ -80,7 +81,6 @@ class Title:
 		surf = self.inst_surf.render("Press SPACE to Continue", True, self.color)
 		surf_width, surf_height = surf.get_size()
 		Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - surf_width/2, Globals.HEIGHT/2 - surf_height*7))
-		PDI.flip()
 
 	def move_player(self):
 		moves = False
@@ -95,8 +95,8 @@ class Title:
 
 	def update(self, time):
 		self.time += time
-		if self.time < Title.FADEINTIME:
-			ratio = self.time / Title.FADEINTIME
+		if self.time < Locals.FADEINTIME:
+			ratio = self.time / Locals.FADEINTIME
 			value = int(ratio * 255)
 			self.color = PC.Color(value, value, value)
 
@@ -106,8 +106,9 @@ class Title:
 		if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
 			Globals.RUNNING = False
 		elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-			self.sound.fadeout(int(Title.FADEOUTTIME*1000))
+			self.sound.fadeout(int(Locals.FADEOUTTIME*1000))
 			Locals.CHANGESTATE = 'Menu'
+
 
 def initialize():
 	Locals.STATE = Title()
