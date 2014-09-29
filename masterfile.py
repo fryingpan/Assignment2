@@ -21,6 +21,7 @@ PG.init()
 #import titlegamestate as Title
 import newmenugamestate as Menu
 import Setup as Game
+import highscores
 import title
 
 
@@ -64,7 +65,6 @@ def loop():
             Globals.STATE = title.Locals.CHANGESTATE
             print(3)
             while Globals.STATE == "Title":
-                print 'going into run'
                 Globals.STATE = title.Locals.CHANGESTATE
                 print (Globals.STATE)
                 last = PT.get_ticks()
@@ -99,7 +99,16 @@ def loop():
                     return 0
             
         elif Globals.STATE == "Scores":
-            Scores.run(elapsed,event)
+            highscores.initialize()
+            Globals.STATE = highscores.Locals.CHANGESTATE
+            while Globals.STATE == "Scores":
+                Globals.STATE = highscores.Locals.CHANGESTATE
+                print (Globals.STATE)
+                last = PT.get_ticks()
+                elapsed = (PT.get_ticks() - last) / 1000.0
+                event = PE.get()
+                highscores.run(elapsed,event)
+
         
 
 def finalize():
