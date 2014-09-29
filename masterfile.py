@@ -68,6 +68,7 @@ def loop():
             Globals.STATE = Title.Locals.STATE
             print(3)
             while Globals.STATE == "Title":
+                Globals.STATE = Title.Locals.CHANGESTATE
                 print (Globals.STATE)
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
