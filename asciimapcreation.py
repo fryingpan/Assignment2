@@ -1,4 +1,6 @@
-import pygame
+import pygame as PG
+import pygame.sprite as PS
+import pygame.display as PD
 import random
 import sys
 # Define some colors
@@ -21,61 +23,61 @@ mapList = []
 #
 #Block class's
 #
-class Block(pygame.sprite.Sprite):
+class Block(PS.Sprite):
 
    
     def __init__(self, color, width, height):
         """ Constructor. Pass in the color of the block,
         and its x and y position. """
       
-        pygame.sprite.Sprite.__init__(self)
+        PS.Sprite.__init__(self)
         self.list = 
-        self.image = pygame.Surface([width, height])
+        self.image = PG.Surface([width, height])
         self.image.fill(color)
        
         self.rect = self.image.get_rect()
         self
 
-class Player(pygame.sprite.Sprite):
+class Player(PS.Sprite):
 
    
     def __init__(self, color, width, height):
         """ Constructor. Pass in the color of the block,
         and its x and y position. """
       
-        pygame.sprite.Sprite.__init__(self)
+        PS.Sprite.__init__(self)
         selfList = [
-        self.image = pygame.Surface([width, height])
+        self.image = PG.Surface([width, height])
         self.image.fill(color)
        
         self.rect = self.image.get_rect()
         self
         
-class Enemy(pygame.sprite.Sprite):
+class Enemy(PS.Sprite):
 
    
     def __init__(self, color, width, height):
         """ Constructor. Pass in the color of the block,
         and its x and y position. """
       
-        pygame.sprite.Sprite.__init__(self)
+        PS.Sprite.__init__(self)
         selfList = [
-        self.image = pygame.Surface([width, height])
+        self.image = PG.Surface([width, height])
         self.image.fill(color)
        
         self.rect = self.image.get_rect()
         self
 
-class Wall(pygame.sprite.Sprite):
+class Wall(PS.Sprite):
 
    
     def __init__(self, color, width, height):
         """ Constructor. Pass in the color of the block,
         and its x and y position. """
       
-        pygame.sprite.Sprite.__init__(self)
+        PS.Sprite.__init__(self)
         selfList = [
-        self.image = pygame.Surface([width, height])
+        self.image = PG.Surface([width, height])
         self.image.fill(color)
        
         self.rect = self.image.get_rect()
@@ -113,17 +115,17 @@ entityPrePosList=[]
         
     
 # Initialize Pygame
-pygame.init()
+PG.init()
 # Set the height and width of the screen
 screen_width = 800
 screen_height = 600
-screen = pygame.display.set_mode([screen_width, screen_height])
+screen = PD.set_mode([screen_width, screen_height])
 
 
-enemy_sprites_list = pygame.sprite.Group()
-wall_sprites_list = pygame.sprite.Group()
-player_sprites_list = pygame.sprite.Group()
-all_sprites_list = pygame.sprite.Group()
+enemy_sprites_list = PS.Group()
+wall_sprites_list = PS.Group()
+player_sprites_list = PS.Group()
+all_sprites_list = PS.Group()
 
 
 for i in range(10):
@@ -154,24 +156,24 @@ player_sprites_list.add(player)
 # Loop until the user clicks the close button.
 done = False
 # Used to manage how fast the screen updates
-clock = pygame.time.Clock()
+clock = PG.time.Clock()
 score = 0
 # -------- Main Program Loop -----------
 while not done:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+    for event in PG.event.get():
+        if event.type == PG.QUIT:
             done = True
     # Clear the screen
     screen.fill(WHITE)
     
     # Get the current mouse position. This returns the position
     # as a list of two numbers.
-    #pos = pygame.mouse.get_pos()
+    #pos = PG.mouse.get_pos()
     
     # Collision lists, fix these variables to be in order with call
-    player_enemy_collide = pygame.sprite.spritecollide(player,enemy_sprites_list, True)
-    player_wall_collide = pygame.sprite.spritecollide(player, wall_sprites_list, False)
-    enemy_wall_collide = pygame.sprite.groupcollide(enemy_sprites_list, wall_sprites_list,False,False)
+    player_enemy_collide = PS.spritecollide(player,enemy_sprites_list, True)
+    player_wall_collide = PS.spritecollide(player, wall_sprites_list, False)
+    enemy_wall_collide = PS.groupcollide(enemy_sprites_list, wall_sprites_list,False,False)
 
 
     #Preposition Var
@@ -182,15 +184,15 @@ while not done:
     if player_wall_collide != 1:
     
         #Movement
-        keys=pygame.key.get_pressed()
+        keys=PG.key.get_pressed()
         
-        if keys[pygame.K_DOWN]!=0:
+        if keys[PG.K_DOWN]!=0:
             player.rect.y += 10
-        elif keys[pygame.K_RIGHT]!=0:
+        elif keys[PG.K_RIGHT]!=0:
             player.rect.x += 10
-        elif keys[pygame.K_LEFT]!=0:
+        elif keys[PG.K_LEFT]!=0:
             player.rect.x -= 10
-        elif keys[pygame.K_UP]!=0:
+        elif keys[PG.K_UP]!=0:
             player.rect.y -= 10
             
     # Check the list of collisions.
@@ -208,5 +210,5 @@ while not done:
     # Limit to 60 frames per second
     clock.tick(60)
     # Go ahead and update the screen with what we've drawn.
-    pygame.display.flip()
-pygame.quit()
+    PD.flip()
+PG.quit()
