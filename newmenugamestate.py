@@ -73,13 +73,15 @@ class Menu(State):
                 
     def render(self):
 
-        Globals.SCREEN.fill(PC.Color("white"))
+        Globals.SCREEN.fill(PC.Color('black'))
         
         
         drawtextbox("Title",PC.Color("red"),PC.Color("blue"),0,400,0,100,"title")
         drawtextbox("Scores",PC.Color("red"),PC.Color("blue"),0,400,105,205,"scores")
         drawtextbox("Game",PC.Color("red"),PC.Color("blue"),0,400,210,310,"game")
         drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),0,400,315,415,"quit")
+        drawtextbox("Adjust Visual Brightness", (37, 200,100), PC.Color('white'), 0,400,420,420, "AVB")
+        drawtextbox("Adjust Volume", (37, 200, 100), PC.Color('white'), 0,400,520, 520, 'volume')
         
         PDI.flip()
         
