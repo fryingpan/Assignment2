@@ -26,6 +26,14 @@ class Player(PS.Sprite):
     IMAGES_LEFT = None
     IMAGES_FRONT = None
     IMAGES_BACK = None
+    IMAGES_RIGHT_ACCEL = None
+    IMAGES_LEFT_ACCEL = None
+    IMAGES_FRONT_ACCEL = None
+    IMAGES_BACK_ACCEL = None
+    IMAGES_RIGHT_DECEL = None
+    IMAGES_LEFT_DECEL = None
+    IMAGES_FRONT_DECEL = None
+    IMAGES_BACK_DECEL = None
     CYCLE = 0.6
     WIDTH = 100
     HEIGHT = 100
@@ -174,14 +182,49 @@ class Player(PS.Sprite):
         Player.IMAGES_LEFT = []
         Player.IMAGES_FRONT = []
         Player.IMAGES_BACK = []
+        Player.IMAGES_RIGHT_ACCEL = []
+        Player.IMAGES_LEFT_ACCEL = []
+        Player.IMAGES_FRONT_ACCEL = []
+        Player.IMAGES_BACK_ACCEL = []
+        Player.IMAGES_RIGHT_DECEL = []
+        Player.IMAGES_LEFT_DECEL = []
+        Player.IMAGES_FRONT_DECEL = []
+        Player.IMAGES_BACK_DECEL = []
         sheetR = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
         sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
         sheetF = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
         sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
+        '''sheetRA = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
+        sheetLA = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
+        sheetFA = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
+        sheetBA = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
+        sheetRD = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
+        sheetLD = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
+        sheetFD = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
+        sheetBD = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()'''
         Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
         Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
         Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
         Player.IMAGES_BACK = self.load_images_helper(Player.IMAGES_BACK, sheetB)
+        Player.IMAGES_RIGHT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_RIGHT_ACCEL, sheetRA)
+        Player.IMAGES_LEFT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_ACCEL, sheetLA)
+        Player.IMAGES_FRONT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_ACCEL, sheetFA)
+        Player.IMAGES_BACK_ACCEL = self.load_images_helper_accdec(Player.IMAGES_BACK_ACCEL, sheetBA)
+        Player.IMAGES_RIGHT_DECEL = self.load_images_helper_accdec(Player.IMAGES_RIGHT_DECEL, sheetRD)
+        Player.IMAGES_LEFT_DECEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_DECEL, sheetLD)
+        Player.IMAGES_FRONT_DECEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_DECEL, sheetFD)
+        Player.IMAGES_BACK_DECEL = self.load_images_helper_accdec(Player.IMAGES_BACK_DECEL, sheetBD)
+
+def load_images_helper_accdec(self, imageArray, sheet):
+    #key = sheet.get_at((0,0))
+    #hereeeeee
+    alphabg = (23,23,23)
+    for i in range(4):
+        surface = PG.Surface((100, 100))
+        surface.set_colorkey(alphabg)
+        surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+        imageArray.append(surface)
+    return imageArray
 
 #this will all end up in the key handler
     def update_image(self, imageArray):
