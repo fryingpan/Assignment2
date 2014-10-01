@@ -43,17 +43,23 @@ class State(object):
 objectList = {"null":0}
 
 #Draw Text Box, Adds Rect to objectList
-def drawtextbox(text, textcolor, boxcolor, x1, x2, y1, y2, referencestr):
+def drawtextbox(text, textcolor, boxcolor, x, y, width, height, referencestr):
 
+    screen_width = Globals.SCREEN.get_width()
     
-    rect = PG.rect.Rect(x1,y1,(x2-x1),(y2-y1))
+    rect = PG.rect.Rect((screen_width/2 - width/2) - 310, y, width, height)
     
     surf = PG.Surface([rect.width,rect.height])
     surf.fill(boxcolor)
-    
+
+
+    font = PG.font.Font(None, 35)
+
+    # surf = render_text(text, font, rect, textcolor, boxcolor)
+    # Globals.SCREEN.blit(surf,rect) #rectangle highlighting the text box
+
+    surf = font.render(text, True, textcolor)
     Globals.SCREEN.blit(surf,rect)
-    surf = Locals.FONT.render(text, True, textcolor)
-    Globals.SCREEN.blit(surf, rect)
   
     objectList[referencestr] = rect
 
@@ -76,12 +82,12 @@ class Menu(State):
         Globals.SCREEN.fill(PC.Color('black'))
         
         
-        drawtextbox("Title",PC.Color("red"),PC.Color("blue"),0,400,0,100,"title")
-        drawtextbox("Scores",PC.Color("red"),PC.Color("blue"),0,400,105,205,"scores")
-        drawtextbox("Game",PC.Color("red"),PC.Color("blue"),0,400,210,310,"game")
-        drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),0,400,315,415,"quit")
-        drawtextbox("Adjust Visual Brightness", (37, 200,100), PC.Color('white'), 0,400,420,420, "AVB")
-        drawtextbox("Adjust Volume", (37, 200, 100), PC.Color('white'), 0,400,520, 520, 'volume')
+        drawtextbox("Title",PC.Color("red"),PC.Color("blue"),10, 20,60,30,"title")
+        drawtextbox("Scores",PC.Color("red"),PC.Color("blue"), 10,50,85,30,"scores")
+        drawtextbox("Game",PC.Color("red"),PC.Color("blue"),10,80,75,30,"game")
+        drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),10,110,60,40,"quit")
+        drawtextbox("Brightness", (37, 200,100), PC.Color("blue"), 10,140,130,30, "brightness")
+        drawtextbox("Volume", (37, 200, 100), PC.Color("blue"), 10,170,90, 30, 'volume')
         
         PDI.flip()
         
