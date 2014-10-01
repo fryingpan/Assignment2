@@ -194,14 +194,14 @@ class Player(PS.Sprite):
         sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
         sheetF = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
         sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
-        '''sheetRA = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
+        sheetRA = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
         sheetLA = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
         sheetFA = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
         sheetBA = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
         sheetRD = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
         sheetLD = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
         sheetFD = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
-        sheetBD = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()'''
+        sheetBD = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
         Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
         Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
         Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
@@ -215,16 +215,16 @@ class Player(PS.Sprite):
         Player.IMAGES_FRONT_DECEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_DECEL, sheetFD)
         Player.IMAGES_BACK_DECEL = self.load_images_helper_accdec(Player.IMAGES_BACK_DECEL, sheetBD)
 
-def load_images_helper_accdec(self, imageArray, sheet):
-    #key = sheet.get_at((0,0))
-    #hereeeeee
-    alphabg = (23,23,23)
-    for i in range(4):
-        surface = PG.Surface((100, 100))
-        surface.set_colorkey(alphabg)
-        surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
-        imageArray.append(surface)
-    return imageArray
+    def load_images_helper_accdec(self, imageArray, sheet):
+        #key = sheet.get_at((0,0))
+        #hereeeeee
+        alphabg = (23,23,23)
+        for i in range(4):
+            surface = PG.Surface((100, 100))
+            surface.set_colorkey(alphabg)
+            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            imageArray.append(surface)
+        return imageArray
 
 #this will all end up in the key handler
     def update_image(self, imageArray):
