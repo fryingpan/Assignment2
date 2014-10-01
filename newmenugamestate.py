@@ -133,7 +133,6 @@ def run(elapsed,event):
     Locals.STATE.update(elapsed)
     
     for event in PE.get():
-            print(PG.QUIT)
             if event.type == PG.QUIT:
                 return False
             else:
