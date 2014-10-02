@@ -74,16 +74,16 @@ def loop():
 
         elif Globals.STATE == "Game":
             gamerino = Game.Game(0.005, 40, 13)
-            Game.initiailize()
+            Game.initialize()
             Globals.STATE = Game.Locals.CHANGESTATE
             while Globals.STATE == "Game":
-                Globals.State = Game.locals.CHANGESTATE
+                Globals.State = Game.Locals.CHANGESTATE
 
                 num_enemies = 13
                 interval = 0.005
                 fps = 40
                 if(gamerino.run() == False):
-                    Globals.State = Game.locals.CHANGESTATE
+                    Globals.State = Game.Locals.CHANGESTATE
 
 
         elif Globals.STATE == "Menu":
