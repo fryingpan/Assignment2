@@ -19,16 +19,23 @@ except ImportError, err:
     import sys
     sys.exit(1)
 
-
-
-
-
+class Locals(object):
+    RUNNING = True
+    SCREEN = None
+    WIDTH = None
+    HEIGHT = None
+    FONT = None
+    STATE = None
+    FADEINTIME = 5.0
+    FADEOUTTIME = 0.2
+    CHANGESTATE = "None"
 
 def initialize():
-    num_enemies = 13
-    interval = 0.005
-    fps = 40
-    game = Game(interval, fps, num_enemies)
+    # num_enemies = 13
+    # interval = 0.005
+    # fps = 40
+    # game = Game(interval, fps, num_enemies)
+    Locals.CHANGESTATE = 'Game'
     
 
 
@@ -174,7 +181,8 @@ class Game(object):
             elif event.type == KEYDOWN:
             # if the user presses escape, quit the event loop.
                 if event.key == K_ESCAPE:
-                    return False
+                    Locals.CHANGESTATE = 'Menu'
+                    return False;
         return True
                   
 # create a game and run it
