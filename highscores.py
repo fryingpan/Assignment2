@@ -57,7 +57,6 @@ class HighScores:
 		if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
 			Globals.RUNNING = False
 		elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-			Locals.STATE = Menu()
 			Locals.CHANGESTATE = "Menu"
 
 	def get_text_surface(self):
