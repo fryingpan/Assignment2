@@ -95,7 +95,7 @@ def draw_map(mapfile):
 
     ###WRONG MATH HERE, NEEDS FIXING### figure out how to import screen dimensions from masterstate
     print x
-    rectHeight=100
+    rectHeight=80
     print y
     rectWidth=60
     
