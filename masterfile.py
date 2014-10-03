@@ -63,10 +63,8 @@ def loop():
         if Globals.STATE == "Title":
             title.initialize()
             Globals.STATE = title.Locals.CHANGESTATE
-            print(3)
             while Globals.STATE == "Title":
                 Globals.STATE = title.Locals.CHANGESTATE
-                print (Globals.STATE)
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
@@ -78,19 +76,18 @@ def loop():
             Globals.STATE = Game.Locals.CHANGESTATE
             while Globals.STATE == "Game":
                 Globals.State = Game.Locals.CHANGESTATE
-
                 num_enemies = 13
                 interval = 0.005
                 fps = 40
                 if(gamerino.run() == False):
-                    Globals.State = Game.Locals.CHANGESTATE
+                    print "NEW STATE: " + Game.Locals.CHANGESTATE
+                    Globals.STATE = Game.Locals.CHANGESTATE
 
 
         elif Globals.STATE == "Menu":
             print (Globals.STATE)
             Menu.initialize()
             Globals.STATE = Menu.Locals.CHANGESTATE
-            print(3)
             while Globals.STATE == "Menu":
                 Globals.STATE = Menu.Locals.CHANGESTATE
                 #print(Globals.STATE)
@@ -105,7 +102,6 @@ def loop():
             Globals.STATE = highscores.Locals.CHANGESTATE
             while Globals.STATE == "Scores":
                 Globals.STATE = highscores.Locals.CHANGESTATE
-                print (Globals.STATE)
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
