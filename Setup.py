@@ -13,7 +13,6 @@ try:
     import pygame.color as PC
     import pygame.event as PE
     
-    
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
     import sys
