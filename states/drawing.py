@@ -26,7 +26,7 @@ class Globals(object):
 class Block(PG.sprite.Sprite):
 	def __init__(self, color, rect):
 		PG.sprite.Sprite.__init__(self)
-		self.image = PG.surface([rect.width, rect.height])
+		self.image = PG.Surface([rect.width, rect.height])
 		self.image.fill(color)
 		self.rect = rect
 
@@ -105,10 +105,11 @@ def draw_map(mapfile):
 
 
 	###WRONG MATH HERE, NEEDS FIXING### figure out how to import screen dimensions from masterstate
+
 	print x
-	rectHeight=80
+	rectHeight=40
 	print y
-	rectWidth=60
+	rectWidth=30
 	
 	rectLeft = 0
 	for z in range(0,x-1):
@@ -129,9 +130,9 @@ def draw_map(mapfile):
 			# draw_map_objects(listLines[z][q],zS,qS)
 
 			#create Block sprites
-			if char == '#':
-				new_block = create_Block(PC.Color('blue'), Globals.Grid[zS+qS])
-			elif char == 'S':
+			if listLines[z][q] == '#':
+				new_block = create_Block(PC.Color('blue'), Globals.GRID[zS+qS])
+			elif listLines[z][q] == 'S':
 				new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
 
 			new_block.draw_block()
