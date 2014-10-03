@@ -8,6 +8,7 @@ Josh Holstein
 '''
 
 import pygame as PG
+from pygame.locals import *
 import sys
 import pygame.mixer as PM
 import pygame.display as PD
@@ -34,23 +35,30 @@ class Player(PS.Sprite):
     IMAGES_LEFT_DECEL = None
     IMAGES_FRONT_DECEL = None
     IMAGES_BACK_DECEL = None
-    CYCLE = 0.6
+    CYCLE = 0.2
+    ADCYCLE = .06666
     WIDTH = 100
     HEIGHT = 100
 
-    def __init__(self, speed = 1):
+    def __init__(self, speed = 2):
         # Call the parent class (Sprite) constructor
         PS.Sprite.__init__(self)
         self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
         self.rect = self.image.get_rect()
         self.speed = speed
+        self.accelSpeed = 0
+        self.decelSpeed = speed
         self.x = 0
         self.y = 0
         self.face = 'd'
         self.load_images()
         self.time = 0.0
         self.frame = 0
-
+        self.accel = False
+        self.decel = False
+        self.accelF = self.speed/4
+        self.decelF = - self.speed/4
+        self.interval = 0
 
     def get_face(self):
         return self.face
@@ -59,6 +67,13 @@ class Player(PS.Sprite):
         """ Handles Keys """
         key = PG.key.get_pressed()
         dist = self.speed # distance moved in 1 frame, try changing it to 5
+        self.interval = interval
+        #accel/decel handling
+        for event in PG.event.get():
+            if event.type == PG.KEYDOWN:
+                self.accel = True
+                self.accelSpeed = 0
+                
         if key[PG.K_DOWN]: # down key
             self.y += dist*interval# move down
             self.rect = self.image.get_rect()
@@ -77,13 +92,131 @@ class Player(PS.Sprite):
             self.face = 'l'
         else: #ds = down 'standing' (not moving)
             if self.face == 'd':
+                self.decel = True
+                self.decelSpeed = self.speed
                 self.face = 'ds'
             if self.face == 'u':
+                self.decel = True
+                self.decelSpeed = self.speed
                 self.face = 'us'
             if self.face == 'r':
+                self.decel = True
+                self.decelSpeed = self.speed
                 self.face = 'rs'
             if self.face == 'l':
-                self.face = 'ls'
+                self.decel = True
+                self.decelSpeed = self.speed
+                self.face = 'ls'    
+        
+    def update(self, delta):
+        PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
+        #update time
+        #update frame?
+        key = PG.key.get_pressed()
+        if self.accel == True or self.decel == True:
+            self.time = self.time + delta/3
+            if self.time > Player.ADCYCLE:
+                self.time = 0.0
+            frame = int(self.time / (Player.ADCYCLE / 3))
+        else:
+            self.time = self.time + delta
+            if self.time > Player.CYCLE:
+                self.time = 0.0
+            frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
+        
+        if frame != self.frame:
+            self.frame = frame
+            if self.accel == True:
+                if self.accelSpeed < self.speed:
+                    a = self.accelSpeed
+                    if key[PG.K_DOWN]: # down key
+                        self.y += a*self.interval# move down
+                        self.rect = self.image.get_rect()
+                        self.face = 'da'
+                    elif key[PG.K_UP]: # up key
+                        self.y -= a*self.interval # move up
+                        self.rect = self.image.get_rect()
+                        self.face = 'ua'
+                    elif key[PG.K_RIGHT]: # right key
+                        self.x += a*self.interval # move right
+                        self.rect = self.image.get_rect()
+                        self.face = 'ra'
+                    elif key[PG.K_LEFT]: # left key
+                        self.x -= a*self.interval# move left
+                        self.rect = self.image.get_rect()
+                        self.face = 'la'
+                    self.accelSpeed = self.accelSpeed + self.accelF
+                else:
+                    self.accel = False
+            elif self.decel == True:
+                print("DECELING")
+                if self.decelSpeed > 0:
+                    d = self.decelSpeed
+                    if self.face == 'ds': # down key
+                        self.y += d*self.interval# move down
+                        self.rect = self.image.get_rect()
+                        self.face = 'dd'
+                    elif self.face == 'us': # up key
+                        self.y -= d*self.interval # move up
+                        self.rect = self.image.get_rect()
+                        self.face = 'ud'
+                    elif self.face == 'rs': # right key
+                        self.x += d*self.interval # move right
+                        self.rect = self.image.get_rect()
+                        self.face = 'rd'
+                    elif self.face == 'ds': # left key
+                        self.x -= d*self.interval# move left
+                        self.rect = self.image.get_rect()
+                        self.face = 'ld'
+                    self.decelSpeed = self.decelSpeed + self.decelF
+                else:
+                    print("DECEL FALSE")
+                    self.decel = False
+            if (self.face == 'r'):
+                self.update_image(self.IMAGES_RIGHT)
+            elif (self.face == 'u'):
+                self.update_image(self.IMAGES_BACK)
+            elif (self.face == 'l'):
+                self.update_image(self.IMAGES_LEFT)
+            elif (self.face == 'd'):
+                self.update_image(self.IMAGES_FRONT)
+            #standing
+            elif(self.face == 'rs'):
+                self.image = self.IMAGES_RIGHT[0]
+            elif(self.face == 'us'):
+                self.image = self.IMAGES_BACK[0]
+            elif(self.face == 'ls'):
+                self.image = self.IMAGES_LEFT[0]
+            elif(self.face == 'ds'):
+                self.image = self.IMAGES_FRONT[0]
+            #accel
+            elif(self.face == 'ra'):
+                self.update_image(self.IMAGES_RIGHT_ACCEL)
+            elif(self.face == 'ua'):
+                self.update_image(self.IMAGES_BACK_ACCEL)
+            elif(self.face == 'la'):
+                self.update_image(self.IMAGES_LEFT_ACCEL)
+            elif(self.face == 'da'):
+                self.update_image(self.IMAGES_FRONT_ACCEL)
+            #decel
+            elif(self.face == 'rd'):
+                self.update_image(self.IMAGES_RIGHT_DECEL)
+            elif(self.face == 'ud'):
+                self.update_image(self.IMAGES_BACK_DECEL)
+            elif(self.face == 'ld'):
+                self.update_image(self.IMAGES_LEFT_DECEL)
+            elif(self.face == 'dd'):
+                self.update_image(self.IMAGES_FRONT_DECEL)
+            else:
+                self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+
+#this will all end up in the key handler
+    def update_image(self, imageArray):
+        print(self.frame)
+        self.image = imageArray[self.frame].convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
+
     def draw(self, screen):
         """ Draw on surface """
         self.check_boundary(screen)
@@ -112,49 +245,18 @@ class Player(PS.Sprite):
             self.y = (screen.get_height() - self.image.get_height())
             PM.music.play(0)
             PM.music.fadeout(4500)
-        
-    def update(self, delta):
-        PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
-        #update time
-        self.time = self.time + delta
-        if self.time > Player.CYCLE:
-            self.time = 0.0
-        #update frame?
-        frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
-        if frame != self.frame:
-                self.frame = frame
-                if (self.face == 'r'):
-                    self.update_image(self.IMAGES_RIGHT)
-                elif (self.face == 'u'):
-                    self.update_image(self.IMAGES_BACK)
-                elif (self.face == 'l'):
-                    self.update_image(self.IMAGES_LEFT)
-                elif (self.face == 'd'):
-                    self.update_image(self.IMAGES_FRONT)
-                elif(self.face == 'rs'):
-                    self.image = self.IMAGES_RIGHT[0]
-                elif(self.face == 'us'):
-                    self.image = self.IMAGES_BACK[0]
-                elif(self.face == 'ls'):
-                    self.image = self.IMAGES_LEFT[0]
-                elif(self.face == 'ds'):
-                    self.image = self.IMAGES_FRONT[0]
-                else:
-                    self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-        """if frame != self.frame:
-                self.frame = frame
-                if (self.face == 'r'):
-                    self.update_image(self.IMAGES_RIGHT)
-                elif (self.face == 'u'):
-                    self.update_image(self.IMAGES_BACK)
-                elif (self.face == 'l'):
-                    self.update_image(self.IMAGES_LEFT)
-                else:
-                    self.update_image(self.IMAGES_FRONT)"""
-        """if frame != self.frame:
-            print "frame: " + repr(frame)
-            self.frame = frame
-            self.update_image(Player.IMAGES_FRONT)"""
+
+
+    def load_images_helper_accdec(self, imageArray, sheet):
+        #key = sheet.get_at((0,0))
+        #hereeeeee
+        alphabg = (23,23,23)
+        for i in range(4):
+            surface = PG.Surface((100, 100))
+            surface.set_colorkey(alphabg)
+            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            imageArray.append(surface)
+        return imageArray
 
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
@@ -194,14 +296,16 @@ class Player(PS.Sprite):
         sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
         sheetF = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
         sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
-        sheetRA = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
-        sheetLA = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
-        sheetFA = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
-        sheetBA = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
-        sheetRD = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
-        sheetLD = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
-        sheetFD = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
-        sheetBD = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png").convert_alpha()
+        #accel
+        sheetRA = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetLA = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetFA = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetBA = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        #decel
+        sheetRD = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetLD = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetFD = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
+        sheetBD = PI.load("FPGraphics/MC/MCwalk/MCTestSlow.png").convert_alpha()
         Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
         Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
         Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
@@ -215,20 +319,6 @@ class Player(PS.Sprite):
         Player.IMAGES_FRONT_DECEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_DECEL, sheetFD)
         Player.IMAGES_BACK_DECEL = self.load_images_helper_accdec(Player.IMAGES_BACK_DECEL, sheetBD)
 
-    def load_images_helper_accdec(self, imageArray, sheet):
-        #key = sheet.get_at((0,0))
-        #hereeeeee
-        alphabg = (23,23,23)
-        for i in range(4):
-            surface = PG.Surface((100, 100))
-            surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
-            imageArray.append(surface)
-        return imageArray
 
-#this will all end up in the key handler
-    def update_image(self, imageArray):
-        self.image = imageArray[self.frame].convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
+
 
