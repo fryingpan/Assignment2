@@ -85,8 +85,8 @@ def initialize():
 
 
 #def loop():
-    #while Globals.RUNNING = True:
-        
+    #while Globals.RUNNING == True:
+
         #Globals.STATE.run()
 
 #def finalize():
