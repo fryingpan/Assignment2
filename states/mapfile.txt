@@ -1,10 +1,20 @@
-SSSSSSSSSS
-S######  S
-S###     S
-S        S
-S  #     S
-S####    S
-S#       S
-S######  S
-S########S
-SSSSSSSSSS
+SSSSSSSSSSSSSSSSSSSS
+S         #        S
+S         #        S
+S         #        S
+S         #        S
+S         #        S
+S         #        S
+S                  S
+S                  S
+S                  S
+S     ####         S
+S###########       S
+S      #           S
+S                  S
+S                  S
+S                  S
+S                  S
+S                  S
+S                  S
+SSSSSSSSSSSSSSSSSSSS

@@ -13,7 +13,6 @@ try:
     import pygame.color as PC
     import pygame.event as PE
     
-    
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
     import sys
@@ -77,6 +76,7 @@ class Game(object):
         self.current_time = PT.get_ticks()
         self.updates = 0
         self.interval = interval
+        Locals.CHANGESTATE = 'Game'
     
     def run(self):
         running = True
@@ -88,6 +88,7 @@ class Game(object):
 
             running = self.handleEvents()
             if(running == False):
+                print 'FALSEEEEEEEEEEEEEEEEEEEEEEEEE'
                 return False
             #Key Handling----------------------------
             # self.character.handle_keys() # handle the keys
