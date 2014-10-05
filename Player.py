@@ -119,65 +119,63 @@ class Player(PS.Sprite):
                 self.time = 0.0
             #SOMETHING HERE WITH THIS LINE MAYBE V
             frame = int(self.time / (Player.ADCYCLE / PLAYER_AD_IMAGE_LENGTH))
-            print("frame: " + str(frame))
         else:
             self.time = self.time + delta
             if self.time > Player.CYCLE:
                 self.time = 0.0
             frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
-        print("here" + str(frame))
         
         #SOMETHING HERE
         if frame != self.frame:
             self.frame = frame
-            if self.accel == True or self.decel == True:
-                if self.accel == True:
-                    if self.accelSpeed < self.speed:
-                        a = self.accelSpeed
-                        if key[PG.K_DOWN]: # down key
-                            self.y += a*self.interval# move down
-                            self.rect = self.image.get_rect()
-                            self.face = 'da'
-                        elif key[PG.K_UP]: # up key
-                            self.y -= a*self.interval # move up
-                            self.rect = self.image.get_rect()
-                            self.face = 'ua'
-                        elif key[PG.K_RIGHT]: # right key
-                            self.x += a*self.interval # move right
-                            self.rect = self.image.get_rect()
-                            self.face = 'ra'
-                        elif key[PG.K_LEFT]: # left key
-                            self.x -= a*self.interval# move left
-                            self.rect = self.image.get_rect()
-                            self.face = 'la'
-                        self.accelSpeed = self.accelSpeed + self.accelF
-                    else:
-                        self.accel = False
-                elif self.decel == True:
-                    print("DECELING")
-                    if self.decelSpeed > 0:
-                        d = self.decelSpeed
-                        if self.face == 'ds': # down key
-                            self.y += d*self.interval# move down
-                            self.rect = self.image.get_rect()
-                            self.face = 'dd'
-                        elif self.face == 'us': # up key
-                            self.y -= d*self.interval # move up
-                            self.rect = self.image.get_rect()
-                            self.face = 'ud'
-                        elif self.face == 'rs': # right key
-                            self.x += d*self.interval # move right
-                            self.rect = self.image.get_rect()
-                            self.face = 'rd'
-                        elif self.face == 'ds': # left key
-                            self.x -= d*self.interval# move left
-                            self.rect = self.image.get_rect()
-                            self.face = 'ld'
-                        self.decelSpeed = self.decelSpeed + self.decelF
-                    else:
-                        print("DECEL FALSE")
-                        self.decel = False
-            else:
+            if self.accel == True:
+                if self.accelSpeed < self.speed:
+                    print("ACCELLING")
+                    a = self.accelSpeed
+                    if key[PG.K_DOWN]: # down key
+                        self.y += a*self.interval# move down
+                        self.rect = self.image.get_rect()
+                        self.face = 'da'
+                    elif key[PG.K_UP]: # up key
+                        self.y -= a*self.interval # move up
+                        self.rect = self.image.get_rect()
+                        self.face = 'ua'
+                    elif key[PG.K_RIGHT]: # right key
+                        self.x += a*self.interval # move right
+                        self.rect = self.image.get_rect()
+                        self.face = 'ra'
+                    elif key[PG.K_LEFT]: # left key
+                        self.x -= a*self.interval# move left
+                        self.rect = self.image.get_rect()
+                        self.face = 'la'
+                    self.accelSpeed = self.accelSpeed + self.accelF
+                else:
+                    self.accel = False
+            elif self.decel == True:
+                print("DECELING")
+                if self.decelSpeed > 0:
+                    d = self.decelSpeed
+                    if self.face == 'ds': # down key
+                        self.y += d*self.interval# move down
+                        self.rect = self.image.get_rect()
+                        self.face = 'dd'
+                    elif self.face == 'us': # up key
+                        self.y -= d*self.interval # move up
+                        self.rect = self.image.get_rect()
+                        self.face = 'ud'
+                    elif self.face == 'rs': # right key
+                        self.x += d*self.interval # move right
+                        self.rect = self.image.get_rect()
+                        self.face = 'rd'
+                    elif self.face == 'ds': # left key
+                        self.x -= d*self.interval# move left
+                        self.rect = self.image.get_rect()
+                        self.face = 'ld'
+                    self.decelSpeed = self.decelSpeed + self.decelF
+                else:
+                    print("DECEL FALSE")
+                    self.decel = False
+                    self.face = list(self.face)[0]
                 if (self.face == 'r'):
                     self.update_image(self.IMAGES_RIGHT)
                 elif (self.face == 'u'):
@@ -217,8 +215,6 @@ class Player(PS.Sprite):
                     self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 
     def update_image(self, imageArray):
-        print(imageArray)
-        print(self.frame)
         self.image = imageArray[self.frame].convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
