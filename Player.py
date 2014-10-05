@@ -59,6 +59,7 @@ class Player(PS.Sprite):
         self.accelF = self.speed/4
         self.decelF = - (self.speed/4)
         self.interval = 0
+        self.decelFinish = True #If true, we've finished, so we do not decel
 
     def get_face(self):
         return self.face
@@ -92,20 +93,24 @@ class Player(PS.Sprite):
             self.face = 'l'
         else: #ds = down 'standing' (not moving) **********
             if self.face == 'd':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'ds'
             if self.face == 'u':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'us'
             if self.face == 'r':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'rs'
             if self.face == 'l':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'ls'    
         
     def update(self, delta):
@@ -151,6 +156,7 @@ class Player(PS.Sprite):
                     self.accelSpeed = self.accelSpeed + self.accelF
                 else:
                     self.accel = False
+                    self.decelFinish = False
             elif self.decel == True:
                 print("DECELING")
                 if self.decelSpeed > 0:
@@ -176,6 +182,7 @@ class Player(PS.Sprite):
                     print("DECEL FALSE")
                     self.decel = False
                     self.face = list(self.face)[0]
+                    self.decelFinish = True
             if (self.face == 'r'):
                 self.update_image(self.IMAGES_RIGHT)
             elif (self.face == 'u'):
