@@ -107,7 +107,7 @@ class Game(object):
 
             collisions = PS.spritecollide(self.character, self.block_group, False)
             for collision in collisions:
-                pass
+                self.character.handle_collision(collision)
 
             #move and draw the enemies
             player_face = self.character.get_face()

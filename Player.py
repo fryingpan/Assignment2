@@ -48,8 +48,8 @@ class Player(PS.Sprite):
         self.speed = speed
         self.accelSpeed = 0
         self.decelSpeed = speed
-        self.x = 0
-        self.y = 0
+        self.x = 100
+        self.y = 100
         self.face = 'd'
         self.load_images()
         self.time = 0.0
@@ -60,10 +60,36 @@ class Player(PS.Sprite):
         self.decelF = - (self.speed/4)
         self.interval = 0
         self.decelFinish = True #If true, we've finished, so we do not decel
+        
+        #collision conditions, if true, we will not move in that direction
+        self.colR = False
+        self.colL = False
+        self.colU = False
+        self.colD = False
 
     def get_face(self):
         return self.face
 
+    def handle_collision(self,collision):
+        #print("self " + str(self.x + Player.WIDTH) + " coll " + str(collision.get_left()))
+        if(self.x + Player.WIDTH == collision.get_left()):
+            print("right collide")
+            self.colR = True
+        else:
+            self.colR = False
+        if(self.x == collision.get_right()):
+            self.colL = True
+        else:
+            self.colL = False
+        if(self.y + Player.HEIGHT == collision.get_bottom()):
+            self.colU = True
+        else:
+            self.colU = False
+        if(self.y == collision.get_top()):
+            self.colD = True
+        else:
+            self.colD = False
+    
     def handle_keys(self, interval = 1):
         """ Handles Keys """
         if self.accel == True:
@@ -77,19 +103,19 @@ class Player(PS.Sprite):
                 self.accel = True
                 self.accelSpeed = 0
                 
-        if key[PG.K_DOWN]: # down key
+        if key[PG.K_DOWN] and self.colD == False: # down key
             self.y += dist*interval# move down
             self.rect = self.image.get_rect()
             self.face = 'd'
-        elif key[PG.K_UP]: # up key
+        elif key[PG.K_UP] and self.colU == False: # up key
             self.y -= dist*interval # move up
             self.rect = self.image.get_rect()
             self.face = 'u'
-        elif key[PG.K_RIGHT]: # right key
+        elif key[PG.K_RIGHT] and self.colR == False: # right key
             self.x += dist*interval # move right
             self.rect = self.image.get_rect()
             self.face = 'r'
-        elif key[PG.K_LEFT]: # left key
+        elif key[PG.K_LEFT] and self.colL == False: # left key
             self.x -= dist*interval# move left
             self.rect = self.image.get_rect()
             self.face = 'l'

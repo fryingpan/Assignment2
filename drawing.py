@@ -29,22 +29,35 @@ class Block(PG.sprite.Sprite):
 		self.image = PG.Surface([rect.width, rect.height])
 		self.image.fill(color)
 		self.rect = rect
+		self.x = self.rect.topleft[0]
+		self.y = self.rect.topleft[1]
+		self.width = 0
+		self.height = 0
 
 	def draw_block(self):
 		Globals.SCREEN.blit(self.image, self.rect)
 
 	def get_right(self):
-		return self.rect.right
+		return self.x + self.width
+		#return self.rect.right
 
 	def get_left(self):
-		return self.rect.left
+		return self.x
+		#return self.rect.left
 
 	def get_top(self):
-		return self.rect.top
+		return self.y
+		#return self.rect.top
 
 	def get_bottom(self):
-		return self.rect.bottom
-
+		return self.y + self.height
+		#return self.rect.bottom
+    
+	def setDimensions(self,top,left,height, width):
+		self.height = height
+		self.width = width
+		self.y = top
+		self.x = left
 
 def draw_text_box(text, textcolor, boxcolor, x1, x2, y1, y2, ref):
 
@@ -134,9 +147,11 @@ def get_block_group(mapfile):
 			qS=str(q)
 		   
 			newRect = PG.Rect(rectTop,rectLeft,rectHeight,rectWidth)
+			
 			Globals.GRID[zS+qS] = newRect
+			
 			rectTop = rectTop + rectHeight
-		   
+			print("rectTop " + str(rectTop))
 			Globals.INITIALGRID[zS+qS] = listLines[z][q]
 			# draw_map_objects(listLines[z][q],zS,qS)
 
@@ -145,7 +160,9 @@ def get_block_group(mapfile):
 				new_block = create_Block(PC.Color('blue'), Globals.GRID[zS+qS])
 			elif listLines[z][q] == 'S':
 				new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
-
+			new_block.setDimensions(rectTop, rectLeft, rectHeight, rectWidth)
+			print("rectTop " + str(rectTop) + " rectLeft " + str(rectLeft))
+			
 			#draw the new block
 			# new_block.draw_block()
 
@@ -154,6 +171,7 @@ def get_block_group(mapfile):
 
 
 		rectLeft = rectLeft + rectWidth
+		
   #At this point the grid is a dict of rects, 00 being the first block, 10 being to the right, and 01 being down
 
 	#return the group of sprites created
