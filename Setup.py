@@ -12,6 +12,7 @@ try:
     import pygame.display as PD
     import pygame.color as PC
     import pygame.event as PE
+    import drawing as Draw
     
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -68,6 +69,9 @@ class Game(object):
             enemy = Enemy(self.screen, self.speed)
             self.enemy_list.add(enemy)
 
+        #get block sprite group from the map file
+        self.block_group = Draw.get_block_group('mapfile.txt')
+
 
         #I don't actually know what this does
         PE.set_allowed([QUIT, KEYDOWN])
@@ -88,7 +92,6 @@ class Game(object):
 
             running = self.handleEvents()
             if(running == False):
-                print 'FALSEEEEEEEEEEEEEEEEEEEEEEEEE'
                 return False
             #Key Handling----------------------------
             # self.character.handle_keys() # handle the keys
@@ -100,6 +103,10 @@ class Game(object):
                 Enemy_face = enemy.get_face()
                 enemy.set_face(player_face)
                 enemy.draw()
+
+            #draw blocks
+            Draw.draw_map(self.block_group)
+
             self.character.draw(self.screen) # draw the character to the screen
             
             PD.flip()
