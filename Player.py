@@ -70,25 +70,27 @@ class Player(PS.Sprite):
     def get_face(self):
         return self.face
 
-    def handle_collision(self,collision):
-        #print("self " + str(self.x + Player.WIDTH) + " coll " + str(collision.get_left()))
-        if(self.x + Player.WIDTH == collision.get_left()):
-            print("right collide")
-            self.colR = True
-        else:
-            self.colR = False
-        if(self.x == collision.get_right()):
-            self.colL = True
-        else:
-            self.colL = False
-        if(self.y + Player.HEIGHT == collision.get_bottom()):
-            self.colU = True
-        else:
-            self.colU = False
-        if(self.y == collision.get_top()):
-            self.colD = True
-        else:
-            self.colD = False
+    def handle_collision(self, bg):
+        collisions = PS.spritecollide(self, bg, True)
+        for collision in collisions:
+            #print("self " + str(self.x + Player.WIDTH) + " coll " + str(collision.get_left()))
+            if(self.x + Player.WIDTH == collision.get_left()):
+                print("right collide")
+                self.colR = True
+            else:
+                self.colR = False
+            if(self.x == collision.get_right()):
+                self.colL = True
+            else:
+                self.colL = False
+            if(self.y + Player.HEIGHT == collision.get_bottom()):
+                self.colU = True
+            else:
+                self.colU = False
+            if(self.y == collision.get_top()):
+                self.colD = True
+            else:
+                self.colD = False
     
     def handle_keys(self, interval = 1):
         """ Handles Keys """

@@ -105,9 +105,7 @@ class Game(object):
 
             self.screen.fill((0,0,0)) # fill the screen with white
 
-            collisions = PS.spritecollide(self.character, self.block_group, False)
-            for collision in collisions:
-                self.character.handle_collision(collision)
+            self.character.handle_collision(self.block_group)
 
             #move and draw the enemies
             player_face = self.character.get_face()
