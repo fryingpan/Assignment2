@@ -54,9 +54,12 @@ class Game(object):
         
         self.fps = fps
         self.speed = 4*self.fps
+        #sprite group containing all sprites
+        self.all_sprites = PS.Group()
 
         #Initialize objects on screen----------------
         self.character = Player(self.speed)
+        self.all_sprites.add(self.character)
         # bad = Enemy()
         #self.charrect = self.character.image_rect
         # badrect = bad.image.get_rect()
@@ -68,9 +71,13 @@ class Game(object):
         for e in range(num_enemies):  
             enemy = Enemy(self.screen, self.speed)
             self.enemy_list.add(enemy)
+            # self.all_sprites.add(enemy)
 
         #get block sprite group from the map file
         self.block_group = Draw.get_block_group('mapfile.txt')
+        #add the blocks to the sprite group containing all sprites
+        for block in self.block_group:
+            self.all_sprites.add(block)
 
 
         #I don't actually know what this does
@@ -97,6 +104,11 @@ class Game(object):
             # self.character.handle_keys() # handle the keys
 
             self.screen.fill((0,0,0)) # fill the screen with white
+
+            collisions = PS.spritecollide(self.character, self.block_group, False)
+            for collision in collisions:
+                pass
+
             #move and draw the enemies
             player_face = self.character.get_face()
             for enemy in self.enemy_list.sprites():
