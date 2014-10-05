@@ -29,8 +29,8 @@ class Block(PG.sprite.Sprite):
 		self.image = PG.Surface([rect.width, rect.height])
 		self.image.fill(color)
 		self.rect = rect
-		self.x = self.rect.topleft[0]
-		self.y = self.rect.topleft[1]
+		self.x = 0
+		self.y = 0
 		self.width = 0
 		self.height = 0
 
@@ -41,7 +41,7 @@ class Block(PG.sprite.Sprite):
 		return self.rect
 
 	def get_right(self):
-		return self.x + self.width
+		return self.x + self.rect.width
 		#return self.rect.right
 
 	def get_left(self):
@@ -53,7 +53,7 @@ class Block(PG.sprite.Sprite):
 		#return self.rect.top
 
 	def get_bottom(self):
-		return self.y + self.height
+		return self.y + self.rect.height
 		#return self.rect.bottom
     
 	def setDimensions(self,top,left,height, width):
@@ -61,6 +61,12 @@ class Block(PG.sprite.Sprite):
 		self.width = width
 		self.y = top
 		self.x = left
+
+	def set_rectLeft(self, rectLeft):
+		self.x = rectLeft
+
+	def set_rectTop(self, rectTop):
+		self.y = rectTop
 
 def draw_text_box(text, textcolor, boxcolor, x1, x2, y1, y2, ref):
 
@@ -163,8 +169,12 @@ def get_block_group(mapfile):
 				new_block = create_Block(PC.Color('blue'), Globals.GRID[zS+qS])
 			elif listLines[z][q] == 'S':
 				new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
-			new_block.setDimensions(rectTop, rectLeft, rectHeight, rectWidth)
-			print("rectTop " + str(rectTop) + " rectLeft " + str(rectLeft))
+
+			new_block.set_rectTop(rectTop)
+			new_block.set_rectLeft(rectLeft)
+
+			# new_block.setDimensions(rectTop, rectLeft, rectHeight, rectWidth)
+			# print("rectTop " + str(rectTop) + " rectLeft " + str(rectLeft))
 			
 			#draw the new block
 			# new_block.draw_block()
@@ -174,6 +184,8 @@ def get_block_group(mapfile):
 
 
 		rectLeft = rectLeft + rectWidth
+	for block in block_group:
+		print "Top: " + str(block.y) + " Left: " +  str(block.x) 
 		
   #At this point the grid is a dict of rects, 00 being the first block, 10 being to the right, and 01 being down
 
