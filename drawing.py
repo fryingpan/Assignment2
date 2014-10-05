@@ -37,6 +37,9 @@ class Block(PG.sprite.Sprite):
 	def draw_block(self):
 		Globals.SCREEN.blit(self.image, self.rect)
 
+	def get_rect(self):
+		return self.rect
+
 	def get_right(self):
 		return self.x + self.width
 		#return self.rect.right
