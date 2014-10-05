@@ -167,7 +167,7 @@ class Player(PS.Sprite):
                         self.x += d*self.interval # move right
                         self.rect = self.image.get_rect()
                         self.face = 'rd'
-                    elif self.face == 'ds': # left key
+                    elif self.face == 'ls': # left key
                         self.x -= d*self.interval# move left
                         self.rect = self.image.get_rect()
                         self.face = 'ld'
@@ -176,43 +176,43 @@ class Player(PS.Sprite):
                     print("DECEL FALSE")
                     self.decel = False
                     self.face = list(self.face)[0]
-                if (self.face == 'r'):
-                    self.update_image(self.IMAGES_RIGHT)
-                elif (self.face == 'u'):
-                    self.update_image(self.IMAGES_BACK)
-                elif (self.face == 'l'):
-                    self.update_image(self.IMAGES_LEFT)
-                elif (self.face == 'd'):
-                    self.update_image(self.IMAGES_FRONT)
-                #standing
-                elif(self.face == 'rs'):
-                    self.image = self.IMAGES_RIGHT[0]
-                elif(self.face == 'us'):
-                    self.image = self.IMAGES_BACK[0]
-                elif(self.face == 'ls'):
-                    self.image = self.IMAGES_LEFT[0]
-                elif(self.face == 'ds'):
-                    self.image = self.IMAGES_FRONT[0]
-                #accel
-                elif(self.face == 'ra'):
-                    self.update_image(self.IMAGES_RIGHT_ACCEL)
-                elif(self.face == 'ua'):
-                    self.update_image(self.IMAGES_BACK_ACCEL)
-                elif(self.face == 'la'):
-                    self.update_image(self.IMAGES_LEFT_ACCEL)
-                elif(self.face == 'da'):
-                    self.update_image(self.IMAGES_FRONT_ACCEL)
-                #decel
-                elif(self.face == 'rd'):
-                    self.update_image(self.IMAGES_RIGHT_DECEL)
-                elif(self.face == 'ud'):
-                    self.update_image(self.IMAGES_BACK_DECEL)
-                elif(self.face == 'ld'):
-                    self.update_image(self.IMAGES_LEFT_DECEL)
-                elif(self.face == 'dd'):
-                    self.update_image(self.IMAGES_FRONT_DECEL)
-                else:
-                    self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+            if (self.face == 'r'):
+                self.update_image(self.IMAGES_RIGHT)
+            elif (self.face == 'u'):
+                self.update_image(self.IMAGES_BACK)
+            elif (self.face == 'l'):
+                self.update_image(self.IMAGES_LEFT)
+            elif (self.face == 'd'):
+                self.update_image(self.IMAGES_FRONT)
+            #standing
+            elif(self.face == 'rs'):
+                self.image = self.IMAGES_RIGHT[0]
+            elif(self.face == 'us'):
+                self.image = self.IMAGES_BACK[0]
+            elif(self.face == 'ls'):
+                self.image = self.IMAGES_LEFT[0]
+            elif(self.face == 'ds'):
+                self.image = self.IMAGES_FRONT[0]
+            #accel
+            elif(self.face == 'ra'):
+                self.update_image(self.IMAGES_RIGHT_ACCEL)
+            elif(self.face == 'ua'):
+                self.update_image(self.IMAGES_BACK_ACCEL)
+            elif(self.face == 'la'):
+                self.update_image(self.IMAGES_LEFT_ACCEL)
+            elif(self.face == 'da'):
+                self.update_image(self.IMAGES_FRONT_ACCEL)
+            #decel
+            elif(self.face == 'rd'):
+                self.update_image(self.IMAGES_RIGHT_DECEL)
+            elif(self.face == 'ud'):
+                self.update_image(self.IMAGES_BACK_DECEL)
+            elif(self.face == 'ld'):
+                self.update_image(self.IMAGES_LEFT_DECEL)
+            elif(self.face == 'dd'):
+                self.update_image(self.IMAGES_FRONT_DECEL)
+            else:
+                self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 
     def update_image(self, imageArray):
         self.image = imageArray[self.frame].convert_alpha()
