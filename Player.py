@@ -59,12 +59,15 @@ class Player(PS.Sprite):
         self.accelF = self.speed/4
         self.decelF = - (self.speed/4)
         self.interval = 0
+        self.decelFinish = True #If true, we've finished, so we do not decel
 
     def get_face(self):
         return self.face
 
     def handle_keys(self, interval = 1):
         """ Handles Keys """
+        if self.accel == True:
+            return 0
         key = PG.key.get_pressed()
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         self.interval = interval
@@ -82,6 +85,7 @@ class Player(PS.Sprite):
             self.y -= dist*interval # move up
             self.rect = self.image.get_rect()
             self.face = 'u'
+            print("normal x " + repr(self.x) + " y " + repr(self.y))
         elif key[PG.K_RIGHT]: # right key
             self.x += dist*interval # move right
             self.rect = self.image.get_rect()
@@ -92,22 +96,27 @@ class Player(PS.Sprite):
             self.face = 'l'
         else: #ds = down 'standing' (not moving) **********
             if self.face == 'd':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'ds'
             if self.face == 'u':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'us'
             if self.face == 'r':
-                self.decel = True
-                self.decelSpeed = self.speed
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
                 self.face = 'rs'
             if self.face == 'l':
-                self.decel = True
-                self.decelSpeed = self.speed
-                self.face = 'ls'    
+                if(self.decelFinish == False):
+                    self.decel = True
+                    self.decelSpeed = self.speed
+                self.face = 'ls'
         
+         
     def update(self, delta):
         PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
         PLAYER_AD_IMAGE_LENGTH = 3
@@ -130,7 +139,6 @@ class Player(PS.Sprite):
             self.frame = frame
             if self.accel == True:
                 if self.accelSpeed < self.speed:
-                    print("ACCELLING")
                     a = self.accelSpeed
                     if key[PG.K_DOWN]: # down key
                         self.y += a*self.interval# move down
@@ -149,16 +157,20 @@ class Player(PS.Sprite):
                         self.rect = self.image.get_rect()
                         self.face = 'la'
                     self.accelSpeed = self.accelSpeed + self.accelF
+                    print("accel interval " + repr(a*self.interval))
+                    print("x " + repr(self.x) + " y " + repr(self.y))
                 else:
                     self.accel = False
+                    self.decelFinish = False
             elif self.decel == True:
-                print("DECELING")
                 if self.decelSpeed > 0:
                     d = self.decelSpeed
                     if self.face == 'ds': # down key
                         self.y += d*self.interval# move down
                         self.rect = self.image.get_rect()
                         self.face = 'dd'
+                        print("DOWN DECEL")
+                        print("d " + repr(d))
                     elif self.face == 'us': # up key
                         self.y -= d*self.interval # move up
                         self.rect = self.image.get_rect()
@@ -172,10 +184,12 @@ class Player(PS.Sprite):
                         self.rect = self.image.get_rect()
                         self.face = 'ld'
                     self.decelSpeed = self.decelSpeed + self.decelF
+                    print("decel interval " + repr(d*self.interval))
+                    print("x " + repr(self.x) + " y " + repr(self.y))
                 else:
-                    print("DECEL FALSE")
                     self.decel = False
                     self.face = list(self.face)[0]
+                    self.decelFinish = True
             if (self.face == 'r'):
                 self.update_image(self.IMAGES_RIGHT)
             elif (self.face == 'u'):
