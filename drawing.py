@@ -33,17 +33,17 @@ class Block(PG.sprite.Sprite):
 	def draw_block(self):
 		Globals.SCREEN.blit(self.image, self.rect)
 
-    def get_right(self):
-        return self.rect.right
+	def get_right(self):
+		return self.rect.right
 
-    def get_left(self):
-        return self.rect.left
+	def get_left(self):
+		return self.rect.left
 
-    def get_top(self):
-        return self.rect.top
+	def get_top(self):
+		return self.rect.top
 
-    def get_bottom(self):
-        return self.rect.bottom
+	def get_bottom(self):
+		return self.rect.bottom
 
 
 def draw_text_box(text, textcolor, boxcolor, x1, x2, y1, y2, ref):
@@ -146,7 +146,7 @@ def get_block_group(mapfile):
 			elif listLines[z][q] == 'S':
 				new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
 
-            #draw the new block
+			#draw the new block
 			# new_block.draw_block()
 
 			#add new block to the block group
@@ -156,12 +156,12 @@ def get_block_group(mapfile):
 		rectLeft = rectLeft + rectWidth
   #At this point the grid is a dict of rects, 00 being the first block, 10 being to the right, and 01 being down
 
-  	#return the group of sprites created
-  	return block_group
+	#return the group of sprites created
+	return block_group
 
 def draw_map(block_group):
-    for block in block_group:
-        block.draw_block()
+	for block in block_group:
+		block.draw_block()
 
 
 def draw_map_objects(char,zS,qS):
