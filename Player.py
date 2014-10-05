@@ -48,8 +48,8 @@ class Player(PS.Sprite):
         self.speed = speed
         self.accelSpeed = 0
         self.decelSpeed = speed
-        self.x = 100
-        self.y = 100
+        self.rect.x = 100
+        self.rect.y = 100
         self.face = 'd'
         self.load_images()
         self.time = 0.0
@@ -73,26 +73,26 @@ class Player(PS.Sprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, True)
         for collision in collisions:
-            #print("self " + str(self.x + Player.WIDTH) + " coll " + str(collision.get_left()))
-            if(self.x + Player.WIDTH == collision.get_left()):
+            #print("self " + str(self.rect.x + Player.WIDTH) + " coll " + str(collision.get_left()))
+            if(self.rect.x + Player.WIDTH == collision.get_left()):
                 print("right collide")
                 self.colR = True
             else:
                 self.colR = False
-            if(self.x == collision.get_right()):
+            if(self.rect.x == collision.get_right()):
                 self.colL = True
             else:
                 self.colL = False
-            if(self.y + Player.HEIGHT == collision.get_bottom()):
+            if(self.rect.y + Player.HEIGHT == collision.get_bottom()):
                 self.colU = True
             else:
                 self.colU = False
-            if(self.y == collision.get_top()):
+            if(self.rect.y == collision.get_top()):
                 self.colD = True
             else:
                 self.colD = False
     
-    def handle_keys(self, interval = 1):
+    def handle_keys(self, interval = 5):
         """ Handles Keys """
         if self.accel == True:
             return 0
@@ -106,20 +106,23 @@ class Player(PS.Sprite):
                 self.accelSpeed = 0
                 
         if key[PG.K_DOWN] and self.colD == False: # down key
-            self.y += dist*interval# move down
-            self.rect = self.image.get_rect()
+            self.rect.y += dist*interval# move down
+            print(dist)
+            print(interval)
+            print(self.rect.y)
+            #self.rect = self.image.get_rect()
             self.face = 'd'
         elif key[PG.K_UP] and self.colU == False: # up key
-            self.y -= dist*interval # move up
-            self.rect = self.image.get_rect()
+            self.rect.y -= dist*interval # move up
+            #self.rect = self.image.get_rect()
             self.face = 'u'
         elif key[PG.K_RIGHT] and self.colR == False: # right key
-            self.x += dist*interval # move right
-            self.rect = self.image.get_rect()
+            self.rect.x += dist*interval # move right
+            #self.rect = self.image.get_rect()
             self.face = 'r'
         elif key[PG.K_LEFT] and self.colL == False: # left key
-            self.x -= dist*interval# move left
-            self.rect = self.image.get_rect()
+            self.rect.x -= dist*interval# move left
+            #self.rect = self.image.get_rect()
             self.face = 'l'
         else: #ds = down 'standing' (not moving) **********
             if self.face == 'd':
@@ -168,20 +171,20 @@ class Player(PS.Sprite):
                 if self.accelSpeed < self.speed:
                     a = self.accelSpeed
                     if key[PG.K_DOWN]: # down key
-                        self.y += a*self.interval# move down
-                        self.rect = self.image.get_rect()
+                        self.rect.y += a*self.interval# move down
+                        #self.rect = self.image.get_rect()
                         self.face = 'da'
                     elif key[PG.K_UP]: # up key
-                        self.y -= a*self.interval # move up
-                        self.rect = self.image.get_rect()
+                        self.rect.y -= a*self.interval # move up
+                        #self.rect = self.image.get_rect()
                         self.face = 'ua'
                     elif key[PG.K_RIGHT]: # right key
-                        self.x += a*self.interval # move right
-                        self.rect = self.image.get_rect()
+                        self.rect.x += a*self.interval # move right
+                        #self.rect = self.image.get_rect()
                         self.face = 'ra'
                     elif key[PG.K_LEFT]: # left key
-                        self.x -= a*self.interval# move left
-                        self.rect = self.image.get_rect()
+                        self.rect.x -= a*self.interval# move left
+                        #self.rect = self.image.get_rect()
                         self.face = 'la'
                     self.accelSpeed = self.accelSpeed + self.accelF
                 else:
@@ -191,19 +194,19 @@ class Player(PS.Sprite):
                 if self.decelSpeed > 0:
                     d = self.decelSpeed
                     if self.face == 'ds': # down key
-                        self.y += d*self.interval# move down
+                        self.rect.y += d*self.interval# move down
                         self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_FRONT_DECEL)
                     elif self.face == 'us': # up key
-                        self.y -= d*self.interval # move up
+                        self.rect.y -= d*self.interval # move up
                         self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_BACK_DECEL)
                     elif self.face == 'rs': # right key
-                        self.x += d*self.interval # move right
+                        self.rect.x += d*self.interval # move right
                         self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_RIGHT_DECEL)
                     elif self.face == 'ls': # left key
-                        self.x -= d*self.interval# move left
+                        self.rect.x -= d*self.interval# move left
                         self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_LEFT_DECEL)
                     self.decelSpeed = self.decelSpeed + self.decelF
@@ -250,7 +253,7 @@ class Player(PS.Sprite):
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()
-            self.rect = self.image.get_rect()
+            #self.rect = self.image.get_rect()
             self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
         except IndexError:
             self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
@@ -260,28 +263,28 @@ class Player(PS.Sprite):
         """ Draw on surface """
         self.check_boundary(screen)
         # blit yourself at your current position
-        screen.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
         PD.flip()
         
     def check_boundary(self, screen):
-        if self.x < 0:
+        if self.rect.x < 0:
             PM.music.stop()
-            self.x = 0
+            self.rect.x = 0
             PM.music.play(0)
             PM.music.fadeout(4500)
-        elif self.x > (screen.get_width() - self.image.get_width()):
+        elif self.rect.x > (screen.get_width() - self.image.get_width()):
             PM.music.stop()
-            self.x = screen.get_width() - self.image.get_width()
+            self.rect.x = screen.get_width() - self.image.get_width()
             PM.music.play(0)
             PM.music.fadeout(4500)
-        if self.y < 0:
+        if self.rect.y < 0:
             PM.music.stop()
-            self.y = 0
+            self.rect.y = 0
             PM.music.play(0)
             PM.music.fadeout(4500)
-        elif self.y > (screen.get_height() - self.image.get_height()):
+        elif self.rect.y > (screen.get_height() - self.image.get_height()):
             PM.music.stop()
-            self.y = (screen.get_height() - self.image.get_height())
+            self.rect.y = (screen.get_height() - self.image.get_height())
             PM.music.play(0)
             PM.music.fadeout(4500)
 

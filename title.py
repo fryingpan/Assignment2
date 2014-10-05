@@ -64,7 +64,6 @@ class Title:
 		return images
 
 	def render(self):
-		print "Rendering"
 		# surf = Globals.FONT.render("Title Screen", True, self.color)
 		Globals.SCREEN.fill(self.color)
 		self.text = self.renderer.animate().convert()
@@ -120,7 +119,6 @@ def run(elapsed, event):
 	Locals.STATE.update(elapsed)
 
 	for event in PE.get():
-		print(PG.QUIT)
 		if event.type == PG.QUIT:
 			return False
 		else:

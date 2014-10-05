@@ -38,9 +38,7 @@ class Globals(object):
 #Main Executable entry point
 def main():
     initialize()
-    print(1)
     loop()
-    print(2)
     finalize()
 
 def initialize():
@@ -70,7 +68,7 @@ def loop():
                 title.run(elapsed,event)
 
         elif Globals.STATE == "Game":
-            gamerino = Game.Game(0.005, 40, 13)
+            gamerino = Game.Game(.025, 40, 13)
             Game.initialize()
             Globals.STATE = Game.Locals.CHANGESTATE
             while Globals.STATE == "Game":
@@ -79,17 +77,14 @@ def loop():
                 interval = 0.005
                 fps = 40
                 if(gamerino.run() == False):
-                    print "NEW STATE: " + Game.Locals.CHANGESTATE
                     Globals.STATE = Game.Locals.CHANGESTATE
 
 
         elif Globals.STATE == "Menu":
-            print (Globals.STATE)
             Menu.initialize()
             Globals.STATE = Menu.Locals.CHANGESTATE
             while Globals.STATE == "Menu":
                 Globals.STATE = Menu.Locals.CHANGESTATE
-                #print(Globals.STATE)
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
