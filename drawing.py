@@ -33,6 +33,17 @@ class Block(PG.sprite.Sprite):
 	def draw_block(self):
 		Globals.SCREEN.blit(self.image, self.rect)
 
+    def get_right(self):
+        return self.rect.right
+
+    def get_left(self):
+        return self.rect.left
+
+    def get_top(self):
+        return self.rect.top
+
+    def get_bottom(self):
+        return self.rect.bottom
 
 
 def draw_text_box(text, textcolor, boxcolor, x1, x2, y1, y2, ref):
