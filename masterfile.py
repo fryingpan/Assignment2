@@ -68,7 +68,7 @@ def loop():
                 title.run(elapsed,event)
 
         elif Globals.STATE == "Game":
-            gamerino = Game.Game(.025, 40, 13)
+            gamerino = Game.Game(.00625, 40, 13)
             Game.initialize()
             Globals.STATE = Game.Locals.CHANGESTATE
             while Globals.STATE == "Game":

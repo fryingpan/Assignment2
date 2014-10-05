@@ -71,7 +71,7 @@ class Player(PS.Sprite):
         return self.face
 
     def handle_collision(self, bg):
-        collisions = PS.spritecollide(self, bg, True)
+        collisions = PS.spritecollide(self, bg, False)
         for collision in collisions:
             #print("self " + str(self.rect.x + Player.WIDTH) + " coll " + str(collision.get_left()))
             if(self.rect.x + Player.WIDTH == collision.get_left()):
@@ -195,19 +195,19 @@ class Player(PS.Sprite):
                     d = self.decelSpeed
                     if self.face == 'ds': # down key
                         self.rect.y += d*self.interval# move down
-                        self.rect = self.image.get_rect()
+                        #self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_FRONT_DECEL)
                     elif self.face == 'us': # up key
                         self.rect.y -= d*self.interval # move up
-                        self.rect = self.image.get_rect()
+                        #self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_BACK_DECEL)
                     elif self.face == 'rs': # right key
                         self.rect.x += d*self.interval # move right
-                        self.rect = self.image.get_rect()
+                        #self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_RIGHT_DECEL)
                     elif self.face == 'ls': # left key
                         self.rect.x -= d*self.interval# move left
-                        self.rect = self.image.get_rect()
+                        #self.rect = self.image.get_rect()
                         self.update_image(self.IMAGES_LEFT_DECEL)
                     self.decelSpeed = self.decelSpeed + self.decelF
                 else:
@@ -254,7 +254,7 @@ class Player(PS.Sprite):
         try:
             self.image = imageArray[self.frame].convert_alpha()
             #self.rect = self.image.get_rect()
-            self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
+            #self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
         except IndexError:
             self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
             self.face = list(self.face)[0]
