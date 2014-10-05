@@ -36,7 +36,7 @@ class Player(PS.Sprite):
     IMAGES_FRONT_DECEL = None
     IMAGES_BACK_DECEL = None
     CYCLE = 0.2
-    ADCYCLE = .02
+    ADCYCLE = .05
     WIDTH = 100
     HEIGHT = 100
 
@@ -85,7 +85,6 @@ class Player(PS.Sprite):
             self.y -= dist*interval # move up
             self.rect = self.image.get_rect()
             self.face = 'u'
-            print("normal x " + repr(self.x) + " y " + repr(self.y))
         elif key[PG.K_RIGHT]: # right key
             self.x += dist*interval # move right
             self.rect = self.image.get_rect()
@@ -157,8 +156,6 @@ class Player(PS.Sprite):
                         self.rect = self.image.get_rect()
                         self.face = 'la'
                     self.accelSpeed = self.accelSpeed + self.accelF
-                    print("accel interval " + repr(a*self.interval))
-                    print("x " + repr(self.x) + " y " + repr(self.y))
                 else:
                     self.accel = False
                     self.decelFinish = False
@@ -168,24 +165,20 @@ class Player(PS.Sprite):
                     if self.face == 'ds': # down key
                         self.y += d*self.interval# move down
                         self.rect = self.image.get_rect()
-                        self.face = 'dd'
-                        print("DOWN DECEL")
-                        print("d " + repr(d))
+                        self.update_image(self.IMAGES_FRONT_DECEL)
                     elif self.face == 'us': # up key
                         self.y -= d*self.interval # move up
                         self.rect = self.image.get_rect()
-                        self.face = 'ud'
+                        self.update_image(self.IMAGES_BACK_DECEL)
                     elif self.face == 'rs': # right key
                         self.x += d*self.interval # move right
                         self.rect = self.image.get_rect()
-                        self.face = 'rd'
+                        self.update_image(self.IMAGES_RIGHT_DECEL)
                     elif self.face == 'ls': # left key
                         self.x -= d*self.interval# move left
                         self.rect = self.image.get_rect()
-                        self.face = 'ld'
+                        self.update_image(self.IMAGES_LEFT_DECEL)
                     self.decelSpeed = self.decelSpeed + self.decelF
-                    print("decel interval " + repr(d*self.interval))
-                    print("x " + repr(self.x) + " y " + repr(self.y))
                 else:
                     self.decel = False
                     self.face = list(self.face)[0]
@@ -223,16 +216,18 @@ class Player(PS.Sprite):
                 self.update_image(self.IMAGES_BACK_DECEL)
             elif(self.face == 'ld'):
                 self.update_image(self.IMAGES_LEFT_DECEL)
-            elif(self.face == 'dd'):
-                self.update_image(self.IMAGES_FRONT_DECEL)
             else:
                 self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 
     def update_image(self, imageArray):
-        self.image = imageArray[self.frame].convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
-
+        try:
+            self.image = imageArray[self.frame].convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
+        except IndexError:
+            self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+            self.face = list(self.face)[0]
+        
     def draw(self, screen):
         """ Draw on surface """
         self.check_boundary(screen)
