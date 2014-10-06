@@ -220,18 +220,22 @@ class Player(PS.Sprite):
 					d = self.decelSpeed
 					if self.face == 'ds': # down key
 						self.rect.y += d*self.interval# move down
+						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_FRONT_DECEL)
 					elif self.face == 'us': # up key
 						self.rect.y -= d*self.interval # move up
+						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_BACK_DECEL)
 					elif self.face == 'rs': # right key
 						self.rect.x += d*self.interval # move right
+						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_RIGHT_DECEL)
 					elif self.face == 'ls': # left key
 						self.rect.x -= d*self.interval# move left
+						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_LEFT_DECEL)
 					self.decelSpeed = self.decelSpeed + self.decelF

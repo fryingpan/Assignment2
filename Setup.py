@@ -147,7 +147,7 @@ class Game(object):
             PD.update() # update the screen
             
     def update(self, player, delta):
-            player.update(delta)
+            player.update(delta, self.block_group)
 
     def handleEvents(self):
         for event in PE.get():
