@@ -167,11 +167,14 @@ def get_block_group(mapfile):
 			#create Block sprites
 			if listLines[z][q] == '#':
 				new_block = create_Block(PC.Color('blue'), Globals.GRID[zS+qS])
-			elif listLines[z][q] == 'S':
-				new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
+				new_block.set_rectTop(rectTop)
+				new_block.set_rectLeft(rectLeft)
+				block_group.add(new_block)
+			# elif listLines[z][q] == 'S':
+			# 	new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
 
-			new_block.set_rectTop(rectTop)
-			new_block.set_rectLeft(rectLeft)
+			# new_block.set_rectTop(rectTop)
+			# new_block.set_rectLeft(rectLeft)
 
 			# new_block.setDimensions(rectTop, rectLeft, rectHeight, rectWidth)
 			# print("rectTop " + str(rectTop) + " rectLeft " + str(rectLeft))
@@ -180,7 +183,7 @@ def get_block_group(mapfile):
 			# new_block.draw_block()
 
 			#add new block to the block group
-			block_group.add(new_block)
+			# block_group.add(new_block)
 
 
 		rectLeft = rectLeft + rectWidth
