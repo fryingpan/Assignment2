@@ -113,11 +113,33 @@ class Player(PS.Sprite):
 			print(dist)
 			print(interval)
 			print(self.rect.y)
+
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.y + self.rect.height) >= collision.rect.top:
+						self.rect.y = collision.rect.top - self.rect.height
+						print "bottom collide"
+						once = False
+
+
+
 			#self.rect = self.image.get_rect()
 			self.face = 'd'
 		elif key[PG.K_UP]: # up key
 			self.rect.y -= dist*interval # move up
 			#self.rect = self.image.get_rect()
+
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
+						self.y = collision.rect.top + collision.rect.height
+						print "top collide"
+						once = False
+
 			self.face = 'u'
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
@@ -148,6 +170,7 @@ class Player(PS.Sprite):
 						# print "collision rect width: " + str(collision.rect.width)
 						self.rect.x = collision.rect.left + collision.rect.width
 						print "left collide"
+						once = False
 
 
 			self.face = 'l'
