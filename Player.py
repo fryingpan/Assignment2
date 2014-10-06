@@ -68,32 +68,44 @@ class Player(PS.Sprite):
 
 	def handle_collision(self, bg):
 		collisions = PS.spritecollide(self, bg, False)
-		x_changed = False
-		y_changed = False
-		for collision in collisions:
-			#print("self " + str(self.rect.x + Player.WIDTH) + " coll " + str(collision.get_left()))
-			if((self.rect.x + self.rect.width) >= collision.rect.left) and not x_changed:
-				print("right collide")
-				self.rect.x = collision.rect.left - self.rect.width
-				x_changed = True
-			elif ((self.rect.x) <= (collision.rect.left + collision.rect.width)) and not x_changed:
-				print "Collision rect left: " + str(collision.rect.left)
-				print "collision rect width: " + str(collision.rect.width)
-				self.rect.x = collision.rect.left + collision.rect.width
-				print "left collide"
-				x_changed = True
-
-			if((self.rect.y + self.rect.height) >= collision.rect.top) and not y_changed:
-				self.rect.y = collision.rect.top - self.rect.height
-				print "bottom collide"
-				y_changed = True
-
-			elif((self.rect.y >= (collision.rect.top + collision.rect.height))) and not y_changed:
-				self.y = collision.rect.top + collision.rect.height
-				print "top collide"
-				y_changed = True
-			# print "X COORDINATE: " + str(self.rect.x)
-			# print "Y COORDINATE: " + str(self.rect.y)
+		if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if(self.rect.x + self.rect.width) >= collision.rect.left:
+						print("right collide")
+						self.rect.x = collision.rect.left - self.rect.width
+						once = False
+			
+		elif self.face == 'l' or self.face == 'la' or self.face == 'ls':
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
+						# print "Collision rect left: " + str(collision.rect.left)
+						# print "collision rect width: " + str(collision.rect.width)
+						self.rect.x = collision.rect.left + collision.rect.width
+						print "left collide"
+						once = False
+		elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.y + self.rect.height) >= collision.rect.top:
+						self.rect.y = collision.rect.top - self.rect.height
+						print "bottom collide"
+						once = False
+		elif self.face == 'u' or self.face == 'ua' or self.face == 'us':
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
+						self.rect.y = collision.rect.top + collision.rect.height
+						print "top collide"
+						once = False
 	
 	def handle_keys(self, bg, interval = 5):
 		""" Handles Keys """
@@ -113,67 +125,26 @@ class Player(PS.Sprite):
 			print(dist)
 			print(interval)
 			print(self.rect.y)
-
-			collisions = PS.spritecollide(self, bg, False)
-			once = True
-			for collision in collisions:
-				if once:
-					if (self.rect.y + self.rect.height) >= collision.rect.top:
-						self.rect.y = collision.rect.top - self.rect.height
-						print "bottom collide"
-						once = False
-
-
-
 			#self.rect = self.image.get_rect()
 			self.face = 'd'
+			self.handle_collision(bg)
 		elif key[PG.K_UP]: # up key
 			self.rect.y -= dist*interval # move up
 			#self.rect = self.image.get_rect()
 
-			collisions = PS.spritecollide(self, bg, False)
-			once = True
-			for collision in collisions:
-				if once:
-					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
-						self.y = collision.rect.top + collision.rect.height
-						print "top collide"
-						once = False
 
 			self.face = 'u'
+			self.handle_collision(bg)
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
-
-			#check if it collides right
-			collisions = PS.spritecollide(self, bg, False)
-			once = True
-			for collision in collisions:
-				if once:
-					if(self.rect.x + self.rect.width) >= collision.rect.left:
-						print("right collide")
-						self.rect.x = collision.rect.left - self.rect.width
-						once = False
-
-
 			#self.rect = self.image.get_rect()
 			self.face = 'r'
+			self.handle_collision(bg)
 		elif key[PG.K_LEFT]: # left key
 			self.rect.x -= dist*interval# move left
 			#self.rect = self.image.get_rect()
-
-			collisions = PS.spritecollide(self, bg, False)
-			once = True
-			for collision in collisions:
-				if once:
-					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
-						# print "Collision rect left: " + str(collision.rect.left)
-						# print "collision rect width: " + str(collision.rect.width)
-						self.rect.x = collision.rect.left + collision.rect.width
-						print "left collide"
-						once = False
-
-
 			self.face = 'l'
+			self.handle_collision(bg)
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
 				if(self.decelFinish == False):
@@ -197,7 +168,7 @@ class Player(PS.Sprite):
 				self.face = 'ls'
 		
 		 
-	def update(self, delta):
+	def update(self, delta, bg):
 		PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
 		PLAYER_AD_IMAGE_LENGTH = 3
 		#update time and frame
@@ -224,18 +195,22 @@ class Player(PS.Sprite):
 						self.rect.y += a*self.interval# move down
 						#self.rect = self.image.get_rect()
 						self.face = 'da'
+						self.handle_collision(bg)
 					elif key[PG.K_UP]: # up key
 						self.rect.y -= a*self.interval # move up
 						#self.rect = self.image.get_rect()
 						self.face = 'ua'
+						self.handle_collision(bg)
 					elif key[PG.K_RIGHT]: # right key
 						self.rect.x += a*self.interval # move right
 						#self.rect = self.image.get_rect()
 						self.face = 'ra'
+						self.handle_collision(bg)
 					elif key[PG.K_LEFT]: # left key
 						self.rect.x -= a*self.interval# move left
 						#self.rect = self.image.get_rect()
 						self.face = 'la'
+						self.handle_collision(bg)
 					self.accelSpeed = self.accelSpeed + self.accelF
 				else:
 					self.accel = False
