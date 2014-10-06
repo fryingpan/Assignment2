@@ -160,7 +160,7 @@ def get_block_group(mapfile):
 			Globals.GRID[zS+qS] = newRect
 			
 			rectTop = rectTop + rectHeight
-			print("rectTop " + str(rectTop))
+			# print("rectTop " + str(rectTop))
 			Globals.INITIALGRID[zS+qS] = listLines[z][q]
 			# draw_map_objects(listLines[z][q],zS,qS)
 
@@ -184,8 +184,8 @@ def get_block_group(mapfile):
 
 
 		rectLeft = rectLeft + rectWidth
-	for block in block_group:
-		print "Top: " + str(block.y) + " Left: " +  str(block.x) 
+	# for block in block_group:
+		# print "Top: " + str(block.y) + " Left: " +  str(block.x) 
 		
   #At this point the grid is a dict of rects, 00 being the first block, 10 being to the right, and 01 being down
 
