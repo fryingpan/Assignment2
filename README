@@ -80,3 +80,7 @@ d 40
 decel interval 0.2
 x 90.3999999999998 y 241.6000000000011
 
+Part 2
+For the drawing, the drawing.py takes in a text file and draws on the blocks
+on the text file to the screen. 
+The collision does not fully work. It works when the player's right side collides with the wall but otherwise it teleports. Why? It is currently unknown.
