@@ -105,7 +105,7 @@ class Game(object):
 
             self.screen.fill((0,0,0)) # fill the screen with white
 
-            self.character.handle_collision(self.block_group)
+            # self.character.handle_collision(self.block_group)
 
             #move and draw the enemies
             player_face = self.character.get_face()
@@ -117,7 +117,7 @@ class Game(object):
             #draw blocks
             Draw.draw_map(self.block_group)
 
-            self.character.draw(self.screen) # draw the character to the screen
+            self.character.draw(self.screen, self.block_group) # draw the character to the screen
             
             PD.flip()
 
@@ -137,7 +137,7 @@ class Game(object):
 
                 last = PT.get_ticks()
 
-                self.character.draw(self.screen)
+                self.character.draw(self.screen, self.block_group)
 
                 clock.tick()
 
