@@ -166,8 +166,10 @@ class Enemy(PG.sprite.Sprite):
 
 #this will all end up in the key handler
     def update_image(self, imageArray):
-        self.image = imageArray[self.frame].convert_alpha()
-        self.rect = self.image.get_rect()
-        self.rect.center = (self.WIDTH/2, self.HEIGHT/2)
-    
+        try:
+            self.image = imageArray[self.frame].convert_alpha()
+            self.rect = self.image.get_rect()
+            self.rect.center = (self.WIDTH/2, self.HEIGHT/2)
+        except IndexError:
+			self.face = list(self.face)[0]
 
