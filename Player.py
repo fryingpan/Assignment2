@@ -74,23 +74,33 @@ class Player(PS.Sprite):
         collisions = PS.spritecollide(self, bg, False)
         for collision in collisions:
             #print("self " + str(self.rect.x + Player.WIDTH) + " coll " + str(collision.get_left()))
-            if(self.rect.x + Player.WIDTH == collision.get_left()):
+            if(self.rect.x + self.rect.width - 10) >= collision.rect.left:
                 print("right collide")
+                self.rect.x = collision.rect.left - self.rect.width +10
                 self.colR = True
             else:
                 self.colR = False
-            if(self.rect.x == collision.get_right()):
+
+            if (self.rect.x) >= (collision.rect.left + collision.rect.width):
+                self.rect.x = collision.rect.left + collision.rect.width
+                print "left collide"
                 self.colL = True
             else:
                 self.colL = False
-            if(self.rect.y + Player.HEIGHT == collision.get_bottom()):
+            if(self.rect.y + self.rect.height) == collision.rect.top:
+                self.rect.y = collision.rect.top 
+                print "bottom collide"
                 self.colU = True
             else:
                 self.colU = False
-            if(self.rect.y == collision.get_top()):
+            if(self.rect.y == (collision.rect.top + collision.rect.height)):
+                self.y = collision.rect.top + collision.rect.height
+                print "top collide"
                 self.colD = True
             else:
                 self.colD = False
+            print "X COORDINATE: " + str(self.rect.x)
+            print "Y COORDINATE: " + str(self.rect.y)
     
     def handle_keys(self, interval = 5):
         """ Handles Keys """
@@ -259,9 +269,10 @@ class Player(PS.Sprite):
             self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
             self.face = list(self.face)[0]
         
-    def draw(self, screen):
+    def draw(self, screen, block_group):
         """ Draw on surface """
         self.check_boundary(screen)
+        self.handle_collision(block_group)
         # blit yourself at your current position
         screen.blit(self.image, (self.rect.x, self.rect.y))
         PD.flip()
