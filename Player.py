@@ -68,31 +68,34 @@ class Player(PS.Sprite):
 
 	def handle_collision(self, bg):
 		collisions = PS.spritecollide(self, bg, False)
+		x_changed = False
+		y_changed = False
 		for collision in collisions:
 			#print("self " + str(self.rect.x + Player.WIDTH) + " coll " + str(collision.get_left()))
-			if(self.rect.x + self.rect.width -10 ) >= collision.rect.left:
-				# print("right collide")
-				self.rect.x = collision.rect.left - self.rect.width + 10
-
-
-			if (self.rect.x) >= (collision.rect.left + collision.rect.width):
+			if((self.rect.x + self.rect.width) >= collision.rect.left) and not x_changed:
+				print("right collide")
+				self.rect.x = collision.rect.left - self.rect.width
+				x_changed = True
+			elif ((self.rect.x) <= (collision.rect.left + collision.rect.width)) and not x_changed:
 				print "Collision rect left: " + str(collision.rect.left)
 				print "collision rect width: " + str(collision.rect.width)
 				self.rect.x = collision.rect.left + collision.rect.width
 				print "left collide"
+				x_changed = True
 
-			if(self.rect.y + self.rect.height) == collision.rect.top:
-				self.rect.y = collision.rect.top 
-				# print "bottom collide"
+			if((self.rect.y + self.rect.height) >= collision.rect.top) and not y_changed:
+				self.rect.y = collision.rect.top - self.rect.height
+				print "bottom collide"
+				y_changed = True
 
-			if(self.rect.y == (collision.rect.top + collision.rect.height)):
+			elif((self.rect.y >= (collision.rect.top + collision.rect.height))) and not y_changed:
 				self.y = collision.rect.top + collision.rect.height
-				# print "top collide"
-
+				print "top collide"
+				y_changed = True
 			# print "X COORDINATE: " + str(self.rect.x)
 			# print "Y COORDINATE: " + str(self.rect.y)
 	
-	def handle_keys(self, interval = 5):
+	def handle_keys(self, bg, interval = 5):
 		""" Handles Keys """
 		if self.accel == True:
 			return 0
@@ -118,11 +121,35 @@ class Player(PS.Sprite):
 			self.face = 'u'
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
+
+			#check if it collides right
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if(self.rect.x + self.rect.width) >= collision.rect.left:
+						print("right collide")
+						self.rect.x = collision.rect.left - self.rect.width
+						once = False
+
+
 			#self.rect = self.image.get_rect()
 			self.face = 'r'
 		elif key[PG.K_LEFT]: # left key
 			self.rect.x -= dist*interval# move left
 			#self.rect = self.image.get_rect()
+
+			collisions = PS.spritecollide(self, bg, False)
+			once = True
+			for collision in collisions:
+				if once:
+					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
+						# print "Collision rect left: " + str(collision.rect.left)
+						# print "collision rect width: " + str(collision.rect.width)
+						self.rect.x = collision.rect.left + collision.rect.width
+						print "left collide"
+
+
 			self.face = 'l'
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
@@ -261,7 +288,7 @@ class Player(PS.Sprite):
 		
 	def draw(self, screen, block_group):
 		""" Draw on surface """
-		self.handle_collision(block_group)
+		# self.handle_collision(block_group)
 		self.check_boundary(screen)
 		# blit yourself at your current position
 		screen.blit(self.image, (self.rect.x, self.rect.y))
