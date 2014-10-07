@@ -173,6 +173,19 @@ class Player(PS.Sprite):
 		PLAYER_AD_IMAGE_LENGTH = 3
 		#update time and frame
 		key = PG.key.get_pressed()
+
+		#camera stuff
+		# increment in x direction
+		self.rect.left += self.xvel
+		# do x-axis collisions
+		# self.collide(self.xvel, 0, platforms)
+		# increment in y direction
+		self.rect.top += self.yvel
+		#camera stuff end
+
+
+
+
 		if self.accel == True or self.decel == True:
 			self.time = self.time + delta
 			if self.time > Player.ADCYCLE:
@@ -292,14 +305,17 @@ class Player(PS.Sprite):
 		PD.flip()
 		
 	def check_boundary(self, screen):
+		width = screen.width *2
+		height = screen.height * 2
+
 		if self.rect.x < 0:
 			PM.music.stop()
 			self.rect.x = 0
 			PM.music.play(0)
 			PM.music.fadeout(4500)
-		elif self.rect.x > (screen.get_width() - self.image.get_width()):
+		elif self.rect.x > (width - self.image.get_width()):
 			PM.music.stop()
-			self.rect.x = screen.get_width() - self.image.get_width()
+			self.rect.x = width - self.image.get_width()
 			PM.music.play(0)
 			PM.music.fadeout(4500)
 		if self.rect.y < 0:
@@ -307,9 +323,9 @@ class Player(PS.Sprite):
 			self.rect.y = 0
 			PM.music.play(0)
 			PM.music.fadeout(4500)
-		elif self.rect.y > (screen.get_height() - self.image.get_height()):
+		elif self.rect.y > (height - self.image.get_height()):
 			PM.music.stop()
-			self.rect.y = (screen.get_height() - self.image.get_height())
+			self.rect.y = (height - self.image.get_height())
 			PM.music.play(0)
 			PM.music.fadeout(4500)
 
