@@ -71,13 +71,15 @@ class Game(object):
         for e in range(num_enemies):  
             enemy = Enemy(self.screen, self.speed)
             self.enemy_list.add(enemy)
-            # self.all_sprites.add(enemy)
 
         #get block sprite group from the map file
         self.block_group = Draw.get_block_group('mapfile.txt')
         #add the blocks to the sprite group containing all sprites
         for block in self.block_group:
-            self.all_sprites.add(block)
+            #if block.get_color != 'yellow':
+            self.all_sprites.add(block) # only has map sprites
+            #else:
+               # self.key_sprite.add(block)
 
 
         #I don't actually know what this does

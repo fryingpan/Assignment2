@@ -60,6 +60,7 @@ class Player(PS.Sprite):
 		self.decelF = - (self.speed/4)
 		self.interval = 0
 		self.decelFinish = True #If true, we've finished, so we do not decel
+                self.got_key = False #will turn to True once you've run into the yellow block
 		
 		#collision conditions, if true, we will not move in that direction
 
@@ -72,7 +73,9 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-				if once:
+                                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
+                                        collision.kill()
+                                elif once:
 					if(self.rect.x + self.rect.width) >= collision.rect.left:
 						self.rect.x = collision.rect.left - self.rect.width
 						once = False
@@ -81,14 +84,18 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-				if once:
+                                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+                                        collision.kill()
+                                elif once:
 					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
 						self.rect.x = collision.rect.left + collision.rect.width
 						once = False
 		elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
 			once = True
 			for collision in collisions:
-				if once:
+                                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+                                        collision.kill()
+                                elif once:
 					if (self.rect.y + self.rect.height) >= collision.rect.top:
 						self.rect.y = collision.rect.top - self.rect.height
 						once = False
@@ -96,7 +103,9 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-				if once:
+                                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+                                        collision.kill()
+                                elif once:
 					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
 						self.rect.y = collision.rect.top + collision.rect.height
 						once = False
@@ -275,9 +284,8 @@ class Player(PS.Sprite):
 			self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 			self.face = list(self.face)[0]
 		
-	def draw(self, screen, block_group):
+        def draw(self, screen, block_group):
 		""" Draw on surface """
-		# self.handle_collision(block_group)
 		self.check_boundary(screen)
 		# blit yourself at your current position
 		screen.blit(self.image, (self.rect.x, self.rect.y))
