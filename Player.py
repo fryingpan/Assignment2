@@ -74,7 +74,6 @@ class Player(PS.Sprite):
 			for collision in collisions:
 				if once:
 					if(self.rect.x + self.rect.width) >= collision.rect.left:
-						print("right collide")
 						self.rect.x = collision.rect.left - self.rect.width
 						once = False
 			
@@ -84,10 +83,7 @@ class Player(PS.Sprite):
 			for collision in collisions:
 				if once:
 					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
-						# print "Collision rect left: " + str(collision.rect.left)
-						# print "collision rect width: " + str(collision.rect.width)
 						self.rect.x = collision.rect.left + collision.rect.width
-						print "left collide"
 						once = False
 		elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
 			once = True
@@ -95,7 +91,6 @@ class Player(PS.Sprite):
 				if once:
 					if (self.rect.y + self.rect.height) >= collision.rect.top:
 						self.rect.y = collision.rect.top - self.rect.height
-						print "bottom collide"
 						once = False
 		elif self.face == 'u' or self.face == 'ua' or self.face == 'us':
 			collisions = PS.spritecollide(self, bg, False)
@@ -104,7 +99,6 @@ class Player(PS.Sprite):
 				if once:
 					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
 						self.rect.y = collision.rect.top + collision.rect.height
-						print "top collide"
 						once = False
 	
 	def handle_keys(self, bg, interval = 5):
@@ -122,9 +116,6 @@ class Player(PS.Sprite):
 				
 		if key[PG.K_DOWN]: # down key
 			self.rect.y += dist*interval# move down
-			print(dist)
-			print(interval)
-			print(self.rect.y)
 			#self.rect = self.image.get_rect()
 			self.face = 'd'
 			self.handle_collision(bg)
@@ -177,7 +168,6 @@ class Player(PS.Sprite):
 			self.time = self.time + delta
 			if self.time > Player.ADCYCLE:
 				self.time = 0.0
-			#SOMETHING HERE WITH THIS LINE MAYBE V
 			frame = int(self.time / (Player.ADCYCLE / PLAYER_AD_IMAGE_LENGTH))
 		else:
 			self.time = self.time + delta
@@ -185,7 +175,6 @@ class Player(PS.Sprite):
 				self.time = 0.0
 			frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
 		
-		#SOMETHING HERE
 		if frame != self.frame:
 			self.frame = frame
 			if self.accel == True:
@@ -282,8 +271,6 @@ class Player(PS.Sprite):
 	def update_image(self, imageArray):
 		try:
 			self.image = imageArray[self.frame].convert_alpha()
-			#self.rect = self.image.get_rect()
-			#self.rect.center = (Player.WIDTH/2, Player.HEIGHT/2)
 		except IndexError:
 			self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 			self.face = list(self.face)[0]

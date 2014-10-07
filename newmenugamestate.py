@@ -107,22 +107,14 @@ class Menu(State):
             return False
         elif M_M1 == 1:
             if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
-                print("success")
                 Locals.CHANGESTATE = "Title"
-                #print(Locals.CHANGESTATE)
             elif objectList['scores'].collidepoint(PG.mouse.get_pos()) == 1:
-                print("success")
                 Locals.CHANGESTATE = "Scores"
-                #print(Locals.CHANGESTATE)
             elif objectList['game'].collidepoint(PG.mouse.get_pos()) == 1:
-                print("success")
                 Locals.CHANGESTATE = "Game"
-                #print(Locals.CHANGESTATE)
             elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
-                print("success")
                 Locals.CHANGESTATE = "Quit"
                 return False
-                #print(Locals.CHANGESTATE)
                 
 
 #####################################################################################################
@@ -138,7 +130,6 @@ def run(elapsed,event):
             else:
                 if(Locals.STATE.event(event) == False):
                     return False
-                #print(Locals.CHANGESTATE)
 
 def initialize():
     #Initializes Local Vars
