@@ -74,9 +74,9 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-								if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
-										collision.kill()
-								elif once:
+				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
+						collision.kill()
+				elif once:
 					if(self.rect.x + self.rect.width) >= collision.rect.left:
 						self.rect.x = collision.rect.left - self.rect.width
 						once = False
@@ -85,18 +85,18 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-								if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-										collision.kill()
-								elif once:
+				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+						collision.kill()
+				elif once:
 					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
 						self.rect.x = collision.rect.left + collision.rect.width
 						once = False
 		elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
 			once = True
 			for collision in collisions:
-								if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-										collision.kill()
-								elif once:
+				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+						collision.kill()
+				elif once:
 					if (self.rect.y + self.rect.height) >= collision.rect.top:
 						self.rect.y = collision.rect.top - self.rect.height
 						once = False
@@ -104,9 +104,9 @@ class Player(PS.Sprite):
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
-								if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-										collision.kill()
-								elif once:
+				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
+						collision.kill()
+				elif once:
 					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
 						self.rect.y = collision.rect.top + collision.rect.height
 						once = False
