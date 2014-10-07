@@ -310,7 +310,7 @@ class Player(PS.Sprite):
 			self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 			self.face = list(self.face)[0]
 		
-		def draw(self, screen, block_group):
+	def draw(self, screen, block_group):
 		""" Draw on surface """
 		self.check_boundary(screen)
 		# blit yourself at your current position
