@@ -60,8 +60,9 @@ class Player(PS.Sprite):
 		self.decelF = - (self.speed/4)
 		self.interval = 0
 		self.decelFinish = True #If true, we've finished, so we do not decel
-                self.got_key = False #will turn to True once you've run into the yellow block
-		
+        self.got_key = False #will turn to True once you've run into the yellow block
+		self.xvel = 0
+		self.yvel = 0
 		#collision conditions, if true, we will not move in that direction
 
 	def get_face(self):
@@ -125,11 +126,13 @@ class Player(PS.Sprite):
 				
 		if key[PG.K_DOWN]: # down key
 			self.rect.y += dist*interval# move down
+			self.yvel = dist*interval
 			#self.rect = self.image.get_rect()
 			self.face = 'd'
 			self.handle_collision(bg)
 		elif key[PG.K_UP]: # up key
 			self.rect.y -= dist*interval # move up
+			self.yvel = -dist*interval
 			#self.rect = self.image.get_rect()
 
 
@@ -137,11 +140,13 @@ class Player(PS.Sprite):
 			self.handle_collision(bg)
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
+			self.xvel = dist*interval
 			#self.rect = self.image.get_rect()
 			self.face = 'r'
 			self.handle_collision(bg)
 		elif key[PG.K_LEFT]: # left key
 			self.rect.x -= dist*interval# move left
+			self.xvel = dist*interval
 			#self.rect = self.image.get_rect()
 			self.face = 'l'
 			self.handle_collision(bg)
@@ -204,21 +209,25 @@ class Player(PS.Sprite):
 					a = self.accelSpeed
 					if key[PG.K_DOWN]: # down key
 						self.rect.y += a*self.interval# move down
+						self.yvel = a*interval
 						#self.rect = self.image.get_rect()
 						self.face = 'da'
 						self.handle_collision(bg)
 					elif key[PG.K_UP]: # up key
 						self.rect.y -= a*self.interval # move up
+						self.yvel = -a*interval
 						#self.rect = self.image.get_rect()
 						self.face = 'ua'
 						self.handle_collision(bg)
 					elif key[PG.K_RIGHT]: # right key
 						self.rect.x += a*self.interval # move right
+						self.xvel = a*interval
 						#self.rect = self.image.get_rect()
 						self.face = 'ra'
 						self.handle_collision(bg)
 					elif key[PG.K_LEFT]: # left key
 						self.rect.x -= a*self.interval# move left
+						self.xvel = -a*interval
 						#self.rect = self.image.get_rect()
 						self.face = 'la'
 						self.handle_collision(bg)
@@ -231,21 +240,25 @@ class Player(PS.Sprite):
 					d = self.decelSpeed
 					if self.face == 'ds': # down key
 						self.rect.y += d*self.interval# move down
+						self.yvel = d*self.interval
 						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_FRONT_DECEL)
 					elif self.face == 'us': # up key
 						self.rect.y -= d*self.interval # move up
+						self.yvel = -d*self.interval
 						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_BACK_DECEL)
 					elif self.face == 'rs': # right key
 						self.rect.x += d*self.interval # move right
+						self.xvel = d*self.interval
 						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_RIGHT_DECEL)
 					elif self.face == 'ls': # left key
 						self.rect.x -= d*self.interval# move left
+						self.xvel = -d*self.interval
 						self.handle_collision(bg)
 						#self.rect = self.image.get_rect()
 						self.update_image(self.IMAGES_LEFT_DECEL)
@@ -305,8 +318,8 @@ class Player(PS.Sprite):
 		PD.flip()
 		
 	def check_boundary(self, screen):
-		width = screen.width *2
-		height = screen.height * 2
+		width = screen.get_width() *2
+		height = screen.get_height() * 2
 
 		if self.rect.x < 0:
 			PM.music.stop()
