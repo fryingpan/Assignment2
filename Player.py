@@ -40,26 +40,19 @@ class Player(PS.Sprite):
 	WIDTH = 100
 	HEIGHT = 100
 
-	def __init__(self, speed = 2):
+	def __init__(self, speed = 1):
 		# Call the parent class (Sprite) constructor
 		PS.Sprite.__init__(self)
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 		self.rect = self.image.get_rect()
-		self.speed = speed
-		self.accelSpeed = 0
-		self.decelSpeed = speed
 		self.rect.x = 100
 		self.rect.y = 100
 		self.face = 'd'
 		self.load_images()
+		self.speed = speed
 		self.time = 0.0
 		self.frame = 0
-		self.accel = False
-		self.decel = False
-		self.accelF = self.speed/4
-		self.decelF = - (self.speed/4)
 		self.interval = 0
-		self.decelFinish = True #If true, we've finished, so we do not decel
 		self.got_key = False #will turn to True once you've run into the yellow block
 		#collision conditions, if true, we will not move in that direction
 
@@ -111,17 +104,9 @@ class Player(PS.Sprite):
 	
 	def handle_keys(self, bg, interval = 5):
 		""" Handles Keys """
-		if self.accel == True:
-			return 0
 		key = PG.key.get_pressed()
 		dist = self.speed # distance moved in 1 frame, try changing it to 5
-		self.interval = interval
-		#accel/decel handling
-		for event in PG.event.get():
-			if event.type == PG.KEYDOWN:
-				self.accel = True
-				self.accelSpeed = 0
-				
+		self.interval = interval				
 		if key[PG.K_DOWN]: # down key
 			self.rect.y += dist*interval# move down
 			#self.rect = self.image.get_rect()
@@ -144,30 +129,17 @@ class Player(PS.Sprite):
 			self.handle_collision(bg)
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
-				if(self.decelFinish == False):
-					self.decel = True
-					self.decelSpeed = self.speed
 				self.face = 'ds'
 			if self.face == 'u':
-				if(self.decelFinish == False):
-					self.decel = True
-					self.decelSpeed = self.speed
 				self.face = 'us'
 			if self.face == 'r':
-				if(self.decelFinish == False):
-					self.decel = True
-					self.decelSpeed = self.speed
 				self.face = 'rs'
 			if self.face == 'l':
-				if(self.decelFinish == False):
-					self.decel = True
-					self.decelSpeed = self.speed
 				self.face = 'ls'
 		
 		 
 	def update(self, delta, bg):
 		PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
-		PLAYER_AD_IMAGE_LENGTH = 3
 		#update time and frame
 		key = PG.key.get_pressed()
 
@@ -181,76 +153,13 @@ class Player(PS.Sprite):
 		#camera stuff end
 
 
-
-
-		if self.accel == True or self.decel == True:
-			self.time = self.time + delta
-			if self.time > Player.ADCYCLE:
-				self.time = 0.0
-			frame = int(self.time / (Player.ADCYCLE / PLAYER_AD_IMAGE_LENGTH))
-		else:
-			self.time = self.time + delta
-			if self.time > Player.CYCLE:
-				self.time = 0.0
-			frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
+		self.time = self.time + delta
+		if self.time > Player.CYCLE:
+			self.time = 0.0
+		frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
 		
 		if frame != self.frame:
 			self.frame = frame
-			if self.accel == True:
-				if self.accelSpeed < self.speed:
-					a = self.accelSpeed
-					if key[PG.K_DOWN]: # down key
-						self.rect.y += a*self.interval# move down
-						#self.rect = self.image.get_rect()
-						self.face = 'da'
-						self.handle_collision(bg)
-					elif key[PG.K_UP]: # up key
-						self.rect.y -= a*self.interval # move up
-						#self.rect = self.image.get_rect()
-						self.face = 'ua'
-						self.handle_collision(bg)
-					elif key[PG.K_RIGHT]: # right key
-						self.rect.x += a*self.interval # move right
-						#self.rect = self.image.get_rect()
-						self.face = 'ra'
-						self.handle_collision(bg)
-					elif key[PG.K_LEFT]: # left key
-						self.rect.x -= a*self.interval# move left
-						#self.rect = self.image.get_rect()
-						self.face = 'la'
-						self.handle_collision(bg)
-					self.accelSpeed = self.accelSpeed + self.accelF
-				else:
-					self.accel = False
-					self.decelFinish = False
-			elif self.decel == True:
-				if self.decelSpeed > 0:
-					d = self.decelSpeed
-					if self.face == 'ds': # down key
-						self.rect.y += d*self.interval# move down
-						self.handle_collision(bg)
-						#self.rect = self.image.get_rect()
-						self.update_image(self.IMAGES_FRONT_DECEL)
-					elif self.face == 'us': # up key
-						self.rect.y -= d*self.interval # move up
-						self.handle_collision(bg)
-						#self.rect = self.image.get_rect()
-						self.update_image(self.IMAGES_BACK_DECEL)
-					elif self.face == 'rs': # right key
-						self.rect.x += d*self.interval # move right
-						self.handle_collision(bg)
-						#self.rect = self.image.get_rect()
-						self.update_image(self.IMAGES_RIGHT_DECEL)
-					elif self.face == 'ls': # left key
-						self.rect.x -= d*self.interval# move left
-						self.handle_collision(bg)
-						#self.rect = self.image.get_rect()
-						self.update_image(self.IMAGES_LEFT_DECEL)
-					self.decelSpeed = self.decelSpeed + self.decelF
-				else:
-					self.decel = False
-					self.face = list(self.face)[0]
-					self.decelFinish = True
 			if (self.face == 'r'):
 				self.update_image(self.IMAGES_RIGHT)
 			elif (self.face == 'u'):
@@ -286,8 +195,6 @@ class Player(PS.Sprite):
 				self.update_image(self.IMAGES_LEFT_DECEL)
 			else:
 				self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-
-    
 
 	def update_image(self, imageArray):
 		try:
