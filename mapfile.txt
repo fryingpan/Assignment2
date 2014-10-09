@@ -1,20 +1,20 @@
-SSSSSSSSSSSSSSSSSSSS
-S         #        S
-S         #        D
-S         #        D
-S         #        D
-S         #        D
-S                  S
-S                  S
-S                  S
-S                  S
-S                  S
-S###########       S
-S      #           S
-S                  S
-S                  S
-S              K   S
-S                  S
-S                  S
-S                  S
-SSSSSSSSSSSSSSSSSSSS
+WWWWWWWWWWWWWWWWWWWW
+W.........W........W
+W.........W........D
+W.........W........D
+W.........W........D
+W.........W........D
+W..................W
+W..................W
+W..................W
+W..................W
+W..................W
+WWWWWWWWWWWW.......W
+W......W...........W
+W..................W
+W..................W
+W..............K...W
+W..................W
+W..................W
+W..................W
+WWWWWWWWWWWWWWWWWWWW

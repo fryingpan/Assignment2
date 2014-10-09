@@ -59,29 +59,29 @@ class Player(PS.Sprite):
 	def get_face(self):
 		return self.face
 
-    def player_got_key(self):
-        return self.got_key
+	def player_got_key(self):
+		return self.got_key
 
-    def get_coordinates(self):
-    	coordinates = [self.rect.x, self.rect.y]
-    	return coordinates
+	def get_coordinates(self):
+		coordinates = [self.rect.x, self.rect.y]
+		return coordinates
 
-        def open_door(self,bg): #pass the enire block group.
-                for block in bg:
-                        print block.get_color()
-                        if block.get_color() == (0, 255, 0, 255):
-                                block.kill()
+		def open_door(self,bg): #pass the enire block group.
+				for block in bg:
+						print block.get_color()
+						if block.get_color() == (0, 255, 0, 255):
+								block.kill()
 
 	def handle_collision(self, bg):
-                collisions = PS.spritecollide(self, bg, False)
+		collisions = PS.spritecollide(self, bg, False)
 		if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
 			collisions = PS.spritecollide(self, bg, False)
 			once = True
 			for collision in collisions:
 				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
-						collision.kill()
-                                                self.open_door(bg)
-                                                self.got_key = True
+					collision.kill()
+					self.open_door(bg)
+					self.got_key = True
 				elif once:
 					if(self.rect.x + self.rect.width) >= collision.rect.left:
 						self.rect.x = collision.rect.left - self.rect.width
@@ -92,9 +92,9 @@ class Player(PS.Sprite):
 			once = True
 			for collision in collisions:
 				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-						collision.kill()
-                                                self.open_door(bg)
-                                                self.got_key = True
+					collision.kill()
+					self.open_door(bg)
+					self.got_key = True
 				elif once:
 					if (self.rect.x) <= (collision.rect.left + collision.rect.width):
 						self.rect.x = collision.rect.left + collision.rect.width
@@ -103,9 +103,9 @@ class Player(PS.Sprite):
 			once = True
 			for collision in collisions:
 				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-						collision.kill()
-                                                self.open_door(bg)
-                                                self.got_key = True
+					collision.kill()
+					self.open_door(bg)
+					self.got_key = True
 				elif once:
 					if (self.rect.y + self.rect.height) >= collision.rect.top:
 						self.rect.y = collision.rect.top - self.rect.height
@@ -115,13 +115,13 @@ class Player(PS.Sprite):
 			once = True
 			for collision in collisions:
 				if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-						collision.kill()
-                                                self.open_door(bg)
-                                                self.got_key = True
+					collision.kill()
+					self.open_door(bg)
+					self.got_key = True
 				elif once:
 					if (self.rect.y <= (collision.rect.top + collision.rect.height)):
 						self.rect.y = collision.rect.top + collision.rect.height
-                                                once = False
+						once = False
 	
 	def handle_keys(self, bg, interval = 5):
 		""" Handles Keys """
