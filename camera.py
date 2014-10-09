@@ -41,8 +41,9 @@ class Camera(object):
 		playerx, playery = playerxy
 
 		#camera bounds on the x and y axis to keep the player centered
-		boundx = [WIN_WIDTH*(2/5) + self.cameraxy[0], WIN_WIDTH*(3/5) + self.cameraxy[0]]
-		boundy = [WIN_HEIGHT*(2/5) + self.cameraxy[1], WIN_HEIGHT*(3/5) + self.cameraxy[1]]
+		boundx = [WIN_WIDTH*(0.4) + self.cameraxy[0], WIN_WIDTH*(0.6) + self.cameraxy[0]]
+		boundy = [WIN_HEIGHT*(0.4) + self.cameraxy[1], WIN_HEIGHT*(0.6) + self.cameraxy[1]]
+
 
 		scrollx = 0
 		scrolly = 0
@@ -65,7 +66,6 @@ class Camera(object):
 	#update where the camera needs to be in the big map
 	def update(self, target_coordinates, screen, bigmap):
 		moved = self.apply(target_coordinates)
-
 		if moved:
 			self.check_boundary()
 			self.background = bigmap.subsurface(self.cameraxy[0], self.cameraxy[1], WIN_WIDTH, WIN_HEIGHT)
