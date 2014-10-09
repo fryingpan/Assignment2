@@ -10,9 +10,9 @@ import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
 
-mapcolors = {'D': (154, 205, 50), 
+mapcolors = {'D': (154, 205, 50),
 			'W' : (30, 144, 255),
-			'K' : (255, 255, 0)}
+                        'K' : (255, 255, 0, 255)}
 
 class Globals(object):
 	SCREEN = None #Surface
