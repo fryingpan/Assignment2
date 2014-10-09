@@ -182,8 +182,18 @@ def get_block_group(mapfile):
                                 new_block.set_rectLeft(rectLeft)
                                 block_group.add(new_block)
 
-			# elif listLines[z][q] == 'S':
-			# 	new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
+                        #wall blocks
+                        elif listLines[z][q] == 'S':
+                                new_block = create_Block(PC.Color('red'),Globals.GRID[zS+qS])
+                                new_block.set_rectTop(rectTop)
+                                new_block.set_rectLeft(rectLeft)
+                                block_group.add(new_block)
+
+                        elif listLines[z][q] == 'D':
+                            new_block = create_Block(PC.Color('green'),Globals.GRID[zS+qS])
+                            new_block.set_rectTop(rectTop)
+                            new_block.set_rectLeft(rectLeft)
+                            block_group.add(new_block)
 
 			# new_block.set_rectTop(rectTop)
 			# new_block.set_rectLeft(rectLeft)
@@ -219,6 +229,8 @@ def draw_map_objects(char,zS,qS):
 		draw_rect_box(PC.Color('red'),Globals.GRID[zS+qS])
         elif char == 'K':
                 draw_rect_box(PC.Color('yellow'),Globals.GRID[zS+qS])
+        elif char == 'D':
+                draw_rect_box(PC.Color('green'),Globals.GRID[zS+qS])
 	else:
 		return False
 

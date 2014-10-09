@@ -146,10 +146,6 @@ class Game(object):
                 if (PG.key.get_pressed()):
                     self.update(self.character, elapsed)
 
-                #here is where i'll check for key
-                if self.character.player_got_key():
-                    print("door will open here")
-
             PD.update() # update the screen
             
     def update(self, player, delta):
