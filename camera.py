@@ -7,42 +7,91 @@ Katie Chang
 Josh Holstein
 '''
 
+'''
+author: Carla
+'''
+
 import pygame as PG
 from pygame.locals import *
 import sys
-import pygame.mixer as PM
 import pygame.display as PD
 import pygame.sprite as PS
 import pygame.image as PI
 
-PG.init()
-
 #camera variables
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
-HALF_WIDTH = int(WIN_WIDTH / 2)
-HALF_HEIGHT = int(WIN_HEIGHT / 2)
 
 class Camera(object):
-    def __init__(self, camera_func, width, height):
-        self.camera_func = camera_func
-        self.state = Rect(0, 0, width, height)
+	def __init__(self, bigmap):
+		self.bigmap = bigmap
+		self.bigmap_rect = bigmap.get_rect()
+		self.rect = Rect(0, 0, WIN_WIDTH, WIN_HEIGHT)
+		#camera's coordinates relative to the map
+		self.cameraxy = [0,0]
+		self.scrollx = 0
+		self.scrolly = 0
 
-    def apply(self, target):
-        return target.rect.move(self.state.topleft)
+		self.background = PG.Surface((WIN_WIDTH, WIN_HEIGHT))
 
-    def update(self, target):
-        self.state = self.camera_func(self.state, target.rect)
 
-def complex_camera(camera, target_rect):
-    l, t, _, _ = target_rect
-    _, _, w, h = camera
-    l, t, _, _ = -l+HALF_WIDTH, -t+HALF_HEIGHT, w, h
-    #print("l " + str(l) + " t " + str(t) + " _ " + str(_) + " _ " +  str(_))
-    l = min(0, l)                           # stop scrolling at the left edge
-    l = max(-(camera.width-WIN_WIDTH), l)   # stop scrolling at the right edge
-    t = max(-(camera.height-WIN_HEIGHT), t) # stop scrolling at the bottom
-    t = min(0, t)                           # stop scrolling at the top
-    
-    return Rect(l, t, w, h)
+	#apply the character's displacement to the camera
+	def apply(self, playerxy):
+		move = False
+		playerx, playery = playerxy
+
+		#camera bounds on the x and y axis to keep the player centered
+		boundx = [WIN_WIDTH*(2/5) + self.cameraxy[0], WIN_WIDTH*(3/5) + self.cameraxy[0]]
+		boundy = [WIN_HEIGHT*(2/5) + self.cameraxy[1], WIN_HEIGHT*(3/5) + self.cameraxy[1]]
+
+		scrollx = 0
+		scrolly = 0
+		if playerx < boundx[0]:
+			scrollx -= boundx[0] - playerx
+		elif playerx > boundx[1]:
+			scrollx += boundx[1] - playerx
+		if playery < boundy[0]:
+			scrolly -= boundy[0] - playery
+		elif playery > boundy[1]:
+			scrolly += boundy[1] - playery
+
+		if scrollx != 0 and scrolly != 0:
+			move = True
+			self.cameraxy[0] += scrollx
+			self.cameraxy[1] -= scrolly
+		return move
+		
+
+	#update where the camera needs to be in the big map
+	def update(self, target_coordinates, screen, bigmap):
+		moved = self.apply(target_coordinates)
+
+		if moved:
+			self.check_boundary()
+			self.background = bigmap.subsurface(self.cameraxy[0], self.cameraxy[1], WIN_WIDTH, WIN_HEIGHT)
+			screen.blit(self.background, (0,0))
+
+
+	#check that the camera doesn't go off the map
+	def check_boundary(self):
+		bigmap_width = self.bigmap_rect.width
+		bigmap_height = self.bigmap_rect.height
+		#check left
+		if self.cameraxy[0] < 0 :
+			self.cameraxy[0] = 0
+			scrollx = 0
+		#check right
+		elif self.cameraxy[0] > bigmap_width - WIN_WIDTH:
+			self.cameraxy[0] = bigmap_width - WIN_WIDTH
+			scrollx = bigmap_width - WIN_WIDTH
+		#check top
+		if self.cameraxy[1] < 0:
+			self.cameraxy[1] = 0
+			scrolly = 0
+		#check bottom
+		elif self.cameraxy[1] > bigmap_height - WIN_HEIGHT:
+			self.cameraxy[1] = bigmap_height - WIN_HEIGHT
+			scrolly = 0
+
+
 
