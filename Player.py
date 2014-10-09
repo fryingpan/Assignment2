@@ -59,8 +59,12 @@ class Player(PS.Sprite):
 	def get_face(self):
 		return self.face
 
-        def player_got_key(self):
-                return self.got_key
+    def player_got_key(self):
+        return self.got_key
+
+    def get_coordinates(self):
+    	coordinates = [self.rect.x, self.rect.y]
+    	return coordinates
 
 	def handle_collision(self, bg):
 		collisions = PS.spritecollide(self, bg, False)

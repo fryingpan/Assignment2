@@ -13,6 +13,7 @@ try:
     import pygame.color as PC
     import pygame.event as PE
     import drawing as Draw
+    import camera as cam
     
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -81,6 +82,10 @@ class Game(object):
             #else:
                # self.key_sprite.add(block)
 
+        self.bigmap_rect = Rect(0,0, 1600, 1200)
+
+        self.camera = cam.Camera(self.bigmap_rect)
+
 
         #I don't actually know what this does
         PE.set_allowed([QUIT, KEYDOWN])
@@ -120,6 +125,9 @@ class Game(object):
             Draw.draw_map(self.block_group)
 
             self.character.draw(self.screen, self.block_group) # draw the character to the screen
+
+            #update camera's position on the map
+            self.camera.update(self.character.get_coordinates())
 
             PD.flip()
 
