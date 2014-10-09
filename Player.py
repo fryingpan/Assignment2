@@ -45,8 +45,8 @@ class Player(PS.Sprite):
 		PS.Sprite.__init__(self)
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 		self.rect = self.image.get_rect()
-		self.rect.x = 100
-		self.rect.y = 100
+                self.rect.x = 100
+                self.rect.y = 400
 		self.face = 'd'
 		self.load_images()
 		self.speed = speed
