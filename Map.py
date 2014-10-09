@@ -79,8 +79,11 @@ class Map(object):
 		self.grid_dimensions = self.get_dimensions(self.map)
 		self.pix_dimensions = [self.grid_dimensions[0] * 50, self.grid_dimensions[1] * 50]
 		self.surface = PG.Surface(self.pix_dimensions)
+		self.object_group = PG.sprite.Group()
+
+		self.objectify_map()
 		#group of sprites in the map
-		self.object_group = self.get_object_group()
+
 
 	#returns list of lines in the mapfile
 	def get_map(self, mapfile):
@@ -95,8 +98,6 @@ class Map(object):
 		return [height, width]
 
 	def get_object_group(self):
-		self.object_group = PG.sprite.Group()
-		self.objectify_map()
 		return self.object_group
 
 	def objectify_map(self):
