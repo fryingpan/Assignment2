@@ -12,7 +12,7 @@ import pygame.mixer as PX
 
 mapcolors = {'D': (154, 205, 50),
 			'W' : (30, 144, 255),
-                        'K' : (255, 255, 0, 255)}
+            'K' : (255, 255, 0, 255)}
 
 class Globals(object):
 	SCREEN = None #Surface
@@ -42,8 +42,8 @@ class Block(PG.sprite.Sprite):
 		self.height = 0
 		Globals.SCREEN = PDI.get_surface()
 
-	def draw_block(self):
-		Globals.SCREEN.blit(self.image, self.rect)
+	def draw_block(self, map_surface):
+		map_surface.blit(self.image, self.rect)
 
 	def get_color(self):
 			return self.color
@@ -82,7 +82,14 @@ class Map(object):
 		self.object_group = PG.sprite.Group()
 
 		self.objectify_map()
+		self.fill()
 		#group of sprites in the map
+
+	def get_surface(self):
+		return self.surface
+
+	def fill(self):
+		self.surface.fill((0,0,0))
 
 
 	#returns list of lines in the mapfile
@@ -137,7 +144,7 @@ class Map(object):
 
 	def draw_map(self):
 		for block in self.object_group:
-			block.draw_block()
+			block.draw_block(self.surface)
 
 #creates a new block sprite
 def create_Block(color, rect):

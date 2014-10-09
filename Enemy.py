@@ -118,10 +118,10 @@ class Enemy(PG.sprite.Sprite):
         elif(self.face == 'ds'):
             self.update_image(self.IMAGES_BACK)
 
-    def draw(self):
+    def draw(self, surface):
         """ Draw on surface """
         # blit yourself at your current position
-        self.screen.blit(self.image, (self.x, self.y))
+        surface.blit(self.image, (self.x, self.y))
 
     def check_collide(self):
         collide = False

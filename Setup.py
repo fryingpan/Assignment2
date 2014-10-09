@@ -83,7 +83,7 @@ class Game(object):
 
 		self.bigmap_rect = Rect(0,0, 1600, 1200)
 
-		# self.camera = cam.Camera(self.bigmap_rect)
+		self.camera = cam.Camera(self.map.get_surface())
 
 
 		#I don't actually know what this does
@@ -107,26 +107,30 @@ class Game(object):
 			if(running == False):
 				return False
 			#Key Handling----------------------------
-			# self.character.handle_keys() # handle the keys
 
-			self.screen.fill((0,0,0)) # fill the screen with white
+			# self.screen.fill((0,0,0)) # fill the screen with white
+			self.map.fill()
 
-			# self.character.handle_collision(self.block_group)
+			#draw blocks
+			self.map.draw_map()
+
 
 			#move and draw the enemies
 			player_face = self.character.get_face()
 			for enemy in self.enemy_list.sprites():
 				Enemy_face = enemy.get_face()
 				enemy.set_face(player_face)
-				enemy.draw()
+				enemy.draw(self.map.get_surface())
 
 			#draw blocks
 			self.map.draw_map()
 
-			self.character.draw(self.screen, self.block_group) # draw the character to the screen
+			self.character.draw(self.map.get_surface(), self.block_group) # draw the character to the screen
 
 			#update camera's position on the map
-			# self.camera.update(self.character.get_coordinates())
+			background = self.camera.update(self.character.get_coordinates(), self.screen, self.map.get_surface())
+
+			# self.screen.blit(background, (0,0))
 
 			PD.flip()
 
