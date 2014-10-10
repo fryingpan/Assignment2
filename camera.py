@@ -47,19 +47,23 @@ class Camera(object):
 
 		scrollx = 0
 		scrolly = 0
+		print("bound x array: " + str(boundx))
 		if playerx < boundx[0]:
 			scrollx -= boundx[0] - playerx
 		elif playerx > boundx[1]:
-			scrollx += boundx[1] - playerx
+			scrollx += playerx - boundx[1]
 		if playery < boundy[0]:
 			scrolly -= boundy[0] - playery
 		elif playery > boundy[1]:
-			scrolly += boundy[1] - playery
+			scrolly += playery - boundy[1]
 
+		print("playerx " + str(playerx) + " playery " + str(playery))
+		print("scrollx " + str(scrollx) + " scrolly " + str(scrolly))
 		if scrollx != 0 and scrolly != 0:
 			move = True
 			self.cameraxy[0] += scrollx
 			self.cameraxy[1] -= scrolly
+		print("move " + str(move))
 		return move
 		
 
@@ -69,13 +73,15 @@ class Camera(object):
 		if moved:
 			self.check_boundary()
 			self.background = bigmap.subsurface(self.cameraxy[0], self.cameraxy[1], WIN_WIDTH, WIN_HEIGHT)
-			screen.blit(self.background, (0,0))
+			
+		screen.blit(self.background, (0,0))
 
 
 	#check that the camera doesn't go off the map
 	def check_boundary(self):
 		bigmap_width = self.bigmap_rect.width
 		bigmap_height = self.bigmap_rect.height
+		print("bigmap_width " + str(bigmap_width) + " bigmap_height " + str(bigmap_height))
 		#check left
 		if self.cameraxy[0] < 0 :
 			self.cameraxy[0] = 0

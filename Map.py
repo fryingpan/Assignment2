@@ -77,7 +77,7 @@ class Map(object):
 		#size of an individual block in the grid
 		self.grid_size = [40, 30]
 		self.grid_dimensions = self.get_dimensions(self.map)
-		self.pix_dimensions = [self.grid_dimensions[0] * 50, self.grid_dimensions[1] * 50]
+		self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0], self.grid_dimensions[1] * self.grid_size[1]]
 		self.surface = PG.Surface(self.pix_dimensions)
 		self.object_group = PG.sprite.Group()
 
