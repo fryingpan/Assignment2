@@ -47,7 +47,6 @@ class Camera(object):
 
 		scrollx = 0
 		scrolly = 0
-		print("bound x array: " + str(boundx))
 		if playerx < boundx[0]:
 			scrollx -= boundx[0] - playerx
 		elif playerx > boundx[1]:
@@ -57,13 +56,10 @@ class Camera(object):
 		elif playery > boundy[1]:
 			scrolly += playery - boundy[1]
 
-		print("playerx " + str(playerx) + " playery " + str(playery))
-		print("scrollx " + str(scrollx) + " scrolly " + str(scrolly))
-		if scrollx != 0 and scrolly != 0:
+		if scrollx != 0 or scrolly != 0:
 			move = True
 			self.cameraxy[0] += scrollx
-			self.cameraxy[1] -= scrolly
-		print("move " + str(move))
+			self.cameraxy[1] += scrolly
 		return move
 		
 
@@ -81,7 +77,6 @@ class Camera(object):
 	def check_boundary(self):
 		bigmap_width = self.bigmap_rect.width
 		bigmap_height = self.bigmap_rect.height
-		print("bigmap_width " + str(bigmap_width) + " bigmap_height " + str(bigmap_height))
 		#check left
 		if self.cameraxy[0] < 0 :
 			self.cameraxy[0] = 0

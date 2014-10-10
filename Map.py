@@ -102,7 +102,7 @@ class Map(object):
 		height = len(m)
 		line = list(m[0])
 		width = len(line) - 1 #subtract the \n character
-		return [height, width]
+		return [width, height]
 
 	def get_object_group(self):
 		return self.object_group
@@ -113,11 +113,11 @@ class Map(object):
 		y_coor = 0
 
 		#traverse the map, creating block sprites
-		for x in range(self.grid_dimensions[0]):
+		for x in range(self.grid_dimensions[1]):
 			#get the list of characters in the mapfile
 			char_list = list(self.map[x])
 			x_coor = 0
-			for y in range(self.grid_dimensions[1]):
+			for y in range(self.grid_dimensions[0]):
 			#wall blocks
 				if char_list[y] == 'W':
 					new_block = create_Block(mapcolors['W'], PG.Rect(x_coor, y_coor, self.grid_size[0], self.grid_size[1]))
