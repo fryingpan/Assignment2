@@ -46,7 +46,7 @@ class Player(PS.Sprite):
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = 100
-		self.rect.y = 400
+		self.rect.y = 1150
 		self.face = 'd'
 		self.load_images()
 		self.speed = speed
@@ -66,10 +66,10 @@ class Player(PS.Sprite):
 		coordinates = [self.rect.x, self.rect.y]
 		return coordinates
 
-		def open_door(self,bg): #pass the enire block group.
-			for block in bg:
-				if block.get_color() == (154, 205, 50):
-						block.kill()
+	def open_door(self,bg): #pass the enire block group.
+		for block in bg:
+			if block.get_color() == (154, 205, 50):
+				block.kill()
 
 	def handle_collision(self, bg):
 		collisions = PS.spritecollide(self, bg, False)
