@@ -14,6 +14,7 @@ try:
 	import pygame.event as PE
 	import Map
 	import camera as cam
+        import pygame.font as PF
 	
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -47,10 +48,10 @@ class Game(object):
 		self.fps = fps
 		self.num_enemies=num_enemies
 	
-		PG.init()
+                PG.init()
 		self.screen = PD.set_mode((800, 600))
 		self.screen_rect = self.screen.get_rect()
-		self.screen.fill((255,255,255))
+                self.screen.fill((255,255,255))
 		PD.set_caption("Master Chef's wicked adventure with his ice cream buddies")
 		
 		self.fps = fps
@@ -94,6 +95,9 @@ class Game(object):
 		self.updates = 0
 		self.interval = interval
 		Locals.CHANGESTATE = 'Game'
+
+                #fonts
+                self.font = PF.SysFont('Arial', 25)
 	
 	def run(self):
 		running = True
@@ -157,24 +161,34 @@ class Game(object):
 				if (PG.key.get_pressed()):
 					self.update(self.character, elapsed)
 
+                                self.addScoreText()
+                                self.addHitPointsText()
+
 			PD.update() # update the screen
 			
 	def update(self, player, delta):
 			player.update(delta, self.block_group)
 
 	def handleEvents(self):
-		for event in PE.get():
-			if event.type == PG.QUIT:
-				return False
-				
-			# handle user input
-			elif event.type == KEYDOWN:
-			# if the user presses escape, quit the event loop.
-				if event.key == K_ESCAPE:
-					Locals.CHANGESTATE = 'Menu'
-					return False;
-		return True
-				  
-# create a game and run it
+            for event in PE.get():
+                    if event.type == PG.QUIT:
+                            return False
 
+                    # handle user input
+                    elif event.type == KEYDOWN:
+                    # if the user presses escape, quit the event loop.
+                            if event.key == K_ESCAPE:
+                                    Locals.CHANGESTATE = 'Menu'
+                                    return False;
+            return True
+
+        def addScoreText(self):
+            s = "Score: " # + str(player.score) Must have some variable. Add variable name here, uncomment, should work.
+            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+            PD.update()
+
+        def addHitPointsText(self):
+            s = "Health: " # + str(player.health) Must have some variable. Add variable name here, uncomment, should work.
+            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+            PD.update()
 
