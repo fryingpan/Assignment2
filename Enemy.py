@@ -2,6 +2,7 @@
 
 import random
 import pygame as PG
+import pygame.display as PD
 import sys
 import math
 import pygame.image as PI
@@ -16,7 +17,7 @@ class Enemy(PG.sprite.Sprite):
 
     CYCLE = .6
 
-    def __init__(self, screen, speed):
+    def __init__(self, screen, speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.Sprite.__init__(self)
         #if not Enemy.IMAGE_UP and not Enemy.IMAGE_DOWN and not Enemy.IMAGE_LEFT and not Enemy.IMAGE_RIGHT:
@@ -29,12 +30,16 @@ class Enemy(PG.sprite.Sprite):
         self.image_right = Enemy.IMAGE_RIGHT
         self.image_left = Enemy.IMAGE_LEFT"""
         #self.image = None
+        self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+        self.rect = self.image.get_rect()
         self.load_images()
         self.screen = screen
-        self.swidth = screen.get_width()
-        self.sheight = screen.get_height()
-        self.x = random.randint(0, 700)
-        self.y = random.randint(0, 500)
+        self.swidth = screen.get_width()*2
+        self.sheight = screen.get_height()*2
+        self.rect.x = 100
+        self.rect.y = 1150
+        #self.rect.x = random.randint(0, 700)
+        #self.rect.y = random.randint(0, 500)
 
         self.speed = speed
         self.direction = random.randint(0, 1)
@@ -48,17 +53,17 @@ class Enemy(PG.sprite.Sprite):
     def get_face(self):
         return self.face
 
-    def update(self, interval = 1):
+    def update(self, delta = 1):
         self.speed
-        self.move(interval)
+        self.move(delta)
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
             self.direction = random.randint(0, 1)
-            self.angle = random.randint(0, 360) * (math.pi/180) 
+            self.angle = random.randint(0, 360) * (math.pi/180)
 
         ENEMY_IMAGE_LENGTH = 4 #all Enemy sprite has 12 frames
         #update time
-        self.time = self.time + interval
+        self.time = self.time + delta
         if self.time > Enemy.CYCLE:
             self.time = 0.0
         #update frame?
@@ -88,14 +93,15 @@ class Enemy(PG.sprite.Sprite):
     def move(self, interval):
         dist = self.speed
         if self.direction == 0:
-            self.x += dist*interval*math.sin(self.angle)
-            self.y -= dist*interval*math.cos(self.angle)
+            self.rect.x += dist*interval*math.sin(self.angle)
+            self.rect.y -= dist*interval*math.cos(self.angle)
+            #print(dist*interval*math.cos(self.angle))
+            print("x " + str(self.rect.x) + " y " + str(self.rect.y))
 
         elif self.direction == 1:
-            self.x -= dist * interval*math.cos(self.angle)
-            self.y += dist * interval*math.cos(self.angle)
-
-
+            self.rect.x -= dist * interval*math.cos(self.angle)
+            self.rect.y += dist * interval*math.cos(self.angle)
+        
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
             self.update_image(self.IMAGES_FRONT)
@@ -118,24 +124,25 @@ class Enemy(PG.sprite.Sprite):
         elif(self.face == 'ds'):
             self.update_image(self.IMAGES_BACK)
 
-    def draw(self, surface):
+    def draw(self, screen):
         """ Draw on surface """
         # blit yourself at your current position
-        surface.blit(self.image, (self.x, self.y))
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        PD.flip()
 
-    def check_collide(self):
+    def check_collide(self): #check screen collision
         collide = False
-        if self.x < 0:
-            self.x = 0
+        if self.rect.x < 0:
+            self.rect.x = 0
             collide = True
-        elif self.x > (self.swidth - self.WIDTH):
-            self.x = self.swidth - self.WIDTH
+        elif self.rect.x > (self.swidth - self.WIDTH):
+            self.rect.x = self.swidth - self.WIDTH
             collide = True
-        if self.y < 0:
-            self.y = 0
+        if self.rect.y < 0:
+            self.rect.y = 0
             collide = True
-        elif self.y > (self.sheight - self.HEIGHT):
-            self.y = (self.sheight - self.HEIGHT)
+        elif self.rect.y > (self.sheight - self.HEIGHT):
+            self.rect.y = (self.sheight - self.HEIGHT)
             collide = True
         return collide
                 
@@ -164,12 +171,11 @@ class Enemy(PG.sprite.Sprite):
         Enemy.IMAGES_FRONT = self.load_images_helper(Enemy.IMAGES_FRONT, sheetF)
         Enemy.IMAGES_BACK = self.load_images_helper(Enemy.IMAGES_BACK, sheetB)
 
-#this will all end up in the key handler
+    #this will all end up in the key handler
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()
-            self.rect = self.image.get_rect()
-            self.rect.center = (self.WIDTH/2, self.HEIGHT/2)
+            #self.rect.center = (self.WIDTH/2, self.HEIGHT/2)
         except IndexError:
-			self.face = list(self.face)[0]
-
+            self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+            self.face = list(self.face)[0]

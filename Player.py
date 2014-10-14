@@ -162,7 +162,6 @@ class Player(PS.Sprite):
 		PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
 		#update time and frame
 		key = PG.key.get_pressed()
-
 		#camera stuff
 		# increment in x direction
 		#self.rect.left += self.xvel
