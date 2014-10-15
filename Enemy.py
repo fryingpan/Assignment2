@@ -93,14 +93,15 @@ class Enemy(PG.sprite.Sprite):
     def move(self, interval):
         dist = self.speed
         if self.direction == 0:
-            self.rect.x += dist*interval*math.sin(self.angle)
-            self.rect.y -= dist*interval*math.cos(self.angle)
-            #print(dist*interval*math.cos(self.angle))
+            self.rect.x += 2*dist*interval*math.sin(self.angle)
+            print(dist*interval*math.cos(self.angle))
             print("x " + str(self.rect.x) + " y " + str(self.rect.y))
+            self.rect.y -= 2*dist*interval*math.cos(self.angle)
+            #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
 
         elif self.direction == 1:
-            self.rect.x -= dist * interval*math.cos(self.angle)
-            self.rect.y += dist * interval*math.cos(self.angle)
+            self.rect.x -= 2*dist * interval*math.cos(self.angle)
+            self.rect.y += 2*dist * interval*math.cos(self.angle)
         
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
