@@ -14,12 +14,12 @@ try:
 	import pygame.event as PE
 	import Map
 	import camera as cam
-        import pygame.font as PF
+	import pygame.font as PF
 	
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
 	import sys
-        sys.exit(1)
+	sys.exit(1)
 
 class Locals(object):
 	RUNNING = True
@@ -48,10 +48,10 @@ class Game(object):
 		self.fps = fps
 		self.num_enemies=num_enemies
 	
-                PG.init()
+		PG.init()
 		self.screen = PD.set_mode((800, 600))
 		self.screen_rect = self.screen.get_rect()
-                self.screen.fill((255,255,255))
+		self.screen.fill((255,255,255))
 		PD.set_caption("Master Chef's wicked adventure with his ice cream buddies")
 		
 		self.fps = fps
@@ -96,12 +96,12 @@ class Game(object):
 		self.interval = interval
 		Locals.CHANGESTATE = 'Game'
 
-                #fonts
-                self.font = PF.SysFont('Arial', 25)
-                s = "Score: " + str(self.character.score) #Must have some variable. Add variable name here, uncomment, should work.
-                self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-                h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
-                self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+				#fonts
+		self.font = PF.SysFont('Arial', 25)
+		s = "Score: " + str(self.character.score) #Must have some variable. Add variable name here, uncomment, should work.
+		self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+		h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
+		self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
 	
 	def run(self):
 		running = True
@@ -149,11 +149,7 @@ class Game(object):
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
-<<<<<<< HEAD
 					enemy.update(self.block_group, delta)
-=======
-                                        enemy.update(delta)
->>>>>>> 4488ee0f22577ee188af260f3c56b09e079b2523
 				self.character.handle_keys(self.block_group, self.interval)
 				frame_time -= delta
 				self.updates += 1
@@ -168,44 +164,44 @@ class Game(object):
 				if (PG.key.get_pressed()):
 					self.update(self.character, elapsed)
 
-                                for enemy in self.enemy_list.sprites():
-                                    self.enemyupdate(enemy, elapsed)
+					for enemy in self.enemy_list.sprites():
+						self.enemyupdate(enemy, elapsed)
 
-                                #self.addScoreText(self.character)
-                                #self.addHitPointsText(self.character)
+					#self.addScoreText(self.character)
+					#self.addHitPointsText(self.character)
 
 			PD.update() # update the screen
 			
 	def update(self, player, delta):
-            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
-            player.update(delta, self.block_group)
+			s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
+			self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+			s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
+			self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+			player.update(delta, self.block_group)
 
-        def enemyupdate(self, enemy, delta):
-            enemy.update(delta)
+	def enemyupdate(self, enemy, delta):
+		enemy.update(delta)
 
 	def handleEvents(self):
-            for event in PE.get():
-                    if event.type == PG.QUIT:
-                            return False
+		for event in PE.get():
+			if event.type == PG.QUIT:
+				return False
 
-                    # handle user input
-                    elif event.type == KEYDOWN:
-                    # if the user presses escape, quit the event loop.
-                            if event.key == K_ESCAPE:
-                                    Locals.CHANGESTATE = 'Menu'
-                                    return False;
-            return True
+			# handle user input
+			elif event.type == KEYDOWN:
+			# if the user presses escape, quit the event loop.
+				if event.key == K_ESCAPE:
+					Locals.CHANGESTATE = 'Menu'
+					return False
+		return True
 
-        '''def addScoreText(self, player):
-            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-            PD.update()
+		'''def addScoreText(self, player):
+			s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
+			self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+			PD.update()
 
-        def addHitPointsText(self, player):
-            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
-            PD.update()'''
+		def addHitPointsText(self, player):
+			s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
+			self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+			PD.update()'''
 
