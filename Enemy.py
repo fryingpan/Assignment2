@@ -7,6 +7,7 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
+from Player import Player
 
 PG.init()
 
@@ -38,8 +39,8 @@ class Enemy(PG.sprite.Sprite):
         self.screen = screen
         self.swidth = screen.get_width()*2
         self.sheight = screen.get_height()*2
-        self.rect.x = 100
-        self.rect.y = 1150
+        self.rect.x = 300
+        self.rect.y = 300
 
         self.speed = speed
         self.direction = random.randint(0, 3)
@@ -49,69 +50,58 @@ class Enemy(PG.sprite.Sprite):
         self.frame = 0
         self.WIDTH = 100
         self.HEIGHT = 100
+        self.count = 0
 
     def get_face(self):
         return self.face
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
-        if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
-                    if(self.rect.x + self.rect.width) >= collision.rect.left:
-                        self.rect.x = collision.rect.left - self.rect.width
-                        once = False
-            
-        elif self.face == 'l' or self.face == 'la' or self.face == 'ls':
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
-                    if (self.rect.x) <= (collision.rect.left + collision.rect.width):
-                        self.rect.x = collision.rect.left + collision.rect.width
-                        once = False
-        elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
-            once = True
-            for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
-                    if (self.rect.y + self.rect.height) >= collision.rect.top:
-                        self.rect.y = collision.rect.top - self.rect.height
-                        once = False
-        elif self.face == 'u' or self.face == 'ua' or self.face == 'us':
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
-                    if (self.rect.y <= (collision.rect.top + collision.rect.height)):
-                        self.rect.y = collision.rect.top + collision.rect.height
-                        once = False
+        if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
+            self.count = self.count + 1
+            print("player coll " + str(self.count))
+        else:
+            if self.face == 'r':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if(self.rect.x + self.rect.width) >= collision.rect.left:
+                            self.rect.x = collision.rect.left - self.rect.width
+                            once = False
+                
+            elif self.face == 'l':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.x) <= (collision.rect.left + collision.rect.width):
+                            self.rect.x = collision.rect.left + collision.rect.width
+                            once = False
+            elif self.face == 'd':
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.y + self.rect.height) >= collision.rect.top:
+                            self.rect.y = collision.rect.top - self.rect.height
+                            once = False
+            elif self.face == 'u':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.y <= (collision.rect.top + collision.rect.height)):
+                            self.rect.y = collision.rect.top + collision.rect.height
+                            once = False
     
 
-    def update(self, bg, delta = 1):
+    def update(self, bg, player, delta = 1):
         self.speed
-        self.move(bg,delta)
+        self.move(bg, player, delta)
         #check that the new movement is within the boundaries
-        if self.check_collide() is True:
-            self.direction = random.randint(0, 1)
-            self.angle = random.randint(0, 360) * (math.pi/180)
+        #if self.check_collide() is True:
+        #    self.direction = random.randint(0, 1)
+         #   self.angle = random.randint(0, 360) * (math.pi/180)
 
         ENEMY_IMAGE_LENGTH = 4 #all Enemy sprite has 12 frames
         #update time
@@ -142,7 +132,7 @@ class Enemy(PG.sprite.Sprite):
                     self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
 
 
-    def move(self, bg, interval):
+    def move(self, bg, player, interval):
         if(random.randint(0,50) == 0):
             self.direction = random.randint(0, 3)
         dist = self.speed # distance moved in 1 frame, try changing it to 5
@@ -168,6 +158,7 @@ class Enemy(PG.sprite.Sprite):
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
+        self.handle_collision(player)
         
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
