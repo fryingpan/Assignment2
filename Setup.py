@@ -61,6 +61,8 @@ class Game(object):
 
 		#Initialize objects on screen----------------
 		self.character = Player(self.speed)
+		self.player_group = PS.GroupSingle(self.character)
+
 		self.all_sprites.add(self.character)
 
 
@@ -149,7 +151,7 @@ class Game(object):
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
-					enemy.update(self.block_group, delta)
+					enemy.update(self.block_group, self.player_group, delta)
 				self.character.handle_keys(self.block_group, self.interval)
 				frame_time -= delta
 				self.updates += 1

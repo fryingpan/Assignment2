@@ -39,7 +39,7 @@ class Enemy(PG.sprite.Sprite):
         self.swidth = screen.get_width()*2
         self.sheight = screen.get_height()*2
         self.rect.x = 300
-        self.rect.y = 1150
+        self.rect.y = 300
 
         self.speed = speed
         self.direction = random.randint(0, 3)
@@ -55,7 +55,9 @@ class Enemy(PG.sprite.Sprite):
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
-        if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+        
+        if self.face == 'r':
+            print "collided with player"
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
@@ -64,7 +66,8 @@ class Enemy(PG.sprite.Sprite):
                         self.rect.x = collision.rect.left - self.rect.width
                         once = False
             
-        elif self.face == 'l' or self.face == 'la' or self.face == 'ls':
+        elif self.face == 'l':
+            print "collided with player"
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
@@ -72,14 +75,16 @@ class Enemy(PG.sprite.Sprite):
                     if (self.rect.x) <= (collision.rect.left + collision.rect.width):
                         self.rect.x = collision.rect.left + collision.rect.width
                         once = False
-        elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
+        elif self.face == 'd':
+            print "collided with player"
             once = True
             for collision in collisions:
                 if once:
                     if (self.rect.y + self.rect.height) >= collision.rect.top:
                         self.rect.y = collision.rect.top - self.rect.height
                         once = False
-        elif self.face == 'u' or self.face == 'ua' or self.face == 'us':
+        elif self.face == 'u':
+            print "collided with player"
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
@@ -89,9 +94,9 @@ class Enemy(PG.sprite.Sprite):
                         once = False
     
 
-    def update(self, bg, delta = 1):
+    def update(self, bg, player, delta = 1):
         self.speed
-        self.move(bg,delta)
+        self.move(bg, player, delta)
         #check that the new movement is within the boundaries
         #if self.check_collide() is True:
         #    self.direction = random.randint(0, 1)
@@ -126,13 +131,12 @@ class Enemy(PG.sprite.Sprite):
                     self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
 
 
-    def move(self, bg, interval):
+    def move(self, bg, player, interval):
         if(random.randint(0,50) == 0):
             self.direction = random.randint(0, 3)
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         self.interval = interval
         move_dist = 1*dist*interval                
-        self.direction = 0
         if self.direction == 0: # down key
             self.rect.y += move_dist# move down
             #self.rect = self.image.get_rect()
@@ -153,6 +157,7 @@ class Enemy(PG.sprite.Sprite):
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
+        self.handle_collision(player)
         
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':

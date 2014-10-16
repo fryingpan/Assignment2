@@ -32,7 +32,7 @@ class Globals(object):
     HEIGHT = None
     FONT = None
     STATE = None
-    NUM_ENEMIES = 13
+    NUM_ENEMIES = 1
 
 
 #Main Executable entry point
