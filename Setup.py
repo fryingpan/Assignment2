@@ -149,7 +149,7 @@ class Game(object):
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
-                                        enemy.update(delta)
+					enemy.update(self.block_group, delta)
 				self.character.handle_keys(self.block_group, self.interval)
 				frame_time -= delta
 				self.updates += 1
@@ -164,6 +164,9 @@ class Game(object):
 				if (PG.key.get_pressed()):
 					self.update(self.character, elapsed)
 
+					#self.addScoreText(self.character)
+					#self.addHitPointsText(self.character)
+
 			PD.update() # update the screen
 			
 	def update(self, player, delta):
@@ -172,6 +175,9 @@ class Game(object):
 			s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
 			self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
 			player.update(delta, self.block_group)
+
+	def enemyupdate(self, enemy, delta):
+		enemy.update(delta)
 
 	def handleEvents(self):
 		for event in PE.get():
