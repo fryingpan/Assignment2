@@ -7,6 +7,7 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
+from Player import Player
 
 PG.init()
 
@@ -49,49 +50,49 @@ class Enemy(PG.sprite.Sprite):
         self.frame = 0
         self.WIDTH = 100
         self.HEIGHT = 100
+        self.count = 0
 
     def get_face(self):
         return self.face
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
-        
-        if self.face == 'r':
-            print "collided with player"
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if once:
-                    if(self.rect.x + self.rect.width) >= collision.rect.left:
-                        self.rect.x = collision.rect.left - self.rect.width
-                        once = False
-            
-        elif self.face == 'l':
-            print "collided with player"
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if once:
-                    if (self.rect.x) <= (collision.rect.left + collision.rect.width):
-                        self.rect.x = collision.rect.left + collision.rect.width
-                        once = False
-        elif self.face == 'd':
-            print "collided with player"
-            once = True
-            for collision in collisions:
-                if once:
-                    if (self.rect.y + self.rect.height) >= collision.rect.top:
-                        self.rect.y = collision.rect.top - self.rect.height
-                        once = False
-        elif self.face == 'u':
-            print "collided with player"
-            collisions = PS.spritecollide(self, bg, False)
-            once = True
-            for collision in collisions:
-                if once:
-                    if (self.rect.y <= (collision.rect.top + collision.rect.height)):
-                        self.rect.y = collision.rect.top + collision.rect.height
-                        once = False
+        if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
+            self.count = self.count + 1
+            print("player coll " + str(self.count))
+        else:
+            if self.face == 'r':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if(self.rect.x + self.rect.width) >= collision.rect.left:
+                            self.rect.x = collision.rect.left - self.rect.width
+                            once = False
+                
+            elif self.face == 'l':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.x) <= (collision.rect.left + collision.rect.width):
+                            self.rect.x = collision.rect.left + collision.rect.width
+                            once = False
+            elif self.face == 'd':
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.y + self.rect.height) >= collision.rect.top:
+                            self.rect.y = collision.rect.top - self.rect.height
+                            once = False
+            elif self.face == 'u':
+                collisions = PS.spritecollide(self, bg, False)
+                once = True
+                for collision in collisions:
+                    if once:
+                        if (self.rect.y <= (collision.rect.top + collision.rect.height)):
+                            self.rect.y = collision.rect.top + collision.rect.height
+                            once = False
     
 
     def update(self, bg, player, delta = 1):
