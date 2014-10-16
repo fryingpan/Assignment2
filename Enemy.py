@@ -14,6 +14,7 @@ class Enemy(PG.sprite.Sprite):
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
     IMAGE_LEFT = None
+    FACE_STRING = ['u', 'd', 'r', 'l']
 
     CYCLE = .6
 
@@ -36,10 +37,8 @@ class Enemy(PG.sprite.Sprite):
         self.screen = screen
         self.swidth = screen.get_width()*2
         self.sheight = screen.get_height()*2
-        self.rect.x = 100
-        self.rect.y = 1150
-        #self.rect.x = random.randint(0, 700)
-        #self.rect.y = random.randint(0, 500)
+        self.rect.x = 100.0
+        self.rect.y = 1150.0
 
         self.speed = speed
         self.direction = random.randint(0, 1)
@@ -47,15 +46,15 @@ class Enemy(PG.sprite.Sprite):
         self.face = 'u' 
         self.time = 0.0
         self.frame = 0
-        self.WIDTH = 100
-        self.HEIGHT = 100
+        self.WIDTH = 100.0
+        self.HEIGHT = 100.0
 
     def get_face(self):
         return self.face
 
     def update(self, delta = 1):
-        self.speed
         self.move(delta)
+        dist = self.speed
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
             self.direction = random.randint(0, 1)
@@ -93,15 +92,16 @@ class Enemy(PG.sprite.Sprite):
     def move(self, interval):
         dist = self.speed
         if self.direction == 0:
-            self.rect.x += 2*dist*interval*math.sin(self.angle)
-            print(dist*interval*math.cos(self.angle))
-            print("x " + str(self.rect.x) + " y " + str(self.rect.y))
-            self.rect.y -= 2*dist*interval*math.cos(self.angle)
+            print("angle: " + str(self.angle))
+            self.rect.x += 2.0*dist*interval*math.cos(self.angle)
+            #print(dist*interval*math.cos(self.angle))
             #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
+            self.rect.y -= 2.0*dist*interval*math.sin(self.angle)
+            print("x " + str(self.rect.x) + " y " + str(self.rect.y))
 
         elif self.direction == 1:
-            self.rect.x -= 2*dist * interval*math.cos(self.angle)
-            self.rect.y += 2*dist * interval*math.cos(self.angle)
+            self.rect.x -= 2.0*dist * interval*math.cos(self.angle)
+            self.rect.y += 2.0*dist * interval*math.sin(self.angle)
         
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
@@ -133,17 +133,17 @@ class Enemy(PG.sprite.Sprite):
 
     def check_collide(self): #check screen collision
         collide = False
-        if self.rect.x < 0:
-            self.rect.x = 0
+        if self.rect.x < 50:
+            self.rect.x = 40
             collide = True
         elif self.rect.x > (self.swidth - self.WIDTH):
-            self.rect.x = self.swidth - self.WIDTH
+            self.rect.x = (self.swidth - self.WIDTH - 40)
             collide = True
-        if self.rect.y < 0:
-            self.rect.y = 0
+        if self.rect.y < 50:
+            self.rect.y = 40
             collide = True
         elif self.rect.y > (self.sheight - self.HEIGHT):
-            self.rect.y = (self.sheight - self.HEIGHT)
+            self.rect.y = (self.sheight - self.HEIGHT - 40)
             collide = True
         return collide
                 
@@ -176,7 +176,6 @@ class Enemy(PG.sprite.Sprite):
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()
-            #self.rect.center = (self.WIDTH/2, self.HEIGHT/2)
         except IndexError:
             self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
             self.face = list(self.face)[0]

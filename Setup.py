@@ -19,7 +19,7 @@ try:
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
 	import sys
-	sys.exit(1)
+        sys.exit(1)
 
 class Locals(object):
 	RUNNING = True
@@ -98,6 +98,10 @@ class Game(object):
 
                 #fonts
                 self.font = PF.SysFont('Arial', 25)
+                s = "Score: " + str(self.character.score) #Must have some variable. Add variable name here, uncomment, should work.
+                self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+                h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
+                self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
 	
 	def run(self):
 		running = True
@@ -146,7 +150,7 @@ class Game(object):
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
-					enemy.update(delta)
+                                        enemy.update(delta)
 				self.character.handle_keys(self.block_group, self.interval)
 				frame_time -= delta
 				self.updates += 1
@@ -161,13 +165,23 @@ class Game(object):
 				if (PG.key.get_pressed()):
 					self.update(self.character, elapsed)
 
-                                self.addScoreText()
-                                self.addHitPointsText()
+                                for enemy in self.enemy_list.sprites():
+                                    self.enemyupdate(enemy, elapsed)
+
+                                #self.addScoreText(self.character)
+                                #self.addHitPointsText(self.character)
 
 			PD.update() # update the screen
 			
 	def update(self, player, delta):
-			player.update(delta, self.block_group)
+            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
+            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
+            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
+            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+            player.update(delta, self.block_group)
+
+        def enemyupdate(self, enemy, delta):
+            enemy.update(delta)
 
 	def handleEvents(self):
             for event in PE.get():
@@ -182,13 +196,13 @@ class Game(object):
                                     return False;
             return True
 
-        def addScoreText(self):
-            s = "Score: " # + str(player.score) Must have some variable. Add variable name here, uncomment, should work.
+        '''def addScoreText(self, player):
+            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
             PD.update()
 
-        def addHitPointsText(self):
-            s = "Health: " # + str(player.health) Must have some variable. Add variable name here, uncomment, should work.
+        def addHitPointsText(self, player):
+            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
-            PD.update()
+            PD.update()'''
 

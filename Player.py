@@ -55,6 +55,8 @@ class Player(PS.Sprite):
 		self.interval = 0
 		self.got_key = False #will turn to True once you've run into the yellow block
 		#collision conditions, if true, we will not move in that direction
+                self.health = 10
+                self.score = 0
 
 	def get_face(self):
 		return self.face
