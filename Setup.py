@@ -127,7 +127,6 @@ class Game(object):
 			player_face = self.character.get_face()
 			for enemy in self.enemy_list.sprites():
 				Enemy_face = enemy.get_face()
-				enemy.set_face(player_face)
 				enemy.draw(self.map.get_surface())
 
 			#draw blocks
@@ -150,7 +149,11 @@ class Game(object):
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
+<<<<<<< HEAD
+					enemy.update(self.block_group, delta)
+=======
                                         enemy.update(delta)
+>>>>>>> 4488ee0f22577ee188af260f3c56b09e079b2523
 				self.character.handle_keys(self.block_group, self.interval)
 				frame_time -= delta
 				self.updates += 1
