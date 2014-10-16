@@ -38,8 +38,8 @@ class Enemy(PG.sprite.Sprite):
         self.screen = screen
         self.swidth = screen.get_width()*2
         self.sheight = screen.get_height()*2
-        self.rect.x = 100.0
-        self.rect.y = 1150.0
+        self.rect.x = 100
+        self.rect.y = 1150
 
         self.speed = speed
         self.direction = random.randint(0, 3)
@@ -47,13 +47,12 @@ class Enemy(PG.sprite.Sprite):
         self.face = 'u' 
         self.time = 0.0
         self.frame = 0
-        self.WIDTH = 100.0
-        self.HEIGHT = 100.0
+        self.WIDTH = 100
+        self.HEIGHT = 100
 
     def get_face(self):
         return self.face
 
-<<<<<<< HEAD
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
@@ -109,11 +108,6 @@ class Enemy(PG.sprite.Sprite):
     def update(self, bg, delta = 1):
         self.speed
         self.move(bg,delta)
-=======
-    def update(self, delta = 1):
-        self.move(delta)
-        dist = self.speed
->>>>>>> 4488ee0f22577ee188af260f3c56b09e079b2523
         #check that the new movement is within the boundaries
         if self.check_collide() is True:
             self.direction = random.randint(0, 1)
@@ -174,30 +168,6 @@ class Enemy(PG.sprite.Sprite):
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
-
-    """ dist = self.speed
-        if self.direction == 0:
-<<<<<<< HEAD
-            self.rect.x += 2*dist*interval*math.sin(self.angle)
-            print(dist*interval*math.cos(self.angle))
-            print("x " + str(self.rect.x) + " y " + str(self.rect.y))
-            self.rect.y -= 2*dist*interval*math.cos(self.angle)
-
-        elif self.direction == 1:
-            self.rect.x -= 2*dist * interval*math.cos(self.angle)
-            self.rect.y += 2*dist * interval*math.cos(self.angle)"""
-=======
-            print("angle: " + str(self.angle))
-            self.rect.x += 2.0*dist*interval*math.cos(self.angle)
-            #print(dist*interval*math.cos(self.angle))
-            #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
-            self.rect.y -= 2.0*dist*interval*math.sin(self.angle)
-            print("x " + str(self.rect.x) + " y " + str(self.rect.y))
-
-        elif self.direction == 1:
-            self.rect.x -= 2.0*dist * interval*math.cos(self.angle)
-            self.rect.y += 2.0*dist * interval*math.sin(self.angle)
->>>>>>> 4488ee0f22577ee188af260f3c56b09e079b2523
         
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
