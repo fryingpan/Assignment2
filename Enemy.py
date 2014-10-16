@@ -38,7 +38,7 @@ class Enemy(PG.sprite.Sprite):
         self.screen = screen
         self.swidth = screen.get_width()*2
         self.sheight = screen.get_height()*2
-        self.rect.x = 100
+        self.rect.x = 300
         self.rect.y = 1150
 
         self.speed = speed
@@ -59,11 +59,7 @@ class Enemy(PG.sprite.Sprite):
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick. Don't make anything else yellow :/
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
+                if once:
                     if(self.rect.x + self.rect.width) >= collision.rect.left:
                         self.rect.x = collision.rect.left - self.rect.width
                         once = False
@@ -72,22 +68,14 @@ class Enemy(PG.sprite.Sprite):
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
+                if once:
                     if (self.rect.x) <= (collision.rect.left + collision.rect.width):
                         self.rect.x = collision.rect.left + collision.rect.width
                         once = False
         elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
             once = True
             for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
+                if once:
                     if (self.rect.y + self.rect.height) >= collision.rect.top:
                         self.rect.y = collision.rect.top - self.rect.height
                         once = False
@@ -95,11 +83,7 @@ class Enemy(PG.sprite.Sprite):
             collisions = PS.spritecollide(self, bg, False)
             once = True
             for collision in collisions:
-                if collision.get_color() == (255, 255, 0, 255): #kills the yellow brick.
-                    collision.kill()
-                    self.open_door(bg)
-                    self.got_key = True
-                elif once:
+                if once:
                     if (self.rect.y <= (collision.rect.top + collision.rect.height)):
                         self.rect.y = collision.rect.top + collision.rect.height
                         once = False
@@ -109,9 +93,9 @@ class Enemy(PG.sprite.Sprite):
         self.speed
         self.move(bg,delta)
         #check that the new movement is within the boundaries
-        if self.check_collide() is True:
-            self.direction = random.randint(0, 1)
-            self.angle = random.randint(0, 360) * (math.pi/180)
+        #if self.check_collide() is True:
+        #    self.direction = random.randint(0, 1)
+         #   self.angle = random.randint(0, 360) * (math.pi/180)
 
         ENEMY_IMAGE_LENGTH = 4 #all Enemy sprite has 12 frames
         #update time
@@ -148,6 +132,7 @@ class Enemy(PG.sprite.Sprite):
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         self.interval = interval
         move_dist = 1*dist*interval                
+        self.direction = 0
         if self.direction == 0: # down key
             self.rect.y += move_dist# move down
             #self.rect = self.image.get_rect()
