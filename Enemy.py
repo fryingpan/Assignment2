@@ -105,7 +105,7 @@ class Enemy(PG.sprite.Sprite):
                         once = False
     
 
-    def update(self, bg, delta = 1):
+    def update(self, delta = 1):
         self.speed
         self.move(bg,delta)
         #check that the new movement is within the boundaries
