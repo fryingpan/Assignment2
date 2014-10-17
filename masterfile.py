@@ -52,7 +52,9 @@ def initialize():
     Globals.FONT = PF.Font(None, 48)
     Globals.STATE = "Title"
 
+
 def loop():
+    gameScore = 0
     while Globals.RUNNING:
     
         if Globals.STATE == "Title":
@@ -74,7 +76,8 @@ def loop():
                 interval = 0.005
                 if(gamerino.run() == False):
                     Globals.STATE = Game.Locals.CHANGESTATE
-
+            gameScore = Game.Locals.SCORE
+            print("gamescore: " + str(gameScore))
 
         elif Globals.STATE == "Menu":
             Menu.initialize()
@@ -90,6 +93,8 @@ def loop():
         elif Globals.STATE == "Scores":
             highscores.initialize()
             Globals.STATE = highscores.Locals.CHANGESTATE
+            if gameScore != 0:
+                highscores.Locals.SCORE = gameScore
             while Globals.STATE == "Scores":
                 Globals.STATE = highscores.Locals.CHANGESTATE
                 last = PT.get_ticks()
