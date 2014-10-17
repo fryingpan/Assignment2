@@ -36,9 +36,9 @@ class Weapon(PS.Sprite):
         #the weapon will be 'hidden' after space is let go
         def attack(self, playerX, playerY, playerFace, screen, bg): #this bg is enemy block group
                 #collisions with the new weapon rect!
-                print("Player x: " + str(playerX) + "y: " + str(playerY))
-                print("x: " + str(self.rect.x) + "y: " + str(self.rect.y))
-                print("weapon rect: " + str(self.rect.size))
+                #print("Player x: " + str(playerX) + "y: " + str(playerY))
+                #print("x: " + str(self.rect.x) + "y: " + str(self.rect.y))
+                #print("weapon rect: " + str(self.rect.size))
                 score = 0
 
                 alphabg = (23,23,23)
