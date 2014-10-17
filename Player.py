@@ -124,7 +124,7 @@ class Player(PS.Sprite):
 						self.rect.y = collision.rect.top + collision.rect.height
 						once = False
 	
-        def handle_keys(self, bg, enemy_bg, interval = 5): #add enemy_bg to character_handle_keys in setup
+        def handle_keys(self, bg, interval = 5): #add enemy_bg to character_handle_keys in setup
 		""" Handles Keys """
 		key = PG.key.get_pressed()
 		dist = self.speed # distance moved in 1 frame, try changing it to 5
@@ -137,7 +137,7 @@ class Player(PS.Sprite):
 		elif key[PG.K_UP]: # up key
 			self.rect.y -= dist*interval # move up
 			#self.rect = self.image.get_rect()
-			self.face = 'u'
+                        self.face = 'u'
 			self.handle_collision(bg)
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
