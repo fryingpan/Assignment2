@@ -31,6 +31,7 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
+    SCORE = 0
 
 def initialize():
     # interval = 0.005
@@ -58,6 +59,7 @@ class Game(object):
 
         #Initialize objects on screen----------------
         self.character = Player(self.fps)
+        Locals.SCORE = self.character.score
         self.player_group = PS.GroupSingle(self.character)
 
         self.all_sprites.add(self.character)
@@ -165,7 +167,7 @@ class Game(object):
 
                     #self.addScoreText(self.character)
                     #self.addHitPointsText(self.character)
-
+            Locals.SCORE = self.character.score
             PD.update() # update the screen
             
     def update(self, player, delta):
