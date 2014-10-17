@@ -14,6 +14,7 @@ import pygame.mixer as PM
 import pygame.display as PD
 import pygame.sprite as PS
 import pygame.image as PI
+from Weapon import Weapon
 
 PG.init()
 
@@ -40,7 +41,7 @@ class Player(PS.Sprite):
 	WIDTH = 100
 	HEIGHT = 100
 
-	def __init__(self, speed = 1):
+        def __init__(self, fps = 1):
 		# Call the parent class (Sprite) constructor
 		PS.Sprite.__init__(self)
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
@@ -49,7 +50,7 @@ class Player(PS.Sprite):
 		self.rect.y = 1150
 		self.face = 'd'
 		self.load_images()
-		self.speed = speed
+                self.speed = 4*fps
 		self.time = 0.0
 		self.frame = 0
 		self.interval = 0
@@ -57,6 +58,7 @@ class Player(PS.Sprite):
 		#collision conditions, if true, we will not move in that direction
                 self.health = 10
                 self.score = 0
+                self.weapon = Weapon()
 
 	def get_face(self):
 		return self.face
@@ -124,7 +126,7 @@ class Player(PS.Sprite):
 						self.rect.y = collision.rect.top + collision.rect.height
 						once = False
 	
-        def handle_keys(self, bg, interval = 5): #add enemy_bg to character_handle_keys in setup
+        def handle_keys(self, bg, enemy_bg, screen, interval = 5): #add enemy_bg to character_handle_keys in setup
 		""" Handles Keys """
 		key = PG.key.get_pressed()
 		dist = self.speed # distance moved in 1 frame, try changing it to 5
@@ -149,8 +151,8 @@ class Player(PS.Sprite):
 			#self.rect = self.image.get_rect()
 			self.face = 'l'
 			self.handle_collision(bg)
-                #elif key[PG.K_SPACE]: #space key ATTACK
-                        #self.attack(enemy_bg)
+                elif key[PG.K_SPACE]: #space key ATTACK
+                        self.score += self.weapon.attack(self.rect.x, self.rect.y, self.face, screen, enemy_bg)
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
 				self.face = 'ds'
@@ -160,16 +162,6 @@ class Player(PS.Sprite):
 				self.face = 'rs'
 			if self.face == 'l':
 				self.face = 'ls'
-		
-        '''def attack(self, bg): #this bg is enemy block group
-                #collisions with the new weapon rect!
-                self.weapon.update_image(self.weaponImage)
-                weapon.x = self.rect.x+100
-                weapon.y = self.rect.y+50
-                collisions = PS.spritecollide(self, bg, False)
-                for collision in collisions:
-                    self.score = self.score + 1
-                    collision.kill()'''
 
 	def update(self, delta, bg):
 		PLAYER_IMAGE_LENGTH = 12 #all player sprite has 12 frames
