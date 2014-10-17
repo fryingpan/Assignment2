@@ -152,7 +152,7 @@ class Game(object):
 				delta = min(frame_time, self.interval)
 				for enemy in self.enemy_list.sprites():
 					enemy.update(self.block_group, self.player_group, delta)
-				self.character.handle_keys(self.block_group, self.interval)
+                                self.character.handle_keys(self.block_group, self.enemy_list, self.map.get_surface(), self.interval)
 				frame_time -= delta
 				self.updates += 1
 
