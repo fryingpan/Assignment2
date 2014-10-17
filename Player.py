@@ -41,24 +41,27 @@ class Player(PS.Sprite):
 	WIDTH = 100
 	HEIGHT = 100
 
-        def __init__(self, fps = 1):
+		def __init__(self, fps = 1):
 		# Call the parent class (Sprite) constructor
 		PS.Sprite.__init__(self)
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-                self.rect = self.image.get_rect()
+				self.rect = self.image.get_rect()
 		self.rect.x = 100
 		self.rect.y = 1150
 		self.face = 'd'
 		self.load_images()
-                self.speed = 8*fps
+				self.speed = 8*fps
 		self.time = 0.0
 		self.frame = 0
 		self.interval = 0
 		self.got_key = False #will turn to True once you've run into the yellow block
 		#collision conditions, if true, we will not move in that direction
-                self.health = 10
-                self.score = 0
-                self.weapon = Weapon()
+		self.health = 10
+		self.score = 0
+		self.weapon = Weapon()
+
+ 	def decrement_health(self, enemy_ID):
+ 		self.health -= 1
 
 	def get_face(self):
 		return self.face
@@ -126,7 +129,7 @@ class Player(PS.Sprite):
 						self.rect.y = collision.rect.top + collision.rect.height
 						once = False
 	
-        def handle_keys(self, bg, enemy_bg, screen, interval = 5): #add enemy_bg to character_handle_keys in setup
+		def handle_keys(self, bg, enemy_bg, screen, interval = 5): #add enemy_bg to character_handle_keys in setup
 		""" Handles Keys """
 		key = PG.key.get_pressed()
 		dist = self.speed # distance moved in 1 frame, try changing it to 5
@@ -141,7 +144,7 @@ class Player(PS.Sprite):
 		elif key[PG.K_UP]: # up key
 			self.rect.y -= dist*interval # move up
 			#self.rect = self.image.get_rect()
-                        self.face = 'u'
+						self.face = 'u'
 			self.handle_collision(bg)
 		elif key[PG.K_RIGHT]: # right key
 			self.rect.x += dist*interval # move right
@@ -153,8 +156,8 @@ class Player(PS.Sprite):
 			#self.rect = self.image.get_rect()
 			self.face = 'l'
 			self.handle_collision(bg)
-                elif key[PG.K_SPACE]: #space key ATTACK
-                        self.score += self.weapon.attack(self.rect.x, self.rect.y, self.face, screen, enemy_bg)
+				elif key[PG.K_SPACE]: #space key ATTACK
+						self.score += self.weapon.attack(self.rect.x, self.rect.y, self.face, screen, enemy_bg)
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
 				self.face = 'ds'
