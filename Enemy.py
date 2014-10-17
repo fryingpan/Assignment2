@@ -47,18 +47,22 @@ class Enemy(PG.sprite.Sprite):
         self.frame = 0
         self.WIDTH = 100
         self.HEIGHT = 100
-        self.count = 0
+        self.invincibility_count = 0
+        self.attacked_player = False
 
     def get_face(self):
         return self.face
 
+    def get_attacked_player(self):
+        return self.attacked_player
+
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
-            self.count = self.count + 1
-            #print("player coll " + str(self.count))
-            #print(collisions[0].rect.x)
-            #print("enemy right x " + str(self.rect.x) + " y " +str(self.rect.y))
+            if(self.invincibility_count == 0):
+                self.attacked_player = True
+                self.invincibility_count = 200
+                print("HIT")
         else:
             if self.face == 'r':
                 collisions = PS.spritecollide(self, bg, False)
@@ -97,6 +101,10 @@ class Enemy(PG.sprite.Sprite):
     def update(self, bg, player, delta = 1):
         self.speed
         self.move(bg, player, delta)
+        self.attacked_player = False
+        if(self.invincibility_count > 0):
+            self.invincibility_count -= 1
+            #print("invisib " + str(self.invincibility_count))
         #check that the new movement is within the boundaries
         #if self.check_collide() is True:
         #    self.direction = random.randint(0, 1)

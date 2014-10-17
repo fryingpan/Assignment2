@@ -38,15 +38,14 @@ class IceCream(Enemy):
         self.WIDTH = 100
         self.HEIGHT = 100
         self.enemy_ID = 1 #icecream ID
-        self.attacked_player = False
+        
         Enemy.__init__(self, self.rect,self.speed)
 
         
 
     def get_face(self):
         return self.face
-    def get_attacked_player(self):
-        return self.attacked_player
+
     def get_enemy_ID(self):
         return self.enemy_ID
     

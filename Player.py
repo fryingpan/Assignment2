@@ -36,7 +36,7 @@ class Player(PS.Sprite):
 	IMAGES_LEFT_DECEL = None
 	IMAGES_FRONT_DECEL = None
 	IMAGES_BACK_DECEL = None
-	CYCLE = 0.2
+	CYCLE = 0.1
 	ADCYCLE = .05
 	WIDTH = 100
 	HEIGHT = 100
@@ -50,7 +50,7 @@ class Player(PS.Sprite):
 		self.rect.y = 1150
 		self.face = 'd'
 		self.load_images()
-                self.speed = 4*fps
+                self.speed = 8*fps
 		self.time = 0.0
 		self.frame = 0
 		self.interval = 0
@@ -134,6 +134,8 @@ class Player(PS.Sprite):
 		if key[PG.K_DOWN]: # down key
 			self.rect.y += dist*interval# move down
 			#self.rect = self.image.get_rect()
+			print("distint " + str(dist*interval))
+			print("y  " + str(self.rect.y))
 			self.face = 'd'
 			self.handle_collision(bg)
 		elif key[PG.K_UP]: # up key

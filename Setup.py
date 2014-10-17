@@ -149,7 +149,7 @@ class Game(object):
                 delta = min(frame_time, self.interval)
                 for icecream in self.icecream_list.sprites():
                     icecream.update(self.block_group, self.player_group, delta)
-                    self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
+                self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
                 frame_time -= delta
                 self.updates += 1
 
