@@ -45,7 +45,7 @@ class Game(object):
     def __init__(self, interval):
         self.interval = interval
         self.fps = 40
-        self.num_enemies=1
+        self.num_enemies=13
     
         PG.init()
         self.screen = PD.set_mode((800, 600))

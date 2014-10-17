@@ -56,9 +56,9 @@ class Enemy(PG.sprite.Sprite):
         collisions = PS.spritecollide(self, bg, False)
         if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
             self.count = self.count + 1
-            print("player coll " + str(self.count))
-            print(collisions[0].rect.right)
-            print("enemy right " + str(self.rect.right))
+            #print("player coll " + str(self.count))
+            #print(collisions[0].rect.x)
+            #print("enemy right x " + str(self.rect.x) + " y " +str(self.rect.y))
         else:
             if self.face == 'r':
                 collisions = PS.spritecollide(self, bg, False)
@@ -128,7 +128,7 @@ class Enemy(PG.sprite.Sprite):
                 elif(self.face == 'ds'):
                     self.image = self.IMAGES_FRONT[0]
                 else:
-                    self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+                    self.image = self.front_image.convert_alpha()
 
 
     def move(self, bg, player, interval):
@@ -136,7 +136,7 @@ class Enemy(PG.sprite.Sprite):
             self.direction = random.randint(0, 3)
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         self.interval = interval
-        move_dist = 0*dist*interval                
+        move_dist = 1*dist*interval                
         if self.direction == 0: # down key
             self.rect.y += move_dist# move down
             #self.rect = self.image.get_rect()
@@ -214,24 +214,10 @@ class Enemy(PG.sprite.Sprite):
             imageArray.append(surface)
         return imageArray
 
-    def load_images(self):
-        Enemy.IMAGES_RIGHT = []
-        Enemy.IMAGES_LEFT = []
-        Enemy.IMAGES_FRONT = []
-        Enemy.IMAGES_BACK = []
-        sheetR = PI.load("FPGraphics/Food/IceCreamWalkRight.png").convert_alpha()
-        sheetL = PI.load("FPGraphics/Food/IceCreamWalkLeft.png").convert_alpha()
-        sheetF = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
-        sheetB = PI.load("FPGraphics/Food/IceCreamWalkBack.png").convert_alpha()
-        Enemy.IMAGES_RIGHT = self.load_images_helper(Enemy.IMAGES_RIGHT, sheetR)
-        Enemy.IMAGES_LEFT = self.load_images_helper(Enemy.IMAGES_LEFT, sheetL)
-        Enemy.IMAGES_FRONT = self.load_images_helper(Enemy.IMAGES_FRONT, sheetF)
-        Enemy.IMAGES_BACK = self.load_images_helper(Enemy.IMAGES_BACK, sheetB)
-
     #this will all end up in the key handler
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()
         except IndexError:
-            self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+            self.image = self.front_image.convert_alpha()
             self.face = list(self.face)[0]

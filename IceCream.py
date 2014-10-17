@@ -22,11 +22,11 @@ class IceCream(Enemy):
     CYCLE = .6
 
     def __init__(self, fps=1):
-        self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
-        self.front_image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+        self.image = PI.load("FPGraphics/Food/IceCreamFront.png").convert_alpha()
+        self.front_image = self.image
         self.rect = self.image.get_rect()
         self.load_images()
-        self.rect.x = 300
+        self.rect.x = 200
         self.rect.y = 1150
 
         self.speed = 4*fps
