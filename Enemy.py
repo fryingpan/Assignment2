@@ -62,7 +62,6 @@ class Enemy(PG.sprite.Sprite):
             if(self.invincibility_count == 0):
                 self.attacked_player = True
                 self.invincibility_count = 200
-                print("HIT")
         else:
             if self.face == 'r':
                 collisions = PS.spritecollide(self, bg, False)
@@ -100,8 +99,9 @@ class Enemy(PG.sprite.Sprite):
 
     def update(self, bg, player, delta = 1):
         self.speed
-        self.move(bg, player, delta)
         self.attacked_player = False
+        self.move(bg, player, delta)
+        
         if(self.invincibility_count > 0):
             self.invincibility_count -= 1
             #print("invisib " + str(self.invincibility_count))

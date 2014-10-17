@@ -26,7 +26,7 @@ class IceCream(Enemy):
         self.front_image = self.image
         self.rect = self.image.get_rect()
         self.load_images()
-        self.rect.x = 200
+        self.rect.x = 800
         self.rect.y = 1150
 
         self.speed = 4*fps
@@ -46,7 +46,7 @@ class IceCream(Enemy):
     def get_face(self):
         return self.face
 
-    def get_enemy_ID(self):
+    def get_ID(self):
         return self.enemy_ID
     
     def is_alive(self):

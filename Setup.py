@@ -46,7 +46,7 @@ class Game(object):
     def __init__(self, interval):
         self.interval = interval
         self.fps = 40
-        self.num_enemies=13
+        self.num_enemies=1
     
         PG.init()
         self.screen = PD.set_mode((800, 600))
@@ -67,6 +67,8 @@ class Game(object):
 
         #create icecream group 
         self.icecream_list = PS.Group()
+        self.enemy_ID = -1 # no enemy
+        self.invincibility_count = 0
 
         #add all the enemies to the list of enemies
         for e in range(self.num_enemies):  
@@ -149,8 +151,18 @@ class Game(object):
 
             while frame_time > 0.0:
                 delta = min(frame_time, self.interval)
+                self.enemy_ID = -1
                 for icecream in self.icecream_list.sprites():
                     icecream.update(self.block_group, self.player_group, delta)
+                    if(icecream.get_attacked_player()):
+                        self.invincibility_count = 200
+                        self.enemy_ID = icecream.get_ID()
+                if(self.enemy_ID != -1 and self.invincibility_count == 200):
+                    self.character.decrement_health(self.enemy_ID)
+                    self.enemy_ID = -1
+                if(self.invincibility_count > 0):
+                    self.invincibility_count -= 1
+
                 self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
                 frame_time -= delta
                 self.updates += 1
@@ -176,6 +188,7 @@ class Game(object):
             s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
             player.update(delta, self.block_group)
+
 
     def icecreamupdate(self, icecream, delta):
         icecream.update(delta)
