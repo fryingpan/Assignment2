@@ -32,8 +32,6 @@ class Globals(object):
     HEIGHT = None
     FONT = None
     STATE = None
-    NUM_ENEMIES = 1
-
 
 #Main Executable entry point
 def main():
@@ -68,13 +66,12 @@ def loop():
                 title.run(elapsed,event)
 
         elif Globals.STATE == "Game":
-            gamerino = Game.Game(.00625, 40, Globals.NUM_ENEMIES)
+            gamerino = Game.Game(.00625)
             Game.initialize()
             Globals.STATE = Game.Locals.CHANGESTATE
             while Globals.STATE == "Game":
                 Globals.State = Game.Locals.CHANGESTATE
                 interval = 0.005
-                fps = 40
                 if(gamerino.run() == False):
                     Globals.STATE = Game.Locals.CHANGESTATE
 

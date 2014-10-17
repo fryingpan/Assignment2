@@ -20,7 +20,7 @@ class Enemy(PG.sprite.Sprite):
 
     CYCLE = .6
 
-    def __init__(self, screen, speed=1):
+    def __init__(self, rect, speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.Sprite.__init__(self)
         #if not Enemy.IMAGE_UP and not Enemy.IMAGE_DOWN and not Enemy.IMAGE_LEFT and not Enemy.IMAGE_RIGHT:
@@ -34,13 +34,10 @@ class Enemy(PG.sprite.Sprite):
         self.image_left = Enemy.IMAGE_LEFT"""
         #self.image = None
         self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
-        self.rect = self.image.get_rect()
+        self.rect = rect
         self.load_images()
-        self.screen = screen
-        self.swidth = screen.get_width()*2
-        self.sheight = screen.get_height()*2
-        self.rect.x = 300
-        self.rect.y = 300
+        self.rect.x = rect.x
+        self.rect.y = rect.y
 
         self.speed = speed
         self.direction = random.randint(0, 3)
@@ -60,6 +57,8 @@ class Enemy(PG.sprite.Sprite):
         if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
             self.count = self.count + 1
             print("player coll " + str(self.count))
+            print(collisions[0].rect.right)
+            print("enemy right " + str(self.rect.right))
         else:
             if self.face == 'r':
                 collisions = PS.spritecollide(self, bg, False)
@@ -137,7 +136,7 @@ class Enemy(PG.sprite.Sprite):
             self.direction = random.randint(0, 3)
         dist = self.speed # distance moved in 1 frame, try changing it to 5
         self.interval = interval
-        move_dist = 1*dist*interval                
+        move_dist = 0*dist*interval                
         if self.direction == 0: # down key
             self.rect.y += move_dist# move down
             #self.rect = self.image.get_rect()
@@ -188,21 +187,21 @@ class Enemy(PG.sprite.Sprite):
         screen.blit(self.image, (self.rect.x, self.rect.y))
         PD.flip()
 
-    def check_collide(self): #check screen collision
-        collide = False
-        if self.rect.x < 50:
-            self.rect.x = 40
-            collide = True
-        elif self.rect.x > (self.swidth - self.WIDTH):
-            self.rect.x = (self.swidth - self.WIDTH - 40)
-            collide = True
-        if self.rect.y < 50:
-            self.rect.y = 40
-            collide = True
-        elif self.rect.y > (self.sheight - self.HEIGHT):
-            self.rect.y = (self.sheight - self.HEIGHT - 40)
-            collide = True
-        return collide
+    # def check_collide(self): #check screen collision
+    #     collide = False
+    #     if self.rect.x < 50:
+    #         self.rect.x = 40
+    #         collide = True
+    #     elif self.rect.x > (self.swidth - self.WIDTH):
+    #         self.rect.x = (self.swidth - self.WIDTH - 40)
+    #         collide = True
+    #     if self.rect.y < 50:
+    #         self.rect.y = 40
+    #         collide = True
+    #     elif self.rect.y > (self.sheight - self.HEIGHT):
+    #         self.rect.y = (self.sheight - self.HEIGHT - 40)
+    #         collide = True
+    #     return collide
                 
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
