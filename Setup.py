@@ -153,13 +153,24 @@ class Game(object):
                 delta = min(frame_time, self.interval)
                 self.enemy_ID = -1
                 for icecream in self.icecream_list.sprites():
+                    #update position and collisions
                     icecream.update(self.block_group, self.player_group, delta)
+                    #update weapons if they still need to be drawn
+                    icecream.weapon_update(self.map.get_surface())
+                    #see if the enemy will release weapon/attack
+                    if (icecream.will_attack()):
+                        icecream.attack()
+                    #see if ice cream collided with player
                     if(icecream.get_attacked_player()):
+                        #if so start invincibility count after attack
                         self.invincibility_count = 200
+                        #see which enemy attacked the player
                         self.enemy_ID = icecream.get_ID()
+                #If the enemy attacked the player while the player was not invincible        
                 if(self.enemy_ID != -1 and self.invincibility_count == 200):
                     self.character.decrement_health(self.enemy_ID)
                     self.enemy_ID = -1
+                #decrement invincibility count if player is in invincibility    
                 if(self.invincibility_count > 0):
                     self.invincibility_count -= 1
 

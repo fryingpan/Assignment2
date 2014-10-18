@@ -50,6 +50,13 @@ class Enemy(PG.sprite.Sprite):
         self.invincibility_count = 0
         self.attacked_player = False
 
+
+    def will_attack(self):
+        attack_prob = random.randint(0, 1000)
+        if (attack_prob == 1):
+            return True
+        return False
+
     def get_face(self):
         return self.face
 
@@ -193,7 +200,6 @@ class Enemy(PG.sprite.Sprite):
         """ Draw on surface """
         # blit yourself at your current position
         screen.blit(self.image, (self.rect.x, self.rect.y))
-        PD.flip()
 
     # def check_collide(self): #check screen collision
     #     collide = False
