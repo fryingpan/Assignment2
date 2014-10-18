@@ -52,7 +52,7 @@ class Enemy(PG.sprite.Sprite):
 
 
     def will_attack(self):
-        attack_prob = random.randint(0, 1000)
+        attack_prob = random.randint(0, 500)
         if (attack_prob == 1):
             return True
         return False

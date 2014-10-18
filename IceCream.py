@@ -39,9 +39,27 @@ class IceCream(Enemy):
         self.HEIGHT = 100
         self.enemy_ID = 1 #icecream ID
         
-        Enemy.__init__(self, self.rect,self.speed)
+        Enemy.__init__(self, self.rect, self.speed)
 
-        
+        #list of puddles to draw
+        self.puddles = []
+
+
+    def attack(self):
+        #create puddle at your location
+        new_puddle = Puddle(self.rect)
+        self.puddles.append(new_puddle)
+        print "added"
+
+    def weapon_update(self, surface):
+        for puddle in self.puddles:
+            puddle.draw(surface)
+            if puddle.count == 0:
+                puddle.disapear()
+                self.puddles.remove(puddle)
+                print "removed"
+            # if not puddle.dropped:
+            #     puddle.drop_animation()
 
     def get_face(self):
         return self.face
@@ -69,3 +87,34 @@ class IceCream(Enemy):
         Enemy.IMAGES_LEFT = self.load_images_helper(Enemy.IMAGES_LEFT, sheetL)
         Enemy.IMAGES_FRONT = self.load_images_helper(Enemy.IMAGES_FRONT, sheetF)
         Enemy.IMAGES_BACK = self.load_images_helper(Enemy.IMAGES_BACK, sheetB)
+
+class Puddle(PS.Sprite):
+
+    IMAGE = None
+
+    def __init__(self, rect):
+        PS.Sprite.__init__(self)
+        if not Puddle.IMAGE:
+            Puddle.IMAGE = PI.load("FPGraphics/Food/testPuddle.png").convert_alpha()
+        self.image = Puddle.IMAGE
+        self.rect = rect
+        self.x = self.rect.x
+        self.y = self.rect.y
+        self.count = 500
+        self.dropped = False
+        self.disappear = False
+
+    def drop_puddle(self):
+        self.drop_animation()
+
+    def drop_animation(self):
+        pass
+
+    def draw(self, surface):
+        if self.count > 0:
+            surface.blit(self.image, (self.x, self.y))
+        self.count -= 1        
+
+    def disappear(self):
+        pass
+

@@ -105,6 +105,9 @@ class Game(object):
         self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
         h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
         self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+        #Win/Lose items
+        self.win_image = PI.load("FPGraphics/specialEffects/testUWIN").convert_alpha()
+        self.lose_image = PI.load("FPGraphics/specialEffects/testURLOSER").convert_alpha()
     
     def run(self):
         running = True
@@ -131,6 +134,11 @@ class Game(object):
             for icecream in self.icecream_list.sprites():
                 icecream_face = icecream.get_face()
                 icecream.draw(self.map.get_surface())
+                #see if the enemy will release weapon/attack
+                if (icecream.will_attack()):
+                    icecream.attack()
+                #update weapons if they still need to be drawn
+                icecream.weapon_update(self.map.get_surface())
 
             #draw blocks
             self.map.draw_map()
@@ -155,11 +163,13 @@ class Game(object):
                 for icecream in self.icecream_list.sprites():
                     #update position and collisions
                     icecream.update(self.block_group, self.player_group, delta)
-                    #update weapons if they still need to be drawn
-                    icecream.weapon_update(self.map.get_surface())
-                    #see if the enemy will release weapon/attack
-                    if (icecream.will_attack()):
-                        icecream.attack()
+                    # #update weapons if they still need to be drawn
+                    # icecream.weapon_update(self.map.get_surface())
+                    # #see if the enemy will release weapon/attack
+                    # if (icecream.will_attack()):
+                    #     icecream.attack()
+                    # #update weapons if they still need to be drawn
+                    # icecream.weapon_update(self.map.get_surface())
                     #see if ice cream collided with player
                     if(icecream.get_attacked_player()):
                         #if so start invincibility count after attack
