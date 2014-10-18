@@ -1,3 +1,4 @@
+10-18
 FRYING PAN
 Carla Castro
 Katie Chang
@@ -20,3 +21,9 @@ Todo
 prepare presentation
     make powerpoint
     delegate parts of presentation
+
+On Problem 3: Scores
+As of right now, every time you kill one enemy, you gain one point.
+The score is displayed on the lower left corner (along with health).
+Upon exiting the game and opening the high score page, your new score
+will be updated (the highscores.py module first writes the new score onto the scores.txt and then reads it before rendering it onto the game screen).

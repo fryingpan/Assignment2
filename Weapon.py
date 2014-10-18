@@ -22,10 +22,15 @@ class Weapon(PS.Sprite):
         def __init__(self):
                 # Call the parent class (Sprite) constructor
                 PS.Sprite.__init__(self)
-                self.image = PI.load("swordtest.png").convert_alpha()
+                self.image = PI.load("FPGraphics/MC/weapon/testFP.png").convert_alpha()
                 self.rect = self.image.get_rect()
-                self.width = 30
-                self.height = 15
+                self.width = self.rect.width
+                self.height = self.rect.height
+                self.surface = PG.Surface((100, 100))
+                alphabg = (23,23,23)
+                self.surface.set_colorkey(alphabg)
+                self.surface.blit(self.image,(0,0))
+                self.image = self.surface
 
         def get_coordinates(self):
                 coordinates = [self.rect.x, self.rect.y]
@@ -41,9 +46,10 @@ class Weapon(PS.Sprite):
                 #print("weapon rect: " + str(self.rect.size))
                 score = 0
 
-                alphabg = (23,23,23)
-                screen.set_colorkey(alphabg)
-                screen.blit(self.image, (0,0))
+                # alphabg = (23,23,23)
+                # screen.set_colorkey(alphabg)
+                # screen.blit(self.image, (100,1150))
+                # PD.flip()
 
                 if "r" in playerFace:
                     self.rect.x = playerX+100
@@ -60,7 +66,7 @@ class Weapon(PS.Sprite):
                 else:
                     self.rect.x = playerX
                     self.rect.y = playerY
-                self.draw(screen)
+                #self.draw(screen)
 
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
@@ -72,6 +78,7 @@ class Weapon(PS.Sprite):
         def draw(self, screen):
                 """ Draw on surface """
                 # blit yourself at your current position
+
                 screen.blit(self.image, (self.rect.x, self.rect.y))
                 PD.flip()
 
