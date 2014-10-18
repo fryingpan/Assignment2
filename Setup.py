@@ -215,7 +215,9 @@ class Game(object):
                 if(self.end_time > 0):
                     self.end_time -= 1
                 else:
-                    
+                    print("changing")
+                    Locals.CHANGESTATE = "Menu"
+
             player.update(delta, self.block_group)
 
 
