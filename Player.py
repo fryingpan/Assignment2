@@ -238,7 +238,6 @@ class Player(PS.Sprite):
 		self.check_boundary(screen)
 		# blit yourself at your current position
 		screen.blit(self.image, (self.rect.x, self.rect.y))
-		PD.flip()
 		
 	def check_boundary(self, screen):
 		width = screen.get_width() *2
