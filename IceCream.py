@@ -55,9 +55,10 @@ class IceCream(Enemy):
         for puddle in self.puddles:
             puddle.draw(surface)
             if puddle.count == 0:
-                puddle.disapear()
+                # puddle.disapear()
                 self.puddles.remove(puddle)
                 print "removed"
+        print len(self.puddles)
             # if not puddle.dropped:
             #     puddle.drop_animation()
 
