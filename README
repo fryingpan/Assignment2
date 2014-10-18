@@ -4,83 +4,19 @@ Katie Chang
 Mary Yen
 Josh Holstein
 
-=======
-Part 1
-=======
-The player normally moves at a speed of .8. For acceleration, the player will start at 0 and go to .8 at .2 intervals (0,.2,.4,.6,.8) and deceleration will work the opposite way.
+Todo
+-player attack animation 
+    weapon doesn't appear
+-puddles
+    puddle damage etc
+-win/lose game ending
+-high scores
+    record scores
+    display scores
 
-Note that the current acceleration and deceleration speeds are subject to change since we would like to determine the enemy speeds and other obstacles before determining a final accel/decel speed. The player only decelerates after accelrating.
+-score celebration thingy
 
-Note that the player does not always accelerate/decelerate when moving since we've used the get_key_pressed method to detect when to accelerate/decelerate, but this method does not always detect when we press the keys.
-
-Bugs
----------
-We've prevented the program from crashing under these bugs in a try/except block, but here are some errors we can't fix.
-
------------
-There is a bug when you try to accelerate too much repeatedly
-(very quickly tap the direction keys over and over). However,
-we believe that this may be the fault of the built-in method ,
-get_key_pressed, which does not always detect when the key is 
-pressed quickly enough to utilize our methods, as seen in the 
-following stdout printout.
-
-bug printout:
-accel interval 0.0
-x 11.600000000000001 y 310.40000000000134
-accel interval 0.2
-x 11.600000000000001 y 310.60000000000133
-accel interval 0.4
-x 11.600000000000001 y 311.0000000000013
-accel interval 0.6
-x 11.600000000000001 y 311.60000000000133
-
-*This accel works just fine, but the following printout (which
-occurs immediately after the lines above, do not work because
-we were tapping the direction key so rapidly that the get_key
-method failed to detect it)
-
-accel interval 0.0
-x 11.600000000000001 y 311.60000000000133
-accel interval 0.2
-x 11.600000000000001 y 311.8000000000013
-accel interval 0.4
-x 11.600000000000001 y 312.2000000000013
-accel interval 0.6
-x 11.600000000000001 y 312.8000000000013
-Traceback (most recent call last):
-  File "masterfile.py", line 115, in <module>
-    main()
-  File "masterfile.py", line 42, in main
-    loop()
-  File "masterfile.py", line 81, in loop
-    if(gamerino.run() == False):
-  File "/home/mary/fryingpan/Assignment2/Setup.py", line 138, in run
-    self.update(self.character, elapsed)
-  File "/home/mary/fryingpan/Assignment2/Setup.py", line 164, in update
-    player.update(delta)
-  File "/home/mary/fryingpan/Assignment2/Player.py", line 218, in update
-    self.update_image(self.IMAGES_FRONT_ACCEL)
-  File "/home/mary/fryingpan/Assignment2/Player.py", line 232, in update_image
-    self.image = imageArray[self.frame].convert_alpha()
-IndexError: list index out of range
-
---------------
-Another bug is that the player does not clearly decelerate, but from the following code, the player's x and y are changing at the decelerated rate (.8 then .6 then .4 then .2) if you look at the y values.
-Decel printout:
-decel interval 0.8
-x 90.3999999999998 y 240.4000000000011
-d 120
-decel interval 0.6
-x 90.3999999999998 y 241.0000000000011
-d 80
-decel interval 0.4
-x 90.3999999999998 y 241.4000000000011
-d 40
-decel interval 0.2
-x 90.3999999999998 y 241.6000000000011
-
-Part 2
-For the drawing, the drawing.py takes in a text file and draws on the blocks
-on the text file to the screen. 
-The collision does not fully work. It works when the player's right side collides with the wall but otherwise it teleports. Why? It is currently unknown.
+---------------
+prepare presentation
+    make powerpoint
+    delegate parts of presentation

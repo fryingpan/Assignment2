@@ -62,7 +62,6 @@ class Player(PS.Sprite):
 
  	def decrement_health(self, enemy_ID):
  		self.health -= 1
- 		print("HEALTH")
 
 	def get_face(self):
 		return self.face
