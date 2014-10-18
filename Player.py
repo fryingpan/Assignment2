@@ -47,7 +47,7 @@ class Player(PS.Sprite):
 		self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 		self.rect = self.image.get_rect()
 		self.rect.x = 100
-		self.rect.y = 1150
+		self.rect.y = 100
 		self.face = 'd'
 		self.load_images()
 		self.speed = 8*fps
@@ -232,6 +232,9 @@ class Player(PS.Sprite):
 		
 	def draw(self, screen, block_group):
 		""" Draw on surface """
+		key = PG.key.get_pressed()
+		if key[PG.K_SPACE]:
+			self.weapon.draw(screen)
 		self.check_boundary(screen)
 		# blit yourself at your current position
 		screen.blit(self.image, (self.rect.x, self.rect.y))
