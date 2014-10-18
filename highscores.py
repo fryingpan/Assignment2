@@ -86,13 +86,10 @@ def initialize():
     if Locals.SCORE != 0 and Locals.ADDED == 0:
         Locals.STATE.addScoretoText()
         Locals.ADDED = 1
-        #print("score: " + str(Locals.SCORE) + " added " + str(Locals.ADDED))
     if Locals.ADDED != 0: #if we've added something already
         Locals.SCORE = 0 #reset new high score
     Locals.STATE = HighScores()
     Locals.CHANGESTATE = 'Scores'
-
-
 
 def run(elapsed, event):
     Locals.STATE.render()
