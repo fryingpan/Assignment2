@@ -91,10 +91,10 @@ def loop():
                     return 0
             
         elif Globals.STATE == "Scores":
+            if gameScore != 0:
+                highscores.Locals.SCORE = gameScore #give new gamescore to highscores class FIRST
             highscores.initialize()
             Globals.STATE = highscores.Locals.CHANGESTATE
-            if gameScore != 0:
-                highscores.Locals.SCORE = gameScore
             while Globals.STATE == "Scores":
                 Globals.STATE = highscores.Locals.CHANGESTATE
                 last = PT.get_ticks()

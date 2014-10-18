@@ -13,6 +13,7 @@ class Globals(object):
     FONT = None
     STATE = None
 
+
 #Container for Local variables
 class Locals(object):
     RUNNING = True
@@ -25,13 +26,14 @@ class Locals(object):
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
     SCORE = 0
+    ADDED = 0
+
 
 #All this below is from before
 class HighScores:
 
     def __init__(self):
         PG.font.init()
-
 
         Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
         Globals.WIDTH = Globals.SCREEN.get_width()
@@ -61,10 +63,10 @@ class HighScores:
         elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
                 Locals.CHANGESTATE = "Menu"
 
-    def addScoretoText(): #only run if SCORE !=0
+    def addScoretoText(self): #only run if SCORE !=0
         f = open('scores.txt', 'a')
-        scoretoAdd = str(SCORE)
-        toAdd = "Player " + scoretoAdd
+        scoretoAdd = str(Locals.SCORE)
+        toAdd = "Player " + scoretoAdd + "\n"
         f.write(toAdd)
         f.close()
 
@@ -81,40 +83,47 @@ class HighScores:
         return surface
 
 def initialize():
+    if Locals.SCORE != 0 and Locals.ADDED == 0:
+        Locals.STATE.addScoretoText()
+        Locals.ADDED = 1
+        #print("score: " + str(Locals.SCORE) + " added " + str(Locals.ADDED))
+    if Locals.ADDED != 0: #if we've added something already
+        Locals.SCORE = 0 #reset new high score
     Locals.STATE = HighScores()
     Locals.CHANGESTATE = 'Scores'
+
+
 
 def run(elapsed, event):
     Locals.STATE.render()
     PDI.flip()
     Locals.STATE.update(elapsed)
 
-    if SCORE != 0:
-        for event in PE.get():
-            print(PG.QUIT)
-            if event.type == PG.QUIT:
+    for event in PE.get():
+        if event.type == PG.QUIT:
+            return False
+        else:
+            if(Locals.STATE.event(event) == False):
                 return False
-            else:
-                if(Locals.STATE.event(event) == False):
-                    return False
+
 
 
 
 def render_text(string, font, rect, text_color, background_color):
     final_lines = []
-
     lines = string.splitlines()
 
     # Create a series of lines that will fit in rect
     for line in lines:
         if font.size(line)[0] > rect.width:
+
             words = line.split(' ')
             # if the name and score is longer than the width of the surface
             for word in words:
                 if font.size(word)[0] >= rect.width:
                     raise TextRectException, "The word " + word + " is too long to fit in the rect passed."
-            else:
-                final_lines.append(line)
+        else:
+            final_lines.append(line)
 
     # Write onto the surface
     surface = PG.Surface(rect.size)
