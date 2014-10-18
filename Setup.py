@@ -3,6 +3,7 @@
 
 try:
     import pygame as PG
+    import pygame.image as PI
     from pygame.locals import *
     import pygame.time as PT
     import sys
@@ -106,8 +107,8 @@ class Game(object):
         h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
         self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
         #Win/Lose items
-        self.win_image = PI.load("FPGraphics/specialEffects/testUWIN").convert_alpha()
-        self.lose_image = PI.load("FPGraphics/specialEffects/testURLOSER").convert_alpha()
+        self.win_image = PI.load("FPGraphics/specialEffects/testUWIN.png").convert_alpha()
+        self.lose_image = PI.load("FPGraphics/specialEffects/testURLOSER.png").convert_alpha()
     
     def run(self):
         running = True
