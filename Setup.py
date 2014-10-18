@@ -109,6 +109,7 @@ class Game(object):
         #Win/Lose items
         self.win_image = PI.load("FPGraphics/specialEffects/testUWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/specialEffects/testURLOSER.png").convert_alpha()
+        self.end_time = 100
     
     def run(self):
         running = True
@@ -209,6 +210,12 @@ class Game(object):
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
             s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+            if(player.score == self.num_enemies):
+                self.screen.blit(self.win_image, (0,0))
+                if(self.end_time > 0):
+                    self.end_time -= 1
+                else:
+                    
             player.update(delta, self.block_group)
 
 
