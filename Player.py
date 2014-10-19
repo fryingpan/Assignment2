@@ -244,7 +244,7 @@ class Player(PS.Sprite):
 					self.update_image(self.IMAGES_FRONT_ACCEL)
 				else:
 					self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
-			print(self.face)
+			#print(self.face)
 
 	def update_image(self, imageArray):
 		try:
