@@ -203,6 +203,8 @@ class Game(object):
                     #self.addScoreText(self.character)
                     #self.addHitPointsText(self.character)
             Locals.SCORE = self.character.score
+            if(Locals.CHANGESTATE == "Menu"):
+                return False
             PD.update() # update the screen
             
     def update(self, player, delta):
@@ -215,7 +217,6 @@ class Game(object):
                 if(self.end_time > 0):
                     self.end_time -= 1
                 else:
-                    print("changing")
                     Locals.CHANGESTATE = "Menu"
 
             player.update(delta, self.block_group)
