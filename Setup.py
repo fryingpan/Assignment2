@@ -183,6 +183,8 @@ class Game(object):
                     self.enemy_ID = -1
                 #decrement invincibility count if player is in invincibility    
                 if(self.invincibility_count > 0):
+                    if(self.invincibility_count % 50 == 0):
+                        self.character.invincibility_frames()
                     self.invincibility_count -= 1
 
                 self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
@@ -203,7 +205,7 @@ class Game(object):
                     #self.addHitPointsText(self.character)
 
             Locals.SCORE = self.character.score
-            if(Locals.CHANGESTATE != "Game"):
+            if(Locals.CHANGESTATE == "Menu"):
                 return False
             PD.update() # update the screen
             
@@ -218,7 +220,7 @@ class Game(object):
                     self.end_time -= 1
                 else:
                     Locals.CHANGESTATE = "Menu"
-            if(player.health == 0):
+            if(player.health <= 0):
                 self.screen.blit(self.lose_image, self.end_image_position)
                 if(self.end_time > 0):
                     self.end_time -= 1
