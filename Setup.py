@@ -143,8 +143,7 @@ class Game(object):
                 #update weapons if they still need to be drawn
                 icecream.weapon_update(self.map.get_surface(), self.player_group)
                 icecream.draw(self.map.get_surface())
-                if (icecream.get_weapon_attack()):
-                    print "WEAPON ATTACK"
+                if (icecream.get_weapon_attack() and self.invincibility_count == 0):
                     weapon_attack = True
 
             #draw blocks
@@ -171,7 +170,9 @@ class Game(object):
                     #update position and collisions
                     icecream.update(self.block_group, self.player_group, delta)
                     #see if ice cream collided with player
-                    if(icecream.get_attacked_player()):
+                    if(icecream.get_attacked_player() or weapon_attack):
+                        if weapon_attack:
+                            weapon_attack = False
                         #if so start invincibility count after attack
                         self.invincibility_count = 200
                         #see which enemy attacked the player
@@ -180,13 +181,9 @@ class Game(object):
                 if(self.enemy_ID != -1 and self.invincibility_count == 200):
                     self.character.decrement_health(self.enemy_ID)
                     self.enemy_ID = -1
-                    if weapon_attack:
-                        # print "SETTING TO FALSE"
-                        weapon_attack = False
                 #decrement invincibility count if player is in invincibility    
                 if(self.invincibility_count > 0):
                     self.invincibility_count -= 1
-                # print self.invincibility_count
 
                 self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
                 frame_time -= delta

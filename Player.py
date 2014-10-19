@@ -32,10 +32,10 @@ class Player(PS.Sprite):
 	IMAGES_LEFT_ACCEL = None
 	IMAGES_FRONT_ACCEL = None
 	IMAGES_BACK_ACCEL = None
-	IMAGES_RIGHT_DECEL = None
-	IMAGES_LEFT_DECEL = None
-	IMAGES_FRONT_DECEL = None
-	IMAGES_BACK_DECEL = None
+	IMAGES_RIGHT_DMG = None
+	IMAGES_LEFT_DMG = None
+	IMAGES_FRONT_DMG = None
+	IMAGES_BACK_DMG = None
         #attack images
         IMG_ATTACK_D = None
         IMG_ATTACK_U = None
@@ -63,11 +63,13 @@ class Player(PS.Sprite):
 		self.got_key = False #will turn to True once you've run into the yellow block
 		#collision conditions, if true, we will not move in that direction
 		self.health = 10
+		self.dmg_count = 0
 		self.score = 0
 		self.weapon = Weapon()
 
  	def decrement_health(self, enemy_ID):
  		self.health -= 1
+ 		self.dmg_count = 3
 
 	def get_face(self):
 		return self.face
@@ -201,46 +203,54 @@ class Player(PS.Sprite):
 		
 		if frame != self.frame:
 			self.frame = frame
-			if (self.face == 'r'):
-				self.update_image(self.IMAGES_RIGHT)
-			elif (self.face == 'u'):
-				self.update_image(self.IMAGES_BACK)
-			elif (self.face == 'l'):
-				self.update_image(self.IMAGES_LEFT)
-			elif (self.face == 'd'):
-				self.update_image(self.IMAGES_FRONT)
-			#standing
-			elif(self.face == 'rs'):
-				self.image = self.IMAGES_RIGHT[0]
-			elif(self.face == 'us'):
-				self.image = self.IMAGES_BACK[0]
-			elif(self.face == 'ls'):
-				self.image = self.IMAGES_LEFT[0]
-			elif(self.face == 'ds'):
-				self.image = self.IMAGES_FRONT[0]
-			#accel
-			elif(self.face == 'ra'):
-				self.update_image(self.IMAGES_RIGHT_ACCEL)
-			elif(self.face == 'ua'):
-				self.update_image(self.IMAGES_BACK_ACCEL)
-			elif(self.face == 'la'):
-				self.update_image(self.IMAGES_LEFT_ACCEL)
-			elif(self.face == 'da'):
-				self.update_image(self.IMAGES_FRONT_ACCEL)
-			#decel
-			elif(self.face == 'rd'):
-				self.update_image(self.IMAGES_RIGHT_DECEL)
-			elif(self.face == 'ud'):
-				self.update_image(self.IMAGES_BACK_DECEL)
-			elif(self.face == 'ld'):
-				self.update_image(self.IMAGES_LEFT_DECEL)
+			if(self.dmg_count > 0):
+				self.dmg_count -= 1
+				self.face = list(self.face)[0]
+				#DMG
+				if(self.face == 'r'):
+					self.update_image(self.IMAGES_RIGHT_DMG)
+				elif(self.face == 'u'):
+					self.update_image(self.IMAGES_BACK_DMG)
+				elif(self.face == 'l'):
+					self.update_image(self.IMAGES_LEFT_DMG)
+				elif(self.face == 'd'):
+					self.update_image(self.IMAGES_FRONT_DMG)
 			else:
-				self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+				if (self.face == 'r'):
+					self.update_image(self.IMAGES_RIGHT)
+				elif (self.face == 'u'):
+					self.update_image(self.IMAGES_BACK)
+				elif (self.face == 'l'):
+					self.update_image(self.IMAGES_LEFT)
+				elif (self.face == 'd'):
+					self.update_image(self.IMAGES_FRONT)
+				#standing
+				elif(self.face == 'rs'):
+					self.image = self.IMAGES_RIGHT[0]
+				elif(self.face == 'us'):
+					self.image = self.IMAGES_BACK[0]
+				elif(self.face == 'ls'):
+					self.image = self.IMAGES_LEFT[0]
+				elif(self.face == 'ds'):
+					self.image = self.IMAGES_FRONT[0]
+				#accel
+				elif(self.face == 'ra'):
+					self.update_image(self.IMAGES_RIGHT_ACCEL)
+				elif(self.face == 'ua'):
+					self.update_image(self.IMAGES_BACK_ACCEL)
+				elif(self.face == 'la'):
+					self.update_image(self.IMAGES_LEFT_ACCEL)
+				elif(self.face == 'da'):
+					self.update_image(self.IMAGES_FRONT_ACCEL)
+				else:
+					self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
+			#print(self.face)
 
 	def update_image(self, imageArray):
 		try:
 			self.image = imageArray[self.frame].convert_alpha()
 		except IndexError:
+			print("IMG ERROR")
 			self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png").convert_alpha()
 			self.face = list(self.face)[0]
 		
@@ -315,10 +325,10 @@ class Player(PS.Sprite):
 		Player.IMAGES_LEFT_ACCEL = []
 		Player.IMAGES_FRONT_ACCEL = []
 		Player.IMAGES_BACK_ACCEL = []
-		Player.IMAGES_RIGHT_DECEL = []
-		Player.IMAGES_LEFT_DECEL = []
-		Player.IMAGES_FRONT_DECEL = []
-		Player.IMAGES_BACK_DECEL = []
+		Player.IMAGES_RIGHT_DMG = []
+		Player.IMAGES_LEFT_DMG = []
+		Player.IMAGES_FRONT_DMG = []
+		Player.IMAGES_BACK_DMG = []
 		sheetR = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png").convert_alpha()
 		sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png").convert_alpha()
 		sheetF = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
@@ -328,11 +338,12 @@ class Player(PS.Sprite):
 		sheetLA = PI.load("FPGraphics/MC/MCwalk/MCAccelLeft.png").convert_alpha()
 		sheetFA = PI.load("FPGraphics/MC/MCwalk/MCAccelFront.png").convert_alpha()
 		sheetBA = PI.load("FPGraphics/MC/MCwalk/MCAccelBack.png").convert_alpha()
-		#decel
-		sheetRD = PI.load("FPGraphics/MC/MCwalk/MCDecelRight.png").convert_alpha()
-		sheetLD = PI.load("FPGraphics/MC/MCwalk/MCDecelLeft.png").convert_alpha()
-		sheetFD = PI.load("FPGraphics/MC/MCwalk/MCDecelFront.png").convert_alpha()
-		sheetBD = PI.load("FPGraphics/MC/MCwalk/MCDecelBack.png").convert_alpha()
+		#damage
+		sheetRD = PI.load("FPGraphics/MC/MCwalk/MCDMGRight.png").convert_alpha()
+		sheetLD = PI.load("FPGraphics/MC/MCwalk/MCDMGLeft.png").convert_alpha()
+		sheetFD = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
+		sheetBD = PI.load("FPGraphics/MC/MCwalk/MCDMGBack.png").convert_alpha()
+
 		Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
 		Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT, sheetL)
 		Player.IMAGES_FRONT = self.load_images_helper(Player.IMAGES_FRONT, sheetF)
@@ -341,10 +352,10 @@ class Player(PS.Sprite):
 		Player.IMAGES_LEFT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_ACCEL, sheetLA)
 		Player.IMAGES_FRONT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_ACCEL, sheetFA)
 		Player.IMAGES_BACK_ACCEL = self.load_images_helper_accdec(Player.IMAGES_BACK_ACCEL, sheetBA)
-		Player.IMAGES_RIGHT_DECEL = self.load_images_helper_accdec(Player.IMAGES_RIGHT_DECEL, sheetRD)
-		Player.IMAGES_LEFT_DECEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_DECEL, sheetLD)
-		Player.IMAGES_FRONT_DECEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_DECEL, sheetFD)
-		Player.IMAGES_BACK_DECEL = self.load_images_helper_accdec(Player.IMAGES_BACK_DECEL, sheetBD)
+		Player.IMAGES_RIGHT_DMG = self.load_images_helper_accdec(Player.IMAGES_RIGHT_DMG, sheetRD)
+		Player.IMAGES_LEFT_DMG = self.load_images_helper_accdec(Player.IMAGES_LEFT_DMG, sheetLD)
+		Player.IMAGES_FRONT_DMG = self.load_images_helper(Player.IMAGES_FRONT_DMG, sheetFD)
+		Player.IMAGES_BACK_DMG = self.load_images_helper_accdec(Player.IMAGES_BACK_DMG, sheetBD)
 
                 #load attack images
                 Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/MCFrontFPatk1.png").convert_alpha()

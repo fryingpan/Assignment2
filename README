@@ -21,8 +21,21 @@ Todo
 prepare presentation
     make powerpoint
     delegate parts of presentation
+    
+=====================
+Problem 1: Enemies
+=====================
+The ice cream enemies will make the player lose 1 health
+every time they touch, and the ice cream leaves puddles that
+also make the player lose health. 
 
-On Problem 3: Scores
+=====================
+Problem 2: Damage, Win, Lose
+=====================
+    
+=====================
+Problem 3: Scores
+=====================
 As of right now, every time you kill one enemy, you gain one point.
 The score is displayed on the lower left corner (along with health).
 Upon exiting the game and opening the high score page, your new score
