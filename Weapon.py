@@ -110,7 +110,7 @@ class Weapon(PS.Sprite):
                 PD.flip()
 
         def load_images(self):
-            Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/testFPR.png").convert_alpha()
-            Weapon.IMAGE_LEFT = PI.load("FPGraphics/MC/weapon/testFPL.png").convert_alpha()
-            Weapon.IMAGE_DOWN = PI.load("FPGraphics/MC/weapon/testFPD.png").convert_alpha()
-            Weapon.IMAGE_UP = PI.load("FPGraphics/MC/weapon/testFPU.png").convert_alpha()
+            Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/FPR.png").convert_alpha()
+            Weapon.IMAGE_LEFT = PI.load("FPGraphics/MC/weapon/FPL.png").convert_alpha()
+            Weapon.IMAGE_DOWN = PI.load("FPGraphics/MC/weapon/FPD.png").convert_alpha()
+            Weapon.IMAGE_UP = PI.load("FPGraphics/MC/weapon/FPU.png").convert_alpha()
