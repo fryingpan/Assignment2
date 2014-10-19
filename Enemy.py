@@ -66,6 +66,7 @@ class Enemy(PG.sprite.Sprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
+            # print type(collisions[0])
             if(self.invincibility_count == 0):
                 self.attacked_player = True
                 self.invincibility_count = 200
