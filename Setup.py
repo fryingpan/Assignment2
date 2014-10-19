@@ -16,11 +16,12 @@ try:
     import Map
     import camera as cam
     import pygame.font as PF
-    
+
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
     import sys
     sys.exit(1)
+
 
 class Locals(object):
     RUNNING = True
@@ -34,12 +35,12 @@ class Locals(object):
     CHANGESTATE = "None"
     SCORE = 0
 
+
 def initialize():
     # interval = 0.005
     # fps = 40
     # game = Game(interval, fps, num_enemies)
     Locals.CHANGESTATE = 'Game'
-    
 
 
 class Game(object):
@@ -47,14 +48,15 @@ class Game(object):
     def __init__(self, interval):
         self.interval = interval
         self.fps = 40
-        self.num_enemies=1
-    
+        self.num_enemies = 1
+
         PG.init()
         self.screen = PD.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
-        self.screen.fill((255,255,255))
-        PD.set_caption("Master Chef's wicked adventure with his ice cream buddies")
-        
+        self.screen.fill((255, 255, 255))
+        PD.set_caption("Master Chef's wicked adventure " +
+                       "with his ice cream buddies")
+
         #sprite group containing all sprites
         self.all_sprites = PS.Group()
 
@@ -65,14 +67,13 @@ class Game(object):
 
         self.all_sprites.add(self.character)
 
-
-        #create icecream group 
+        #create icecream group
         self.icecream_list = PS.Group()
-        self.enemy_ID = -1 # no enemy
+        self.enemy_ID = -1  # no enemy
         self.invincibility_count = 0
 
         #add all the enemies to the list of enemies
-        for e in range(self.num_enemies):  
+        for e in range(self.num_enemies):
             icecream = IceCream(self.fps)
             self.icecream_list.add(icecream)
 
@@ -82,18 +83,15 @@ class Game(object):
         #add the blocks to the sprite group containing all sprites
         for block in self.block_group:
             #if block.get_color != 'yellow':
-            self.all_sprites.add(block) # only has map sprites
+            self.all_sprites.add(block)  # only has map sprites
             #else:
                # self.key_sprite.add(block)
 
-        self.bigmap_rect = Rect(0,0, 1600, 1200)
+        self.bigmap_rect = Rect(0, 0, 1600, 1200)
 
         self.camera = cam.Camera(self.map.get_surface())
 
-
-        #I don't actually know what this does
         PE.set_allowed([QUIT, KEYDOWN])
-
         self.clock = PT.Clock()
         self.current_time = PT.get_ticks()
         self.updates = 0
@@ -102,16 +100,18 @@ class Game(object):
 
                 #fonts
         self.font = PF.SysFont('Arial', 25)
-        s = "Score: " + str(self.character.score) #Must have some variable. Add variable name here, uncomment, should work.
-        self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-        h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
-        self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+        s = "Score: " + str(self.character.score)
+        self.screen.blit(self.font.render(s, True, (255, 255, 255)), (25, 550))
+        h = "Health: " + str(self.character.health)
+        self.screen.blit(self.font.render(s, True, (255, 255, 255)), (25, 520))
         #Win/Lose items
-        self.win_image = PI.load("FPGraphics/specialEffects/UWIN.png").convert_alpha()
-        self.lose_image = PI.load("FPGraphics/specialEffects/ULOSE.png").convert_alpha()
+        self.win_image = PI.load("FPGraphics/" +
+                                 "specialEffects/UWIN.png").convert_alpha()
+        self.lose_image = PI.load("FPGraphics/" +
+                                  "specialEffects/ULOSE.png").convert_alpha()
         self.end_time = 800
-        self.end_image_position = (100,178)
-    
+        self.end_image_position = (100, 178)
+
     def run(self):
         running = True
         while running:
@@ -121,7 +121,7 @@ class Game(object):
             self.clock.tick()
 
             running = self.handleEvents()
-            if(running == False):
+            if(running is False):
                 return False
             #Key Handling----------------------------
 
@@ -130,8 +130,6 @@ class Game(object):
 
             #draw blocks
             self.map.draw_map()
-
-
             #move and draw the enemies
             player_face = self.character.get_face()
             weapon_attack = False
@@ -141,18 +139,23 @@ class Game(object):
                 if (icecream.will_attack()):
                     icecream.attack()
                 #update weapons if they still need to be drawn
-                icecream.weapon_update(self.map.get_surface(), self.player_group)
+                icecream.weapon_update(self.map.get_surface(),
+                                       self.player_group)
                 icecream.draw(self.map.get_surface())
-                if (icecream.get_weapon_attack() and self.invincibility_count == 0):
+                if(icecream.get_weapon_attack() and
+                   self.invincibility_count == 0):
                     weapon_attack = True
 
             #draw blocks
             self.map.draw_map()
 
-            self.character.draw(self.map.get_surface(), self.block_group) # draw the character to the screen
+            self.character.draw(self.map.get_surface(), self.block_group)
+            # draw the character to the screen
 
             #update camera's position on the map
-            background = self.camera.update(self.character.get_coordinates(), self.screen, self.map.get_surface())
+            background = self.camera.update(self.character.get_coordinates(),
+                                            self.screen, self.map.get_surface()
+                                            )
 
             # self.screen.blit(background, (0,0))
 
@@ -177,17 +180,20 @@ class Game(object):
                         self.invincibility_count = 200
                         #see which enemy attacked the player
                         self.enemy_ID = icecream.get_ID()
-                #If the enemy attacked the player while the player was not invincible        
+                #If enemy attacked the player while player not invincible
                 if(self.enemy_ID != -1 and self.invincibility_count == 200):
                     self.character.decrement_health(self.enemy_ID)
                     self.enemy_ID = -1
-                #decrement invincibility count if player is in invincibility    
+                #decrement invincibility count if player is in invincibility
                 if(self.invincibility_count > 0):
                     if(self.invincibility_count % 50 == 0):
                         self.character.invincibility_frames()
                     self.invincibility_count -= 1
 
-                self.character.handle_keys(self.block_group, self.icecream_list, self.map.get_surface(), self.interval)
+                self.character.handle_keys(self.block_group,
+                                           self.icecream_list,
+                                           self.map.get_surface(),
+                                           self.interval)
                 frame_time -= delta
                 self.updates += 1
 
@@ -201,19 +207,18 @@ class Game(object):
                 if (PG.key.get_pressed()):
                     self.update(self.character, elapsed)
 
-                    #self.addScoreText(self.character)
-                    #self.addHitPointsText(self.character)
-
             Locals.SCORE = self.character.score
             if(Locals.CHANGESTATE == "Menu"):
                 return False
-            PD.update() # update the screen
-            
+            PD.update()  # update the screen
+
     def update(self, player, delta):
-            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
+            s = "Score: " + str(player.score)
+            self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+                             (25, 550))
+            s = "Health: " + str(player.health)
+            self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+                             (25, 520))
             if(player.score == self.num_enemies):
                 self.screen.blit(self.win_image, self.end_image_position)
                 if(self.end_time > 0):
@@ -227,7 +232,6 @@ class Game(object):
                 else:
                     Locals.CHANGESTATE = "Menu"
             player.update(delta, self.block_group)
-
 
     def icecreamupdate(self, icecream, delta):
         icecream.update(delta)
@@ -244,14 +248,3 @@ class Game(object):
                     Locals.CHANGESTATE = 'Menu'
                     return False
         return True
-
-        '''def addScoreText(self, player):
-            s = "Score: " + str(player.score) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 550))
-            PD.update()
-
-        def addHitPointsText(self, player):
-            s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
-            self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
-            PD.update()'''
-
