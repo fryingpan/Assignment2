@@ -36,6 +36,12 @@ class Player(PS.Sprite):
 	IMAGES_LEFT_DECEL = None
 	IMAGES_FRONT_DECEL = None
 	IMAGES_BACK_DECEL = None
+        #attack images
+        IMG_ATTACK_D = None
+        IMG_ATTACK_U = None
+        IMG_ATTACK_R = None
+        IMG_ATTACK_L = None
+
 	CYCLE = 0.1
 	ADCYCLE = .05
 	WIDTH = 100
@@ -155,7 +161,15 @@ class Player(PS.Sprite):
 			self.face = 'l'
 			self.handle_collision(bg)
 		elif key[PG.K_SPACE]: #space key ATTACK
-			self.score += self.weapon.attack(self.rect.x, self.rect.y, self.face, screen, enemy_bg)
+                        '''if 'r' in self.face:
+                            self.image = self.IMG_ATTACK_R
+                        if 'l' in self.face:
+                            self.image = self.IMG_ATTACK_L'''
+                        if 'd' in self.face:
+                            self.image = self.IMG_ATTACK_D
+                        '''if 'u' in self.face:
+                            self.image = self.IMG_ATTACK_U'''
+                        self.score += self.weapon.attack(self.rect.x, self.rect.y, self.face, screen, enemy_bg)
 		else: #ds = down 'standing' (not moving) **********
 			if self.face == 'd':
 				self.face = 'ds'
@@ -331,3 +345,9 @@ class Player(PS.Sprite):
 		Player.IMAGES_LEFT_DECEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_DECEL, sheetLD)
 		Player.IMAGES_FRONT_DECEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_DECEL, sheetFD)
 		Player.IMAGES_BACK_DECEL = self.load_images_helper_accdec(Player.IMAGES_BACK_DECEL, sheetBD)
+
+                #load attack images
+                Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/MCFrontFPatk1.png").convert_alpha()
+                '''Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png").convert_alpha()
+                Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png").convert_alpha()
+                Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/weapon/FPL.png").convert_alpha()'''
