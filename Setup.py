@@ -107,9 +107,10 @@ class Game(object):
         h = "Health: " + str(self.character.health) #Must have some variable. Add variable name here, uncomment, should work.
         self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
         #Win/Lose items
-        self.win_image = PI.load("FPGraphics/specialEffects/testUWIN.png").convert_alpha()
-        self.lose_image = PI.load("FPGraphics/specialEffects/testURLOSER.png").convert_alpha()
-        self.end_time = 100
+        self.win_image = PI.load("FPGraphics/specialEffects/UWIN.png").convert_alpha()
+        self.lose_image = PI.load("FPGraphics/specialEffects/ULOSE.png").convert_alpha()
+        self.end_time = 800
+        self.end_image_position = (100,178)
     
     def run(self):
         running = True
@@ -205,7 +206,7 @@ class Game(object):
                     #self.addHitPointsText(self.character)
 
             Locals.SCORE = self.character.score
-            if(Locals.CHANGESTATE == "Menu"):
+            if(Locals.CHANGESTATE != "Game"):
                 return False
             PD.update() # update the screen
             
@@ -215,12 +216,17 @@ class Game(object):
             s = "Health: " + str(player.health) #Must have some variable. Add variable name here, uncomment, should work.
             self.screen.blit(self.font.render(s, True, (255,255,255)), (25, 520))
             if(player.score == self.num_enemies):
-                self.screen.blit(self.win_image, (0,0))
+                self.screen.blit(self.win_image, self.end_image_position)
                 if(self.end_time > 0):
                     self.end_time -= 1
                 else:
                     Locals.CHANGESTATE = "Menu"
-
+            if(player.health == 0):
+                self.screen.blit(self.lose_image, self.end_image_position)
+                if(self.end_time > 0):
+                    self.end_time -= 1
+                else:
+                    Locals.CHANGESTATE = "Menu"
             player.update(delta, self.block_group)
 
 
