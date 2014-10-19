@@ -11,6 +11,7 @@ from Player import Player
 
 PG.init()
 
+
 class Enemy(PG.sprite.Sprite):
     IMAGE_UP = None
     IMAGE_DOWN = None
@@ -23,17 +24,8 @@ class Enemy(PG.sprite.Sprite):
     def __init__(self, rect, speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.Sprite.__init__(self)
-        #if not Enemy.IMAGE_UP and not Enemy.IMAGE_DOWN and not Enemy.IMAGE_LEFT and not Enemy.IMAGE_RIGHT:
-         #   Enemy.IMAGE_UP = PG.image.load("FPGraphics/Food/IceCreamBack.png").convert_alpha()
-          #  Enemy.IMAGE_DOWN = PG.image.load("FPGraphics/Food/IceCreamFront.png").convert_alpha()
-           # Enemy.IMAGE_LEFT = PG.image.load("FPGraphics/Food/IceCreamLeft.png").convert_alpha()
-           # Enemy.IMAGE_RIGHT = PG.image.load("FPGraphics/Food/IceCreamRight.png").convert_alpha()
-        """self.image_up = Enemy.IMAGE_UP
-        self.image_down = Enemy.IMAGE_DOWN
-        self.image_right = Enemy.IMAGE_RIGHT
-        self.image_left = Enemy.IMAGE_LEFT"""
-        #self.image = None
-        self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png").convert_alpha()
+        self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
+            .convert_alpha()
         self.rect = rect
         self.load_images()
         self.rect.x = rect.x
@@ -42,14 +34,13 @@ class Enemy(PG.sprite.Sprite):
         self.speed = speed
         self.direction = random.randint(0, 3)
         #self.angle = random.randint(0, 360) * (math.pi/180)
-        self.face = 'u' 
+        self.face = 'u'
         self.time = 0.0
         self.frame = 0
         self.WIDTH = 100
         self.HEIGHT = 100
         self.invincibility_count = 0
         self.attacked_player = False
-
 
     def will_attack(self):
         attack_prob = random.randint(0, 500)
@@ -65,7 +56,7 @@ class Enemy(PG.sprite.Sprite):
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
-        if( len(collisions) == 1 and isinstance(collisions[0], Player) ):
+        if(len(collisions) == 1 and isinstance(collisions[0], Player)):
             # print type(collisions[0])
             if(self.invincibility_count == 0):
                 self.attacked_player = True
@@ -76,23 +67,27 @@ class Enemy(PG.sprite.Sprite):
                 once = True
                 for collision in collisions:
                     if once:
-                        if(self.rect.x + self.rect.width) >= collision.rect.left:
+                        if(self.rect.x +
+                           self.rect.width) >= collision.rect.left:
                             self.rect.x = collision.rect.left - self.rect.width
                             once = False
-                
+
             elif self.face == 'l':
                 collisions = PS.spritecollide(self, bg, False)
                 once = True
                 for collision in collisions:
                     if once:
-                        if (self.rect.x) <= (collision.rect.left + collision.rect.width):
-                            self.rect.x = collision.rect.left + collision.rect.width
+                        if (self.rect.x) <= (collision.rect.left +
+                                             collision.rect.width):
+                            self.rect.x = collision.rect.left + \
+                                collision.rect.width
                             once = False
             elif self.face == 'd':
                 once = True
                 for collision in collisions:
                     if once:
-                        if (self.rect.y + self.rect.height) >= collision.rect.top:
+                        if(self.rect.y +
+                           self.rect.height) >= collision.rect.top:
                             self.rect.y = collision.rect.top - self.rect.height
                             once = False
             elif self.face == 'u':
@@ -100,16 +95,16 @@ class Enemy(PG.sprite.Sprite):
                 once = True
                 for collision in collisions:
                     if once:
-                        if (self.rect.y <= (collision.rect.top + collision.rect.height)):
-                            self.rect.y = collision.rect.top + collision.rect.height
+                        if (self.rect.y <= (collision.rect.top +
+                                            collision.rect.height)):
+                            self.rect.y = collision.rect.top + \
+                                collision.rect.height
                             once = False
-    
 
-    def update(self, bg, player, delta = 1):
-        self.speed
+    def update(self, bg, player, delta=1):
         self.attacked_player = False
         self.move(bg, player, delta)
-        
+
         if(self.invincibility_count > 0):
             self.invincibility_count -= 1
             #print("invisib " + str(self.invincibility_count))
@@ -118,7 +113,7 @@ class Enemy(PG.sprite.Sprite):
         #    self.direction = random.randint(0, 1)
          #   self.angle = random.randint(0, 360) * (math.pi/180)
 
-        ENEMY_IMAGE_LENGTH = 4 #all Enemy sprite has 12 frames
+        ENEMY_IMAGE_LENGTH = 4  # all Enemy sprite has 12 frames
         #update time
         self.time = self.time + delta
         if self.time > Enemy.CYCLE:
@@ -146,35 +141,34 @@ class Enemy(PG.sprite.Sprite):
                 else:
                     self.image = self.front_image.convert_alpha()
 
-
     def move(self, bg, player, interval):
-        if(random.randint(0,50) == 0):
+        if(random.randint(0, 50) == 0):
             self.direction = random.randint(0, 3)
-        dist = self.speed # distance moved in 1 frame, try changing it to 5
+        dist = self.speed  # distance moved in 1 frame, try changing it to 5
         self.interval = interval
-        move_dist = 1*dist*interval                
-        if self.direction == 0: # down key
-            self.rect.y += move_dist# move down
+        move_dist = 1*dist*interval
+        if self.direction == 0:  # down key
+            self.rect.y += move_dist  # move down
             #self.rect = self.image.get_rect()
             self.face = 'd'
             self.handle_collision(bg)
-        elif self.direction == 1: # up key
-            self.rect.y -= move_dist # move up
+        elif self.direction == 1:  # up key
+            self.rect.y -= move_dist  # move up
             #self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
-        elif self.direction == 2: # right key
-            self.rect.x += move_dist # move right
+        elif self.direction == 2:  # right key
+            self.rect.x += move_dist  # move right
             #self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
-        elif self.direction == 3: # left key
-            self.rect.x -= move_dist# move left
+        elif self.direction == 3:  # left key
+            self.rect.x -= move_dist  # move left
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
         self.handle_collision(player)
-        
+
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
             self.update_image(self.IMAGES_FRONT)
@@ -187,7 +181,7 @@ class Enemy(PG.sprite.Sprite):
             self.face = 'r'
         elif Enemy_face == 'r':
             self.update_image(self.IMAGES_LEFT)
-            self.face = 'l'       
+            self.face = 'l'
         elif(self.face == 'rs'):
             self.update_image(self.IMAGES_LEFT)
         elif(self.face == 'us'):
@@ -217,15 +211,15 @@ class Enemy(PG.sprite.Sprite):
     #         self.rect.y = (self.sheight - self.HEIGHT - 40)
     #         collide = True
     #     return collide
-                
+
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
         #hereeeeee
-        alphabg = (23,23,23)
-        for i in range(0,4):
+        alphabg = (23, 23, 23)
+        for i in range(0, 4):
             surface = PG.Surface((100, 100))
             surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0,0), (i*100, 0, 100, 100))
+            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
             imageArray.append(surface)
         return imageArray
 
