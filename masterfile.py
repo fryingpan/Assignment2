@@ -33,20 +33,20 @@ class Globals(object):
     FONT = None
     STATE = None
 
+
 #Main Executable entry point
 def main():
     initialize()
     loop()
     finalize()
 
+
 def initialize():
     #Creates pygame module and intializes global variables.
-
-    
     passed, failed = PG.init()
     if failed > 0:
         print "warning: %d PyGame modules failed to initialize" % failed
-    Globals.SCREEN = PDI.set_mode((1280, 1020), PG.DOUBLEBUF|PG.HWSURFACE)
+    Globals.SCREEN = PDI.set_mode((1280, 1020), PG.DOUBLEBUF | PG.HWSURFACE)
     Globals.WIDTH = Globals.SCREEN.get_width()
     Globals.HEIGHT = Globals.SCREEN.get_height()
     Globals.FONT = PF.Font(None, 48)
@@ -56,7 +56,6 @@ def initialize():
 def loop():
     gameScore = 0
     while Globals.RUNNING:
-    
         if Globals.STATE == "Title":
             title.initialize()
             Globals.STATE = title.Locals.CHANGESTATE
@@ -65,7 +64,7 @@ def loop():
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
-                title.run(elapsed,event)
+                title.run(elapsed, event)
 
         elif Globals.STATE == "Game":
             gamerino = Game.Game(.00625)
@@ -74,7 +73,7 @@ def loop():
             while Globals.STATE == "Game":
                 Globals.State = Game.Locals.CHANGESTATE
                 interval = 0.005
-                if(gamerino.run() == False):
+                if(gamerino.run() is False):
                     Globals.STATE = Game.Locals.CHANGESTATE
             gameScore = Game.Locals.SCORE
             print("gamescore: " + str(gameScore))
@@ -87,12 +86,13 @@ def loop():
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
-                if(Menu.run(elapsed,event) == False):
+                if(Menu.run(elapsed, event) is False):
                     return 0
-            
+
         elif Globals.STATE == "Scores":
             if gameScore != 0:
-                highscores.Locals.SCORE = gameScore #give new gamescore to highscores class FIRST
+                highscores.Locals.SCORE = gameScore
+                # give new gamescore to highscores class FIRST
             highscores.initialize()
             Globals.STATE = highscores.Locals.CHANGESTATE
             while Globals.STATE == "Scores":
@@ -100,9 +100,8 @@ def loop():
                 last = PT.get_ticks()
                 elapsed = (PT.get_ticks() - last) / 1000.0
                 event = PE.get()
-                highscores.run(elapsed,event)
+                highscores.run(elapsed, event)
 
-        
 
 def finalize():
     PG.quit()

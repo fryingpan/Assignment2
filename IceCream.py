@@ -49,27 +49,24 @@ class IceCream(Enemy):
 
     def attack(self):
         #create puddle at your location
-        new_puddle = Puddle(self.rect)
+        new_puddle = Puddle(PG.Rect(self.rect.x, self.rect.y, 100, 100))
         self.puddles.append(new_puddle)
 
     def weapon_update(self, surface, player_group):
+        self.weapon_attack = False
         for puddle in self.puddles:
-            self.weapon_attack = False
             if not puddle.dropped:
                 puddle.drop_animation()
                 puddle.draw(surface, False)
             elif puddle.count <= 70:
-                print "disapear"
                 puddle.disappear_animation()
                 if not puddle.disappear:
                     puddle.draw(surface, False)
                 else:
-                    print "remove"
                     self.puddles.remove(puddle)
             else:
                 puddle.draw(surface, True)
-            collisions = PS.spritecollide(puddle, player_group, False)
-            # print len(collisions)
+            collisions = puddle.handle_collisions(player_group)
             if len(collisions) > 0:
                 self.weapon_attack = True
 
@@ -125,6 +122,10 @@ class Puddle(PS.Sprite):
         self.set_anim_start()
         self.num_frames = 3
 
+    def handle_collisions(self, player_group):
+        return PS.spritecollide(self, player_group, False)
+
+
     def set_anim_start(self):
         self.frame_num = 0
         self.frame_count = 12
@@ -154,7 +155,6 @@ class Puddle(PS.Sprite):
         if not self.disappear:
             self.update_anim(self.IMAGES_DISAPPEAR, self.frame_num)
             if self.frame_count == 0 and self.frame_num < self.num_frames:
-                print "changing frames"
                 self.frame_num += 1
                 self.frame_count = 12
             elif self.frame_count > 0:
