@@ -28,7 +28,8 @@ class Weapon(PS.Sprite):
         def __init__(self):
                 # Call the parent class (Sprite) constructor
                 PS.Sprite.__init__(self)
-                self.image = PI.load("FPGraphics/MC/weapon/testFP.png").convert_alpha()
+                self.image = PI.load("FPGraphics/MC/weapon/testFP.png") \
+                    .convert_alpha()
                 self.load_images()
                 self.rect = self.image.get_rect()
                 #self.width = self.rect.width
@@ -44,7 +45,8 @@ class Weapon(PS.Sprite):
                 return coordinates
 
         #so in player, just like holding down r key makes character move r,
-        #only when space bar is held is the sword out. so in player is where maybe
+        #only when space bar is held is the sword out.
+        #so in player is where maybe
         #the weapon will be 'hidden' after space is let go
         def attack(self, playerX, playerY, playerFace, screen, bg):
                 #this bg is enemy block group
@@ -111,7 +113,11 @@ class Weapon(PS.Sprite):
                 PD.flip()
 
         def load_images(self):
-            Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/FPR.png").convert_alpha()
-            Weapon.IMAGE_LEFT = PI.load("FPGraphics/MC/weapon/FPL.png").convert_alpha()
-            Weapon.IMAGE_DOWN = PI.load("FPGraphics/MC/weapon/FPD.png").convert_alpha()
-            Weapon.IMAGE_UP = PI.load("FPGraphics/MC/weapon/FPU.png").convert_alpha()
+            Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/FPR.png") \
+                .convert_alpha()
+            Weapon.IMAGE_LEFT = PI.load("FPGraphics/MC/weapon/FPL.png") \
+                .convert_alpha()
+            Weapon.IMAGE_DOWN = PI.load("FPGraphics/MC/weapon/FPD.png") \
+                .convert_alpha()
+            Weapon.IMAGE_UP = PI.load("FPGraphics/MC/weapon/FPU.png") \
+                .convert_alpha()
