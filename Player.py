@@ -345,7 +345,7 @@ class Player(PS.Sprite):
 		#damage
 		sheetRD = PI.load("FPGraphics/MC/MCwalk/MCDMGRight.png").convert_alpha()
 		sheetLD = PI.load("FPGraphics/MC/MCwalk/MCDMGLeft.png").convert_alpha()
-		sheetFD = PI.load("FPGraphics/MC/MCwalk/MCFrontWalk.png").convert_alpha()
+		sheetFD = PI.load("FPGraphics/MC/MCwalk/MCDMGFront.png").convert_alpha()
 		sheetBD = PI.load("FPGraphics/MC/MCwalk/MCDMGBack.png").convert_alpha()
 
 		Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT, sheetR)
@@ -356,10 +356,10 @@ class Player(PS.Sprite):
 		Player.IMAGES_LEFT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_LEFT_ACCEL, sheetLA)
 		Player.IMAGES_FRONT_ACCEL = self.load_images_helper_accdec(Player.IMAGES_FRONT_ACCEL, sheetFA)
 		Player.IMAGES_BACK_ACCEL = self.load_images_helper_accdec(Player.IMAGES_BACK_ACCEL, sheetBA)
-		Player.IMAGES_RIGHT_DMG = self.load_images_helper_accdec(Player.IMAGES_RIGHT_DMG, sheetRD)
-		Player.IMAGES_LEFT_DMG = self.load_images_helper_accdec(Player.IMAGES_LEFT_DMG, sheetLD)
+		Player.IMAGES_RIGHT_DMG = self.load_images_helper(Player.IMAGES_RIGHT_DMG, sheetRD)
+		Player.IMAGES_LEFT_DMG = self.load_images_helper(Player.IMAGES_LEFT_DMG, sheetLD)
 		Player.IMAGES_FRONT_DMG = self.load_images_helper(Player.IMAGES_FRONT_DMG, sheetFD)
-		Player.IMAGES_BACK_DMG = self.load_images_helper_accdec(Player.IMAGES_BACK_DMG, sheetBD)
+		Player.IMAGES_BACK_DMG = self.load_images_helper(Player.IMAGES_BACK_DMG, sheetBD)
 
                 #load attack images
                 Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/MCFrontFPatk1.png").convert_alpha()
