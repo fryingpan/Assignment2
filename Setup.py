@@ -137,12 +137,12 @@ class Game(object):
             weapon_attack = False
             for icecream in self.icecream_list.sprites():
                 icecream_face = icecream.get_face()
-                icecream.draw(self.map.get_surface())
                 #see if the enemy will release weapon/attack
                 if (icecream.will_attack()):
                     icecream.attack()
                 #update weapons if they still need to be drawn
                 icecream.weapon_update(self.map.get_surface(), self.player_group)
+                icecream.draw(self.map.get_surface())
                 if (icecream.get_weapon_attack()):
                     print "WEAPON ATTACK"
                     weapon_attack = True
