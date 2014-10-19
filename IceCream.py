@@ -58,11 +58,13 @@ class IceCream(Enemy):
             if not puddle.dropped:
                 puddle.drop_animation()
                 puddle.draw(surface, False)
-            elif puddle.count == 0:
+            elif puddle.count <= 70:
+                print "disapear"
                 puddle.disappear_animation()
                 if not puddle.disappear:
                     puddle.draw(surface, False)
                 else:
+                    print "remove"
                     self.puddles.remove(puddle)
             else:
                 puddle.draw(surface, True)
@@ -110,7 +112,7 @@ class Puddle(PS.Sprite):
     def __init__(self, rect):
         PS.Sprite.__init__(self)
         if not Puddle.IMAGE:
-            Puddle.IMAGE = PI.load("FPGraphics/Food/testPuddle.png").convert_alpha()
+            Puddle.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png").convert_alpha()
         self.static_image = Puddle.IMAGE
         self.image = self.static_image
         self.load_images()
@@ -125,19 +127,20 @@ class Puddle(PS.Sprite):
 
     def set_anim_start(self):
         self.frame_num = 0
-        self.frame_count = 15
+        self.frame_count = 12
 
     def drop_animation(self):
         if not self.dropped:
             self.update_anim(self.IMAGES_APPEAR, self.frame_num)
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
-                self.frame_count = 15
+                self.frame_count = 12
             elif self.frame_count > 0:
                 self.frame_count -= 1
             else:
                 self.dropped = True
-                self.set_anim_start()        
+                self.set_anim_start()
+        self.count -= 1        
 
     def draw(self, surface, static_image):
         if self.count > 0:
@@ -153,9 +156,10 @@ class Puddle(PS.Sprite):
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 print "changing frames"
                 self.frame_num += 1
-                self.frame_count = 15
+                self.frame_count = 12
             elif self.frame_count > 0:
                 self.frame_count -= 1
+                self.count -= 1
             else:
                 self.disappear = True
 
@@ -170,8 +174,8 @@ class Puddle(PS.Sprite):
     def load_images(self):
         Puddle.IMAGES_APPEAR = []
         Puddle.IMAGES_DISAPPEAR = []
-        sheetA = PI.load("FPGraphics/Food/testPuddleDrop.png").convert_alpha()
-        sheetD = PI.load("FPGraphics/Food/testPuddleDrop.png").convert_alpha()
+        sheetA = PI.load("FPGraphics/Food/IceCreamPuddleDrop.png").convert_alpha()
+        sheetD = PI.load("FPGraphics/Food/IceCreamPuddleDry.png").convert_alpha()
         Puddle.IMAGES_APPEAR = self.load_images_helper(Puddle.IMAGES_APPEAR, sheetA)
         Puddle.IMAGES_DISAPPEAR = self.load_images_helper(Puddle.IMAGES_DISAPPEAR, sheetD)
 
