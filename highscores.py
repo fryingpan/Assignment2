@@ -5,6 +5,7 @@ from pygame import display as PDI
 from pygame import event as PE
 from pygame.locals import *
 
+
 class Globals(object):
     RUNNING = True
     SCREEN = None
@@ -35,7 +36,7 @@ class HighScores:
     def __init__(self):
         PG.font.init()
 
-        Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
+        Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF | PG.HWSURFACE)
         Globals.WIDTH = Globals.SCREEN.get_width()
         Globals.HEIGHT = Globals.SCREEN.get_height()
 
@@ -46,7 +47,9 @@ class HighScores:
 
     def render(self):
         width, height = self.text_surface.get_size()
-        Globals.SCREEN.blit(self.text_surface, (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 - height/2))
+        Globals.SCREEN.blit(self.text_surface,
+                           (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 -
+                            height/2))
 
     def update(self, time):
         self.time += time
@@ -63,7 +66,6 @@ class HighScores:
         elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
                 Locals.CHANGESTATE = "Menu"
 
-
     def get_text_surface(self):
         rect = Rect(100, 100, 300, 300)
         surface = PG.Surface(rect.size)
@@ -75,14 +77,16 @@ class HighScores:
             surface = render_text(scores, font, rect, text_color, self.color)
         return surface
 
+
 def initialize():
     if Locals.SCORE != 0 and Locals.ADDED == 0:
         addScoretoText()
         Locals.ADDED = 1
-    if Locals.ADDED != 0: #if we've added something already
-        Locals.SCORE = 0 #reset new high score
+    if Locals.ADDED != 0:  # if we've added something already
+        Locals.SCORE = 0  # reset new high score
     Locals.STATE = HighScores()
     Locals.CHANGESTATE = 'Scores'
+
 
 def run(elapsed, event):
     Locals.STATE.render()
@@ -93,10 +97,11 @@ def run(elapsed, event):
         if event.type == PG.QUIT:
             return False
         else:
-            if(Locals.STATE.event(event) == False):
+            if(Locals.STATE.event(event) is False):
                 return False
 
-def addScoretoText(): #only run if SCORE !=0
+
+def addScoretoText():  # only run if SCORE !=0
     f = open('scores.txt', 'a')
     scoretoAdd = str(Locals.SCORE)
     toAdd = "Player " + scoretoAdd + "\n"
@@ -116,7 +121,8 @@ def render_text(string, font, rect, text_color, background_color):
             # if the name and score is longer than the width of the surface
             for word in words:
                 if font.size(word)[0] >= rect.width:
-                    raise TextRectException, "The word " + word + " is too long to fit in the rect passed."
+                    raise TextRectException("The word is too long to " +
+                                            "fit in the rect passed.")
         else:
             final_lines.append(line)
 
@@ -128,9 +134,8 @@ def render_text(string, font, rect, text_color, background_color):
     for line in final_lines:
         if line != "":
             tempsurface = font.render(line, 1, text_color)
-            surface.blit(tempsurface, ((rect.width - tempsurface.get_width()) / 2, accumulated_height))
+            surface.blit(tempsurface, ((rect.width -
+                         tempsurface.get_width()) / 2, accumulated_height))
         accumulated_height += font.size(line)[1]
 
     return surface
-
-
