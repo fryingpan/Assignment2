@@ -63,13 +63,6 @@ class HighScores:
         elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
                 Locals.CHANGESTATE = "Menu"
 
-    def addScoretoText(self): #only run if SCORE !=0
-        f = open('scores.txt', 'a')
-        scoretoAdd = str(Locals.SCORE)
-        toAdd = "Player " + scoretoAdd + "\n"
-        f.write(toAdd)
-        f.close()
-
 
     def get_text_surface(self):
         rect = Rect(100, 100, 300, 300)
@@ -84,7 +77,7 @@ class HighScores:
 
 def initialize():
     if Locals.SCORE != 0 and Locals.ADDED == 0:
-        Locals.STATE.addScoretoText()
+        addScoretoText()
         Locals.ADDED = 1
     if Locals.ADDED != 0: #if we've added something already
         Locals.SCORE = 0 #reset new high score
@@ -103,7 +96,12 @@ def run(elapsed, event):
             if(Locals.STATE.event(event) == False):
                 return False
 
-
+def addScoretoText(): #only run if SCORE !=0
+    f = open('scores.txt', 'a')
+    scoretoAdd = str(Locals.SCORE)
+    toAdd = "Player " + scoretoAdd + "\n"
+    f.write(toAdd)
+    f.close()
 
 
 def render_text(string, font, rect, text_color, background_color):
