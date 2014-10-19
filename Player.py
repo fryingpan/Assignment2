@@ -64,12 +64,16 @@ class Player(PS.Sprite):
 		#collision conditions, if true, we will not move in that direction
 		self.health = 10
 		self.dmg_count = 0
+		self.invincibility_frame = PI.load("FPGraphics/emptyImg.png").convert_alpha()
 		self.score = 0
 		self.weapon = Weapon()
 
  	def decrement_health(self, enemy_ID):
  		self.health -= 1
  		self.dmg_count = 3
+
+ 	def invincibility_frames(self):
+ 		self.image = self.invincibility_frame
 
 	def get_face(self):
 		return self.face
