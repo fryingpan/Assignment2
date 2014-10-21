@@ -76,7 +76,6 @@ def loop():
                 if(gamerino.run() is False):
                     Globals.STATE = Game.Locals.CHANGESTATE
             gameScore = Game.Locals.SCORE
-            print("gamescore: " + str(gameScore))
 
         elif Globals.STATE == "Menu":
             Menu.initialize()
