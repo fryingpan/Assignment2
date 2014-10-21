@@ -16,6 +16,7 @@ try:
     import Map
     import camera as cam
     import pygame.font as PF
+    import random
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -48,7 +49,7 @@ class Game(object):
     def __init__(self, interval):
         self.interval = interval
         self.fps = 40
-        self.num_enemies = 1
+        self.num_enemies = 5
 
         PG.init()
         self.screen = PD.set_mode((800, 600))
@@ -74,7 +75,7 @@ class Game(object):
 
         #add all the enemies to the list of enemies
         for e in range(self.num_enemies):
-            icecream = IceCream(self.fps)
+            icecream = IceCream(random.randint(500,1000), random.randint(500,1000),self.fps)
             self.icecream_list.add(icecream)
 
         self.map = Map.Map('mapfile.txt')

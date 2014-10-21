@@ -22,14 +22,14 @@ class IceCream(Enemy):
 
     CYCLE = .6
 
-    def __init__(self, fps=1):
+    def __init__(self, xlocation, ylocation,fps=1):
         self.image = PI.load("FPGraphics/Food/IceCreamFront.png") \
             .convert_alpha()
         self.front_image = self.image
         self.rect = self.image.get_rect()
         self.load_images()
-        self.rect.x = 800
-        self.rect.y = 1150
+        self.rect.x = xlocation
+        self.rect.y = ylocation
 
         self.speed = 4*fps
         self.direction = random.randint(0, 3)
