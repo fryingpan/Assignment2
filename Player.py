@@ -72,7 +72,8 @@ class Player(PS.Sprite):
         self.weapon = Weapon()
 
     def decrement_health(self, enemy_ID):
-        self.health -= 1
+        if self.health > 0:
+            self.health -= 1
         self.dmg_count = 3
 
     def invincibility_frames(self):
