@@ -234,12 +234,24 @@ class Game(object):
 		player.update(delta, self.block_group)
 
 	def update_score(self, player):
-			s = "Score: " + str(player.score)
-			self.screen.blit(self.font.render(s, True, (255, 255, 255)),
-							 (25, 550))
-			s = "Health: " + str(player.health)
-			self.screen.blit(self.font.render(s, True, (255, 255, 255)),
-							 (25, 520))
+		if(player.score == self.num_enemies):
+			self.screen.blit(self.win_image, self.end_image_position)
+			if(self.end_time > 0):
+				self.end_time -= 1
+			else:
+				Locals.CHANGESTATE = "Menu"
+		if(player.health <= 0):
+			self.screen.blit(self.lose_image, self.end_image_position)
+			if(self.end_time > 0):
+				self.end_time -= 1
+			else:
+				Locals.CHANGESTATE = "Menu"    
+		s = "Score: " + str(player.score)
+		self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+						 (25, 550))
+		s = "Health: " + str(player.health)
+		self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+						 (25, 520))
 
 	def icecreamupdate(self, icecream, delta):
 		icecream.update(delta)
