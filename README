@@ -5,54 +5,25 @@ Katie Chang
 Mary Yen
 Josh Holstein
 
-Todo
--player attack animation 
-    weapon doesn't appear
--puddles
-    puddle damage etc
--win/lose game ending
--high scores
-    record scores
-    display scores
+Run the following to run the program:
+python masterfile.py
 
--score celebration thingy
-
----------------
-prepare presentation
-    make powerpoint
-    delegate parts of presentation
-    
-=====================
-Problem 1: Enemies
-=====================
-The ice cream enemies will make the player lose 1 health
-every time they touch. To attack the player, the ice cream leaves puddles
-randomly in their path. These puddles also hurt the player and decrease
-its health by 1. These puddles are stationary but multiple puddles can be 
-left in around the same area if it so happens that the ice cream is roaming
-around that area. The ice cream enemy moves around randomly though they tend 
-to roam around in a compact area meaning that they are constantly turning 
-randomly and seem to go in circles. The ice cream is bound by solid ground
-and they collide with the walls around them just like the player. 
-
-=====================
-Problem 2: Damage, Win, Lose
-=====================
-The player starts off with a health equal to 10, For now, every time the player 
-collides with an enemy or a puddle, their health is decremented by 1. After 
-they collide with something that hurts them they have a small period of 
-invincibility where during that period they can't be hurt. This period is relatively
-short and lasts for about 3 seconds which is just about enough time for the player 
-to run away from harm. The player has a weapon that is activated when the user 
-presses the spacebar. This weapon kills the ice cream enemy after one hit and then 
-the enemy disapears. Once all the enemies disappear then the user wins and an image
-pops up telling him so. Otherwise, if the player's health goes to 0 then the user 
-loses and an image pops up telling him so. In either case the user is taken back 
-to the menu. 
-=====================
-Problem 3: Scores
-=====================
-As of right now, every time you kill one enemy, you gain one point.
-The score is displayed on the lower left corner (along with health).
-Upon exiting the game and opening the high score page, your new score
-will be updated (the highscores.py module first writes the new score onto the scores.txt and then reads it before rendering it onto the game screen).
+Todo List
+----------
+-Tiles
+    -bg
+-enemies
+    -smaller puddles
+    -separate puddle from enemy
+-item system
+-story telling
+    -simple splash pages
+    -add speech bubbles
+    -Add how to skip cutscenes
+    -tell player how to beat game!
+-music/sound
+-end level
+    -kill everything (MENTION IN STORY)
+-more enemies
+-life bar
+    -could change to tablets?
