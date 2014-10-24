@@ -17,10 +17,6 @@ import pygame.image as PI
 
 PG.init()
 
-#loading sound
-PM.music.load("hitWall.mod")
-
-
 class Weapon(PS.Sprite):
 
         IMAGE_RIGHT = None
@@ -90,10 +86,7 @@ class Weapon(PS.Sprite):
 
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
-                    PM.music.stop()
                     score = score + 1
-                    PM.music.play(0)
-                    PM.music.fadeout(5000)
                     collision.kill()
                 return score  # to be added to Player's score
 

@@ -18,9 +18,6 @@ from Weapon import Weapon
 
 PG.init()
 
-#loading sound
-PM.music.load("hitWall.mod")
-
 
 class Player(PS.Sprite):
     IMAGES = None
@@ -192,8 +189,10 @@ class Player(PS.Sprite):
                     self.image = self.IMG_ATTACK_D
                 '''if 'u' in self.face:
                     self.image = self.IMG_ATTACK_U'''
-                self.score += self.weapon.attack(self.rect.x, self.rect.y,
+                for x in range(100):
+                    self.score += self.weapon.attack(self.rect.x, self.rect.y,
                                                  self.face, screen, enemy_bg)
+                    pass
         else:  # ds = down 'standing' (not moving) **********
                 if self.face == 'd':
                         self.face = 'ds'
@@ -280,7 +279,7 @@ class Player(PS.Sprite):
     def draw(self, screen, block_group):
             """ Draw on surface """
             key = PG.key.get_pressed()
-            if key[PG.K_SPACE]:
+            if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
                     self.weapon.draw(screen)
             self.check_boundary(screen)
             # blit yourself at your current position
@@ -290,25 +289,13 @@ class Player(PS.Sprite):
             width = screen.get_width() * 2
             height = screen.get_height() * 2
             if self.rect.x < 0:
-                    PM.music.stop()
                     self.rect.x = 0
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             elif self.rect.x > (width - self.image.get_width()):
-                    PM.music.stop()
                     self.rect.x = width - self.image.get_width()
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             if self.rect.y < 0:
-                    PM.music.stop()
                     self.rect.y = 0
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             elif self.rect.y > (height - self.image.get_height()):
-                    PM.music.stop()
                     self.rect.y = (height - self.image.get_height())
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
 
     def load_images_helper_ad(self, imageArray, sheet):
             alphabg = (23, 23, 23)
