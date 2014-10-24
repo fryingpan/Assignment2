@@ -16,6 +16,9 @@ Todo List
     -smaller puddles
     -separate puddle from enemy
 -item system
+    -probably don't need to KEEP key in an inventory; simply open the door when you get the key?
+    -when player runs over an item, press one key to eat and different key to pick up as weapon.
+    -maybe don't need inventory then? Always hold one item only.
 -story telling
     -simple splash pages
     -add speech bubbles
