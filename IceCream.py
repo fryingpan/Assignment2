@@ -9,6 +9,7 @@ import math
 import pygame.image as PI
 from Player import Player
 from Enemy import Enemy
+from Trap import Puddle
 
 
 
@@ -42,35 +43,10 @@ class IceCream(Enemy):
 
         Enemy.__init__(self, self.rect, self.speed)
 
-        #list of puddles to draw
-        self.puddles = []
-        self.weapon_attack = False
-        self.stages = [1, 2, 3]
 
     def attack(self):
         #create puddle at your location
         return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50))
-
-    def weapon_update(self, surface, player_group):
-        self.weapon_attack = False
-        for puddle in self.puddles:
-            if not puddle.dropped:
-                puddle.drop_animation()
-                puddle.draw(surface, False)
-            elif puddle.count <= 70:
-                puddle.disappear_animation()
-                if not puddle.disappear:
-                    puddle.draw(surface, False)
-                else:
-                    self.puddles.remove(puddle)
-            else:
-                puddle.draw(surface, True)
-            collisions = puddle.handle_collisions(player_group)
-            if len(collisions) > 0:
-                self.weapon_attack = True
-
-    def get_weapon_attack(self):
-        return self.weapon_attack
 
     def get_face(self):
         return self.face
@@ -105,97 +81,3 @@ class IceCream(Enemy):
         Enemy.IMAGES_BACK = self.load_images_helper(Enemy.IMAGES_BACK,
                                                     sheetB)
 
-
-class Puddle(PS.Sprite):
-
-    IMAGE = None
-    IMAGES_APPEAR = None
-    IMAGES_DISAPPEAR = None
-
-    def __init__(self, rect):
-        PS.Sprite.__init__(self)
-        if not Puddle.IMAGE:
-            Puddle.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
-                .convert_alpha()
-        self.static_image = Puddle.IMAGE
-        self.image = self.static_image
-        self.load_images()
-        self.rect = rect
-        self.x = self.rect.x
-        self.y = self.rect.y
-        self.count = 500
-        self.dropped = False
-        self.disappear = False
-        self.set_anim_start()
-        self.num_frames = 3
-
-    def handle_collisions(self, player_group):
-        return PS.spritecollide(self, player_group, False)
-
-    def set_anim_start(self):
-        self.frame_num = 0
-        self.frame_count = 12
-
-    def drop_animation(self):
-        if not self.dropped:
-            self.update_anim(self.IMAGES_APPEAR, self.frame_num)
-            if self.frame_count == 0 and self.frame_num < self.num_frames:
-                self.frame_num += 1
-                self.frame_count = 12
-            elif self.frame_count > 0:
-                self.frame_count -= 1
-            else:
-                self.dropped = True
-                self.set_anim_start()
-        self.count -= 1
-
-    def draw(self, surface, static_image):
-        if self.count > 0:
-            if static_image:
-                surface.blit(self.static_image, (self.x, self.y))
-            else:
-                surface.blit(self.image, (self.x, self.y))
-        self.count -= 1
-
-    def disappear_animation(self):
-        if not self.disappear:
-            self.update_anim(self.IMAGES_DISAPPEAR, self.frame_num)
-            if self.frame_count == 0 and self.frame_num < self.num_frames:
-                self.frame_num += 1
-                self.frame_count = 12
-            elif self.frame_count > 0:
-                self.frame_count -= 1
-                self.count -= 1
-            else:
-                self.disappear = True
-
-    def update_anim(self, imageArray, index):
-        try:
-            self.image = imageArray[index].convert_alpha()
-        except IndexError:
-            pass
-            # self.image = self.static_image.convert_alpha()
-            # self.face = list(self.face)[0]
-
-    def load_images(self):
-        Puddle.IMAGES_APPEAR = []
-        Puddle.IMAGES_DISAPPEAR = []
-        sheetA = PI.load("FPGraphics/Food/IceCreamPuddleDrop.png") \
-            .convert_alpha()
-        sheetD = PI.load("FPGraphics/Food/IceCreamPuddleDry.png") \
-            .convert_alpha()
-        Puddle.IMAGES_APPEAR = self.load_images_helper(
-            Puddle.IMAGES_APPEAR, sheetA)
-        Puddle.IMAGES_DISAPPEAR = self.load_images_helper(
-            Puddle.IMAGES_DISAPPEAR, sheetD)
-
-    def load_images_helper(self, imageArray, sheet):
-        #key = sheet.get_at((0,0))
-        #hereeeeee
-        alphabg = (23, 23, 23)
-        for i in range(0, 3):
-            surface = PG.Surface((50, 50))
-            surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
-            imageArray.append(surface)
-        return imageArray
