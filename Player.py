@@ -18,9 +18,6 @@ from Weapon import Weapon
 
 PG.init()
 
-#loading sound
-PM.music.load("hitWall.mod")
-
 
 class Player(PS.Sprite):
     IMAGES = None

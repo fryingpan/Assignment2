@@ -17,10 +17,6 @@ import pygame.image as PI
 
 PG.init()
 
-#loading sound
-PM.music.load("hitWall.mod")
-
-
 class Weapon(PS.Sprite):
 
         IMAGE_RIGHT = None
