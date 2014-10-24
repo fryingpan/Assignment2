@@ -10,7 +10,6 @@ import pygame.image as PI
 from Player import Player
 from Enemy import Enemy
 
-PG.init()
 
 
 class IceCream(Enemy):
@@ -50,8 +49,7 @@ class IceCream(Enemy):
 
     def attack(self):
         #create puddle at your location
-        new_puddle = Puddle(PG.Rect(self.rect.x, self.rect.y, 100, 100))
-        self.puddles.append(new_puddle)
+        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50))
 
     def weapon_update(self, surface, player_group):
         self.weapon_attack = False
@@ -196,8 +194,8 @@ class Puddle(PS.Sprite):
         #hereeeeee
         alphabg = (23, 23, 23)
         for i in range(0, 3):
-            surface = PG.Surface((100, 100))
+            surface = PG.Surface((50, 50))
             surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+            surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
             imageArray.append(surface)
         return imageArray
