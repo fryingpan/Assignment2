@@ -290,25 +290,13 @@ class Player(PS.Sprite):
             width = screen.get_width() * 2
             height = screen.get_height() * 2
             if self.rect.x < 0:
-                    PM.music.stop()
                     self.rect.x = 0
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             elif self.rect.x > (width - self.image.get_width()):
-                    PM.music.stop()
                     self.rect.x = width - self.image.get_width()
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             if self.rect.y < 0:
-                    PM.music.stop()
                     self.rect.y = 0
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
             elif self.rect.y > (height - self.image.get_height()):
-                    PM.music.stop()
                     self.rect.y = (height - self.image.get_height())
-                    PM.music.play(0)
-                    PM.music.fadeout(4500)
 
     def load_images_helper_ad(self, imageArray, sheet):
             alphabg = (23, 23, 23)

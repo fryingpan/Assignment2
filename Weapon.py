@@ -90,10 +90,7 @@ class Weapon(PS.Sprite):
 
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
-                    PM.music.stop()
                     score = score + 1
-                    PM.music.play(0)
-                    PM.music.fadeout(5000)
                     collision.kill()
                 return score  # to be added to Player's score
 
