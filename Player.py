@@ -192,8 +192,10 @@ class Player(PS.Sprite):
                     self.image = self.IMG_ATTACK_D
                 '''if 'u' in self.face:
                     self.image = self.IMG_ATTACK_U'''
-                self.score += self.weapon.attack(self.rect.x, self.rect.y,
+                for x in range(100):
+                    self.score += self.weapon.attack(self.rect.x, self.rect.y,
                                                  self.face, screen, enemy_bg)
+                    pass
         else:  # ds = down 'standing' (not moving) **********
                 if self.face == 'd':
                         self.face = 'ds'
@@ -280,7 +282,7 @@ class Player(PS.Sprite):
     def draw(self, screen, block_group):
             """ Draw on surface """
             key = PG.key.get_pressed()
-            if key[PG.K_SPACE]:
+            if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
                     self.weapon.draw(screen)
             self.check_boundary(screen)
             # blit yourself at your current position
