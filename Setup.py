@@ -17,6 +17,7 @@ try:
 	import camera as cam
 	import pygame.font as PF
 	import random
+	from Trap import Puddle
 
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -92,6 +93,9 @@ class Game(object):
 
 		self.camera = cam.Camera(self.map.get_surface())
 
+		#list that holds traps
+		self.trap_list = []
+
 		PE.set_allowed([QUIT, KEYDOWN])
 		self.clock = PT.Clock()
 		self.current_time = PT.get_ticks()
@@ -112,6 +116,7 @@ class Game(object):
 								  "specialEffects/ULOSE.png").convert_alpha()
 		self.end_time = 800
 		self.end_image_position = (100, 178)
+		self.map.draw_map()
 
 	def run(self):
 		running = True
@@ -134,21 +139,30 @@ class Game(object):
 			#move and draw the enemies
 			player_face = self.character.get_face()
 			weapon_attack = False
+
+			print len(self.trap_list)
+			for trap in self.trap_list:
+				trap.weapon_update(self.map.get_surface(),
+									   self.player_group)
+				if (trap.get_trap_attack() and self.invincibility_count == 0):
+					weapon_attack = True
+				if trap.will_remove():
+					self.trap_list.remove(trap)
+
+
 			for icecream in self.icecream_list.sprites():
 				icecream_face = icecream.get_face()
 				#see if the enemy will release weapon/attack
 				if (icecream.will_attack()):
-					icecream.attack()
-				#update weapons if they still need to be drawn
-				icecream.weapon_update(self.map.get_surface(),
-									   self.player_group)
+					#get a new puddle sprite
+					new_trap = icecream.attack()
+					#add the new trap to the list of traps
+					self.trap_list.append(new_trap)
 				icecream.draw(self.map.get_surface())
-				if(icecream.get_weapon_attack() and
-				   self.invincibility_count == 0):
-					weapon_attack = True
+
 
 			#draw blocks
-			self.map.draw_map()
+			# self.map.draw_map()
 
 			self.character.draw(self.map.get_surface(), self.block_group)
 			# draw the character to the screen
