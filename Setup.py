@@ -129,7 +129,7 @@ class Game(object):
                 self.objective = Objective()
 
 	def run(self):
-		#lv1_cutscene = Cutscene(self.screen,1)
+                lv1_cutscene = Cutscene(self.screen,1)
 		running = True
 		while running:
 			# self.map.draw_map()
@@ -241,8 +241,6 @@ class Game(object):
 				clock.tick()
 
 				elapsed = (PT.get_ticks() - last) / 1000.0
-
-				self.character.set_interval(elapsed)
 
 				self.character.update(delta, self.block_group, None)
 

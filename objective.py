@@ -1,7 +1,6 @@
 # Assignment 2
 # Frying Pan
 
-
 import pygame as PG
 import pygame.image as PI
 import pygame.time as PT
@@ -42,7 +41,6 @@ class Objective(object):
         if key[PG.K_n]:
             self.updateBanner(screen)
             screen.blit(self.font.render(lactose.pop(), True, self.text_color), (50, 30))
-
 
     def killedText(self, screen):
         self.updateBanner(screen)
