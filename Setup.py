@@ -242,6 +242,9 @@ class Game(object):
 
 				elapsed = (PT.get_ticks() - last) / 1000.0
 
+				if (PG.key.get_pressed()):
+					self.character.set_interval(elapsed)
+
 				self.character.update(delta, self.block_group, None)
 
 				self.update_score(self.character)
