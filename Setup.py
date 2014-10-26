@@ -20,6 +20,7 @@ try:
 	from Trap import Puddle
 	from Cutscene import Cutscene
         from objective import Objective
+        import pygame.mixer as PM
 
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -45,7 +46,7 @@ def initialize():
 	# fps = 40
 	# game = Game(interval, fps, num_enemies)
 	Locals.CHANGESTATE = 'Game'
-
+        PM.music.load("music/gameplay.mod")
 
 class Game(object):
 
@@ -201,6 +202,8 @@ class Game(object):
                                 #adding objective banner here
                                 self.objective.updateObjective(self.screen, 0)
 
+                                PM.music.play(0)
+
 
 				delta = min(frame_time, self.interval)
 				self.enemy_ID = -1
@@ -260,6 +263,8 @@ class Game(object):
 
 			Locals.SCORE = self.character.score
 			if(Locals.CHANGESTATE == "Menu"):
+                                PM.music.fadeout(1000)
+                                PM.music.stop()
 				return False
 			PD.update()  # update the screen
 
@@ -269,12 +274,16 @@ class Game(object):
 			if(self.end_time > 0):
 				self.end_time -= 1
 			else:
+                                PM.music.fadeout(1000)
+                                PM.music.stop()
 				Locals.CHANGESTATE = "Menu"
 		if(player.health <= 0):
 			self.screen.blit(self.lose_image, self.end_image_position)
 			if(self.end_time > 0):
 				self.end_time -= 1
 			else:
+                                PM.music.fadeout(1000)
+                                PM.music.stop()
 				Locals.CHANGESTATE = "Menu"
 		# player.update(delta, self.block_group)
 
