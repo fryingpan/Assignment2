@@ -8,13 +8,27 @@ Josh Holstein
 Run the following to run the program:
 python masterfile.py
 
+The game now starts with a cutscene, which you can push 'space' to go through, and 'q' to skip.
+After a cutscene ends, there's a significant laf that we plan to fix in the next week.
+At the top, there is a banner that informs players of what their current objective is.
+Press n to flip through the current objective.
+When the player gets near the cheese wall, (our 'locked' door), the player will be told
+to find the lactase (key) (currently the door disappears upon touching the key, but we
+play to change it to needing to unlock/eat the door).
+The key and door does not disappear properly, but you can go through them. We plan to
+fix this problem later.
+
+The other side has many enemies that
+the player must kill to win.
+
+We implemented dirty sprites to allow the game to run more smoothly with the tiling system.
+A cutscene class was added for easier cutscene creation
+
 Todo List
 ----------
 -Tiles
     -bg
--enemies
-    -smaller puddles
-    -separate puddle from enemy
+
 -item system
     -probably don't need to KEEP key in an inventory; simply open the door when you get the key?
     -when player runs over an item, press one key to eat and different key to pick up as weapon.

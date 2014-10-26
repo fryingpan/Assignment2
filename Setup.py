@@ -129,6 +129,7 @@ class Game(object):
 		self.background = self.map.create_background()
 		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 		self.allsprites.clear(self.screen, self.background)
+		self.cheesed = True
 
                 self.objective = Objective()
 
@@ -193,6 +194,14 @@ class Game(object):
 			background = self.camera.update(self.character.get_coordinates(),
 											self.screen, self.map.get_surface()
 											)
+			#####temporary code to detect for door objective###############
+			print("x " + str(self.character.rect.x) + " y " + str(self.character.rect.y))
+			if(self.character.rect.x > 2400 and self.character.rect.x < 2700
+				and self.character.rect.y > 250 and self.character.rect.y < 400
+				and self.cheesed == True):
+				print("got here")
+				self.cheesed = False
+				self.objective.updateObjective(self.screen, 1)
 
 			self.update_score(self.character)
 
@@ -240,9 +249,9 @@ class Game(object):
 
 				self.make_disappear = self.character.get_open_door()
 
-				# if self.make_disappear:
-				# 	self.background = self.map.update_background()
-				# 	self.make_disappear = False
+				if self.make_disappear:
+					self.background = self.map.update_background()
+					self.make_disappear = False
 				frame_time -= delta
 				self.updates += 1
 
