@@ -41,6 +41,13 @@ class Enemy(PG.sprite.Sprite):
         self.HEIGHT = 100
         self.invincibility_count = 0
         self.attacked_player = False
+        self.moved = False
+
+    def get_rect(self):
+        if self.moved:
+            return self.rect
+        else: 
+            return None
 
     def will_attack(self):
         attack_prob = random.randint(0, 500)
@@ -102,6 +109,9 @@ class Enemy(PG.sprite.Sprite):
                             once = False
 
     def update(self, bg, player, delta=1):
+        self.moved = False
+        x_location = self.rect.x
+        y_location = self.rect.y
         self.attacked_player = False
         self.move(bg, player, delta)
 
@@ -140,6 +150,8 @@ class Enemy(PG.sprite.Sprite):
                     self.image = self.IMAGES_FRONT[0]
                 else:
                     self.image = self.front_image.convert_alpha()
+        if (self.rect.x != x_location) or (self.rect.y != y_location):
+            self.moved = True
 
     def move(self, bg, player, interval):
         if(random.randint(0, 50) == 0):
