@@ -72,7 +72,9 @@ class Player(PS.DirtySprite):
         self.opened_door = False
 
     def get_open_door(self):
-        return self.opened_door
+        returned = self.opened_door
+        self.opened_door = False
+        return returned
 
     def set_interval(self, interval):
         self.frame_interval = interval
