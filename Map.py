@@ -180,11 +180,11 @@ class Map(object):
 			y_coor += self.grid_size[1]
 
 	def draw_map(self):
-		if len(self.grasstiles) == len(self.grass_type):
-			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
-				self.surface.blit(self.grass_array[gtype], grasstile)
-		else:
-			print "ERROR: grasstile != grass_type. Map.py line 183"
+		# if len(self.grasstiles) == len(self.grass_type):
+		# 	for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
+		# 		self.surface.blit(self.grass_array[gtype], grasstile)
+		# else:
+		# 	print "ERROR: grasstile != grass_type. Map.py line 183"
 
 
 		for block in self.object_group:
@@ -198,7 +198,7 @@ def create_Block(color, rect):
 	return new_block
 
 
-class Tiles(PS.DirtySprite):
-	def __init__(self):
-		PS.DirtySprite.__init__(self, group):
+# class Tiles(PS.DirtySprite):
+# 	def __init__(self):
+# 		PS.DirtySprite.__init__(self, group):
 		
