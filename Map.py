@@ -30,11 +30,9 @@ class Globals(object):
 
 #Block sprite class
 class Block(PG.sprite.Sprite):
-	def __init__(self, color, rect):
+	def __init__(self, img, rect):
 		PG.sprite.Sprite.__init__(self)
-		self.image = PG.Surface([rect.width, rect.height])
-		self.color = color
-		self.image.fill(self.color)
+		self.image = img
 		self.rect = rect
 		self.x = 0
 		self.y = 0
@@ -80,9 +78,8 @@ class Map(object):
 			Map.GRASS_ARRAY = self.load_tiles()
 			Map.TILES_LOADED = True
 
+		####(prepare to read mapfile)#######
 		self.map = self.get_map(mapfile)
-		self.not_drawables = ['.']
-		self.objects = ['D', 'W', 'K']  # Door, Wall, Key
 		#size of an individual block in the grid
 		self.grid_size = [100, 100]
 		self.grid_dimensions = self.get_dimensions(self.map)
@@ -97,6 +94,20 @@ class Map(object):
 		self.grasstiles = []
 		self.grass_type = []
 
+		#block arrays
+		self.wallBlocksV = [] #vertical V
+		self.wallBlocksH = [] #horizontal H
+		self.wallBlocksE = [] #edges/corners; correspond to index num (see load_blocks)
+		self.doorBlocks = [] # D
+		self.shrubBlocks = [] # S
+		#tree top = T, tree bottom = Y
+		#so it's like ty thank you isn't that cute
+		self.treeBlocksT = [] # T
+		self.treeBlocksB = [] # Y
+		self.keyBlocks = [] #K
+
+		#create map from mapfile
+		self.load_blocks(1)
 		self.objectify_map()
 		self.fill()
 
@@ -107,6 +118,36 @@ class Map(object):
 		tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
 		tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
 		return tile_array
+
+	def load_blocks(self, lvl):
+		#note: always load edge blocks with these indeces:
+		#0 = HL; 1 = HR; 2 = VD; 3 = VU; 4 = TL; 5 = TR; 6 = BL; 7 = BR
+		if(lvl == 1):
+			self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall.png"))
+			self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall1.png"))
+			self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH.png"))
+			self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH1.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHL.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHR.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVD.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVU.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETL.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETR.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBL.png"))
+			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBR.png"))
+			self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall1.png"))
+			self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall2.png"))
+			self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall3.png"))
+			self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
+			self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubCauli.png"))
+			self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubRadish.png"))
+			self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
+			self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT2.png"))
+			self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT3.png"))
+			self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB1.png"))
+			self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB2.png"))
+			self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB3.png"))
+			self.keyBlocks.append(PI.load("FPGraphics/tiles/lactasePill.png"))
 
 	def get_surface(self):
 			return self.surface
@@ -134,6 +175,9 @@ class Map(object):
 		x_coor = 0
 		y_coor = 0
 
+		#keep track of type of tree block
+		treeblockType = []
+
 		#traverse the map, creating block sprites
 		for x in range(self.grid_dimensions[1]):
 			#get the list of characters in the mapfile
@@ -141,35 +185,59 @@ class Map(object):
 			x_coor = 0
 			for y in range(self.grid_dimensions[0]):
 				# wall blocks
-				if char_list[y] == 'W':
-					new_block = create_Block(mapcolors['W'],
+				if char_list[y] == 'V':
+					new_block = create_Block(self.wallBlocksV[random.randint(0,len(self.wallBlocksV))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]))
-					new_block.set_rectTop(y_coor)
-					new_block.set_rectLeft(x_coor)
-					self.object_group.add(new_block)
-
+				elif char_list[y] == 'H':
+					new_block = create_Block(self.wallBlocksH[random.randint(0,len(self.wallBlocksH))-1],
+											 PG.Rect(x_coor, y_coor,
+													 self.grid_size[0],
+													 self.grid_size[1]))
 				# key block
 				elif char_list[y] == 'K':
-					new_block = create_Block(mapcolors['K'],
+					#change to just an obj later or whatever
+					new_block = create_Block(self.keyBlocks[0],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]))
-					new_block.set_rectTop(y_coor)
-					new_block.set_rectLeft(x_coor)
-					self.object_group.add(new_block)
 				# Door blocks
 				elif char_list[y] == 'D':
-					new_block = create_Block(mapcolors['D'],
+					new_block = create_Block(self.doorBlocks[random.randint(0,len(self.doorBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]))
-					new_block.set_rectTop(y_coor)
-					new_block.set_rectLeft(x_coor)
-					self.object_group.add(new_block)
-				# Grass tiles
-				elif char_list[y] == '.' or char_list[y] == "D" or char_list[y] == 'K':
+				elif char_list[y] == 'S':
+					new_block = create_Block(self.shrubBlocks[random.randint(0,len(self.shrubBlocks))-1],
+											 PG.Rect(x_coor, y_coor,
+													 self.grid_size[0],
+													 self.grid_size[1]))
+				elif char_list[y] == 'T':
+					randType = random.randint(0,len(self.treeBlocksT))-1
+					treeblockType.append(randType)
+					new_block = create_Block(self.treeBlocksT[randType],
+											 PG.Rect(x_coor, y_coor,
+													 self.grid_size[0],
+													 self.grid_size[1]))
+				elif char_list[y] == 'Y':
+					new_block = create_Block(self.treeBlocksB[treeblockType.pop()],
+											 PG.Rect(x_coor, y_coor,
+													 self.grid_size[0],
+													 self.grid_size[1]))
+				elif char_list[y] != '.': #edges image are determined by index
+					print(char_list[y])
+					new_block = create_Block(self.wallBlocksE[int(char_list[y])],
+											 PG.Rect(x_coor, y_coor,
+													 self.grid_size[0],
+													 self.grid_size[1]))
+				#set the block & add to obj group
+				new_block.set_rectTop(y_coor)
+				new_block.set_rectLeft(x_coor)
+				self.object_group.add(new_block)
+
+				#####(Tiles)######
+				if char_list[y] == '.':
 					#add pair of coordinates
 					tile_index = random.randint(0,3)
 					self.grass_type.append(tile_index)
@@ -179,35 +247,36 @@ class Map(object):
 
 			y_coor += self.grid_size[1]
 
+	#called in the setup/game class
 	def draw_map(self):
+		# if len(self.grasstiles) == len(self.grass_type):
+		# 	for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
+		# 		self.surface.blit(self.grass_array[gtype], grasstile)
+		# else:
+		# 	print "ERROR: grasstile != grass_type. Map.py line 183"
+
+
 		for block in self.object_group:
 			block.draw_block(self.surface)
-
-		if len(self.grasstiles) == len(self.grass_type):
-			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
-				self.surface.blit(self.grass_array[gtype], grasstile)
-		else:
-			print "ERROR: grasstile != grass_type. Map.py line 183"
-
-
+			
 	def create_background(self):
 		background = self.surface
 		background = background.convert()
-		for block in self.object_group:
-			block.draw_block(background)
-
+		# for block in self.object_group:
+		# 	block.draw_block(background)
 		#draw grasstiles to the background
 		if len(self.grasstiles) == len(self.grass_type):
 			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
 				background.blit(self.grass_array[gtype], grasstile)
 		else:
 			print "ERROR: grasstile != grass_type. Map.py line 183"
-
+		for block in self.object_group:
+			block.draw_block(background)
 		return background
 
 #creates a new block sprite
-def create_Block(color, rect):
-	new_block = Block(color, rect)
+def create_Block(img, rect):
+	new_block = Block(img, rect)
 	return new_block
 
 
