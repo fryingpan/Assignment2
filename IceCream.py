@@ -44,9 +44,9 @@ class IceCream(Enemy):
         Enemy.__init__(self, self.rect, self.speed)
 
 
-    def attack(self):
+    def attack(self, surface):
         #create puddle at your location
-        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50))
+        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
 
     def get_face(self):
         return self.face

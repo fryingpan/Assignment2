@@ -12,7 +12,7 @@ from Player import Player
 PG.init()
 
 
-class Enemy(PG.sprite.Sprite):
+class Enemy(PG.sprite.DirtySprite):
     IMAGE_UP = None
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
@@ -23,7 +23,7 @@ class Enemy(PG.sprite.Sprite):
 
     def __init__(self, rect, speed=1):
         # Call the parent class (Sprite) constructor
-        PG.sprite.Sprite.__init__(self)
+        PG.sprite.DirtySprite.__init__(self)
         self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
             .convert_alpha()
         self.rect = rect
@@ -108,7 +108,7 @@ class Enemy(PG.sprite.Sprite):
                                 collision.rect.height
                             once = False
 
-    def update(self, bg, player, delta=1):
+    def update(self, delta, bg, player):
         self.moved = False
         x_location = self.rect.x
         y_location = self.rect.y
@@ -150,11 +150,12 @@ class Enemy(PG.sprite.Sprite):
                     self.image = self.IMAGES_FRONT[0]
                 else:
                     self.image = self.front_image.convert_alpha()
-        if (self.rect.x != x_location) or (self.rect.y != y_location):
-            self.moved = True
+        # if (self.rect.x != x_location) or (self.rect.y != y_location):
+        #     self.moved = True
+        self.dirty = 1
 
     def move(self, bg, player, interval):
-        if(random.randint(0, 50) == 0):
+        if(random.randint(0, 200) == 0):
             self.direction = random.randint(0, 3)
         dist = self.speed  # distance moved in 1 frame, try changing it to 5
         self.interval = interval

@@ -169,7 +169,7 @@ class Map(object):
 					new_block.set_rectLeft(x_coor)
 					self.object_group.add(new_block)
 				# Grass tiles
-				elif char_list[y] == '.':
+				elif char_list[y] == '.' or char_list[y] == "D" or char_list[y] == 'K':
 					#add pair of coordinates
 					tile_index = random.randint(0,3)
 					self.grass_type.append(tile_index)
@@ -180,17 +180,30 @@ class Map(object):
 			y_coor += self.grid_size[1]
 
 	def draw_map(self):
-		# if len(self.grasstiles) == len(self.grass_type):
-		# 	for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
-		# 		self.surface.blit(self.grass_array[gtype], grasstile)
-		# else:
-		# 	print "ERROR: grasstile != grass_type. Map.py line 183"
-
-
 		for block in self.object_group:
 			block.draw_block(self.surface)
 
+		if len(self.grasstiles) == len(self.grass_type):
+			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
+				self.surface.blit(self.grass_array[gtype], grasstile)
+		else:
+			print "ERROR: grasstile != grass_type. Map.py line 183"
 
+
+	def create_background(self):
+		background = self.surface
+		background = background.convert()
+		for block in self.object_group:
+			block.draw_block(background)
+
+		#draw grasstiles to the background
+		if len(self.grasstiles) == len(self.grass_type):
+			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
+				background.blit(self.grass_array[gtype], grasstile)
+		else:
+			print "ERROR: grasstile != grass_type. Map.py line 183"
+
+		return background
 
 #creates a new block sprite
 def create_Block(color, rect):

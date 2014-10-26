@@ -14,7 +14,7 @@ class Trap(PS.Sprite):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, rect, lifetime):
+    def __init__(self, surface, rect, lifetime):
         PS.Sprite.__init__(self)
         self.rect = rect
         # the life of the trap
@@ -31,23 +31,24 @@ class Trap(PS.Sprite):
         self.trap_attack = False
         # whether the trap need to be removed from the list of traps in SetUp
         self.remove = False
+        self.surface = surface
         self.load_images()
 
 
 
-    def weapon_update(self, surface, player_group):
+    def update(self, delta, bg, player_group):
         self.trap_attack = False
         if not self.dropped:
             self.drop_animation()
-            self.draw(surface, False)
+            self.draw(self.surface, False)
         elif self.lifetime <= 70:
             self.disappear_animation()
             if not self.disappear:
-                self.draw(surface, False)
+                self.draw(self.surface, False)
             else:
                 self.remove = True
         else:
-            self.draw(surface, True)
+            self.draw(self.surface, True)
         collisions = self.handle_collisions(player_group)
         if len(collisions) > 0:
             self.trap_attack = True
@@ -115,7 +116,7 @@ class Puddle(Trap):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, rect):
+    def __init__(self, rect, surface):
         #how long the puddle will last before it disappears
         self.lifetime = 500
         # if not Trap.IMAGE:
@@ -141,7 +142,7 @@ class Puddle(Trap):
         self.num_frames = 3
 
         #initialize parent class
-        Trap.__init__(self, rect, self.lifetime)
+        Trap.__init__(self, surface, rect, self.lifetime)
 
 
     #load animation images

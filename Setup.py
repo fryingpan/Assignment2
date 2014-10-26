@@ -118,11 +118,17 @@ class Game(object):
 		self.end_time = 800
 		self.end_image_position = (100, 178)
 
+
+		self.trap_group = PS.Group()
+		self.background = self.map.create_background()
+		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+		self.allsprites.clear(self.screen, self.background)
+
 	def run(self):
 		#lv1_cutscene = Cutscene(self.screen,1)
 		running = True
 		while running:
-			self.map.draw_map()
+			# self.map.draw_map()
 			new_time = PT.get_ticks()
 			frame_time = (new_time - self.current_time)/1000.0
 			self.current_time = new_time
@@ -134,22 +140,21 @@ class Game(object):
 			#Key Handling----------------------------
 
 			# self.screen.fill((0,0,0)) # fill the screen with white
-			self.map.fill()
+			# self.map.fill()
 
 			#draw blocks
-			self.map.draw_map()
+			# self.map.draw_map()
 			#move and draw the enemies
 			player_face = self.character.get_face()
 			weapon_attack = False
 
-			print len(self.trap_list)
 			for trap in self.trap_list:
-				trap.weapon_update(self.map.get_surface(),
-									   self.player_group)
+				trap.update(None, None, self.player_group)
 				if (trap.get_trap_attack() and self.invincibility_count == 0):
 					weapon_attack = True
 				if trap.will_remove():
 					self.trap_list.remove(trap)
+					self.trap_group.remove(trap)
 
 
 			for icecream in self.icecream_list.sprites():
@@ -157,9 +162,10 @@ class Game(object):
 				#see if the enemy will release weapon/attack
 				if (icecream.will_attack()):
 					#get a new puddle sprite
-					new_trap = icecream.attack()
+					new_trap = icecream.attack(self.map.get_surface())
 					#add the new trap to the list of traps
 					self.trap_list.append(new_trap)
+					self.trap_group.add(new_trap)
 				icecream.draw(self.map.get_surface())
 
 
@@ -185,12 +191,13 @@ class Game(object):
 			#clock is added
 			clock = PT.Clock()
 
+
 			while frame_time > 0.0:
 				delta = min(frame_time, self.interval)
 				self.enemy_ID = -1
 				for icecream in self.icecream_list.sprites():
 					#update position and collisions
-					icecream.update(self.block_group, self.player_group, delta)
+					icecream.update(delta, self.block_group, self.player_group)
 					#see if ice cream collided with player
 					if(icecream.get_attacked_player() or weapon_attack):
 						if weapon_attack:
@@ -220,8 +227,12 @@ class Game(object):
 
 				clock.tick()
 
+				self.character.update(delta, self.block_group, None)
 
 				self.update_score(self.character)
+				self.allsprites.update(delta, self.block_group, self.player_group)
+				rects = self.allsprites.draw(self.map.get_surface())
+				PG.display.update(rects)
 
 				PD.flip()
 
@@ -247,7 +258,7 @@ class Game(object):
 				self.end_time -= 1
 			else:
 				Locals.CHANGESTATE = "Menu"
-		player.update(delta, self.block_group)
+		# player.update(delta, self.block_group)
 
 	def update_score(self, player):
 		if(player.score == self.num_enemies):

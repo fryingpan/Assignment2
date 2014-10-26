@@ -19,7 +19,7 @@ from Weapon import Weapon
 PG.init()
 
 
-class Player(PS.Sprite):
+class Player(PS.DirtySprite):
     IMAGES = None
     IMAGES_RIGHT = None
     IMAGES_LEFT = None
@@ -46,7 +46,7 @@ class Player(PS.Sprite):
 
     def __init__(self, fps=1):
         # Call the parent class (Sprite) constructor
-        PS.Sprite.__init__(self)
+        PS.DirtySprite.__init__(self)
         self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png") \
             .convert_alpha()
         self.rect = self.image.get_rect()
@@ -210,7 +210,7 @@ class Player(PS.Sprite):
                 if self.face == 'l':
                         self.face = 'ls'
 
-    def update(self, delta, bg):
+    def update(self, delta, bg, selfgroup):
             self.moved = False
             x_location = self.rect.x
             y_location = self.rect.y
@@ -278,6 +278,7 @@ class Player(PS.Sprite):
                                                          ).convert_alpha()
             if (self.rect.x != x_location) or (self.rect.y != y_location):
                 self.moved = True
+                self.dirty = 1
 
     def update_image(self, imageArray):
             try:
