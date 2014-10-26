@@ -110,9 +110,9 @@ class Player(PS.DirtySprite):
                     for collision in collisions:
                             if collision.get_type() == "K":
                                 #kills the yellow brick.
-                                    collision.kill()
-                                    self.open_door(bg)
-                                    self.got_key = True
+                                collision.kill()
+                                self.open_door(bg)
+                                self.got_key = True
                             elif once:
                                     if(self.rect.x + self.rect.width
                                        ) >= collision.rect.left:
@@ -126,9 +126,9 @@ class Player(PS.DirtySprite):
                     for collision in collisions:
                             if collision.get_type() == "K":
                                 #kills the yellow brick.
-                                    collision.kill()
-                                    self.open_door(bg)
-                                    self.got_key = True
+                                collision.kill()
+                                self.open_door(bg)
+                                self.got_key = True
                             elif once:
                                     if(self.rect.x) <= (collision.rect.left +
                                                         collision.rect.width):
@@ -140,9 +140,9 @@ class Player(PS.DirtySprite):
                     for collision in collisions:
                             if collision.get_type() == "K":
                                 #kills the yellow brick.
-                                    collision.kill()
-                                    self.open_door(bg)
-                                    self.got_key = True
+                                collision.kill()
+                                self.open_door(bg)
+                                self.got_key = True
                             elif once:
                                     if(self.rect.y + self.rect.height
                                        ) >= collision.rect.top:
@@ -155,9 +155,9 @@ class Player(PS.DirtySprite):
                     for collision in collisions:
                             if collision.get_type() == "K":
                                 #kills the yellow brick.
-                                    collision.kill()
-                                    self.open_door(bg)
-                                    self.got_key = True
+                                collision.kill()
+                                self.open_door(bg)
+                                self.got_key = True
                             elif once:
                                     if(self.rect.y <= (collision.rect.top +
                                                        collision.rect.height)):

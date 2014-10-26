@@ -122,10 +122,12 @@ class Game(object):
 		self.end_time = 800
 		self.end_image_position = (100, 178)
 
+		self.disappearing_blocks = self.map.get_disappearing_blocks()
+
 
 		self.trap_group = PS.Group()
 		self.background = self.map.create_background()
-		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
 		self.allsprites.clear(self.screen, self.background)
 
                 self.objective = Objective()
@@ -165,7 +167,7 @@ class Game(object):
 				if trap.will_remove():
 					self.trap_list.remove(trap)
 					self.trap_group.remove(trap)
-					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
 
 
 			for icecream in self.icecream_list.sprites():
@@ -177,7 +179,7 @@ class Game(object):
 					#add the new trap to the list of traps
 					self.trap_list.append(new_trap)
 					self.trap_group.add(new_trap)
-					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
 				icecream.draw(self.map.get_surface())
 
 
@@ -248,8 +250,7 @@ class Game(object):
 
 				elapsed = (PT.get_ticks() - last) / 1000.0
 
-				if (PG.key.get_pressed()):
-					self.character.set_interval(elapsed)
+				self.character.set_interval(elapsed)
 
 				self.character.update(delta, self.block_group, None)
 
