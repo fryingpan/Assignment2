@@ -18,6 +18,7 @@ try:
 	import pygame.font as PF
 	import random
 	from Trap import Puddle
+	from Cutscene import Cutscene
 
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -116,11 +117,12 @@ class Game(object):
 								  "specialEffects/ULOSE.png").convert_alpha()
 		self.end_time = 800
 		self.end_image_position = (100, 178)
-		self.map.draw_map()
 
 	def run(self):
+		#lv1_cutscene = Cutscene(self.screen,1)
 		running = True
 		while running:
+			self.map.draw_map()
 			new_time = PT.get_ticks()
 			frame_time = (new_time - self.current_time)/1000.0
 			self.current_time = new_time
