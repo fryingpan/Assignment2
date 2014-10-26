@@ -39,7 +39,7 @@ class Player(PS.DirtySprite):
     IMG_ATTACK_R = None
     IMG_ATTACK_L = None
 
-    CYCLE = 0.1
+    CYCLE = 0.5
     ADCYCLE = .05
     WIDTH = 100
     HEIGHT = 100
@@ -68,7 +68,7 @@ class Player(PS.DirtySprite):
         self.weapon = Weapon()
         self.moved = False
         self.interval = 0
-        self.frame_interval = 1
+        self.frame_interval = 0
 
     def set_interval(self, interval):
         self.frame_interval = interval
@@ -168,25 +168,26 @@ class Player(PS.DirtySprite):
     def handle_keys(self, bg, enemy_bg, screen, interval=5):
         #add enemy_bg to character_handle_keys in setup
         """ Handles Keys """
+        self.interval = interval
         key = PG.key.get_pressed()
         dist = self.speed  # distance moved in 1 frame, try changing it to 5
         if key[PG.K_DOWN]:  # down key
-                self.rect.y += dist*self.frame_interval  # move down
+                self.rect.y += dist*self.interval  # move down
                 #self.rect = self.image.get_rect()
                 self.face = 'd'
                 self.handle_collision(bg)
         elif key[PG.K_UP]:  # up key
-            self.rect.y -= dist*self.frame_interval  # move up
+            self.rect.y -= dist*self.interval  # move up
             #self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
         elif key[PG.K_RIGHT]:  # right key
-            self.rect.x += dist*self.frame_interval  # move right
+            self.rect.x += dist*self.interval  # move right
             #self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
         elif key[PG.K_LEFT]:  # left key
-            self.rect.x -= dist*self.frame_interval  # move left
+            self.rect.x -= dist*self.interval  # move left
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
@@ -229,9 +230,7 @@ class Player(PS.DirtySprite):
         #self.rect.top += self.yvel
         #camera stuff end
 
-        self.interval = delta
-
-        self.time = self.time + delta
+        self.time = self.time + self.frame_interval
         if self.time > Player.CYCLE:
                 self.time = 0.0
         frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
