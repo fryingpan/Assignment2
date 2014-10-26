@@ -51,7 +51,7 @@ def initialize():
 class Game(object):
 
 	def __init__(self, interval):
-
+                PM.music.load("music/gameplay.mod")
 		self.interval = interval
 		self.fps = 40
 		self.num_enemies = 5
@@ -133,12 +133,11 @@ class Game(object):
 	def run(self):
                 lv1_cutscene = Cutscene(self.screen,1)
 		running = True
-                PM.music.load("music/gameplay.mod")
+
+                #music
                 PM.music.play(0)
+
 		while running:
-
-
-
 			# self.map.draw_map()
 			new_time = PT.get_ticks()
 			frame_time = (new_time - self.current_time)/1000.0
@@ -202,14 +201,10 @@ class Game(object):
 			#clock is added
 			clock = PT.Clock()
 
-
 			while frame_time > 0.0:
 
                                 #adding objective banner here
                                 self.objective.updateObjective(self.screen, 0)
-
-
-
 
 				delta = min(frame_time, self.interval)
 				self.enemy_ID = -1
@@ -270,7 +265,6 @@ class Game(object):
 			Locals.SCORE = self.character.score
 			if(Locals.CHANGESTATE == "Menu"):
                                 PM.music.fadeout(1000)
-
 				return False
 			PD.update()  # update the screen
 
@@ -281,7 +275,6 @@ class Game(object):
 				self.end_time -= 1
 			else:
                                 PM.music.fadeout(1000)
-
 				Locals.CHANGESTATE = "Menu"
 		if(player.health <= 0):
 			self.screen.blit(self.lose_image, self.end_image_position)
@@ -289,7 +282,6 @@ class Game(object):
 				self.end_time -= 1
 			else:
                                 PM.music.fadeout(1000)
-
 				Locals.CHANGESTATE = "Menu"
 		# player.update(delta, self.block_group)
 
