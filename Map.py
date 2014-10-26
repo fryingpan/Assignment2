@@ -10,6 +10,7 @@ import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
+from collections import deque
 
 mapcolors = {'D': (154, 205, 50),
 			 'W': (30, 144, 255), 'K': (255, 255, 0, 255)}
@@ -109,15 +110,11 @@ class Map(object):
 		self.treeBlocksT = [] # T
 		self.treeBlocksB = [] # Y
 		self.keyBlocks = [] #K
-		self.disappearing_blocks = PS.Group()
 
 		#create map from mapfile
 		self.load_blocks(1)
 		self.objectify_map()
 		self.fill()
-
-	def get_disappearing_blocks(self):
-		return self.disappearing_blocks
 
 	def load_tiles(self):
 		tile_array = []
@@ -184,7 +181,7 @@ class Map(object):
 		y_coor = 0
 
 		#keep track of type of tree block
-		treeblockType = []
+		treeblockType = deque()
 
 		#traverse the map, creating block sprites
 		for x in range(self.grid_dimensions[1]):
@@ -210,14 +207,12 @@ class Map(object):
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
-					self.disappearing_blocks.add(new_block)
 				# Door blocks
 				elif char_list[y] == 'D':
 					new_block = create_Block(self.doorBlocks[random.randint(0,len(self.doorBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
-					self.disappearing_blocks.add(new_block)
 				elif char_list[y] == 'S':
 					new_block = create_Block(self.shrubBlocks[random.randint(0,len(self.shrubBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
@@ -231,7 +226,7 @@ class Map(object):
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
 				elif char_list[y] == 'Y':
-					new_block = create_Block(self.treeBlocksB[treeblockType.pop()],
+					new_block = create_Block(self.treeBlocksB[treeblockType.popleft()],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
@@ -285,8 +280,8 @@ class Map(object):
 		return background
 
 #creates a new block sprite
-def create_Block(img, rect):
-	new_block = Block(img, rect)
+def create_Block(img, rect, t):
+	new_block = Block(img, rect, t)
 	return new_block
 
 
