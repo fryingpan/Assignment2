@@ -10,7 +10,6 @@ import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
-from collections import deque
 
 mapcolors = {'D': (154, 205, 50),
 			 'W': (30, 144, 255), 'K': (255, 255, 0, 255)}
@@ -31,7 +30,7 @@ class Globals(object):
 
 #Block sprite class
 class Block(PG.sprite.Sprite):
-	def __init__(self, img, rect):
+	def __init__(self, img, rect, t):
 		PG.sprite.Sprite.__init__(self)
 		self.image = img
 		self.rect = rect
@@ -40,6 +39,10 @@ class Block(PG.sprite.Sprite):
 		self.width = 0
 		self.height = 0
 		Globals.SCREEN = PDI.get_surface()
+		self.type = t
+
+	def get_type(self):
+		return self.type
 
 	def draw_block(self, map_surface):
 		map_surface.blit(self.image, self.rect)
@@ -177,7 +180,7 @@ class Map(object):
 		y_coor = 0
 
 		#keep track of type of tree block
-		treeblockType = deque()
+		treeblockType = []
 
 		#traverse the map, creating block sprites
 		for x in range(self.grid_dimensions[1]):
@@ -190,48 +193,48 @@ class Map(object):
 					new_block = create_Block(self.wallBlocksV[random.randint(0,len(self.wallBlocksV))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				elif char_list[y] == 'H':
 					new_block = create_Block(self.wallBlocksH[random.randint(0,len(self.wallBlocksH))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				# key block
 				elif char_list[y] == 'K':
 					#change to just an obj later or whatever
 					new_block = create_Block(self.keyBlocks[0],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				# Door blocks
 				elif char_list[y] == 'D':
 					new_block = create_Block(self.doorBlocks[random.randint(0,len(self.doorBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				elif char_list[y] == 'S':
 					new_block = create_Block(self.shrubBlocks[random.randint(0,len(self.shrubBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				elif char_list[y] == 'T':
 					randType = random.randint(0,len(self.treeBlocksT))-1
 					treeblockType.append(randType)
 					new_block = create_Block(self.treeBlocksT[randType],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				elif char_list[y] == 'Y':
-					new_block = create_Block(self.treeBlocksB[treeblockType.popleft()],
+					new_block = create_Block(self.treeBlocksB[treeblockType.pop()],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				elif char_list[y] != '.': #edges image are determined by index
 					print(char_list[y])
 					new_block = create_Block(self.wallBlocksE[int(char_list[y])],
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
-													 self.grid_size[1]))
+													 self.grid_size[1]), char_list[y])
 				#set the block & add to obj group
 				new_block.set_rectTop(y_coor)
 				new_block.set_rectLeft(x_coor)
@@ -276,8 +279,8 @@ class Map(object):
 		return background
 
 #creates a new block sprite
-def create_Block(img, rect):
-	new_block = Block(img, rect)
+def create_Block(img, rect, t):
+	new_block = Block(img, rect, t)
 	return new_block
 
 
