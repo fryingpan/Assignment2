@@ -69,6 +69,10 @@ class Player(PS.DirtySprite):
         self.moved = False
         self.interval = 0
         self.frame_interval = 0
+        self.opened_door = False
+
+    def get_open_door(self):
+        return self.opened_door
 
     def set_interval(self, interval):
         self.frame_interval = interval
@@ -101,6 +105,7 @@ class Player(PS.DirtySprite):
         for block in bg:
             if block.get_type() == 'D':
                 block.kill()
+        self.opened_door = True
 
     def handle_collision(self, bg):
             collisions = PS.spritecollide(self, bg, False)

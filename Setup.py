@@ -122,12 +122,12 @@ class Game(object):
 		self.end_time = 800
 		self.end_image_position = (100, 178)
 
-		self.disappearing_blocks = self.map.get_disappearing_blocks()
+		self.make_disappear = False
 
 
 		self.trap_group = PS.Group()
 		self.background = self.map.create_background()
-		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
+		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 		self.allsprites.clear(self.screen, self.background)
 
                 self.objective = Objective()
@@ -167,7 +167,7 @@ class Game(object):
 				if trap.will_remove():
 					self.trap_list.remove(trap)
 					self.trap_group.remove(trap)
-					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 
 
 			for icecream in self.icecream_list.sprites():
@@ -179,7 +179,7 @@ class Game(object):
 					#add the new trap to the list of traps
 					self.trap_list.append(new_trap)
 					self.trap_group.add(new_trap)
-					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.disappearing_blocks)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 				icecream.draw(self.map.get_surface())
 
 
@@ -237,6 +237,12 @@ class Game(object):
 										   self.icecream_list,
 										   self.map.get_surface(),
 										   self.interval)
+
+				self.make_disappear = self.character.get_open_door()
+
+				# if self.make_disappear:
+				# 	self.background = self.map.update_background()
+				# 	self.make_disappear = False
 				frame_time -= delta
 				self.updates += 1
 

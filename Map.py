@@ -115,6 +115,7 @@ class Map(object):
 		self.keyBlocks = [] #K
 		self.disappearing_blocks = PS.Group()
 
+		self.spots_to_be_filled = []
 		#create map from mapfile
 		self.load_blocks(1)
 		self.objectify_map()
@@ -215,6 +216,7 @@ class Map(object):
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
 					self.disappearing_blocks.add(new_block)
+					self.spots_to_be_filled.append((x_coor, y_coor))
 				# Door blocks
 				elif char_list[y] == 'D':
 					new_block = create_Block(self.doorBlocks[random.randint(0,len(self.doorBlocks))-1],
@@ -222,6 +224,7 @@ class Map(object):
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
 					self.disappearing_blocks.add(new_block)
+					self.spots_to_be_filled.append((x_coor, y_coor))
 				elif char_list[y] == 'S':
 					new_block = create_Block(self.shrubBlocks[random.randint(0,len(self.shrubBlocks))-1],
 											 PG.Rect(x_coor, y_coor,
@@ -260,6 +263,26 @@ class Map(object):
 				x_coor += self.grid_size[0]
 
 			y_coor += self.grid_size[1]
+
+	def update_background(self):
+		background = self.surface
+		background = background.convert()
+		# for block in self.object_group:
+		# 	block.draw_block(background)
+		#draw grasstiles to the background
+		if len(self.grasstiles) == len(self.grass_type):
+			for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
+				background.blit(self.grass_array[gtype], grasstile)
+		else:
+			print "ERROR: grasstile != grass_type. Map.py line 183"
+		for block in self.object_group:
+			block.draw_block(background)
+		for spot in self.spots_to_be_filled:
+			background.blit(self.grass_array[0], spot)
+
+		return background
+			
+
 
 	#called in the setup/game class
 	def draw_map(self):
