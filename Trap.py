@@ -8,14 +8,14 @@ import pygame.image as PI
 from Player import Player
 from Enemy import Enemy
 
-class Trap(PS.Sprite):
+class Trap(PS.DirtySprite):
 
     IMAGE = None
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
     def __init__(self, surface, rect, lifetime):
-        PS.Sprite.__init__(self)
+        PS.DirtySprite.__init__(self)
         self.rect = rect
         # the life of the trap
         self.lifetime = lifetime
@@ -52,6 +52,8 @@ class Trap(PS.Sprite):
         collisions = self.handle_collisions(player_group)
         if len(collisions) > 0:
             self.trap_attack = True
+        self.dirty = 1
+
 
     def will_remove(self):
         return self.remove
