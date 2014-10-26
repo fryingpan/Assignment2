@@ -165,6 +165,7 @@ class Game(object):
 				if trap.will_remove():
 					self.trap_list.remove(trap)
 					self.trap_group.remove(trap)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 
 
 			for icecream in self.icecream_list.sprites():
@@ -176,6 +177,7 @@ class Game(object):
 					#add the new trap to the list of traps
 					self.trap_list.append(new_trap)
 					self.trap_group.add(new_trap)
+					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 				icecream.draw(self.map.get_surface())
 
 
@@ -253,7 +255,7 @@ class Game(object):
 
 				self.update_score(self.character)
 				self.allsprites.update(delta, self.block_group, self.player_group)
-				rects = self.allsprites.draw(self.map.get_surface())
+				rects = self.allsprites.draw(self.map.get_surface(), self.background)
 				PG.display.update(rects)
 
 				PD.flip()
