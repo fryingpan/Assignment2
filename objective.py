@@ -19,7 +19,6 @@ class Objective(object):
         self.font = PF.SysFont('Arial', 25)
         self.text_color = (0,0,0)
 
-
     def updateObjective(self, screen, whichText):
         self.updateBanner(screen)
         text = []
@@ -40,6 +39,10 @@ class Objective(object):
         lactose.append("cheese walls. Look for lactase pills to take to eat through them!")
         lactose.append("You are lactose-intolerant, and therefore you can't eat through")
 
+        if key[PG.K_n]:
+            self.updateBanner(screen)
+            screen.blit(self.font.render(lactose.pop(), True, self.text_color), (50, 30))
+
 
     def killedText(self, screen):
         self.updateBanner(screen)
@@ -49,3 +52,8 @@ class Objective(object):
         killed.append("You just killed a food person!")
 
         screen.blit(self.font.render(killed.pop(), True, self.text_color), (50, 30))
+        key = PG.key.get_pressed()
+
+        if key[PG.K_n]:
+            self.updateBanner(screen)
+            screen.blit(self.font.render(killed.pop(), True, self.text_color), (50, 30))
