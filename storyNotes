@@ -1,0 +1,38 @@
+You always knew you were a little different.
+But you couldn't say exactly how.
+
+Maybe that's why no one wanted to play with you.
+You're tired of having to dealing with this disrespect.
+
+And that is why I have to TAKE OVER THE WORLD.
+By KILLING EVERYONE.
+
+*****Hey Katie, can you put these in banners at appropriate times? Can you piece them apart as necessary?*******
+Objective: Kill all the food people. They're terrible and not nice.
+
+****Maybe when he sees/gets near a cheese wall
+You are lactose-intolerant, and therefore you can't eat through cheese walls. Look for lactase pills to take to eat through them!
+(The ice creams are soy ice creams. All of them are soy.)
+
+You just killed a food person! You can either eat its corpse-uh-drop-for health or pick up it up to use as a weapon! 
+
+******************
+Tiles
+Blocks
+Shrubbery
+Door
+Button/key
+
+======================
+layers should all coincide with each other
+
+From bottom to top
+1 (ground tiles)
+2 blocks
+3 enemies & player & player weapon
+4 screen displays (health/score, win etc)
+
+I think all sprites within the layer groups need to
+have the same arguments for update....
+
+First get the tiles below the blocks and then handle the next parts
