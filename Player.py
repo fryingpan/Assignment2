@@ -215,71 +215,68 @@ class Player(PS.DirtySprite):
                     self.face = 'ls'
 
     def update(self, delta, bg, selfgroup):
- 
-        if (PG.key.get_pressed()):
-            PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
-            #update time and frame
-            key = PG.key.get_pressed()
-            #camera stuff
-            # increment in x direction
-            #self.rect.left += self.xvel
-            # do x-axis collisions
-            # self.collide(self.xvel, 0, platforms)
-            # increment in y direction
-            #self.rect.top += self.yvel
-            #camera stuff end
-
-            self.time = self.time + self.frame_interval
-            if self.time > Player.CYCLE:
-                    self.time = 0.0
-            frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
-
-            if frame != self.frame:
-                    self.frame = frame
-                    if(self.dmg_count > 0):
-                            self.dmg_count -= 1
-                            self.face = list(self.face)[0]
-                            #DMG
-                            if(self.face == 'r'):
-                                    self.update_image(self.IMAGES_RIGHT_DMG)
-                            elif(self.face == 'u'):
-                                    self.update_image(self.IMAGES_BACK_DMG)
-                            elif(self.face == 'l'):
-                                    self.update_image(self.IMAGES_LEFT_DMG)
-                            elif(self.face == 'd'):
-                                    self.update_image(self.IMAGES_FRONT_DMG)
-                    else:
-                            if (self.face == 'r'):
-                                    self.update_image(self.IMAGES_RIGHT)
-                            elif (self.face == 'u'):
-                                    self.update_image(self.IMAGES_BACK)
-                            elif (self.face == 'l'):
-                                    self.update_image(self.IMAGES_LEFT)
-                            elif (self.face == 'd'):
-                                    self.update_image(self.IMAGES_FRONT)
-                            #standing
-                            elif(self.face == 'rs'):
-                                    self.image = self.IMAGES_RIGHT[0]
-                            elif(self.face == 'us'):
-                                    self.image = self.IMAGES_BACK[0]
-                            elif(self.face == 'ls'):
-                                    self.image = self.IMAGES_LEFT[0]
-                            elif(self.face == 'ds'):
-                                    self.image = self.IMAGES_FRONT[0]
-                            #accel
-                            elif(self.face == 'ra'):
-                                    self.update_image(self.IMAGES_RIGHT_ACCEL)
-                            elif(self.face == 'ua'):
-                                    self.update_image(self.IMAGES_BACK_ACCEL)
-                            elif(self.face == 'la'):
-                                    self.update_image(self.IMAGES_LEFT_ACCEL)
-                            elif(self.face == 'da'):
-                                    self.update_image(self.IMAGES_FRONT_ACCEL)
-                            else:
-                                    self.image = PI.load("FPGraphics/MC/" +
-                                                         "MCwalk/MCFront.png"
-                                                         ).convert_alpha()
-            self.dirty = 1
+        self.moved = False
+        x_location = self.rect.x
+        y_location = self.rect.y
+        PLAYER_IMAGE_LENGTH = 12 # all player sprite has 12 frames
+        #update time and frame
+        key = PG.key.get_pressed()
+        #camera stuff
+        # increment in x direction
+        #self.rect.left += self.xvel
+        # do x-axis collisions
+        # self.collide(self.xvel, 0, platforms)
+        # increment in y direction
+        #self.rect.top += self.yvel
+        #camera stuff end
+        self.time = self.time + delta
+        if self.time > Player.CYCLE:
+            self.time = 0.0
+        frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
+        if frame != self.frame:
+            self.frame = frame
+            if(self.dmg_count > 0):
+                self.dmg_count -= 1
+                self.face = list(self.face)[0]
+                #DMG
+                if(self.face == 'r'):
+                    self.update_image(self.IMAGES_RIGHT_DMG)
+                elif(self.face == 'u'):
+                    self.update_image(self.IMAGES_BACK_DMG)
+                elif(self.face == 'l'):
+                    self.update_image(self.IMAGES_LEFT_DMG)
+                elif(self.face == 'd'):
+                    self.update_image(self.IMAGES_FRONT_DMG)
+            else:
+                if (self.face == 'r'):
+                    self.update_image(self.IMAGES_RIGHT)
+                elif (self.face == 'u'):
+                    self.update_image(self.IMAGES_BACK)
+                elif (self.face == 'l'):
+                    self.update_image(self.IMAGES_LEFT)
+                elif (self.face == 'd'):
+                    self.update_image(self.IMAGES_FRONT)
+                #standing
+                elif(self.face == 'rs'):
+                    self.image = self.IMAGES_RIGHT[0]
+                elif(self.face == 'us'):
+                    self.image = self.IMAGES_BACK[0]
+                elif(self.face == 'ls'):
+                    self.image = self.IMAGES_LEFT[0]
+                elif(self.face == 'ds'):
+                    self.image = self.IMAGES_FRONT[0]
+                #accel
+                elif(self.face == 'ra'):
+                    self.update_image(self.IMAGES_RIGHT_ACCEL)
+                elif(self.face == 'ua'):
+                    self.update_image(self.IMAGES_BACK_ACCEL)
+                elif(self.face == 'la'):
+                    self.update_image(self.IMAGES_LEFT_ACCEL)
+                elif(self.face == 'da'):
+                    self.update_image(self.IMAGES_FRONT_ACCEL)
+                else:
+                    self.image = PI.load("FPGraphics/MC/" +"MCwalk/MCFront.png").convert_alpha()
+        self.dirty = 1
 
     def update_image(self, imageArray):
             try:
