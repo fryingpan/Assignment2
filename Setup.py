@@ -19,6 +19,7 @@ try:
 	import random
 	from Trap import Puddle
 	from Cutscene import Cutscene
+        from objective import Objective
 
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -52,6 +53,7 @@ class Game(object):
 		self.interval = interval
 		self.fps = 40
 		self.num_enemies = 5
+                self.remainingEnemies = self.num_enemies
 
 		PG.init()
 		self.screen = PD.set_mode((800, 600))
@@ -124,6 +126,8 @@ class Game(object):
 		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 		self.allsprites.clear(self.screen, self.background)
 
+                self.objective = Objective()
+
 	def run(self):
 		#lv1_cutscene = Cutscene(self.screen,1)
 		running = True
@@ -193,6 +197,11 @@ class Game(object):
 
 
 			while frame_time > 0.0:
+
+                                #adding objective banner here
+                                self.objective.updateObjective(self.screen, 0)
+
+
 				delta = min(frame_time, self.interval)
 				self.enemy_ID = -1
 				for icecream in self.icecream_list.sprites():
@@ -222,6 +231,10 @@ class Game(object):
 										   self.interval)
 				frame_time -= delta
 				self.updates += 1
+
+                                self.remainingEnemies = self.num_enemies - self.character.score
+                                if self.remainingEnemies < self.num_enemies:
+                                    self.objective.updateObjective(self.screen, 2)
 
 				last = PT.get_ticks()
 
