@@ -67,6 +67,13 @@ class Player(PS.Sprite):
             .convert_alpha()
         self.score = 0
         self.weapon = Weapon()
+        self.moved = False
+
+    def get_rect_if_moved(self):
+        if self.moved:
+            return self.rect
+        else:
+            return None
 
     def decrement_health(self, enemy_ID):
         if self.health > 0:
@@ -204,6 +211,9 @@ class Player(PS.Sprite):
                         self.face = 'ls'
 
     def update(self, delta, bg):
+            self.moved = False
+            x_location = self.rect.x
+            y_location = self.rect.y
             PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
             #update time and frame
             key = PG.key.get_pressed()
@@ -266,6 +276,8 @@ class Player(PS.Sprite):
                                     self.image = PI.load("FPGraphics/MC/" +
                                                          "MCwalk/MCFront.png"
                                                          ).convert_alpha()
+            if (self.rect.x != x_location) or (self.rect.y != y_location):
+                self.moved = True
 
     def update_image(self, imageArray):
             try:
