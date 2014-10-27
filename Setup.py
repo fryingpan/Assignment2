@@ -54,13 +54,15 @@ class Game(object):
                 PM.music.load("music/gameplay.mod")
 		self.interval = interval
 		self.fps = 40
-		self.num_enemies = 5
+		self.num_enemies = 11 #adding extra since cutscene bug deletes one
                 self.remainingEnemies = self.num_enemies
 
 		PG.init()
 		self.screen = PD.set_mode((800, 600))
 		self.screen_rect = self.screen.get_rect()
 		self.screen.fill((255, 255, 255))
+		self.objective = Objective(self.screen)
+
 		PD.set_caption("Master Chef's wicked adventure " +
 					   "with his ice cream buddies")
 
@@ -79,9 +81,13 @@ class Game(object):
 		self.enemy_ID = -1  # no enemy
 		self.invincibility_count = 0
 
+		###some enemies are set in certain areas
 		#add all the enemies to the list of enemies
 		for e in range(self.num_enemies):
-			icecream = IceCream(random.randint(500,1000), random.randint(500,1000),self.fps)
+			if(e % 2 == 0):
+				icecream = IceCream(random.randint(500,1000), random.randint(500,1000),self.fps)
+			else:
+				icecream = IceCream(random.randint(2800,5300), random.randint(100,950),self.fps)
 			self.icecream_list.add(icecream)
 
 		self.map = Map.Map('mapfile.txt')
@@ -129,9 +135,10 @@ class Game(object):
 		self.background = self.map.create_background()
 		self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 		self.allsprites.clear(self.screen, self.background)
+		##temp obj conditions
 		self.cheesed = True
+		self.killed = True
 
-                self.objective = Objective()
 
 	def run(self):
                 lv1_cutscene = Cutscene(self.screen,1)
@@ -195,13 +202,13 @@ class Game(object):
 											self.screen, self.map.get_surface()
 											)
 			#####temporary code to detect for door objective###############
-			print("x " + str(self.character.rect.x) + " y " + str(self.character.rect.y))
-			if(self.character.rect.x > 2400 and self.character.rect.x < 2700
+			#print("x " + str(self.character.rect.x) + " y " + str(self.character.rect.y))
+			if(self.character.rect.x > 2200 and self.character.rect.x < 2700
 				and self.character.rect.y > 250 and self.character.rect.y < 400
 				and self.cheesed == True):
 				print("got here")
 				self.cheesed = False
-				self.objective.updateObjective(self.screen, 1)
+				self.objective.changeObj(1)
 
 			self.update_score(self.character)
 
@@ -215,9 +222,8 @@ class Game(object):
 			clock = PT.Clock()
 
 			while frame_time > 0.0:
-
-                                #adding objective banner here
-                                self.objective.updateObjective(self.screen, 0)
+				#adding objective banner here
+				self.objective.updateObjective()
 
 				delta = min(frame_time, self.interval)
 				self.enemy_ID = -1
@@ -256,8 +262,9 @@ class Game(object):
 				self.updates += 1
 
                                 self.remainingEnemies = self.num_enemies - self.character.score
-                                if self.remainingEnemies < self.num_enemies:
-                                    self.objective.updateObjective(self.screen, 2)
+                                if self.remainingEnemies < self.num_enemies and self.killed == True:
+                                	self.killed = False
+                                	self.objective.changeObj(2)
 
 				last = PT.get_ticks()
 
@@ -287,7 +294,7 @@ class Game(object):
 			PD.update()  # update the screen
 
 	def update_player(self, player, delta):
-		if(player.score == self.num_enemies):
+		if(player.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
 			self.screen.blit(self.win_image, self.end_image_position)
 			if(self.end_time > 0):
 				self.end_time -= 1
@@ -337,4 +344,8 @@ class Game(object):
 				if event.key == K_ESCAPE:
 					Locals.CHANGESTATE = 'Menu'
 					return False
+				if event.key == K_n:
+					print("key n")
+					self.objective.updateBanner()
+
 		return True
