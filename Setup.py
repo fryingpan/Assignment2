@@ -70,7 +70,7 @@ class Game(object):
 		self.all_sprites = PS.Group()
 
 		#Initialize objects on screen----------------
-		self.character = Player(self.fps)
+                self.character = Player(self.fps)
 		Locals.SCORE = self.character.score
 		self.player_group = PS.GroupSingle(self.character)
 
@@ -145,7 +145,8 @@ class Game(object):
 		running = True
 
                 #music
-                PM.music.play(0)
+                #-1 loop should loop forever
+                PM.music.play(-1)
 
 		while running:
 			# self.map.draw_map()
