@@ -10,19 +10,24 @@ python masterfile.py
 
 The game now starts with a cutscene, which you can push 'space' to go through, and 'q' to skip.
 After a cutscene ends, there's a significant laf that we plan to fix in the next week.
-At the top, there is a banner that informs players of what their current objective is.
+At the top, there is a banner that informs players of what their current objective is. This is made with a new module, objective.py. 
 Press n to flip through the current objective.
 When the player gets near the cheese wall, (our 'locked' door), the player will be told
 to find the lactase (key) (currently the door disappears upon touching the key, but we
-play to change it to needing to unlock/eat the door).
-The key and door does not disappear properly, but you can go through them. We plan to
-fix this problem later.
+play to change it to needing to unlock/eat the door). 
+When you get the key, the key and door disappear and you can advance through to the next room.
 
 The other side has many enemies that
 the player must kill to win.
 
-We implemented dirty sprites to allow the game to run more smoothly with the tiling system.
-A cutscene class was added for easier cutscene creation
+We implemented dirty sprites to allow the game to run more smoothly with the tiling system. And so 
+now the background is not erased and redrawn every single time. Hence, the player, the enemies and the
+traps that the enemy lays(the puddles) are dirty sprites and only the area that they pass is updated
+and that part of the background is filled. 
+A cutscene class was added for easier cutscene creation.
+
+Regarding sound: We have music! Throughout gameplay, a peppy little tune will play. The original song is from Brandon Walsh (https://www.youtube.com/channel/UCYn_k2EskvWK4dB7QR7clQw). We used MilkyTracker to edit it. 
+The song starts right when the game state shows up, and ends when you win, lose, or exit from the game state.
 
 Todo List
 ----------
