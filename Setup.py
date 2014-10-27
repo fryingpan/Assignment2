@@ -206,8 +206,8 @@ class Game(object):
 			if(self.character.rect.x > 2200 and self.character.rect.x < 2700
 				and self.character.rect.y > 250 and self.character.rect.y < 400
 				and self.cheesed == True):
-				print("got here")
-				self.cheesed = False
+                                #print("got here")
+                                self.cheesed = False
 				self.objective.changeObj(1)
 
 			self.update_score(self.character)
@@ -342,6 +342,7 @@ class Game(object):
 			elif event.type == KEYDOWN:
 			# if the user presses escape, quit the event loop.
 				if event.key == K_ESCAPE:
+                                        PM.music.fadeout(1000)
 					Locals.CHANGESTATE = 'Menu'
 					return False
 				if event.key == K_n:
