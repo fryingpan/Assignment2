@@ -48,8 +48,8 @@ class Objective(object):
 
     def updateBanner(self):
         if(len(self.current_obj) > 0):
-            print("banner up")
-            print(str(self.current_obj))
+            #print("banner up")
+            #print(str(self.current_obj))
             # self.screen.blit(self.image, (0, 0))
             # self.screen.blit(self.font.render(self.current_obj.pop(), True, self.text_color), (50, 30))
             self.current_text = self.current_obj.pop()

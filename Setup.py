@@ -347,7 +347,7 @@ class Game(object):
 					Locals.CHANGESTATE = 'Menu'
 					return False
 				if event.key == K_n:
-					print("key n")
+                                        #print("key n")
 					self.objective.updateBanner()
 
 		return True

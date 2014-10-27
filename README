@@ -28,7 +28,7 @@ and that part of the background is filled.
 A cutscene class was added for easier cutscene creation.
 
 Regarding sound: We have music! Throughout gameplay, a peppy little tune will play. The original song is from Brandon Walsh (https://www.youtube.com/channel/UCYn_k2EskvWK4dB7QR7clQw). We used MilkyTracker to edit it. 
-The song starts right when the game state shows up, and ends when you win, lose, or exit from the game state.
+The song starts right when the game state shows up, and ends when you win, lose, or exit from the game state. The song repeats indefinitely while you are in the game state.
 
 Todo List
 ----------
