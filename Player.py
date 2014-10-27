@@ -111,7 +111,7 @@ class Player(PS.DirtySprite):
 
     def handle_collision(self, bg):
             collisions = PS.spritecollide(self, bg, False)
-            if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+            if self.face == 'r' or self.face == 'rs':
                     collisions = PS.spritecollide(self, bg, False)
                     once = True
                     for collision in collisions:
@@ -127,7 +127,7 @@ class Player(PS.DirtySprite):
                                             - self.rect.width
                                         once = False
 
-            elif self.face == 'l' or self.face == 'la' or self.face == 'ls':
+            elif self.face == 'l' or self.face == 'ls':
                     collisions = PS.spritecollide(self, bg, False)
                     once = True
                     for collision in collisions:
@@ -142,7 +142,7 @@ class Player(PS.DirtySprite):
                                         self.rect.x = (collision.rect.left +
                                                        collision.rect.width)
                                         once = False
-            elif self.face == 'd' or self.face == 'da' or self.face == 'ds':
+            elif self.face == 'd' or self.face == 'ds':
                     once = True
                     for collision in collisions:
                             if collision.get_type() == "K":
@@ -156,7 +156,7 @@ class Player(PS.DirtySprite):
                                             self.rect.y = collision.rect.top -\
                                                 self.rect.height
                                             once = False
-            elif self.face == 'u' or self.face == 'ua' or self.face == 'us':
+            elif self.face == 'u' or self.face == 'us':
                     collisions = PS.spritecollide(self, bg, False)
                     once = True
                     for collision in collisions:
@@ -200,17 +200,17 @@ class Player(PS.DirtySprite):
             self.handle_collision(bg)
         elif key[PG.K_SPACE]:  # space key ATTACK
             '''if 'r' in self.face:
-                self.image = self.IMG_ATTACK_R
+                self.image = self.IMG_ATTACK_D
             if 'l' in self.face:
-                self.image = self.IMG_ATTACK_L'''
+                self.image = self.IMG_ATTACK_D'''
             if 'd' in self.face:
                 self.image = self.IMG_ATTACK_D
             '''if 'u' in self.face:
-                self.image = self.IMG_ATTACK_U'''
+                self.image = self.IMG_ATTACK_D'''
             for x in range(100):
                 self.score += self.weapon.attack(self.rect.x, self.rect.y,
                                              self.face, screen, enemy_bg)
-                pass
+                #pass
         else:  # ds = down 'standing' (not moving) **********
             if self.face == 'd':
                     self.face = 'ds'
@@ -272,15 +272,6 @@ class Player(PS.DirtySprite):
                     self.image = self.IMAGES_LEFT[0]
                 elif(self.face == 'ds'):
                     self.image = self.IMAGES_FRONT[0]
-                #accel
-                elif(self.face == 'ra'):
-                    self.update_image(self.IMAGES_RIGHT_ACCEL)
-                elif(self.face == 'ua'):
-                    self.update_image(self.IMAGES_BACK_ACCEL)
-                elif(self.face == 'la'):
-                    self.update_image(self.IMAGES_LEFT_ACCEL)
-                elif(self.face == 'da'):
-                    self.update_image(self.IMAGES_FRONT_ACCEL)
                 else:
                     self.image = PI.load("FPGraphics/MC/" +"MCwalk/MCFront.png").convert_alpha()
         self.dirty = 1
@@ -299,6 +290,7 @@ class Player(PS.DirtySprite):
             key = PG.key.get_pressed()
             if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
                     self.weapon.draw(screen)
+                    PD.flip()
             self.check_boundary(screen)
             # blit yourself at your current position
             screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -314,15 +306,6 @@ class Player(PS.DirtySprite):
                     self.rect.y = 0
             elif self.rect.y > (height - self.image.get_height()):
                     self.rect.y = (height - self.image.get_height())
-
-    def load_images_helper_ad(self, imageArray, sheet):
-            alphabg = (23, 23, 23)
-            for i in range(3):
-                    surface = PG.Surface((100, 100))
-                    surface.set_colorkey(alphabg)
-                    surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
-                    imageArray.append(surface)
-            return imageArray
 
     def load_images_helper(self, imageArray, sheet):
             alphabg = (23, 23, 23)
@@ -364,24 +347,6 @@ class Player(PS.DirtySprite):
                 .convert_alpha()
             sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png")\
                 .convert_alpha()
-            #accel
-            sheetRA = PI.load("FPGraphics/MC/MCwalk/MCAccelRight.png")\
-                .convert_alpha()
-            sheetLA = PI.load("FPGraphics/MC/MCwalk/MCAccelLeft.png")\
-                .convert_alpha()
-            sheetFA = PI.load("FPGraphics/MC/MCwalk/MCAccelFront.png")\
-                .convert_alpha()
-            sheetBA = PI.load("FPGraphics/MC/MCwalk/MCAccelBack.png")\
-                .convert_alpha()
-            #damage
-            sheetRD = PI.load("FPGraphics/MC/MCwalk/MCDMGRight.png")\
-                .convert_alpha()
-            sheetLD = PI.load("FPGraphics/MC/MCwalk/MCDMGLeft.png")\
-                .convert_alpha()
-            sheetFD = PI.load("FPGraphics/MC/MCwalk/MCDMGFront.png")\
-                .convert_alpha()
-            sheetBD = PI.load("FPGraphics/MC/MCwalk/MCDMGBack.png")\
-                .convert_alpha()
 
             Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT,
                                                           sheetR)
@@ -391,22 +356,6 @@ class Player(PS.DirtySprite):
                                                           sheetF)
             Player.IMAGES_BACK = self.load_images_helper(Player.IMAGES_BACK,
                                                          sheetB)
-            Player.IMAGES_RIGHT_ACCEL =\
-                self.load_images_helper_ad(Player.IMAGES_RIGHT_ACCEL, sheetRA)
-            Player.IMAGES_LEFT_ACCEL =\
-                self.load_images_helper_ad(Player.IMAGES_LEFT_ACCEL, sheetLA)
-            Player.IMAGES_FRONT_ACCEL =\
-                self.load_images_helper_ad(Player.IMAGES_FRONT_ACCEL, sheetFA)
-            Player.IMAGES_BACK_ACCEL =\
-                self.load_images_helper_ad(Player.IMAGES_BACK_ACCEL, sheetBA)
-            Player.IMAGES_RIGHT_DMG =\
-                self.load_images_helper(Player.IMAGES_RIGHT_DMG, sheetRD)
-            Player.IMAGES_LEFT_DMG =\
-                self.load_images_helper(Player.IMAGES_LEFT_DMG, sheetLD)
-            Player.IMAGES_FRONT_DMG =\
-                self.load_images_helper(Player.IMAGES_FRONT_DMG, sheetFD)
-            Player.IMAGES_BACK_DMG =\
-                self.load_images_helper(Player.IMAGES_BACK_DMG, sheetBD)
 
             #load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
