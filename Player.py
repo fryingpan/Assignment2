@@ -111,7 +111,7 @@ class Player(PS.DirtySprite):
 
     def handle_collision(self, bg):
             collisions = PS.spritecollide(self, bg, False)
-            if self.face == 'r' or self.face == 'rs':
+            if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
                     collisions = PS.spritecollide(self, bg, False)
                     once = True
                     for collision in collisions:
@@ -207,9 +207,12 @@ class Player(PS.DirtySprite):
                 self.image = self.IMG_ATTACK_D
             '''if 'u' in self.face:
                 self.image = self.IMG_ATTACK_D'''
+            self.weapon.draw(screen)
+            PD.flip()
             for x in range(100):
                 self.score += self.weapon.attack(self.rect.x, self.rect.y,
                                              self.face, screen, enemy_bg)
+
                 #pass
         else:  # ds = down 'standing' (not moving) **********
             if self.face == 'd':
@@ -228,14 +231,7 @@ class Player(PS.DirtySprite):
         PLAYER_IMAGE_LENGTH = 12 # all player sprite has 12 frames
         #update time and frame
         key = PG.key.get_pressed()
-        #camera stuff
-        # increment in x direction
-        #self.rect.left += self.xvel
-        # do x-axis collisions
-        # self.collide(self.xvel, 0, platforms)
-        # increment in y direction
-        #self.rect.top += self.yvel
-        #camera stuff end
+
         self.time = self.time + delta
         if self.time > Player.CYCLE:
             self.time = 0.0
@@ -288,9 +284,7 @@ class Player(PS.DirtySprite):
     def draw(self, screen, block_group):
             """ Draw on surface """
             key = PG.key.get_pressed()
-            if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
-                    self.weapon.draw(screen)
-                    PD.flip()
+            #if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
             self.check_boundary(screen)
             # blit yourself at your current position
             screen.blit(self.image, (self.rect.x, self.rect.y))

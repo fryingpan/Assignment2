@@ -42,9 +42,6 @@ class Locals(object):
 
 
 def initialize():
-	# interval = 0.005
-	# fps = 40
-	# game = Game(interval, fps, num_enemies)
 	Locals.CHANGESTATE = 'Game'
 
 
@@ -95,10 +92,7 @@ class Game(object):
 		self.block_group = self.map.get_object_group()
 		#add the blocks to the sprite group containing all sprites
 		for block in self.block_group:
-			#if block.get_color != 'yellow':
-			self.all_sprites.add(block)  # only has map sprites
-			#else:
-			   # self.key_sprite.add(block)
+                        self.all_sprites.add(block)
 
 		self.bigmap_rect = Rect(0, 0, 1600, 1200)
 
@@ -141,9 +135,8 @@ class Game(object):
 
 
 	def run(self):
-		lv1_cutscene = Cutscene(self.screen,1)
+                #lv1_cutscene = Cutscene(self.screen,1)
 		running = True
-
 				#music
 				#-1 loop should loop forever
 		PM.music.play(-1)
@@ -182,9 +175,7 @@ class Game(object):
 					self.trap_list.append(new_trap)
 					self.trap_group.add(new_trap)
 					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
-				icecream.draw(self.map.get_surface())
 
-			self.character.draw(self.map.get_surface(), self.block_group)
 			# draw the character to the screen
 
 			#update camera's position on the map
@@ -192,11 +183,9 @@ class Game(object):
 											self.screen, self.map.get_surface()
 											)
 			#####temporary code to detect for door objective###############
-			#print("x " + str(self.character.rect.x) + " y " + str(self.character.rect.y))
 			if(self.character.rect.x > 2200 and self.character.rect.x < 2700
 				and self.character.rect.y > 250 and self.character.rect.y < 400
 				and self.cheesed == True):
-								#print("got here")
 				self.cheesed = False
 				self.objective.changeObj(1)
 
@@ -215,7 +204,7 @@ class Game(object):
 				self.enemy_ID = -1
 				for icecream in self.icecream_list.sprites():
 					#update position and collisions
-					icecream.update(delta, self.block_group, self.player_group)
+                                        #icecream.update(delta, self.block_group, self.player_group)
 					#see if ice cream collided with player
 					if(icecream.get_attacked_player() or weapon_attack):
 						if weapon_attack:
@@ -254,14 +243,10 @@ class Game(object):
 					self.killed = False
 					self.objective.changeObj(2)
 
-				self.character.update(delta, self.block_group, None)
-
 				self.update_score(self.character)
 				self.allsprites.update(delta, self.block_group, self.player_group)
 				rects = self.allsprites.draw(self.map.get_surface(), self.background)
-				PG.display.update(rects)
-
-				PD.flip()
+                                PG.display.update(rects)
 
 			Locals.SCORE = self.character.score
 			if(Locals.CHANGESTATE == "Menu"):
@@ -284,7 +269,6 @@ class Game(object):
 			else:
 				PM.music.fadeout(1000)
 				Locals.CHANGESTATE = "Menu"
-		# player.update(delta, self.block_group)
 
 	def update_score(self, player):
 		if(player.score == self.num_enemies):
@@ -313,7 +297,6 @@ class Game(object):
 		for event in PE.get():
 			if event.type == PG.QUIT:
 				return False
-
 			# handle user input
 			elif event.type == KEYDOWN:
 			# if the user presses escape, quit the event loop.
@@ -322,7 +305,6 @@ class Game(object):
 					Locals.CHANGESTATE = 'Menu'
 					return False
 				if event.key == K_n:
-										#print("key n")
 					self.objective.updateBanner()
 
 		return True

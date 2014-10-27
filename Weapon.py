@@ -93,6 +93,7 @@ class Weapon(PS.Sprite):
                 """ Draw on surface """
                 # blit yourself at your current position
                 screen.blit(self.image, (self.rect.x, self.rect.y))
+                PD.flip()
 
         def load_images(self):
             Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/FPR.png") \
