@@ -28,15 +28,49 @@ Carla:
     -player pick up item
     -player use item (w/key other than space bar)    
 
--Weapons
-    -fix animation - Katie?
+Enemy
+	-Enemy AI: follow player when you get close
+
+-Weapons - Katie
+    -fix animation - Katie
 -look into why damage is wonky
 -music/sound
 
 -more enemies
 -life bar
     -could change to tablets?
+
+
     
 Our schedule
 =============
+Beta - NOV 19
+
+Wk 1 (Oct 24)
+	-Clean Up / Fix glitches
+	-Item System
+	-One more enemy
+	-Biting sound
+	-Hot OR Cold Pad
+	-Enemy AI follow player
+
+Wk 2 (Nov 3)
+	-Hot OR Cold Pads
+	-Enemy AI follow player
+	-Enemies
+	-Weapons
+		Ice Cream: Scoop (drop puddles)
+		Lettuce: 
+		
+
+Wk 3 (Nov 10)
+	-Hot/Cold Effects on Enemies
+	-Hot/Cold Effects on Player
+
+Wk 4 (Nov 17) BETA WEDNESDAY
+
+AFTER
+Find a pot on each level, able to toss an item in and get a new one out
+Points system: Get certain number of points, regain health.
+
 
