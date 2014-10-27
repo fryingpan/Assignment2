@@ -109,11 +109,8 @@ class Game(object):
 		Locals.CHANGESTATE = 'Game'
 
 				#fonts
-		self.font = PF.SysFont('Arial', 25)
-		s = "Score: " + str(self.character.score)
-		self.screen.blit(self.font.render(s, True, (255, 255, 255)), (25, 550))
-		h = "Health: " + str(self.character.health)
-		self.screen.blit(self.font.render(s, True, (255, 255, 255)), (25, 520))
+                self.font = PF.SysFont('Arial', 25)
+
 		#Win/Lose items
 		self.win_image = PI.load("FPGraphics/" +
 								 "specialEffects/UWIN.png").convert_alpha()
@@ -164,7 +161,6 @@ class Game(object):
 					self.trap_group.remove(trap)
 					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 
-
 			for icecream in self.icecream_list.sprites():
 				icecream_face = icecream.get_face()
 				#see if the enemy will release weapon/attack
@@ -175,8 +171,6 @@ class Game(object):
 					self.trap_list.append(new_trap)
 					self.trap_group.add(new_trap)
 					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
-
-			# draw the character to the screen
 
 			#update camera's position on the map
 			background = self.camera.update(self.character.get_coordinates(),
