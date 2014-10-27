@@ -19,8 +19,8 @@ try:
 	import random
 	from Trap import Puddle
 	from Cutscene import Cutscene
-        from objective import Objective
-        import pygame.mixer as PM
+	from objective import Objective
+	import pygame.mixer as PM
 
 except ImportError, err:
 	print "%s Failed to Load Module: %s" % (__file__, err)
@@ -51,11 +51,11 @@ def initialize():
 class Game(object):
 
 	def __init__(self, interval):
-                PM.music.load("music/gameplay.mod")
+		PM.music.load("music/gameplay.mod")
 		self.interval = interval
 		self.fps = 40
 		self.num_enemies = 11 #adding extra since cutscene bug deletes one
-                self.remainingEnemies = self.num_enemies
+		self.remainingEnemies = self.num_enemies
 
 		PG.init()
 		self.screen = PD.set_mode((800, 600))
@@ -70,7 +70,7 @@ class Game(object):
 		self.all_sprites = PS.Group()
 
 		#Initialize objects on screen----------------
-                self.character = Player(self.fps)
+		self.character = Player(self.fps)
 		Locals.SCORE = self.character.score
 		self.player_group = PS.GroupSingle(self.character)
 
@@ -141,15 +141,14 @@ class Game(object):
 
 
 	def run(self):
-                lv1_cutscene = Cutscene(self.screen,1)
+		lv1_cutscene = Cutscene(self.screen,1)
 		running = True
 
-                #music
-                #-1 loop should loop forever
-                PM.music.play(-1)
+				#music
+				#-1 loop should loop forever
+		PM.music.play(-1)
 
 		while running:
-			# self.map.draw_map()
 			new_time = PT.get_ticks()
 			frame_time = (new_time - self.current_time)/1000.0
 			self.current_time = new_time
@@ -158,13 +157,7 @@ class Game(object):
 			running = self.handleEvents()
 			if(running is False):
 				return False
-			#Key Handling----------------------------
 
-			# self.screen.fill((0,0,0)) # fill the screen with white
-			# self.map.fill()
-
-			#draw blocks
-			# self.map.draw_map()
 			#move and draw the enemies
 			player_face = self.character.get_face()
 			weapon_attack = False
@@ -191,10 +184,6 @@ class Game(object):
 					self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
 				icecream.draw(self.map.get_surface())
 
-
-			#draw blocks
-			# self.map.draw_map()
-
 			self.character.draw(self.map.get_surface(), self.block_group)
 			# draw the character to the screen
 
@@ -207,15 +196,11 @@ class Game(object):
 			if(self.character.rect.x > 2200 and self.character.rect.x < 2700
 				and self.character.rect.y > 250 and self.character.rect.y < 400
 				and self.cheesed == True):
-                                #print("got here")
-                                self.cheesed = False
+								#print("got here")
+				self.cheesed = False
 				self.objective.changeObj(1)
 
 			self.update_score(self.character)
-
-			# self.screen.blit(background, (0,0))
-
-			# PD.flip()
 
 			self.updates = 0
 
@@ -259,21 +244,15 @@ class Game(object):
 				if self.make_disappear:
 					self.background = self.map.update_background()
 					self.make_disappear = False
+					
 				frame_time -= delta
 				self.updates += 1
-
-                                self.remainingEnemies = self.num_enemies - self.character.score
-                                if self.remainingEnemies < self.num_enemies and self.killed == True:
-                                	self.killed = False
-                                	self.objective.changeObj(2)
-
-				last = PT.get_ticks()
-
 				clock.tick()
 
-				elapsed = (PT.get_ticks() - last) / 1000.0
-
-				self.character.set_interval(elapsed)
+				self.remainingEnemies = self.num_enemies - self.character.score
+				if self.remainingEnemies < self.num_enemies and self.killed == True:
+					self.killed = False
+					self.objective.changeObj(2)
 
 				self.character.update(delta, self.block_group, None)
 
@@ -284,13 +263,9 @@ class Game(object):
 
 				PD.flip()
 
-				elapsed = (PT.get_ticks() - last) / 1000.0
-				if (PG.key.get_pressed()):
-					self.update_player(self.character, elapsed)
-
 			Locals.SCORE = self.character.score
 			if(Locals.CHANGESTATE == "Menu"):
-                                PM.music.fadeout(1000)
+				PM.music.fadeout(1000)
 				return False
 			PD.update()  # update the screen
 
@@ -300,14 +275,14 @@ class Game(object):
 			if(self.end_time > 0):
 				self.end_time -= 1
 			else:
-                                PM.music.fadeout(1000)
+				PM.music.fadeout(1000)
 				Locals.CHANGESTATE = "Menu"
 		if(player.health <= 0):
 			self.screen.blit(self.lose_image, self.end_image_position)
 			if(self.end_time > 0):
 				self.end_time -= 1
 			else:
-                                PM.music.fadeout(1000)
+				PM.music.fadeout(1000)
 				Locals.CHANGESTATE = "Menu"
 		# player.update(delta, self.block_group)
 
@@ -343,11 +318,11 @@ class Game(object):
 			elif event.type == KEYDOWN:
 			# if the user presses escape, quit the event loop.
 				if event.key == K_ESCAPE:
-                                        PM.music.fadeout(1000)
+					PM.music.fadeout(1000)
 					Locals.CHANGESTATE = 'Menu'
 					return False
 				if event.key == K_n:
-                                        #print("key n")
+										#print("key n")
 					self.objective.updateBanner()
 
 		return True
