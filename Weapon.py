@@ -17,6 +17,7 @@ import pygame.image as PI
 
 PG.init()
 
+
 class Weapon(PS.Sprite):
 
         IMAGE_RIGHT = None
@@ -34,7 +35,6 @@ class Weapon(PS.Sprite):
                 self.surface = PG.Surface((50, 50))
                 alphabg = (23, 23, 23)
                 self.surface.set_colorkey(alphabg)
-                #self.surface.blit(self.image, (0, 0))
                 self.image = self.surface
 
         def get_coordinates(self):
@@ -54,28 +54,28 @@ class Weapon(PS.Sprite):
                     self.width = 50
                     self.height = 15
                     self.surface = PG.Surface((self.width, self.height))
-                    self.update_image(self.IMAGE_RIGHT)
+                    self.image = self.IMAGE_RIGHT
                     self.rect.x = playerX+100
                     self.rect.y = playerY+50
                 elif "l" in playerFace:
                     self.width = 50
                     self.height = 15
                     self.surface = PG.Surface((self.width, self.height))
-                    self.update_image(self.IMAGE_LEFT)
+                    self.image = self.IMAGE_LEFT
                     self.rect.x = playerX-self.width
                     self.rect.y = playerY+50
                 elif "u" in playerFace:
                     self.width = 15
                     self.height = 50
                     self.surface = PG.Surface((self.width, self.height))
-                    self.update_image(self.IMAGE_UP)
+                    self.image = self.IMAGE_UP
                     self.rect.x = playerX+50
                     self.rect.y = playerY-self.height
                 elif "d" in playerFace:
                     self.width = 15
                     self.height = 50
                     self.surface = PG.Surface((self.width, self.height))
-                    self.update_image(self.IMAGE_DOWN)
+                    self.image = self.IMAGE_DOWN
                     self.rect.x = playerX+50
                     self.rect.y = playerY+100
 
@@ -85,8 +85,8 @@ class Weapon(PS.Sprite):
                     collision.kill()
                 return score  # to be added to Player's score
 
-        def update_image(self, image):
-                self.image = image
+        '''def update_image(self, image):
+                self.image = image'''
 
     #call in Player.py. pass it screen.
         def draw(self, screen):
