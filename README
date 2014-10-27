@@ -9,7 +9,9 @@ Run the following to run the program:
 python masterfile.py
 
 The game now starts with a cutscene, which you can push 'space' to go through, and 'q' to skip.
-After a cutscene ends, there's a significant laf that we plan to fix in the next week.
+After a cutscene ends, there's a slight lag that we plan to fix in the next week.
+This lag is inconsistent. We thought it depended on whether the player went through the entire cut scene or not, however, each time we'd play through the cutscene, the lag differed in length. Sometimes it was fine and playable, and sometimes it took quite a significant time to start up the game.
+
 At the top, there is a banner that informs players of what their current objective is. This is made with a new module, objective.py. 
 Press n to flip through the current objective.
 When the player gets near the cheese wall, (our 'locked' door), the player will be told
@@ -17,8 +19,7 @@ to find the lactase (key) (currently the door disappears upon touching the key, 
 play to change it to needing to unlock/eat the door). 
 When you get the key, the key and door disappear and you can advance through to the next room.
 
-The other side has many enemies that
-the player must kill to win.
+The other side has many enemies that the player must kill to win. You must kill all enemies in order to win!
 
 We implemented dirty sprites to allow the game to run more smoothly with the tiling system. And so 
 now the background is not erased and redrawn every single time. Hence, the player, the enemies and the

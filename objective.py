@@ -18,6 +18,7 @@ class Objective(object):
         self.font = PF.SysFont('Arial', 25)
         self.text_color = (0,0,0)
         self.current_obj = []
+        self.current_obj.append("")
         self.current_obj.append("Objective: Kill all the food people. They're terrible and not nice.")
         self.current_obj.append("Press 'n' to remember your ingenious plans.")
         self.current_text = self.current_obj.pop()
@@ -55,6 +56,7 @@ class Objective(object):
 
     def lactoseText(self):
         lactose = []
+        lactose.append("")
         lactose.append("cheese walls. Look for lactase pills to take to eat through them!")
         lactose.append("You are lactose-intolerant, and therefore you can't eat through")
         self.current_obj = lactose
