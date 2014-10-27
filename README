@@ -8,45 +8,35 @@ Josh Holstein
 Run the following to run the program:
 python masterfile.py
 
-The game now starts with a cutscene, which you can push 'space' to go through, and 'q' to skip.
-After a cutscene ends, there's a slight lag that we plan to fix in the next week.
-This lag is inconsistent. We thought it depended on whether the player went through the entire cut scene or not, however, each time we'd play through the cutscene, the lag differed in length. Sometimes it was fine and playable, and sometimes it took quite a significant time to start up the game.
-
-At the top, there is a banner that informs players of what their current objective is. This is made with a new module, objective.py. 
-Press n to flip through the current objective.
-When the player gets near the cheese wall, (our 'locked' door), the player will be told
-to find the lactase (key) (currently the door disappears upon touching the key, but we
-play to change it to needing to unlock/eat the door). 
-When you get the key, the key and door disappear and you can advance through to the next room.
-
-The other side has many enemies that the player must kill to win. You must kill all enemies in order to win!
-
-We implemented dirty sprites to allow the game to run more smoothly with the tiling system. And so 
-now the background is not erased and redrawn every single time. Hence, the player, the enemies and the
-traps that the enemy lays(the puddles) are dirty sprites and only the area that they pass is updated
-and that part of the background is filled. 
-A cutscene class was added for easier cutscene creation.
-
-Regarding sound: We have music! Throughout gameplay, a peppy little tune will play. The original song is from Brandon Walsh (https://www.youtube.com/channel/UCYn_k2EskvWK4dB7QR7clQw). We used MilkyTracker to edit it. 
-The song starts right when the game state shows up, and ends when you win, lose, or exit from the game state. The song repeats indefinitely while you are in the game state.
-
 Todo List
 ----------
--Tiles
-    -bg
-
+-Find a way to compress imgs! - Mary
+-Mary - fix banner
+-Tiles: Mary will fix shrubs, etc for alpha
 -item system
     -probably don't need to KEEP key in an inventory; simply open the door when you get the key?
+        -inventory includes key
     -when player runs over an item, press one key to eat and different key to pick up as weapon.
     -maybe don't need inventory then? Always hold one item only.
--story telling
-    -simple splash pages
-    -add speech bubbles
-    -Add how to skip cutscenes
-    -tell player how to beat game!
+    -Have icon at bottom: tell what item you're holding, if you're holding a pill
+        -key to drop item in case player picked it up by accident
+        -item uses different key from frying pan
+    -Icecream weapon: let player drop puddles (show how many puddles you have left to drop)
+
+Carla:
+    -have enemy drop item when killed
+    -player pick up item
+    -player use item (w/key other than space bar)    
+
+-Weapons
+    -fix animation - Katie?
+-look into why damage is wonky
 -music/sound
--end level
-    -kill everything (MENTION IN STORY)
+
 -more enemies
 -life bar
     -could change to tablets?
+    
+Our schedule
+=============
+
