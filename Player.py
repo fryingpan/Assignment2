@@ -34,7 +34,7 @@ class Player(PS.DirtySprite):
     IMAGES_FRONT_DMG = None
     IMAGES_BACK_DMG = None
     #attack images
-    IMG_ATTACK_D = None
+    IMG_ATTACK_D = None  # 100 x 150 dimensions
     IMG_ATTACK_U = None
     IMG_ATTACK_R = None
     IMG_ATTACK_L = None
@@ -207,11 +207,19 @@ class Player(PS.DirtySprite):
                 self.image = self.IMG_ATTACK_D
             '''if 'u' in self.face:
                 self.image = self.IMG_ATTACK_D'''
-            self.weapon.draw(screen)
+
+            #attack collisions
+            collisions = PS.spritecollide(self, enemy_bg, False)
+            for collision in collisions:
+                self.health += 1
+                self.score = self.score + 1
+                collision.kill()
+
+            '''self.weapon.draw(screen)
             PD.flip()
             for x in range(100):
                 self.score += self.weapon.attack(self.rect.x, self.rect.y,
-                                             self.face, screen, enemy_bg)
+                                             self.face, screen, enemy_bg)'''
 
                 #pass
         else:  # ds = down 'standing' (not moving) **********
@@ -228,7 +236,7 @@ class Player(PS.DirtySprite):
         self.moved = False
         x_location = self.rect.x
         y_location = self.rect.y
-        PLAYER_IMAGE_LENGTH = 12 # all player sprite has 12 frames
+        PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
         #update time and frame
         key = PG.key.get_pressed()
 
@@ -269,7 +277,8 @@ class Player(PS.DirtySprite):
                 elif(self.face == 'ds'):
                     self.image = self.IMAGES_FRONT[0]
                 else:
-                    self.image = PI.load("FPGraphics/MC/" +"MCwalk/MCFront.png").convert_alpha()
+                    self.image = PI.load("FPGraphics/MC/" +
+                                         "MCwalk/MCFront.png").convert_alpha()
         self.dirty = 1
 
     def update_image(self, imageArray):
@@ -284,7 +293,6 @@ class Player(PS.DirtySprite):
     def draw(self, screen, block_group):
             """ Draw on surface """
             key = PG.key.get_pressed()
-            #if key[PG.K_SPACE] and not key[K_RIGHT] and not key[K_LEFT] and not key[K_UP] and not key[K_DOWN]:
             self.check_boundary(screen)
             # blit yourself at your current position
             screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -353,7 +361,8 @@ class Player(PS.DirtySprite):
 
             #load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCFrontFPatk1.png").convert_alpha()
+                                          "MCFrontFPOnePiece.png").convert_\
+                alpha()
             '''Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png")\
                 .convert_alpha()
             Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png")\
