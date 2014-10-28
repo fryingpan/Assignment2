@@ -85,9 +85,6 @@ class Weapon(PS.Sprite):
                     collision.kill()
                 return score  # to be added to Player's score
 
-        '''def update_image(self, image):
-                self.image = image'''
-
     #call in Player.py. pass it screen.
         def draw(self, screen):
                 """ Draw on surface """
