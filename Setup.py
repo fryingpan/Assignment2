@@ -72,25 +72,30 @@ class Game(object):
 
         self.all_sprites.add(self.character)
 
+        # ###some enemies are set in certain areas
+        # #add all the enemies to the list of enemies
+        # for e in range(self.num_enemies):
+        #         if(e % 2 == 0):
+        #                 icecream = IceCream(random.randint(500, 1000),
+        #                                     random.randint(500, 1000),
+        #                                     self.fps)
+        #         else:
+        #                 icecream = IceCream(random.randint(2800, 5300),
+        #                                     random.randint(100, 950),
+        #                                     self.fps)
+        #         self.icecream_list.add(icecream)
+
+        self.map = Map.Map('mapfile.txt')
+
         #create icecream group
         self.icecream_list = PS.Group()
         self.enemy_ID = -1  # no enemy
         self.invincibility_count = 0
+        #place enemies (icecream)
+        for e in range(self.map.get_num_enemies(1)):
+            icecream = IceCream(self.map.get_enemy_coordx(e), self.map.get_enemy_coordy(e), self.fps)
+            self.icecream_list.add(icecream)
 
-        ###some enemies are set in certain areas
-        #add all the enemies to the list of enemies
-        for e in range(self.num_enemies):
-                if(e % 2 == 0):
-                        icecream = IceCream(random.randint(500, 1000),
-                                            random.randint(500, 1000),
-                                            self.fps)
-                else:
-                        icecream = IceCream(random.randint(2800, 5300),
-                                            random.randint(100, 950),
-                                            self.fps)
-                self.icecream_list.add(icecream)
-
-        self.map = Map.Map('mapfile.txt')
         #get block sprite group from the map file
         self.block_group = self.map.get_object_group()
         #add the blocks to the sprite group containing all sprites
@@ -178,6 +183,7 @@ class Game(object):
                 background = self.camera.update(self.character.get_coordinates(),
                                                                                 self.screen, self.map.get_surface()
                                                                                 )
+                # print(self.character.get_coordinates())
                 #####temporary code to detect for door objective###############
                 if(self.character.rect.x > 2200 and self.character.rect.x < 2700
                         and self.character.rect.y > 250 and self.character.rect.y < 400

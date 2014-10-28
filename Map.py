@@ -89,7 +89,7 @@ class Map(object):
 		####(prepare to read mapfile)#######
 		self.map = self.get_map(mapfile)
 		#size of an individual block in the grid
-		self.grid_size = [100, 100]
+		self.grid_size = [50, 50]
 		self.grid_dimensions = self.get_dimensions(self.map)
 		self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0],
 							   self.grid_dimensions[1] * self.grid_size[1]]
@@ -113,7 +113,11 @@ class Map(object):
 		self.treeBlocksT = [] # T
 		self.treeBlocksB = [] # Y
 		self.keyBlocks = [] #K
+		self.ICBlock = [] #I (icecream spots)
 		self.disappearing_blocks = PS.Group()
+
+		#enemy stuff
+		self.ic_coord = [] #icecream
 
 		self.spots_to_be_filled = []
 		#create map from mapfile
@@ -126,7 +130,6 @@ class Map(object):
 
 	def load_tiles(self):
 		tile_array = []
-		tile_array.append(PI.load("FPGraphics/tiles/grassTile.png"))
 		tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
 		tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
 		tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
@@ -136,10 +139,10 @@ class Map(object):
 		#note: always load edge blocks with these indeces:
 		#0 = HL; 1 = HR; 2 = VD; 3 = VU; 4 = TL; 5 = TR; 6 = BL; 7 = BR
 		if(lvl == 1):
-			self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall.png"))
 			self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall1.png"))
-			self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH.png"))
+			self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall2.png"))
 			self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH1.png"))
+			self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH2.png"))
 			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHL.png"))
 			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHR.png"))
 			self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVD.png"))
@@ -242,6 +245,9 @@ class Map(object):
 											 PG.Rect(x_coor, y_coor,
 													 self.grid_size[0],
 													 self.grid_size[1]), char_list[y])
+				elif char_list[y] == 'I':
+					self.ic_coord.append((x_coor, y_coor))
+					char_list[y] = '.'
 				elif char_list[y] != '.': #edges image are determined by index
 					print(char_list[y])
 					new_block = create_Block(self.wallBlocksE[int(char_list[y])],
@@ -256,13 +262,25 @@ class Map(object):
 				#####(Tiles)######
 				if char_list[y] == '.':
 					#add pair of coordinates
-					tile_index = random.randint(0,3)
+					tile_index = random.randint(0,2)
 					self.grass_type.append(tile_index)
 					self.grasstiles.append((x_coor, y_coor))
 
 				x_coor += self.grid_size[0]
 
 			y_coor += self.grid_size[1]
+
+	def get_enemy_coordx(self, index, enemy_type = 1):
+		if enemy_type == 1:
+			return self.ic_coord[index][0]
+
+	def get_enemy_coordy(self, index, enemy_type = 1):
+		if enemy_type == 1:
+			return self.ic_coord[index][1]
+
+	def get_num_enemies(self, enemy_type = 1):
+		if enemy_type == 1:
+			return len(self.ic_coord)
 
 	def update_background(self):
 		background = self.surface
