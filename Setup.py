@@ -54,8 +54,7 @@ class Game(object):
                        "with his ice cream buddies")
         self.interval = interval
         self.fps = 40
-        self.num_enemies = 11  # adding extra since cutscene bug deletes one
-        self.remainingEnemies = self.num_enemies
+        
 
         self.screen = PD.set_mode((800, 600))
         self.screen_rect = self.screen.get_rect()
@@ -86,7 +85,8 @@ class Game(object):
         #         self.icecream_list.add(icecream)
 
         self.map = Map.Map('mapfile.txt')
-
+        self.num_enemies = self.map.get_num_enemies(1)  # adding extra since cutscene bug deletes one
+        self.remainingEnemies = self.num_enemies
         #create icecream group
         self.icecream_list = PS.Group()
         self.enemy_ID = -1  # no enemy
