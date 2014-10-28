@@ -260,11 +260,11 @@ class Map(object):
 				self.object_group.add(new_block)
 
 				#####(Tiles)######
-				if char_list[y] == '.':
+				# if char_list[y] == '.':
 					#add pair of coordinates
-					tile_index = random.randint(0,2)
-					self.grass_type.append(tile_index)
-					self.grasstiles.append((x_coor, y_coor))
+				tile_index = random.randint(0,2)
+				self.grass_type.append(tile_index)
+				self.grasstiles.append((x_coor, y_coor))
 
 				x_coor += self.grid_size[0]
 
