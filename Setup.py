@@ -69,7 +69,9 @@ class Game(object):
                                   "specialEffects/ULOSE.png").convert_alpha()
         self.end_time = 100
         self.end_image_position = (100, 178)
-
+        #items 
+        self.pill_img = PI.load("FPGraphics/tiles/" +
+                                 "lactasePill.png").convert_alpha()
         ######(Initialize objects on screen)####
         ##draw map/background
         self.map = Map.Map('mapfile.txt')
@@ -233,6 +235,9 @@ class Game(object):
 
                         PM.music.fadeout(1000)
                         Globals.STATE = "Menu"
+        ##Item Display
+        if (self.character.pill == True):
+            Globals.SCREEN.blit(self.pill_img, (750,550))
         ###########################################################
 
         PD.update()  # update the screen

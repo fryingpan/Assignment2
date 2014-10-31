@@ -14,7 +14,6 @@ import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
 import Globals
-import State
 
 
 #Container for Local variables

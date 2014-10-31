@@ -63,7 +63,7 @@ class Player(PS.DirtySprite):
         self.got_key = False
         #will turn to True once you've run into the yellow block
         #collision conditions, if true, we will not move in that direction
-        self.health = 10
+        self.health = 1000
         self.dmg_count = 0
         self.invincibility_frame = PI.load("FPGraphics/emptyImg.png") \
             .convert_alpha()
@@ -72,6 +72,8 @@ class Player(PS.DirtySprite):
         self.moved = False
         self.interval = 0
         self.opened_door = False
+        self.pill = False
+        self.at_door = -1 #allows player to open door if player has key
 
     def get_open_door(self):
         returned = self.opened_door
@@ -109,67 +111,37 @@ class Player(PS.DirtySprite):
         self.opened_door = True
 
     def handle_collision(self, bg):
-            collisions = PS.spritecollide(self, bg, False)
-            if self.face == 'r' or self.face == 'rs':
-                    collisions = PS.spritecollide(self, bg, False)
-                    once = True
-                    for collision in collisions:
-                            if collision.get_type() == "K":
-                                #kills the yellow brick.
-                                collision.kill()
-                                self.open_door(bg)
-                                self.got_key = True
-                            elif once:
-                                    if(self.rect.x + self.rect.width
-                                       ) >= collision.rect.left:
-                                        self.rect.x = collision.rect.left \
-                                            - self.rect.width
-                                        once = False
-
+        collisions = PS.spritecollide(self, bg, False)
+        for collision in collisions:
+            if collision.get_type() == "K":
+                collision.kill()
+                self.pill = True
+                #self.open_door(bg)
+                self.got_key = True
+            if collision.get_type() == "D":
+                if self.pill == True:
+                    self.at_door = True
+                    
+            if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+                if(self.rect.x + self.rect.width
+                   ) >= collision.rect.left:
+                    self.rect.x = collision.rect.left \
+                        - self.rect.width
             elif self.face == 'l' or self.face == 'ls':
-                    collisions = PS.spritecollide(self, bg, False)
-                    once = True
-                    for collision in collisions:
-                            if collision.get_type() == "K":
-                                #kills the yellow brick.
-                                collision.kill()
-                                self.open_door(bg)
-                                self.got_key = True
-                            elif once:
-                                    if(self.rect.x) <= (collision.rect.left +
-                                                        collision.rect.width):
-                                        self.rect.x = (collision.rect.left +
-                                                       collision.rect.width)
-                                        once = False
+                if(self.rect.x) <= (collision.rect.left +
+                                    collision.rect.width):
+                    self.rect.x = (collision.rect.left +
+                                   collision.rect.width)
             elif self.face == 'd' or self.face == 'ds':
-                    once = True
-                    for collision in collisions:
-                            if collision.get_type() == "K":
-                                #kills the yellow brick.
-                                collision.kill()
-                                self.open_door(bg)
-                                self.got_key = True
-                            elif once:
-                                    if(self.rect.y + self.rect.height
-                                       ) >= collision.rect.top:
-                                            self.rect.y = collision.rect.top -\
-                                                self.rect.height
-                                            once = False
+                if(self.rect.y + self.rect.height
+                   ) >= collision.rect.top:
+                        self.rect.y = collision.rect.top -\
+                            self.rect.height
             elif self.face == 'u' or self.face == 'us':
-                    collisions = PS.spritecollide(self, bg, False)
-                    once = True
-                    for collision in collisions:
-                            if collision.get_type() == "K":
-                                #kills the yellow brick.
-                                collision.kill()
-                                self.open_door(bg)
-                                self.got_key = True
-                            elif once:
-                                    if(self.rect.y <= (collision.rect.top +
-                                                       collision.rect.height)):
-                                            self.rect.y = collision.rect.top +\
-                                                collision.rect.height
-                                            once = False
+                if(self.rect.y <= (collision.rect.top +
+                                   collision.rect.height)):
+                        self.rect.y = collision.rect.top +\
+                            collision.rect.height
 
     def handle_keys(self, bg, enemy_bg, screen, interval=0.0065):
         """ Handles Keys """
@@ -211,7 +183,10 @@ class Player(PS.DirtySprite):
                 self.health += 1
                 self.score = self.score + 1
                 collision.kill()
-
+            if self.at_door == True:
+                self.open_door(bg)
+                self.pill = False
+                self.at_door = False
             '''self.weapon.draw(screen)
             PD.flip()
             for x in range(100):
