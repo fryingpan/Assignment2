@@ -24,6 +24,7 @@ class Objective(object):
         self.current_text = self.current_obj.pop()
         self.screen = screen
 
+    #puts banner and then objective on top
     def updateObjective(self):
         self.screen.blit(self.image, (0, 0))
         self.screen.blit(self.font.render(self.current_text, True, self.text_color), (50, 30))

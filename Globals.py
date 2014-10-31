@@ -1,0 +1,9 @@
+
+RUNNING = True
+SCREEN = None
+WIDTH = None
+HEIGHT = None
+FONT = None
+STATE = None
+CURRENTSTATE = None
+DELTA = None # THIS IS ELAPSED

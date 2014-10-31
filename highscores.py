@@ -4,16 +4,7 @@ from pygame import color as PC
 from pygame import display as PDI
 from pygame import event as PE
 from pygame.locals import *
-
-
-class Globals(object):
-    RUNNING = True
-    SCREEN = None
-    WIDTH = None
-    HEIGHT = None
-    FONT = None
-    STATE = None
-
+import Globals
 
 #Container for Local variables
 class Locals(object):
@@ -34,26 +25,33 @@ class Locals(object):
 class HighScores:
 
     def __init__(self):
-        PG.font.init()
-
-        Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF | PG.HWSURFACE)
-        Globals.WIDTH = Globals.SCREEN.get_width()
-        Globals.HEIGHT = Globals.SCREEN.get_height()
+        #PG.font.init()
 
         self.color = PC.Color("black")
         self.time = 0.0
         Globals.SCREEN.fill(PC.Color("black"))
         self.text_surface = self.get_text_surface()
 
+    ###Old updating high scores page from masterfile.py
+#        if Locals.SCORE != 0 and Locals.ADDED == 0:
+#            addScoretoText()
+#            Locals.ADDED = 1
+#        if Locals.ADDED != 0:  # if we've added something already
+#            Locals.SCORE = 0  # reset new high score
+
     def render(self):
+
         width, height = self.text_surface.get_size()
         Globals.SCREEN.blit(self.text_surface,
                            (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 -
                             height/2))
 
-    def update(self, time):
-        self.time += time
+        PDI.flip()
+
+    def update(self):
+        self.time = 0.1
         fadein = 2.0
+        self.time += self.time
         if self.time < fadein:
             ratio = self.time / fadein
             value = int(ratio * 255)
@@ -61,10 +59,9 @@ class HighScores:
 
     def event(self, event):
         fadeout = 0.2
-        if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
-                Globals.RUNNING = False
-        elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-                Locals.CHANGESTATE = "Menu"
+        for ev in event:
+            if ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
+                    Globals.STATE = "Menu"
 
     def get_text_surface(self):
         rect = Rect(100, 100, 300, 300)
@@ -78,27 +75,17 @@ class HighScores:
         return surface
 
 
-def initialize():
-    if Locals.SCORE != 0 and Locals.ADDED == 0:
-        addScoretoText()
-        Locals.ADDED = 1
-    if Locals.ADDED != 0:  # if we've added something already
-        Locals.SCORE = 0  # reset new high score
-    Locals.STATE = HighScores()
-    Locals.CHANGESTATE = 'Scores'
+#def run(elapsed, event):
+#    Locals.STATE.render()
+#    PDI.flip()
+#    Locals.STATE.update(elapsed)
 
-
-def run(elapsed, event):
-    Locals.STATE.render()
-    PDI.flip()
-    Locals.STATE.update(elapsed)
-
-    for event in PE.get():
-        if event.type == PG.QUIT:
-            return False
-        else:
-            if(Locals.STATE.event(event) is False):
-                return False
+#    for event in PE.get():
+#        if event.type == PG.QUIT:
+#            return False
+#        else:
+#            if(Locals.STATE.event(event) is False):
+#                return False
 
 
 def addScoretoText():  # only run if SCORE !=0

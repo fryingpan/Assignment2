@@ -8,16 +8,7 @@ import pygame.font as PF
 import pygame.event as PE
 from pygame import image
 from pygame.locals import *
-
-
-class Globals(object):
-    RUNNING = True
-    SCREEN = None
-    WIDTH = None
-    HEIGHT = None
-    FONT = None
-    STATE = None
-
+import Globals
 
 #Container for Local variables
 class Locals(object):
@@ -73,8 +64,7 @@ class Title:
         Globals.SCREEN.fill(self.color)
         self.text = self.renderer.animate().convert()
 
-        player_moves = self.move_player()
-        self.move_enemy()
+
 
         width, height = self.text.get_size()
         Globals.SCREEN.blit(self.images[2], (0, 0))
@@ -88,20 +78,21 @@ class Title:
         surf_width, surf_height = surf.get_size()
         Globals.SCREEN.blit(surf, (Globals.WIDTH/2 - surf_width/2,
                                    Globals.HEIGHT/2 - surf_height*7))
+        PDI.flip()
 
     def move_player(self):
-        moves = False
         if self.playerx < -17:
             self.playerx += 20
-            moves = True
-        return moves
 
     def move_enemy(self):
         if self.enemyx > (Globals.WIDTH - self.enemyx):
             self.enemyx -= 20
 
-    def update(self, time):
-        self.time += time
+    def update(self):
+        self.time = 0.1
+        self.move_player()
+        self.move_enemy()
+        self.time += self.time
         if self.time < Locals.FADEINTIME:
             ratio = self.time / Locals.FADEINTIME
             value = int(ratio * 255)
@@ -110,30 +101,11 @@ class Title:
     def event(self, event):
         #Allows quitting pygame and changing states
         #added changes for multiple states to allow testing
-        if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
-            Globals.RUNNING = False
-        elif event.type == PG.KEYDOWN and event.key == PG.K_SPACE:
-            Locals.CHANGESTATE = 'Menu'
-
-
-def initialize():
-    Locals.STATE = Title()
-    # Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
-    Locals.CHANGESTATE = 'Title'
-
-
-def run(elapsed, event):
-    Locals.STATE.render()
-    PDI.flip()
-    Locals.STATE.update(elapsed)
-
-    for event in PE.get():
-        if event.type == PG.QUIT:
-            return False
-        else:
-            if(Locals.STATE.event(event) is False):
-                return False
-
+        for ev in event:
+            if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
+                Globals.RUNNING = False
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
+                Globals.STATE = 'Menu'
 
 class textWavey:
     def __init__(self, font, message, fontcolor, amount=10):

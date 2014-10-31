@@ -13,7 +13,8 @@ import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
-from masterfile import Globals as Globals
+import Globals
+import State
 
 
 #Container for Local variables
@@ -27,17 +28,7 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
-    
-#State constructor, needs additional class to complete
-class State(object):
-    def __init__(self):
-        pass
-    def render(self):
-        pass
-    def update(self, time):
-        pass
-    def event(self, event):
-        pass
+
 
 
 objectList = {"null":0}
@@ -66,14 +57,13 @@ def drawtextbox(text, textcolor, boxcolor, x, y, width, height, referencestr):
 ##########################################
     #Class Defining the state#
 
-class Menu(State):
+class Menu():
   
 
     #Declares variables for first creation of state and intializes very basic sound and color modules
     def __init__(self):
-        State.__init__(self)
         self.color = PC.Color("blue")
-        self.time = 0.0
+        self.time = 0.1
         self.sound = PX.Sound("thx.wav")
         self.sound.play()
                 
@@ -91,53 +81,31 @@ class Menu(State):
         
         PDI.flip()
         
-    def update(self, time):
-        self.time += time
+    def update(self):
+        self.time += self.time
         #Fade in code, linear fade based on time
         if self.time < Locals.FADEINTIME:
             ratio = self.time / Locals.FADEINTIME
             value = int(ratio * 255)
             self.color = PC.Color(value, value, value)
-    def event(self, event):
+    def event(self, events):
         mousePress = PG.mouse.get_pressed()
         M_M1 = mousePress[0]
         #Allows quitting pygame and changing states, added changes for multiple states to allow testing
-        
-        if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
-            return False
-        elif M_M1 == 1:
-            if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
-                Locals.CHANGESTATE = "Title"
-            elif objectList['scores'].collidepoint(PG.mouse.get_pos()) == 1:
-                Locals.CHANGESTATE = "Scores"
-            elif objectList['game'].collidepoint(PG.mouse.get_pos()) == 1:
-                Locals.CHANGESTATE = "Game"
-            elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
-                Locals.CHANGESTATE = "Quit"
-                return False
-                
-
-#####################################################################################################
-#Main Run Method and Initialization                
-     
-def run(elapsed,event):
-    Locals.STATE.render()
-    Locals.STATE.update(elapsed)
-    
-    for event in PE.get():
-            if event.type == PG.QUIT:
-                return False
-            else:
-                if(Locals.STATE.event(event) == False):
+        for event in events:
+            if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
+                Globals.RUNNING = False
+            elif M_M1 == 1:
+                if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
+                    Globals.STATE = "Title"
+                elif objectList['scores'].collidepoint(PG.mouse.get_pos()) == 1:
+                    Globals.STATE = "Score"
+                elif objectList['game'].collidepoint(PG.mouse.get_pos()) == 1:
+                    Globals.STATE = "Game"
+                elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
+                    Globals.STATE = "Quit"
                     return False
 
-def initialize():
-    #Initializes Local Vars
 
-    Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF|PG.HWSURFACE)
-
-    Locals.FONT = PF.Font(None, 48)
-    Locals.STATE = Menu()
-    Locals.CHANGESTATE = "Menu"
 
 

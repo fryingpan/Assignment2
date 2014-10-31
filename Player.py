@@ -15,6 +15,7 @@ import pygame.display as PD
 import pygame.sprite as PS
 import pygame.image as PI
 from Weapon import Weapon
+import Globals
 
 PG.init()
 
@@ -54,7 +55,9 @@ class Player(PS.DirtySprite):
         self.rect.y = 100
         self.face = 'd'
         self.load_images()
-        self.speed = 8*fps
+        #self.speed both determines the speed of the player &
+        #ensures the the player moves at an integer distance during play (arbitrary value)
+        self.speed = 200
         self.time = 0.0
         self.frame = 0
         self.got_key = False
@@ -68,16 +71,12 @@ class Player(PS.DirtySprite):
         self.weapon = Weapon()
         self.moved = False
         self.interval = 0
-        self.frame_interval = 0
         self.opened_door = False
 
     def get_open_door(self):
         returned = self.opened_door
         self.opened_door = False
         return returned
-
-    def set_interval(self, interval):
-        self.frame_interval = interval
 
     def get_rect_if_moved(self):
         if self.moved:
@@ -111,7 +110,7 @@ class Player(PS.DirtySprite):
 
     def handle_collision(self, bg):
             collisions = PS.spritecollide(self, bg, False)
-            if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+            if self.face == 'r' or self.face == 'rs':
                     collisions = PS.spritecollide(self, bg, False)
                     once = True
                     for collision in collisions:
@@ -172,29 +171,27 @@ class Player(PS.DirtySprite):
                                                 collision.rect.height
                                             once = False
 
-    def handle_keys(self, bg, enemy_bg, screen, interval=5):
-        #add enemy_bg to character_handle_keys in setup
+    def handle_keys(self, bg, enemy_bg, screen, interval=0.0065):
         """ Handles Keys """
         self.interval = interval
         key = PG.key.get_pressed()
-        dist = self.speed  # distance moved in 1 frame, try changing it to 5
         if key[PG.K_DOWN]:  # down key
-                self.rect.y += dist*self.interval  # move down
-                #self.rect = self.image.get_rect()
-                self.face = 'd'
-                self.handle_collision(bg)
+            self.rect.y += int(self.speed*self.interval)  # move down
+            #self.rect = self.image.get_rect()
+            self.face = 'd'
+            self.handle_collision(bg)
         elif key[PG.K_UP]:  # up key
-            self.rect.y -= dist*self.interval  # move up
+            self.rect.y -= int(self.speed*self.interval)  # move up
             #self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
         elif key[PG.K_RIGHT]:  # right key
-            self.rect.x += dist*self.interval  # move right
+            self.rect.x += int(self.speed*self.interval)  # move right
             #self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
         elif key[PG.K_LEFT]:  # left key
-            self.rect.x -= dist*self.interval  # move left
+            self.rect.x -= int(self.speed*self.interval)  # move left
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
@@ -232,7 +229,7 @@ class Player(PS.DirtySprite):
             if self.face == 'l':
                     self.face = 'ls'
 
-    def update(self, delta, bg, selfgroup):
+    def update(self, bg, selfgroup):
         self.moved = False
         x_location = self.rect.x
         y_location = self.rect.y
@@ -240,7 +237,7 @@ class Player(PS.DirtySprite):
         #update time and frame
         key = PG.key.get_pressed()
 
-        self.time = self.time + delta
+        self.time = self.time + Globals.DELTA
         if self.time > Player.CYCLE:
             self.time = 0.0
         frame = int(self.time / (Player.CYCLE / PLAYER_IMAGE_LENGTH))
@@ -292,7 +289,7 @@ class Player(PS.DirtySprite):
 
     def draw(self, screen, block_group):
             """ Draw on surface """
-            key = PG.key.get_pressed()
+            #key = PG.key.get_pressed()
             self.check_boundary(screen)
             # blit yourself at your current position
             screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -361,8 +358,7 @@ class Player(PS.DirtySprite):
 
             #load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCFrontFPOnePiece.png").convert_\
-                alpha()
+                                          "MCFrontFPOnePiece.png").convert_alpha()
             '''Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png")\
                 .convert_alpha()
             Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png")\

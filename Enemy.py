@@ -8,6 +8,7 @@ import sys
 import math
 import pygame.image as PI
 from Player import Player
+import Globals
 
 PG.init()
 
@@ -108,12 +109,12 @@ class Enemy(PG.sprite.DirtySprite):
                                 collision.rect.height
                             once = False
 
-    def update(self, delta, bg, player):
+    def update(self, bg, player):
         self.moved = False
         x_location = self.rect.x
         y_location = self.rect.y
         self.attacked_player = False
-        self.move(bg, player, delta)
+        self.move(bg, player, Globals.DELTA)
 
         if(self.invincibility_count > 0):
             self.invincibility_count -= 1
@@ -125,7 +126,7 @@ class Enemy(PG.sprite.DirtySprite):
 
         ENEMY_IMAGE_LENGTH = 4  # all Enemy sprite has 12 frames
         #update time
-        self.time = self.time + delta
+        self.time = self.time + Globals.DELTA
         if self.time > Enemy.CYCLE:
             self.time = 0.0
         #update frame?

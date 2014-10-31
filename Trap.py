@@ -36,7 +36,7 @@ class Trap(PS.DirtySprite):
 
 
 
-    def update(self, delta, bg, player_group):
+    def update(self, bg, player_group):
         self.trap_attack = False
         if not self.dropped:
             self.drop_animation()

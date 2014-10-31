@@ -21,6 +21,7 @@ try:
     from Cutscene import Cutscene
     from objective import Objective
     import pygame.mixer as PM
+    import Globals
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -41,82 +42,24 @@ class Locals(object):
     SCORE = 0
 
 
-def initialize():
-    Locals.CHANGESTATE = 'Game'
-
-
 class Game(object):
 
-    def __init__(self, interval):
+    def __init__(self):
         PG.init()
-        PM.music.load("music/gameplay.mod")
+        ###(Screen stuff)####
+        Globals.SCREEN.fill((255, 255, 255))
         PD.set_caption("Master Chef's wicked adventure " +
                        "with his ice cream buddies")
-        self.interval = interval
-        self.fps = 40
-        
 
-        self.screen = PD.set_mode((800, 600))
-        self.screen_rect = self.screen.get_rect()
-        self.screen.fill((255, 255, 255))
-        self.objective = Objective(self.screen)
 
-        #sprite group containing all sprites
-        self.all_sprites = PS.Group()
+        ###(Declare interface)#####
+        self.objective = Objective(Globals.SCREEN)
+        PM.music.load("music/gameplay.mod")
 
-        #Initialize objects on screen----------------
-        self.character = Player(self.fps)
-        Locals.SCORE = self.character.score
-        self.player_group = PS.GroupSingle(self.character)
-
-        self.all_sprites.add(self.character)
-
-        # ###some enemies are set in certain areas
-        # #add all the enemies to the list of enemies
-        # for e in range(self.num_enemies):
-        #         if(e % 2 == 0):
-        #                 icecream = IceCream(random.randint(500, 1000),
-        #                                     random.randint(500, 1000),
-        #                                     self.fps)
-        #         else:
-        #                 icecream = IceCream(random.randint(2800, 5300),
-        #                                     random.randint(100, 950),
-        #                                     self.fps)
-        #         self.icecream_list.add(icecream)
-
-        self.map = Map.Map('mapfile.txt')
-        self.num_enemies = self.map.get_num_enemies(1)  # adding extra since cutscene bug deletes one
-        self.remainingEnemies = self.num_enemies
-        #create icecream group
-        self.icecream_list = PS.Group()
-        self.enemy_ID = -1  # no enemy
-        self.invincibility_count = 0
-        #place enemies (icecream)
-        for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e), self.map.get_enemy_coordy(e), self.fps)
-            self.icecream_list.add(icecream)
-
-        #get block sprite group from the map file
-        self.block_group = self.map.get_object_group()
-        #add the blocks to the sprite group containing all sprites
-        for block in self.block_group:
-                self.all_sprites.add(block)
-
-        self.bigmap_rect = Rect(0, 0, 1600, 1200)
-
-        self.camera = cam.Camera(self.map.get_surface())
-
-        #list that holds traps
-        self.trap_list = []
-
-        PE.set_allowed([QUIT, KEYDOWN])
-        self.clock = PT.Clock()
-        self.current_time = PT.get_ticks()
-        self.updates = 0
-        self.interval = interval
-        Locals.CHANGESTATE = 'Game'
-
-                        #fonts
+        #Globals.SCREEN = PD.set_mode((800, 600))
+        #do we use this SCREEN_rect?
+#        Globals.SCREEN_rect = Globals.SCREEN.get_rect()
+        #fonts
         self.font = PF.SysFont('Arial', 25)
 
         #Win/Lose items
@@ -124,187 +67,233 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.end_time = 800
+        self.end_time = 100
         self.end_image_position = (100, 178)
 
-        self.make_disappear = False
-
-        self.trap_group = PS.Group()
+        ######(Initialize objects on screen)####
+        ##draw map/background
+        self.map = Map.Map('mapfile.txt')
         self.background = self.map.create_background()
+        self.camera = cam.Camera(self.map.get_surface())
+        ##draw sprites
+        self.character = Player(Globals.DELTA)
+        #Locals.SCORE = self.character.score
+        self.player_group = PS.GroupSingle(self.character)
+        self.num_enemies = self.map.get_num_enemies(1)  # adding extra since cutscene bug deletes one
+        self.remainingEnemies = self.num_enemies
+        #create icecream group
+        self.icecream_list = PS.Group()
+
+
+        #place enemies (icecream)
+        for e in range(self.map.get_num_enemies(1)):
+            icecream = IceCream(self.map.get_enemy_coordx(e), self.map.get_enemy_coordy(e))
+            self.icecream_list.add(icecream)
+
+        #get block sprite group from the map file
+        self.block_group = self.map.get_object_group()
+
+        #list that holds traps
+        self.trap_list = []
+        self.trap_group = PS.Group()
+
+        #allsprites has all dirty sprites (player, enemies, traps)
         self.allsprites = PS.LayeredDirty(self.player_group,
                                           self.icecream_list, self.trap_group)
-        self.allsprites.clear(self.screen, self.background)
+        self.allsprites.clear(Globals.SCREEN, self.background)
+
+        ####(Level variables)####
+        self.invincibility_count = 0 #player's invinicibility frame time
+        self.enemy_ID = -1  # what kind of enemy by ID (-1 means no enemy) used for collisions
+        self.make_disappear = False #if true, tells map to update w/o key & door
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
 
-    def run(self):
-        #lv1_cutscene = Cutscene(self.screen,1)
-        running = True
-        #music
-        #-1 loop should loop forever
-        PM.music.play(-1)
+#############################
+######STUFF WE GOTTA PUT SOMEWHERE##########
+#lv1_cutscene = Cutscene(Globals.SCREEN,1) Must be init only ONCE, figure out where to put later!
+#music
+#-1 loop should loop forever
+#        PM.music.play(-1) Put with cutscene
+##############################
 
-        while running:
-                new_time = PT.get_ticks()
-                frame_time = (new_time - self.current_time)/1000.0
-                self.current_time = new_time
-                self.clock.tick()
 
-                running = self.handleEvents()
-                if(running is False):
-                        return False
+    def update(self):
+        ###(variables)####
+        trap_attack = False #tells if a trap attacked
+        self.enemy_ID = -1
 
-                #move and draw the enemies
-                player_face = self.character.get_face()
-                weapon_attack = False
+        ###(attacks on player)####
 
-                for trap in self.trap_list:
-                        trap.update(None, None, self.player_group)
-                        if (trap.get_trap_attack() and self.invincibility_count == 0):
-                                weapon_attack = True
-                        if trap.will_remove():
-                                self.trap_list.remove(trap)
-                                self.trap_group.remove(trap)
-                                self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+        ##trap handling
+        for trap in self.trap_list:
+                trap.update(None, self.player_group)
+                if (trap.get_trap_attack() and self.invincibility_count == 0):
+                        trap_attack = True
+                if trap.will_remove():
+                        self.trap_list.remove(trap)
+                        self.trap_group.remove(trap)
+                        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+        ##icecream attacks
+        for icecream in self.icecream_list.sprites():
+                #see if the enemy will release weapon/attack
+                if (icecream.will_attack()):
+                        #get a new puddle sprite
+                        new_trap = icecream.attack(self.map.get_surface())
+                        #add the new trap to the list of traps
+                        self.trap_list.append(new_trap)
+                        self.trap_group.add(new_trap)
+                        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+                if(icecream.get_attacked_player() or trap_attack):
+                        if trap_attack:
+                                trap_attack = False
+                        #if so start invincibility count after attack
+                        self.invincibility_count = 200
+                        #see which enemy attacked the player
+                        self.enemy_ID = icecream.get_ID()
 
-                for icecream in self.icecream_list.sprites():
-                        icecream_face = icecream.get_face()
-                        #see if the enemy will release weapon/attack
-                        if (icecream.will_attack()):
-                                #get a new puddle sprite
-                                new_trap = icecream.attack(self.map.get_surface())
-                                #add the new trap to the list of traps
-                                self.trap_list.append(new_trap)
-                                self.trap_group.add(new_trap)
-                                self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+#        ##Icecream & puddle attack on player
+#        for icecream in self.icecream_list.sprites():
+#                #update position and collisions
+#                #see if ice cream collided with player
+#                if(icecream.get_attacked_player() or trap_attack):
+#                        if trap_attack:
+#                                trap_attack = False
+#                        #if so start invincibility count after attack
+#                        self.invincibility_count = 200
+#                        #see which enemy attacked the player
+#                        self.enemy_ID = icecream.get_ID()
 
-                #update camera's position on the map
-                background = self.camera.update(self.character.get_coordinates(),
-                                                                                self.screen, self.map.get_surface()
-                                                                                )
-                # print(self.character.get_coordinates())
-                #####temporary code to detect for door objective###############
-                if(self.character.rect.x > 2200 and self.character.rect.x < 2700
-                        and self.character.rect.y > 250 and self.character.rect.y < 400
-                        and self.cheesed == True):
-                        self.cheesed = False
-                        self.objective.changeObj(1)
+        ##player damage & invincibility handling
+        #If enemy attacked the player while player not invincible
+        if(self.enemy_ID != -1 and self.invincibility_count == 200):
+                self.character.decrement_health(self.enemy_ID)
+                self.enemy_ID = -1
+        #decrement invincibility count if player is in invincibility
+        #handles player flashing during invincibility
+        if(self.invincibility_count > 0):
+                if(self.invincibility_count % 50 == 0):
+                        self.character.invincibility_frames()
+                self.invincibility_count -= 1
 
-                self.update_score(self.character)
+        self.character.handle_keys(self.block_group,
+                                                           self.icecream_list,
+                                                           self.map.get_surface()) #self.interval)
+        #cheese/door handling
+        self.make_disappear = self.character.get_open_door()
 
-                self.updates = 0
+        if self.make_disappear:
+                self.background = self.map.update_background()
+                self.make_disappear = False
 
-                #clock is added
-                clock = PT.Clock()
 
-                while frame_time > 0.0:
-                        #adding objective banner here
-                        self.objective.updateObjective()
-                        delta = min(frame_time, self.interval)
-                        self.enemy_ID = -1
-                        for icecream in self.icecream_list.sprites():
-                                #update position and collisions
-                                #see if ice cream collided with player
-                                if(icecream.get_attacked_player() or weapon_attack):
-                                        if weapon_attack:
-                                                weapon_attack = False
-                                        #if so start invincibility count after attack
-                                        self.invincibility_count = 200
-                                        #see which enemy attacked the player
-                                        self.enemy_ID = icecream.get_ID()
-                        #If enemy attacked the player while player not invincible
-                        if(self.enemy_ID != -1 and self.invincibility_count == 200):
-                                self.character.decrement_health(self.enemy_ID)
-                                self.enemy_ID = -1
-                        #decrement invincibility count if player is in invincibility
-                        if(self.invincibility_count > 0):
-                                if(self.invincibility_count % 50 == 0):
-                                        self.character.invincibility_frames()
-                                self.invincibility_count -= 1
+        #update camera's position on the map
+        background = self.camera.update(self.character.get_coordinates(),
+                                                                        Globals.SCREEN, self.map.get_surface()
+                                                                        )
+        # print(self.character.get_coordinates())
+        #####temporary code to detect for door objective###############
+        if(self.character.rect.x > 2200 and self.character.rect.x < 2700
+                and self.character.rect.y > 250 and self.character.rect.y < 400
+                and self.cheesed == True):
+                self.cheesed = False
+                self.objective.changeObj(1)
 
-                        self.character.handle_keys(self.block_group,
-                                                                           self.icecream_list,
-                                                                           self.map.get_surface(),
-                                                                           self.interval)
+        self.allsprites.update(self.block_group, self.player_group)
 
-                        self.make_disappear = self.character.get_open_door()
+        Locals.SCORE = self.character.score
+        if(Locals.CHANGESTATE == "Menu"):
+                PM.music.fadeout(1000)
+                return False
 
-                        if self.make_disappear:
-                                self.background = self.map.update_background()
-                                self.make_disappear = False
+        ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
+        #adding objective banner here
+        self.objective.updateObjective() ##change so that banner only appears when necessary
 
-                        frame_time -= delta
-                        self.updates += 1
-                        clock.tick()
-
-                        self.remainingEnemies = self.num_enemies - self.character.score
-                        if self.remainingEnemies < self.num_enemies and self.killed == True:
-                                self.killed = False
-                                self.objective.changeObj(2)
-
-                        self.update_score(self.character)
-                        self.allsprites.update(delta, self.block_group, self.player_group)
-                        rects = self.allsprites.draw(self.map.get_surface(), self.background)
-                        PG.display.update(rects)
-
-                Locals.SCORE = self.character.score
-                if(Locals.CHANGESTATE == "Menu"):
-                        PM.music.fadeout(1000)
-                        return False
-                PD.update()  # update the screen
-
-    def update_player(self, player, delta):
-        if(player.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
-                self.screen.blit(self.win_image, self.end_image_position)
-                if(self.end_time > 0):
-                        self.end_time -= 1
-                else:
-                        PM.music.fadeout(1000)
-                        Locals.CHANGESTATE = "Menu"
-        if(player.health <= 0):
-                self.screen.blit(self.lose_image, self.end_image_position)
-                if(self.end_time > 0):
-                        self.end_time -= 1
-                else:
-                        PM.music.fadeout(1000)
-                        Locals.CHANGESTATE = "Menu"
-
-    def update_score(self, player):
-        if(player.score == self.num_enemies):
-                self.screen.blit(self.win_image, self.end_image_position)
-                if(self.end_time > 0):
-                        self.end_time -= 1
-                else:
-                        Locals.CHANGESTATE = "Menu"
-        if(player.health <= 0):
-                self.screen.blit(self.lose_image, self.end_image_position)
-                if(self.end_time > 0):
-                        self.end_time -= 1
-                else:
-                        Locals.CHANGESTATE = "Menu"
-        s = "Score: " + str(player.score)
-        self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+        s = "Score: " + str(self.character.score)
+        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
                                          (25, 550))
-        s = "Health: " + str(player.health)
-        self.screen.blit(self.font.render(s, True, (255, 255, 255)),
+        s = "Health: " + str(self.character.health)
+        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
                                          (25, 520))
 
-    def icecreamupdate(self, icecream, delta):
-        icecream.update(delta)
+        if(self.character.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
+                Globals.SCREEN.blit(self.win_image, self.end_image_position)
+                if(self.end_time > 0):
+                        self.end_time -= 1
+                else:
+                        PM.music.fadeout(1000)
+                        Globals.STATE = "Menu"
+        if(self.character.health <= 0):
+                Globals.SCREEN.blit(self.lose_image, self.end_image_position)
+                if(self.end_time > 0):
+                        self.end_time -= 1
+                else:
 
-    def handleEvents(self):
-        for event in PE.get():
-            if event.type == PG.QUIT:
-                    return False
-            # handle user input
-            elif event.type == KEYDOWN:
-            # if the user presses escape, quit the event loop.
-                    if event.key == K_ESCAPE:
-                            PM.music.fadeout(1000)
-                            Locals.CHANGESTATE = 'Menu'
-                            return False
-                    if event.key == K_n:
-                            self.objective.updateBanner()
+                        PM.music.fadeout(1000)
+                        Globals.STATE = "Menu"
+        ###########################################################
 
-        return True
+        PD.update()  # update the screen
+
+    def render(self):
+
+#        ###(interface stuff)####
+#        #adding objective banner here
+#        self.objective.updateObjective() ##change so that banner only appears when necessary
+
+
+        if self.make_disappear:
+                self.background = self.map.update_background()
+                self.make_disappear = False
+
+        ##objective; organize later
+        self.remainingEnemies = self.num_enemies - self.character.score
+        if self.remainingEnemies < self.num_enemies and self.killed == True:
+                self.killed = False
+                self.objective.changeObj(2)
+
+        ##draw dirty sprites
+        rects = self.allsprites.draw(self.map.get_surface(), self.background)
+        PG.display.update(rects)
+
+#        if(self.character.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
+#                Globals.SCREEN.blit(self.win_image, self.end_image_position)
+#                if(self.end_time > 0):
+#                        self.end_time -= 1
+#                else:
+#                        PM.music.fadeout(1000)
+#                        Globals.STATE = "Menu"
+#        if(self.character.health <= 0):
+#                Globals.SCREEN.blit(self.lose_image, self.end_image_position)
+#                if(self.end_time > 0):
+#                        self.end_time -= 1
+#                else:
+
+#                        PM.music.fadeout(1000)
+#                        Globals.STATE = "Menu"
+
+#        s = "Score: " + str(self.character.score)
+#        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+#                                         (25, 550))
+#        s = "Health: " + str(self.character.health)
+#        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+#                                         (25, 520))
+
+        PD.flip()
+
+    def event(self, event):
+        #Allows quitting pygame and changing states
+        #added changes for multiple states to allow testing
+        for ev in event:
+#            if ev.type == PG.QUIT:  # PG.KEYDOWN and ev.key == PG.K_ESCAPE:
+#                Globals.RUNNING = False
+            if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
+                #Globals.STATE = 'Menu'
+                PM.music.fadeout(1000)
+                Globals.STATE = 'Menu'
+                #Globals.RUNNING = False
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
+                self.objective.updateBanner()
+

@@ -14,24 +14,16 @@ import pygame.sprite as PS
 import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
-import pygame.mixer as PX
+import pygame.mixer as PM
+
 
 PG.init()
 #import titlegamestate as Title
 import newmenugamestate as Menu
 import Setup as Game
-import highscores
+import highscores as Score
 import title
-
-
-#Container for global variables
-class Globals(object):
-    RUNNING = True
-    SCREEN = None
-    WIDTH = None
-    HEIGHT = None
-    FONT = None
-    STATE = None
+import Globals
 
 
 #Main Executable entry point
@@ -54,52 +46,83 @@ def initialize():
 
 
 def loop():
-    gameScore = 0
+    interval = 0
+
+    clock = PT.Clock()
+    current = PT.get_ticks()
+
     while Globals.RUNNING:
-        if Globals.STATE == "Title":
-            title.initialize()
-            Globals.STATE = title.Locals.CHANGESTATE
-            while Globals.STATE == "Title":
-                Globals.STATE = title.Locals.CHANGESTATE
-                last = PT.get_ticks()
-                elapsed = (PT.get_ticks() - last) / 1000.0
-                event = PE.get()
-                title.run(elapsed, event)
 
-        elif Globals.STATE == "Game":
-            gamerino = Game.Game(.00625)
-            Game.initialize()
-            Globals.STATE = Game.Locals.CHANGESTATE
-            while Globals.STATE == "Game":
-                Globals.State = Game.Locals.CHANGESTATE
-                interval = 0.005
-                if(gamerino.run() is False):
-                    Globals.STATE = Game.Locals.CHANGESTATE
-            gameScore = Game.Locals.SCORE
+        new = PT.get_ticks()
+        elapsed = (new - current) / 1000.0
+        current = new
+        clock.tick()
 
-        elif Globals.STATE == "Menu":
-            Menu.initialize()
-            Globals.STATE = Menu.Locals.CHANGESTATE
-            while Globals.STATE == "Menu":
-                Globals.STATE = Menu.Locals.CHANGESTATE
-                last = PT.get_ticks()
-                elapsed = (PT.get_ticks() - last) / 1000.0
-                event = PE.get()
-                if(Menu.run(elapsed, event) is False):
-                    return 0
+        # figure out timestep
+        # for physics only
+        if Globals.STATE == "Title" and Globals.CURRENTSTATE != "Title":
+            Globals.CURRENTSTATE = "Title"
+            state = title.Title()
+        elif Globals.STATE == "Menu" and Globals.CURRENTSTATE != "Menu":
+            Globals.CURRENTSTATE = "Menu"
+            state = Menu.Menu()
+        elif Globals.STATE == "Game" and Globals.CURRENTSTATE != "Game":
+            Globals.CURRENTSTATE = "Game"
+            state = Game.Game()
+        elif Globals.STATE == "Score" and Globals.CURRENTSTATE != "Score":
+            Globals.CURRENTSTATE = "Score"
+            state = Score.HighScores()
+        elif Globals.STATE == "Quit" and Globals.CURRENTSTATE != "Quit":
+            Globals.CURRENTSTATE = "Quit"
+            Globals.RUNNING = False
 
-        elif Globals.STATE == "Scores":
-            if gameScore != 0:
-                highscores.Locals.SCORE = gameScore
-                # give new gamescore to highscores class FIRST
-            highscores.initialize()
-            Globals.STATE = highscores.Locals.CHANGESTATE
-            while Globals.STATE == "Scores":
-                Globals.STATE = highscores.Locals.CHANGESTATE
-                last = PT.get_ticks()
-                elapsed = (PT.get_ticks() - last) / 1000.0
-                event = PE.get()
-                highscores.run(elapsed, event)
+
+        state.update()
+        interval += elapsed
+        print interval
+
+        while interval > .03:
+            #print elapsed
+#fix later? only needed in the game state.
+            Globals.DELTA = elapsed
+
+            state.render()
+
+            event = PE.get()
+            if event:
+                state.event(event)
+
+            interval -= .03
+
+
+#elif Globals.STATE == "Game":
+
+#    Globals.STATE = Game.Locals.CHANGESTATE
+#    while Globals.STATE == "Game":
+#        new_time = PT.get_ticks()
+#        frame_time = (new_time - self.current_time)/1000.0
+#        self.current_time = new_time
+#        self.clock.tick()
+
+#        Globals.State = Game.Locals.CHANGESTATE
+#        interval = 0.005
+#        if(gamerino.run() is False):
+#            Globals.STATE = Game.Locals.CHANGESTATE
+#    gameScore = Game.Locals.SCORE
+
+
+#elif Globals.STATE == "Scores":
+#    if gameScore != 0:
+#        highscores.Locals.SCORE = gameScore
+#        # give new gamescore to highscores class FIRST
+#    highscores.initialize()
+#    Globals.STATE = highscores.Locals.CHANGESTATE
+#    while Globals.STATE == "Scores":
+#        Globals.STATE = highscores.Locals.CHANGESTATE
+#        last = PT.get_ticks()
+#        elapsed = (PT.get_ticks() - last) / 1000.0
+#        event = PE.get()
+#        highscores.run(elapsed, event)
 
 
 def finalize():
