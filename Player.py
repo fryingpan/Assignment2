@@ -16,7 +16,7 @@ import pygame.sprite as PS
 import pygame.image as PI
 from Weapon import Weapon
 import Globals
-import Item
+# import Item
 
 
 class Player(PS.DirtySprite):
@@ -198,11 +198,11 @@ class Player(PS.DirtySprite):
                 self.pill = False
                 self.at_door = False
             #for x in range(100):
-            killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
-                                             self.face, screen, enemy_bg)
-            for killed in killed_enemies:
-                print killed
-                self.items_of_killed.append(killed.drop_item())
+            # killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
+            #                                  self.face, screen, enemy_bg)
+            # for killed in killed_enemies:
+            #     print killed
+            #     self.items_of_killed.append(killed.drop_item())
                 
             self.weapon.draw(screen)
             self.attack_pose = True
