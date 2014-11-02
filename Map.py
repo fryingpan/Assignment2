@@ -145,8 +145,8 @@ class Map(object):
         def load_pad_tiles(self):
                 array = []
                 #change these images later. right now a hot tile is the top of a corncob :3
-                array.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
-                array.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
+                array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
+                array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
                 return array
 
 	def load_blocks(self, lvl):
