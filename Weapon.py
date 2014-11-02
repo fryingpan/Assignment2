@@ -45,10 +45,11 @@ class Weapon(PS.Sprite):
         #only when space bar is held is the sword out.
         #so in player is where maybe
         #the weapon will be 'hidden' after space is let go
-        def attack(self, playerX, playerY, playerFace, screen, bg):
+        def attack(self, player, playerX, playerY, playerFace, screen, bg):
                 #this bg is enemy block group
                 #collisions with the new weapon rect!
                 score = 0
+                collision_list = []
 
                 if "r" in playerFace:
                     self.width = 50
@@ -81,16 +82,17 @@ class Weapon(PS.Sprite):
 
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
-                    score = score + 1
+                    player.inc_score()
+                    collision_list.append(collision)
                     collision.kill()
-                return score  # to be added to Player's score
+                return collision_list  # to be added to Player's score
 
     #call in Player.py. pass it screen.
         def draw(self, screen):
                 """ Draw on surface """
                 # blit yourself at your current position
                 screen.blit(self.image, (self.rect.x, self.rect.y))
-                PD.flip()
+                # PD.flip()
 
         def load_images(self):
             Weapon.IMAGE_RIGHT = PI.load("FPGraphics/MC/weapon/FPR.png") \

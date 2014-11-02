@@ -16,8 +16,7 @@ import pygame.sprite as PS
 import pygame.image as PI
 from Weapon import Weapon
 import Globals
-
-PG.init()
+# import Item
 
 
 class Player(PS.DirtySprite):
@@ -74,6 +73,14 @@ class Player(PS.DirtySprite):
         self.opened_door = False
         self.pill = False
         self.at_door = -1 #allows player to open door if player has key
+        self.attack_pose = False
+        self.items_of_killed = []
+
+    def get_items_of_killed(self):
+        return self.items_of_killed
+
+    def inc_score(self):
+        self.score += 1
 
     def get_open_door(self):
         returned = self.opened_door
@@ -145,6 +152,9 @@ class Player(PS.DirtySprite):
 
     def handle_keys(self, bg, enemy_bg, screen, interval=0.0065):
         """ Handles Keys """
+        self.items_of_killed = []
+        self.attack_pose = False
+        standing = False
         self.interval = interval
         key = PG.key.get_pressed()
         if key[PG.K_DOWN]:  # down key
@@ -174,8 +184,8 @@ class Player(PS.DirtySprite):
                 self.image = self.IMG_ATTACK_D'''
             if 'd' in self.face:
                 self.image = self.IMG_ATTACK_D
-            '''if 'u' in self.face:
-                self.image = self.IMG_ATTACK_D'''
+            # if 'u' in self.face:
+            #     self.image = self.IMG_ATTACK_U
 
             #attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
@@ -187,14 +197,24 @@ class Player(PS.DirtySprite):
                 self.open_door(bg)
                 self.pill = False
                 self.at_door = False
-            '''self.weapon.draw(screen)
-            PD.flip()
-            for x in range(100):
-                self.score += self.weapon.attack(self.rect.x, self.rect.y,
-                                             self.face, screen, enemy_bg)'''
+            #for x in range(100):
+            # killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
+            #                                  self.face, screen, enemy_bg)
+            # for killed in killed_enemies:
+            #     print killed
+            #     self.items_of_killed.append(killed.drop_item())
+                
+            self.weapon.draw(screen)
+            self.attack_pose = True
+
+            standing = True
+
 
                 #pass
         else:  # ds = down 'standing' (not moving) **********
+            standing = True
+
+        if standing:
             if self.face == 'd':
                     self.face = 'ds'
             if self.face == 'u':
@@ -240,17 +260,19 @@ class Player(PS.DirtySprite):
                 elif (self.face == 'd'):
                     self.update_image(self.IMAGES_FRONT)
                 #standing
-                elif(self.face == 'rs'):
-                    self.image = self.IMAGES_RIGHT[0]
-                elif(self.face == 'us'):
-                    self.image = self.IMAGES_BACK[0]
-                elif(self.face == 'ls'):
-                    self.image = self.IMAGES_LEFT[0]
-                elif(self.face == 'ds'):
-                    self.image = self.IMAGES_FRONT[0]
-                else:
-                    self.image = PI.load("FPGraphics/MC/" +
-                                         "MCwalk/MCFront.png").convert_alpha()
+                elif self.attack_pose is False:
+                    if(self.face == 'rs'):
+                        self.image = self.IMAGES_RIGHT[0]
+                    elif(self.face == 'us'):
+                        self.image = self.IMAGES_BACK[0]
+                    elif(self.face == 'ls'):
+                        self.image = self.IMAGES_LEFT[0]
+                    elif(self.face == 'ds'):
+                        self.image = self.IMAGES_FRONT[0]
+                    else:
+                        self.image = PI.load("FPGraphics/MC/" +
+                                             "MCwalk/MCFront.png").convert_alpha()
+                    self.attack_pose = False
         self.dirty = 1
 
     def update_image(self, imageArray):
@@ -334,9 +356,9 @@ class Player(PS.DirtySprite):
             #load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
                                           "MCFrontFPOnePiece.png").convert_alpha()
-            '''Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png")\
-                .convert_alpha()
-            Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png")\
-                .convert_alpha()
-            Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/weapon/FPL.png")\
-                .convert_alpha()'''
+            # Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png")\
+            #     .convert_alpha()
+            # Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png")\
+            #     .convert_alpha()
+            # Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/weapon/FPL.png")\
+            #     .convert_alpha()

@@ -79,7 +79,6 @@ def loop():
 
         state.update()
         interval += elapsed
-        print interval
 
         while interval > .03:
             #print elapsed
