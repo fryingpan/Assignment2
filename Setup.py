@@ -240,6 +240,9 @@ class Game(object):
             Globals.SCREEN.blit(self.pill_img, (750,550))
         ###########################################################
 
+        #######Pad Handling############
+        self.map.pad_hurt_player(self.character)
+
         PD.update()  # update the screen
 
     def render(self):

@@ -11,6 +11,7 @@ import pygame.time as PT
 import pygame.color as PC
 import pygame.mixer as PX
 from collections import deque
+import pad as Pad
 
 mapcolors = {'D': (154, 205, 50),
 			 'W': (30, 144, 255), 'K': (255, 255, 0, 255)}
@@ -79,61 +80,74 @@ class Block(PG.sprite.DirtySprite):
 class Map(object):
 	TILES_LOADED = False
 	GRASS_ARRAY = []
+        PAD_ARRAY = []
 
-	def __init__(self, mapfile):
-		#load the grass images into an array
-		if not Map.TILES_LOADED:
-			Map.GRASS_ARRAY = self.load_tiles()
-			Map.TILES_LOADED = True
+        def __init__(self, mapfile):
+                #load the grass images into an array
+                if not Map.TILES_LOADED:
+                        Map.GRASS_ARRAY = self.load_grass_tiles()
+                        Map.PAD_ARRAY = self.load_pad_tiles()
+                        Map.TILES_LOADED = True
 
-		####(prepare to read mapfile)#######
-		self.map = self.get_map(mapfile)
-		#size of an individual block in the grid
-		self.grid_size = [50, 50]
-		self.grid_dimensions = self.get_dimensions(self.map)
-		self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0],
-							   self.grid_dimensions[1] * self.grid_size[1]]
-		self.surface = PG.Surface(self.pix_dimensions)
-		self.object_group = PG.sprite.Group()
+                ####(prepare to read mapfile)#######
+                self.map = self.get_map(mapfile)
+                #size of an individual block in the grid
+                self.grid_size = [50, 50]
+                self.grid_dimensions = self.get_dimensions(self.map)
+                self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0],
+                                                           self.grid_dimensions[1] * self.grid_size[1]]
+                self.surface = PG.Surface(self.pix_dimensions)
+                self.object_group = PG.sprite.Group()
 
-		self.grass_array = Map.GRASS_ARRAY
-		# list that stores a pair of coordinates for each grass 
-		# tile that needs to be drawn
-		self.grasstiles = []
-		self.grass_type = []
+                self.grass_array = Map.GRASS_ARRAY
+                self.pad_array = Map.PAD_ARRAY
+                # list that stores a pair of coordinates for each grass
+                # tile that needs to be drawn
+                self.grasstiles = []
+                self.grass_type = []
+                self.padtiles = []
+                self.pad_type = []  # hot or cold (and/or others)
+                self.allPads = PS.Group()
 
-		#block arrays
-		self.wallBlocksV = [] #vertical V
-		self.wallBlocksH = [] #horizontal H
-		self.wallBlocksE = [] #edges/corners; correspond to index num (see load_blocks)
-		self.doorBlocks = [] # D
-		self.shrubBlocks = [] # S
-		#tree top = T, tree bottom = Y
-		#so it's like ty thank you isn't that cute
-		self.treeBlocksT = [] # T
-		self.treeBlocksB = [] # Y
-		self.keyBlocks = [] #K
-		self.ICBlock = [] #I (icecream spots)
-		self.disappearing_blocks = PS.Group()
+                #block arrays
+                self.wallBlocksV = [] #vertical V
+                self.wallBlocksH = [] #horizontal H
+                self.wallBlocksE = [] #edges/corners; correspond to index num (see load_blocks)
+                self.doorBlocks = [] # D
+                self.shrubBlocks = [] # S
+                #tree top = T, tree bottom = Y
+                #so it's like ty thank you isn't that cute
+                self.treeBlocksT = [] # T
+                self.treeBlocksB = [] # Y
+                self.keyBlocks = [] #K
+                self.ICBlock = [] #I (icecream spots)
+                self.disappearing_blocks = PS.Group()
 
-		#enemy stuff
-		self.ic_coord = [] #icecream
+                #enemy stuff
+                self.ic_coord = [] #icecream
 
-		self.spots_to_be_filled = []
-		#create map from mapfile
-		self.load_blocks(1)
-		self.objectify_map()
-		self.fill()
+                self.spots_to_be_filled = []
+                #create map from mapfile
+                self.load_blocks(1)
+                self.objectify_map()
+                self.fill()
 
 	def get_disappearing_blocks(self):
 		return self.disappearing_blocks
 
-	def load_tiles(self):
-		tile_array = []
-		tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
-		tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
-		tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
-		return tile_array
+        def load_grass_tiles(self):
+                tile_array = []
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
+                return tile_array
+
+        def load_pad_tiles(self):
+                array = []
+                #change these images later. right now a hot tile is the top of a corncob :3
+                array.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
+                array.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
+                return array
 
 	def load_blocks(self, lvl):
 		#note: always load edge blocks with these indeces:
@@ -248,7 +262,7 @@ class Map(object):
 				elif char_list[y] == 'I':
 					self.ic_coord.append((x_coor, y_coor))
 					char_list[y] = '.'
-				elif char_list[y] != '.': #edges image are determined by index
+                                elif char_list[y] != '.' and char_list[y] != ',': #edges image are determined by index
 					print(char_list[y])
 					new_block = create_Block(self.wallBlocksE[int(char_list[y])],
 											 PG.Rect(x_coor, y_coor,
@@ -266,6 +280,18 @@ class Map(object):
 				self.grass_type.append(tile_index)
 				self.grasstiles.append((x_coor, y_coor))
 
+                                ##added pad tiles##
+                                if char_list[y] == ',':
+                                    self.pad_type.append(0) #0 or 1, type for hot or cold pads
+                                    self.padtiles.append((x_coor, y_coor))
+                                    newPad = Pad.create_Pad(self.pad_array[0], self.pad_array[0].get_rect(), 0)
+                                    newPad.set_rectLeft(x_coor)
+                                    newPad.set_rectTop(y_coor)
+                                    self.allPads.add(newPad)
+                                    print "created hot"
+                                    #for some reason the rect x and y 0-out after this
+                                ###################
+
 				x_coor += self.grid_size[0]
 
 			y_coor += self.grid_size[1]
@@ -282,6 +308,25 @@ class Map(object):
 		if enemy_type == 1:
 			return len(self.ic_coord)
 
+
+        ############ Pad Handling here? ############
+        def pad_hurt_player(self, player):
+                #if player's rect collides with the pad tile's rect,
+                    #lower player health
+                #padtiles is the coordinates of every single pad
+#                collisions = PS.spritecollide(player, self.allPads, False)
+#                print collisions
+#                for pad in collisions:
+#                    print "here"
+#                    player.health -= 1
+                for pad in self.allPads:
+                    if pad.rect.colliderect(player.rect):
+                        #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
+                        pad.i_am_hot(player)
+
+
+        ###########################################
+
 	def update_background(self):
 		background = self.surface
 		background = background.convert()
@@ -293,7 +338,13 @@ class Map(object):
 				background.blit(self.grass_array[gtype], grasstile)
 		else:
 			print "ERROR: grasstile != grass_type. Map.py line 183"
-		for block in self.object_group:
+
+                #####bliting hot / cold########
+                for (pad, padtype) in zip(self.padtiles, self.pad_type):
+                    background.blit(self.pad_array[padtype], pad)
+                #############################
+
+                for block in self.object_group:
 			block.draw_block(background)
 		for spot in self.spots_to_be_filled:
 			background.blit(self.grass_array[0], spot)
@@ -325,7 +376,13 @@ class Map(object):
 				background.blit(self.grass_array[gtype], grasstile)
 		else:
 			print "ERROR: grasstile != grass_type. Map.py line 183"
-		for block in self.object_group:
+
+                #####bliting hot / cold########
+                for (pad, padtype) in zip(self.padtiles, self.pad_type):
+                    background.blit(self.pad_array[padtype], pad)
+                #############################
+
+                for block in self.object_group:
 			block.draw_block(background)
 		return background
 
