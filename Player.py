@@ -230,10 +230,10 @@ class Player(PS.DirtySprite):
 
             #attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
-            for collision in collisions:
-                self.health += 1
-                self.score = self.score + 1
-                collision.kill()
+            # for collision in collisions:
+            #     self.health += 1
+            #     self.score = self.score + 1
+                # collision.kill()
             if self.at_door == True:
                 self.open_door(bg)
                 self.pill = False
@@ -244,6 +244,8 @@ class Player(PS.DirtySprite):
             for killed in killed_enemies:
                 print len(killed_enemies)
                 self.items_of_killed.append(killed.drop_item(screen))
+                self.health += 1
+                self.score += 1
                 killed.kill()
                 
             self.weapon.draw(screen)

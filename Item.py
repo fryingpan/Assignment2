@@ -55,8 +55,8 @@ class IceCreamScoop(Item):
 		Item.IMAGE = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
 		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
-		self.rect.x = x_coor
-		self.rect.y = y_coor
+		self.rect.x = x_coor + 25
+		self.rect.y = y_coor + 25
 		self.type = 1
 		self.lifetime = 800
 		Item.surface = surface
