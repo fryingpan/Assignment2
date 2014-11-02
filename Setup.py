@@ -99,9 +99,11 @@ class Game(object):
         self.trap_list = []
         self.trap_group = PS.Group()
 
+        self.item_list = []
+        self.item_group = PS.Group()
+
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group,
-                                          self.icecream_list, self.trap_group)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
@@ -136,7 +138,7 @@ class Game(object):
                 if trap.will_remove():
                         self.trap_list.remove(trap)
                         self.trap_group.remove(trap)
-                        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+                # self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
         ##icecream attacks
         for icecream in self.icecream_list.sprites():
                 #see if the enemy will release weapon/attack
@@ -146,7 +148,8 @@ class Game(object):
                         #add the new trap to the list of traps
                         self.trap_list.append(new_trap)
                         self.trap_group.add(new_trap)
-                        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group)
+                # self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+
                 if(icecream.get_attacked_player() or trap_attack):
                         if trap_attack:
                                 trap_attack = False
@@ -179,9 +182,29 @@ class Game(object):
                         self.character.invincibility_frames()
                 self.invincibility_count -= 1
 
-        self.character.handle_keys(self.block_group,
-                                                           self.icecream_list,
-                                                           self.map.get_surface()) #self.interval)
+        self.character.handle_keys(self.block_group, self.icecream_list, self.item_group, self.map.get_surface()) #self.interval)
+        #get new items from the killed enemies
+        new_items = self.character.get_items_of_killed()
+        for item in new_items:
+            self.item_list.append(item)
+            self.item_group.add(item)
+
+        #check if any of the items need to be removed (lifetime == 0)
+        for item in self.item_list:
+            if item.will_remove():
+                self.item_list.remove(item)
+                self.item_group.remove(item)
+
+        player_items = self.character.get_player_items()
+        for item in player_items:
+            self.item_list.append(item)
+            self.item_group.add(item)
+
+        #update the allsprites    
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+
+
+
         #cheese/door handling
         self.make_disappear = self.character.get_open_door()
 
@@ -304,4 +327,5 @@ class Game(object):
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 self.objective.updateBanner()
+
 

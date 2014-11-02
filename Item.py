@@ -5,61 +5,63 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
-from Player import Player
-from Enemy import Enemy
+# from Player import Player
+# from Enemy import Enemy
 
 
-class Item(PS.Sprite):
-	def __init__(self, rect, theType, lifetime = 500):
-		PS.Sprite.__init__(self)
-		self.rect = None
-		self.rect.x = rect.x
-		self.rect.y = rect.y
-		self.lifetime = 1000
+class Item(PS.DirtySprite):
+	def __init__(self, therect, theType, lifetime = 500):
+		PS.DirtySprite.__init__(self)
+		self.rect = Item.IMAGE.get_rect()
+		self.rect.x = therect.x
+		self.rect.y = therect.y
+		self.lifetime = 5000
 		self.type = theType
 		self.lifetime = lifetime
 		self.image = Item.IMAGE
+		self.surface = Item.surface
+		self.use_count = Item.use_count
 		self.grabbed = False
+		self.remove = False
 
+	def get_use_count(self):
+		return self.use_count
 
-	def draw(self, surface):
-		surface.blit(self.image, (self.rect.x, self.rect.y))
+	def get_type(self):
+		return self.type
 
-	def update(self, surface, player = None):
-		self.draw(surface)
+	def will_remove(self):
+		return self.remove
+
+	def draw(self):
+		self.surface.blit(self.image, (self.rect.x, self.rect.y))
+
+	def update(self, block_group, player):
+		self.draw()
 		self.lifetime -= 1
 		if self.lifetime == 0:
-			pass
-			# self.disappear()
-
-		# collided = self.handle_collisions(player)
-		# if collided:
-		# 	self.grabbed = True
-
-
-	def handle_collisions(self, player):
-		collisions = PS.spritecollide(self, player, False)
-		if len(collisions) > 0:
-			return True
-		return False
+			self.disappear()
+		self.dirty = 1
 
 	def disappear(self):
-		pass
+		self.remove = True
 
 	def appear(self):
 		pass
-
-	def use(self):
-		pass
+		
 
 class IceCreamScoop(Item):
-	def __init__(self, x_coor, y_coor):
-		Item.IMAGE = PI.load("FPGraphics/MC/weapon/FPR.png").convert_alpha()
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
+		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
 		self.rect.x = x_coor
 		self.rect.y = y_coor
 		self.type = 1
 		self.lifetime = 800
+		Item.surface = surface
+		Item.use_count = 3
+
 
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 

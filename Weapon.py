@@ -84,7 +84,7 @@ class Weapon(PS.Sprite):
                 for collision in collisions:
                     player.inc_score()
                     collision_list.append(collision)
-                    collision.kill()
+                    # collision.kill()
                 return collision_list  # to be added to Player's score
 
     #call in Player.py. pass it screen.
