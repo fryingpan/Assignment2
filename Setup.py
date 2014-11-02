@@ -74,7 +74,7 @@ class Game(object):
                                  "lactasePill.png").convert_alpha()
         ######(Initialize objects on screen)####
         ##draw map/background
-        self.map = Map.Map('mapfile.txt')
+        self.map = Map.Map('mapfile.txt',2)
         self.background = self.map.create_background()
         self.camera = cam.Camera(self.map.get_surface())
         ##draw sprites

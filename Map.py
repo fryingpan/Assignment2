@@ -135,24 +135,24 @@ class Map(object):
     def get_disappearing_blocks(self):
         return self.disappearing_blocks
 
-        def load_grass_tiles(self, lvl):
-                tile_array = []
-                if(lvl == 1):
-                    tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
-                    tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
-                    tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
-                if(lvl == 2):
-                    tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile.png"))
-                    tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
-                    tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
-                return tile_array
+    def load_grass_tiles(self, lvl):
+            tile_array = []
+            if(lvl == 1):
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
+            if(lvl == 2):
+                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
+                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
+            return tile_array
 
-        def load_pad_tiles(self):
-                array = []
-                #change these images later. right now a hot tile is the top of a corncob :3
-                array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
-                array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
-                return array
+    def load_pad_tiles(self):
+            array = []
+            #change these images later. right now a hot tile is the top of a corncob :3
+            array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
+            array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
+            return array
 
     def load_blocks(self, lvl):
         #note: always load edge blocks with these indeces:
@@ -193,7 +193,7 @@ class Map(object):
             self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2shrub2.png"))
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2TreeT1.png"))
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2TreeB1.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2TreesB1.png"))
             self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB1.png"))
 
     def get_surface(self):
@@ -327,19 +327,19 @@ class Map(object):
 
 
         ############ Pad Handling here? ############
-        def pad_hurt_player(self, player):
-                #if player's rect collides with the pad tile's rect,
-                    #lower player health
-                #padtiles is the coordinates of every single pad
+    def pad_hurt_player(self, player):
+            #if player's rect collides with the pad tile's rect,
+                #lower player health
+            #padtiles is the coordinates of every single pad
 #                collisions = PS.spritecollide(player, self.allPads, False)
 #                print collisions
 #                for pad in collisions:
 #                    print "here"
 #                    player.health -= 1
-                for pad in self.allPads:
-                    if pad.rect.colliderect(player.rect):
-                        #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
-                        pad.i_am_hot(player)
+            for pad in self.allPads:
+                if pad.rect.colliderect(player.rect):
+                    #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
+                    pad.i_am_hot(player)
 
 
         ###########################################
