@@ -200,6 +200,11 @@ class Game(object):
             self.item_list.append(item)
             self.item_group.add(item)
 
+        for item in player_items:
+            if item.will_remove():
+                self.item_list.remove(item)
+                self.item_group.remove(item)
+
         #update the allsprites    
         self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
 
