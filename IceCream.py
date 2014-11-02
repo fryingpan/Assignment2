@@ -52,9 +52,9 @@ class IceCream(Enemy):
         #create puddle at your location
         return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
 
-    def drop_item(self):
-        print "x " + str(self.rect.x) + " y " + str(self.rect.y)
-        return IceCreamScoop(self.rect.x, self.rect.y)
+    def drop_item(self, surface):
+        print "dropping item"
+        return IceCreamScoop(self.rect.x, self.rect.y, surface)
 
     def get_face(self):
         return self.face

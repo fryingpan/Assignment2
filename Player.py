@@ -16,7 +16,7 @@ import pygame.sprite as PS
 import pygame.image as PI
 from Weapon import Weapon
 import Globals
-# import Item
+import Item
 
 
 class Player(PS.DirtySprite):
@@ -56,7 +56,7 @@ class Player(PS.DirtySprite):
         self.load_images()
         #self.speed both determines the speed of the player &
         #ensures the the player moves at an integer distance during play (arbitrary value)
-        self.speed = 200
+        self.speed = 400
         self.time = 0.0
         self.frame = 0
         self.got_key = False
@@ -75,6 +75,24 @@ class Player(PS.DirtySprite):
         self.at_door = -1 #allows player to open door if player has key
         self.attack_pose = False
         self.items_of_killed = []
+
+        self.grab_item = False
+        self.item = False
+        self.item_use_count = 0
+        self.item_type = 0
+        self.player_items = []
+
+    def get_player_items(self):
+        return self.player_items
+
+    def drop_item(self, surface):
+        if self.item_type == 1:
+            "used item"
+            self.player_items.append(Item.IceCreamScoop(self.rect.x, self.rect.y, surface))
+        self.item_use_count -= 1
+        if self.item_use_count == 0:
+                    self.item = False
+
 
     def get_items_of_killed(self):
         return self.items_of_killed
@@ -120,6 +138,15 @@ class Player(PS.DirtySprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         for collision in collisions:
+            #check if collided with an item
+            if type(collision.get_type()) is int:
+                if self.grab_item:
+                    self.item = True
+                    self.item_use_count = collision.get_use_count()
+                    self.item_type = collision.get_type()
+                    collision.disappear()
+                    print "got item"
+
             if collision.get_type() == "K":
                 collision.kill()
                 self.pill = True
@@ -150,11 +177,12 @@ class Player(PS.DirtySprite):
                         self.rect.y = collision.rect.top +\
                             collision.rect.height
 
-    def handle_keys(self, bg, enemy_bg, screen, interval=0.0065):
+    def handle_keys(self, bg, enemy_bg, item_group, screen, interval=0.0065):
         """ Handles Keys """
         self.items_of_killed = []
         self.attack_pose = False
         standing = False
+        self.grab_item = False
         self.interval = interval
         key = PG.key.get_pressed()
         if key[PG.K_DOWN]:  # down key
@@ -177,6 +205,19 @@ class Player(PS.DirtySprite):
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
+        #grab item if available
+        elif key[PG.K_a]:
+            #check if you already have an item
+            if not self.item:
+                self.grab_item = True
+                self.handle_collision(item_group)
+        #drop item if you have one
+        elif key[PG.K_d]:
+            if self.item:
+                self.drop_item(screen)
+                if self.item_use_count == 0:
+                    self.item = False
+
         elif key[PG.K_SPACE]:  # space key ATTACK
             '''if 'r' in self.face:
                 self.image = self.IMG_ATTACK_D
@@ -198,11 +239,12 @@ class Player(PS.DirtySprite):
                 self.pill = False
                 self.at_door = False
             #for x in range(100):
-            # killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
-            #                                  self.face, screen, enemy_bg)
-            # for killed in killed_enemies:
-            #     print killed
-            #     self.items_of_killed.append(killed.drop_item())
+            killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
+                                             self.face, screen, enemy_bg)
+            for killed in killed_enemies:
+                print len(killed_enemies)
+                self.items_of_killed.append(killed.drop_item(screen))
+                killed.kill()
                 
             self.weapon.draw(screen)
             self.attack_pose = True
