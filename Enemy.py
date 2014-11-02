@@ -45,16 +45,14 @@ class Enemy(PG.sprite.DirtySprite):
         self.moved = False
 
     def get_rect(self):
-        if self.moved:
-            return self.rect
-        else: 
-            return None
+        return self.rect
 
     def will_attack(self):
         attack_prob = random.randint(0, 500)
         if (attack_prob == 1):
             return True
         return False
+
 
     def get_face(self):
         return self.face

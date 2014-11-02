@@ -10,6 +10,7 @@ import pygame.image as PI
 from Player import Player
 from Enemy import Enemy
 from Trap import Puddle
+from Item import IceCreamScoop
 
 
 
@@ -44,9 +45,16 @@ class IceCream(Enemy):
         Enemy.__init__(self, self.rect, self.speed)
 
 
+    # def drop_item(self):
+    #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)
+
     def attack(self, surface):
         #create puddle at your location
         return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
+
+    def drop_item(self):
+        print "x " + str(self.rect.x) + " y " + str(self.rect.y)
+        return IceCreamScoop(self.rect.x, self.rect.y)
 
     def get_face(self):
         return self.face
