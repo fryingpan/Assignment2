@@ -14,7 +14,7 @@ from Item import IceCreamScoop
 
 
 
-class IceCream(Enemy):
+class Burger(Enemy):
     IMAGE_UP = None
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
@@ -24,12 +24,10 @@ class IceCream(Enemy):
     CYCLE = .6
 
     def __init__(self, xlocation, ylocation,fps=1):
-        
-        self.image = PI.load("FPGraphics/Food/IceCreamFront.png") \
+        self.image = PI.load("FPGraphics/burger/burgerFront.png") \
             .convert_alpha()
         self.front_image = self.image
         self.rect = self.image.get_rect()
-        print("icrea init")
         self.load_images()
         self.rect.x = xlocation
         self.rect.y = ylocation
@@ -70,18 +68,18 @@ class IceCream(Enemy):
             pass
 
     def load_images(self):
-        print("ic")
+        print("burger")
         Enemy.IMAGES_RIGHT = []
         Enemy.IMAGES_LEFT = []
         Enemy.IMAGES_FRONT = []
         Enemy.IMAGES_BACK = []
-        sheetR = PI.load("FPGraphics/Food/IceCreamWalkRight.png") \
+        sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
             .convert_alpha()
-        sheetL = PI.load("FPGraphics/Food/IceCreamWalkLeft.png") \
+        sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
             .convert_alpha()
-        sheetF = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
+        sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
             .convert_alpha()
-        sheetB = PI.load("FPGraphics/Food/IceCreamWalkBack.png") \
+        sheetB = PI.load("FPGraphics/burger/burgerbackWalk.png") \
             .convert_alpha()
         Enemy.IMAGES_RIGHT = self.load_images_helper(Enemy.IMAGES_RIGHT,
                                                      sheetR)

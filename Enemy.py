@@ -25,10 +25,10 @@ class Enemy(PG.sprite.DirtySprite):
     def __init__(self, rect, speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.DirtySprite.__init__(self)
-        self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
-            .convert_alpha()
+        #self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
+        #    .convert_alpha()
         self.rect = rect
-        self.load_images()
+        #self.load_images()
         self.rect.x = rect.x
         self.rect.y = rect.y
 
@@ -203,10 +203,10 @@ class Enemy(PG.sprite.DirtySprite):
         elif(self.face == 'ds'):
             self.update_image(self.IMAGES_BACK)
 
-    def draw(self, screen):
-        """ Draw on surface """
-        # blit yourself at your current position
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+    # def draw(self, screen):
+    #     """ Draw on surface """
+    #     # blit yourself at your current position
+    #     screen.blit(self.image, (self.rect.x, self.rect.y))
 
     # def check_collide(self): #check screen collision
     #     collide = False
@@ -227,6 +227,7 @@ class Enemy(PG.sprite.DirtySprite):
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
         #hereeeeee
+        print("eemy")
         alphabg = (23, 23, 23)
         for i in range(0, 4):
             surface = PG.Surface((100, 100))

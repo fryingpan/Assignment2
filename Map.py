@@ -125,6 +125,7 @@ class Map(object):
 
             #enemy stuff
             self.ic_coord = [] #icecream
+            self.br_coord = [] #burger
 
             self.spots_to_be_filled = []
             #create map from mapfile
@@ -279,6 +280,9 @@ class Map(object):
                 elif char_list[y] == 'I':
                     self.ic_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
+                elif char_list[y] == 'B':
+                    self.br_coord.append((x_coor, y_coor))
+                    char_list[y] = '.'
                 elif char_list[y] != '.' and char_list[y] != ',': #edges image are determined by index
                     print(char_list[y])
                     new_block = create_Block(self.wallBlocksE[int(char_list[y])],
@@ -316,14 +320,20 @@ class Map(object):
     def get_enemy_coordx(self, index, enemy_type = 1):
         if enemy_type == 1:
             return self.ic_coord[index][0]
+        if enemy_type == 2:
+            return self.br_coord[index][0]
 
     def get_enemy_coordy(self, index, enemy_type = 1):
         if enemy_type == 1:
             return self.ic_coord[index][1]
+        if enemy_type == 2:
+            return self.br_coord[index][1]
 
     def get_num_enemies(self, enemy_type = 1):
         if enemy_type == 1:
             return len(self.ic_coord)
+        if enemy_type == 2:
+            return len(self.br_coord)
 
 
         ############ Pad Handling here? ############

@@ -9,6 +9,7 @@ try:
     import sys
     from Player import Player
     from IceCream import IceCream
+    from Burger import Burger
     import pygame.sprite as PS
     import pygame.display as PD
     import pygame.color as PC
@@ -81,16 +82,28 @@ class Game(object):
         self.character = Player(Globals.DELTA)
         #Locals.SCORE = self.character.score
         self.player_group = PS.GroupSingle(self.character)
-        self.num_enemies = self.map.get_num_enemies(1)  # adding extra since cutscene bug deletes one
+        # adding extra since cutscene bug deletes one
+        self.num_enemies = 0
+        self.num_enemies += self.map.get_num_enemies(1) #icecream 
+        self.num_enemies += self.map.get_num_enemies(2) #burger
         self.remainingEnemies = self.num_enemies
+        print("b " + str(self.map.get_num_enemies(2)) + " i " + str(self.map.get_num_enemies(1)))
         #create icecream group
         self.icecream_list = PS.Group()
-
+        self.burger_list = PS.Group()
+        self.enemy_list = PS.Group() #all enemies
 
         #place enemies (icecream)
         for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e), self.map.get_enemy_coordy(e))
+            icecream = IceCream(self.map.get_enemy_coordx(e,1), self.map.get_enemy_coordy(e,1))
             self.icecream_list.add(icecream)
+        #burger
+        for e in range(self.map.get_num_enemies(2)):
+            burger = Burger(self.map.get_enemy_coordx(e,2), self.map.get_enemy_coordy(e,2))
+            self.burger_list.add(burger)
+
+        self.enemy_list.add(self.icecream_list)
+        self.enemy_list.add(self.burger_list)
 
         #get block sprite group from the map file
         self.block_group = self.map.get_object_group()
@@ -103,7 +116,7 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
@@ -182,7 +195,7 @@ class Game(object):
                         self.character.invincibility_frames()
                 self.invincibility_count -= 1
 
-        self.character.handle_keys(self.block_group, self.icecream_list, self.item_group, self.map.get_surface()) #self.interval)
+        self.character.handle_keys(self.block_group, self.enemy_list, self.item_group, self.map.get_surface()) #self.interval)
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()
         for item in new_items:
@@ -206,7 +219,7 @@ class Game(object):
                 self.item_group.remove(item)
 
         #update the allsprites    
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
 
 
 
