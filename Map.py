@@ -78,16 +78,18 @@ class Block(PG.sprite.DirtySprite):
             self.dirty = 1
 
 class Map(object):
-    TILES_LOADED = False
     GRASS_ARRAY = []
     PAD_ARRAY = []
 
     def __init__(self, mapfile, lvl):
             #load the grass images into an array
-            if not Map.TILES_LOADED:
+            TILES_LOADED = False
+
+            print "trying to find loading tiles" + str(TILES_LOADED)
+            if not TILES_LOADED:
                     Map.GRASS_ARRAY = self.load_grass_tiles(lvl)
                     Map.PAD_ARRAY = self.load_pad_tiles()
-                    Map.TILES_LOADED = True
+                    TILES_LOADED = True
 
             ####(prepare to read mapfile)#######
             self.map = self.get_map(mapfile)
@@ -137,12 +139,14 @@ class Map(object):
         return self.disappearing_blocks
 
     def load_grass_tiles(self, lvl):
+            print "LEVEL IN MAP: " + str(lvl)
             tile_array = []
             if(lvl == 1):
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
             if(lvl == 2):
+                print "loading level 2 tiles!"
                 tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
@@ -374,6 +378,7 @@ class Map(object):
         for block in self.object_group:
             block.draw_block(background)
         for spot in self.spots_to_be_filled:
+            print self.grass_array[0]
             background.blit(self.grass_array[0], spot)
 
         return background
