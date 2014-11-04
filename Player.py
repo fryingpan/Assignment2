@@ -219,14 +219,14 @@ class Player(PS.DirtySprite):
                     self.item = False
 
         elif key[PG.K_SPACE]:  # space key ATTACK
-            '''if 'r' in self.face:
-                self.image = self.IMG_ATTACK_D
+            if 'r' in self.face:
+                self.image = self.IMG_ATTACK_R
             if 'l' in self.face:
-                self.image = self.IMG_ATTACK_D'''
+                self.image = self.IMG_ATTACK_L
             if 'd' in self.face:
                 self.image = self.IMG_ATTACK_D
-            # if 'u' in self.face:
-            #     self.image = self.IMG_ATTACK_U
+            if 'u' in self.face:
+                self.image = self.IMG_ATTACK_U
 
             #attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
@@ -248,7 +248,7 @@ class Player(PS.DirtySprite):
                 self.score += 1
                 killed.kill()
                 
-            self.weapon.draw(screen)
+            #self.weapon.draw(screen)
             self.attack_pose = True
 
             standing = True
@@ -400,9 +400,9 @@ class Player(PS.DirtySprite):
             #load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
                                           "MCFrontFPOnePiece.png").convert_alpha()
-            # Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/weapon/FPU.png")\
-            #     .convert_alpha()
-            # Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/weapon/FPR.png")\
-            #     .convert_alpha()
-            # Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/weapon/FPL.png")\
-            #     .convert_alpha()
+            Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/MCattack/" +
+                                          "MCBackPOnePiece.png").convert_alpha()
+            Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/MCattack/" +
+                                          "MCRightFPOnePiece.png").convert_alpha()
+            Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/MCattack/" +
+                                          "MCLeftFPOnePiece.png").convert_alpha()
