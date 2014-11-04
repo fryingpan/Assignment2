@@ -56,6 +56,7 @@ class Game(object):
         ###(Declare interface)#####
         self.objective = Objective(Globals.SCREEN)
         PM.music.load("music/gameplay.mod")
+        PM.music.play(-1)
 
         #Globals.SCREEN = PD.set_mode((800, 600))
         #do we use this SCREEN_rect?
@@ -127,6 +128,7 @@ class Game(object):
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
+
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -367,6 +369,7 @@ class Game(object):
 #        self.map.grass_type = []
 
         self.end_time = 1000
+        self.make_disappear = False
 
         self.background = self.map.create_background()
         Globals.SCREEN.blit(self.background, (0, 0))
