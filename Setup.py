@@ -9,6 +9,7 @@ try:
     import sys
     from Player import Player
     from IceCream import IceCream
+    from Burger import Burger
     import pygame.sprite as PS
     import pygame.display as PD
     import pygame.color as PC
@@ -22,6 +23,7 @@ try:
     from objective import Objective
     import pygame.mixer as PM
     import Globals
+    import inputbox
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -39,7 +41,7 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
-    SCORE = 0
+    #SCORE = 0
 
 
 class Game(object):
@@ -55,6 +57,7 @@ class Game(object):
         ###(Declare interface)#####
         self.objective = Objective(Globals.SCREEN)
         PM.music.load("music/gameplay.mod")
+        PM.music.play(-1)
 
         #Globals.SCREEN = PD.set_mode((800, 600))
         #do we use this SCREEN_rect?
@@ -67,30 +70,43 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.end_time = 100
+        self.end_time = 1000
         self.end_image_position = (100, 178)
         #items 
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                  "lactasePill.png").convert_alpha()
         ######(Initialize objects on screen)####
         ##draw map/background
-        self.map = Map.Map('mapfile.txt',2)
+        self.level = 1
+        self.map = Map.Map('mapfile.txt', self.level)
         self.background = self.map.create_background()
         self.camera = cam.Camera(self.map.get_surface())
         ##draw sprites
         self.character = Player(Globals.DELTA)
         #Locals.SCORE = self.character.score
         self.player_group = PS.GroupSingle(self.character)
-        self.num_enemies = self.map.get_num_enemies(1)  # adding extra since cutscene bug deletes one
+        # adding extra since cutscene bug deletes one
+        self.num_enemies = 0
+        self.num_enemies += self.map.get_num_enemies(1) #icecream 
+        self.num_enemies += self.map.get_num_enemies(2) #burger
         self.remainingEnemies = self.num_enemies
+        print("b " + str(self.map.get_num_enemies(2)) + " i " + str(self.map.get_num_enemies(1)))
         #create icecream group
         self.icecream_list = PS.Group()
-
+        self.burger_list = PS.Group()
+        self.enemy_list = PS.Group() #all enemies
 
         #place enemies (icecream)
         for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e), self.map.get_enemy_coordy(e))
+            icecream = IceCream(self.map.get_enemy_coordx(e,1), self.map.get_enemy_coordy(e,1))
             self.icecream_list.add(icecream)
+        #burger
+        for e in range(self.map.get_num_enemies(2)):
+            burger = Burger(self.map.get_enemy_coordx(e,2), self.map.get_enemy_coordy(e,2))
+            self.burger_list.add(burger)
+
+        self.enemy_list.add(self.icecream_list)
+        self.enemy_list.add(self.burger_list)
 
         #get block sprite group from the map file
         self.block_group = self.map.get_object_group()
@@ -103,7 +119,7 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
@@ -114,9 +130,10 @@ class Game(object):
         self.cheesed = True
         self.killed = True
 
+
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
-#lv1_cutscene = Cutscene(Globals.SCREEN,1) Must be init only ONCE, figure out where to put later!
+#lv1_cutscene = Cutscene(Globals.SCREEN, self.level) Must be init only ONCE, figure out where to put later!
 #music
 #-1 loop should loop forever
 #        PM.music.play(-1) Put with cutscene
@@ -182,7 +199,7 @@ class Game(object):
                         self.character.invincibility_frames()
                 self.invincibility_count -= 1
 
-        self.character.handle_keys(self.block_group, self.icecream_list, self.item_group, self.map.get_surface()) #self.interval)
+        self.character.handle_keys(self.block_group, self.enemy_list, self.item_group, self.map.get_surface()) #self.interval)
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()
         for item in new_items:
@@ -206,7 +223,7 @@ class Game(object):
                 self.item_group.remove(item)
 
         #update the allsprites    
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
 
 
 
@@ -222,7 +239,6 @@ class Game(object):
         background = self.camera.update(self.character.get_coordinates(),
                                                                         Globals.SCREEN, self.map.get_surface()
                                                                         )
-        # print(self.character.get_coordinates())
         #####temporary code to detect for door objective###############
         if(self.character.rect.x > 2200 and self.character.rect.x < 2700
                 and self.character.rect.y > 250 and self.character.rect.y < 400
@@ -232,9 +248,10 @@ class Game(object):
 
         self.allsprites.update(self.block_group, self.player_group)
 
-        Locals.SCORE = self.character.score
+        #Locals.SCORE = self.character.score
         if(Locals.CHANGESTATE == "Menu"):
                 PM.music.fadeout(1000)
+                Globals.SCORE = self.character.score
                 return False
 
         ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
@@ -248,13 +265,19 @@ class Game(object):
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
                                          (25, 520))
 
-        if(self.character.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
+        if(self.character.score == self.num_enemies): # - 1): #!!!! less than one for cutscene bug
                 Globals.SCREEN.blit(self.win_image, self.end_image_position)
                 if(self.end_time > 0):
                         self.end_time -= 1
                 else:
-                        PM.music.fadeout(1000)
-                        Globals.STATE = "Menu"
+                        if self.level == 1:
+                            self.change_level(self.level)
+                        else:
+                            PM.music.fadeout(1000)
+                            if self.character.score > 0:
+                                Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                                Globals.SCORE = self.character.score
+                            Globals.STATE = "Menu"
         if(self.character.health <= 0):
                 Globals.SCREEN.blit(self.lose_image, self.end_image_position)
                 if(self.end_time > 0):
@@ -262,6 +285,9 @@ class Game(object):
                 else:
 
                         PM.music.fadeout(1000)
+                        if self.character.score > 0:
+                            Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                            Globals.SCORE = self.character.score
                         Globals.STATE = "Menu"
         ##Item Display
         if (self.character.pill == True):
@@ -328,9 +354,70 @@ class Game(object):
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
+                if self.character.score > 0:
+                    Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                    Globals.SCORE = self.character.score
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 self.objective.updateBanner()
+
+    def change_level(self, currentLevel):
+        self.level = 2
+        del self.map
+        Map.GRASS_ARRAY = []
+        Map.PAD_ARRAY = []
+        self.map = Map.Map('mapfile.txt', self.level)
+
+        self.num_enemies += self.map.get_num_enemies(1) #icecream
+        self.num_enemies += self.map.get_num_enemies(2) #burger
+#        self.map.TILES_LOADED = False
+#        self.map.GRASS_ARRAY = []
+#        self.map.grass_array = self.map.GRASS_ARRAY
+#        self.map.grasstiles = []
+#        self.map.grass_type = []
+
+        self.end_time = 1000
+        self.make_disappear = False
+
+        self.background = self.map.create_background()
+        Globals.SCREEN.blit(self.background, (0, 0))
+
+        PD.update()
+
+        for e in range(self.map.get_num_enemies(1)):
+            icecream = IceCream(self.map.get_enemy_coordx(e,1), self.map.get_enemy_coordy(e,1))
+            self.icecream_list.add(icecream)
+        #burger
+        for e in range(self.map.get_num_enemies(2)):
+            burger = Burger(self.map.get_enemy_coordx(e,2), self.map.get_enemy_coordy(e,2))
+            self.burger_list.add(burger)
+
+        self.enemy_list.add(self.icecream_list)
+        self.enemy_list.add(self.burger_list)
+
+        #get block sprite group from the map file
+        self.block_group = self.map.get_object_group()
+
+        #list that holds traps
+        self.trap_list = []
+        self.trap_group = PS.Group()
+
+        self.item_list = []
+        self.item_group = PS.Group()
+
+        #allsprites has all dirty sprites (player, enemies, traps)
+        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
+        self.allsprites.clear(Globals.SCREEN, self.background)
+
+        ####(Level variables)####
+        self.invincibility_count = 0 #player's invinicibility frame time
+        self.enemy_ID = -1  # what kind of enemy by ID (-1 means no enemy) used for collisions
+        self.make_disappear = False #if true, tells map to update w/o key & door
+        ##temp obj conditions
+        self.cheesed = True
+        self.killed = True
+        self.render()
+
 
 

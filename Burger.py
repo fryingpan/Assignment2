@@ -14,7 +14,7 @@ from Item import IceCreamScoop
 
 
 
-class IceCream(Enemy):
+class Burger(Enemy):
     IMAGE_UP = None
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
@@ -25,13 +25,13 @@ class IceCream(Enemy):
 
     def __init__(self, xlocation, ylocation,fps=1):
         ######unique attributes parent class doesn't have
-        self.enemy_ID = 1  # icecream ID
-        self.image = PI.load("FPGraphics/Food/IceCreamFront.png") \
+        self.enemy_ID = 2  # icecream ID
+        self.image = PI.load("FPGraphics/burger/burgerFront.png") \
             .convert_alpha()
         self.front_image = self.image
         #######
         #attributes to be passed to parent for parent function use
-        self.speed = 1*fps
+        self.speed = 4*fps
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
         self.rect.y = ylocation
@@ -66,17 +66,17 @@ class IceCream(Enemy):
             pass
 
     def load_images(self):
-        # self.IMAGES_RIGHT = []
-        # self.IMAGES_LEFT = []
-        # self.IMAGES_FRONT = []
-        # self.IMAGES_BACK = []
-        sheetR = PI.load("FPGraphics/Food/IceCreamWalkRight.png") \
+        # Enemy.IMAGES_RIGHT = []
+        # Enemy.IMAGES_LEFT = []
+        # Enemy.IMAGES_FRONT = []
+        # Enemy.IMAGES_BACK = []
+        sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
             .convert_alpha()
-        sheetL = PI.load("FPGraphics/Food/IceCreamWalkLeft.png") \
+        sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
             .convert_alpha()
-        sheetF = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
+        sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
             .convert_alpha()
-        sheetB = PI.load("FPGraphics/Food/IceCreamWalkBack.png") \
+        sheetB = PI.load("FPGraphics/burger/burgerbackWalk.png") \
             .convert_alpha()
         self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
                                                      sheetR)
@@ -86,4 +86,3 @@ class IceCream(Enemy):
                                                      sheetF)
         self.IMAGES_BACK = self.load_images_helper(self.IMAGES_BACK,
                                                     sheetB)
-
