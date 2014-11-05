@@ -15,10 +15,8 @@ class Item(PS.DirtySprite):
 		self.rect = Item.IMAGE.get_rect()
 		self.rect.x = therect.x
 		self.rect.y = therect.y
-		self.lifetime = 5000
 		self.type = theType
 		self.lifetime = lifetime
-		self.image = Item.IMAGE
 		self.surface = Item.surface
 		self.use_count = Item.use_count
 		self.grabbed = False
@@ -65,4 +63,54 @@ class IceCreamScoop(Item):
 
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
+class BreadDrop(Item):
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/breadDrop.png").convert_alpha()
+		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
+		self.rect.x = x_coor + 25
+		self.rect.y = y_coor + 25
+		self.type = 1
+		self.lifetime = 800
+		Item.surface = surface
+		Item.use_count = 3
+		Item.__init__(self, self.rect, self.type, self.lifetime)
 
+class LettuceDrop(Item):
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/lettuceDrop.png").convert_alpha()
+		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
+		self.rect.x = x_coor + 25
+		self.rect.y = y_coor + 25
+		self.type = 1
+		self.lifetime = 800
+		Item.surface = surface
+		Item.use_count = 3
+		Item.__init__(self, self.rect, self.type, self.lifetime)
+
+class MeatDrop(Item):
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/meatDrop.png").convert_alpha()
+		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
+		self.rect.x = x_coor + 25
+		self.rect.y = y_coor + 25
+		self.type = 1
+		self.lifetime = 800
+		Item.surface = surface
+		Item.use_count = 3
+		Item.__init__(self, self.rect, self.type, self.lifetime)
+
+class BurgerDrop(Item):
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
+		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
+		self.rect.x = x_coor + 25
+		self.rect.y = y_coor + 25
+		self.type = 1
+		self.lifetime = 800
+		Item.surface = surface
+		Item.use_count = 3
+		Item.__init__(self, self.rect, self.type, self.lifetime)

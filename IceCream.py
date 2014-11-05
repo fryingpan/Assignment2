@@ -31,6 +31,7 @@ class IceCream(Enemy):
         self.front_image = self.image
         #######
         #attributes to be passed to parent for parent function use
+        self.health = 1
         self.speed = 1*fps
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
@@ -41,7 +42,7 @@ class IceCream(Enemy):
         self.IMAGES_FRONT = []
         self.IMAGES_BACK = []
         self.load_images()
-        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.speed)
+        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.health, self.speed)
 
 
     # def drop_item(self):
@@ -66,10 +67,6 @@ class IceCream(Enemy):
             pass
 
     def load_images(self):
-        # self.IMAGES_RIGHT = []
-        # self.IMAGES_LEFT = []
-        # self.IMAGES_FRONT = []
-        # self.IMAGES_BACK = []
         sheetR = PI.load("FPGraphics/Food/IceCreamWalkRight.png") \
             .convert_alpha()
         sheetL = PI.load("FPGraphics/Food/IceCreamWalkLeft.png") \

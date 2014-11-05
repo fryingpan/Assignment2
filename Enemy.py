@@ -22,13 +22,14 @@ class Enemy(PG.sprite.DirtySprite):
 
     CYCLE = .6
 
-    def __init__(self, rect, r,l,f,b,speed=1):
+    def __init__(self, rect, r,l,f,b,health =1,speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.DirtySprite.__init__(self)
         #take attributes from derived class
         self.rect = rect
         self.rect.x = rect.x
         self.rect.y = rect.y
+        self.health = health
         self.speed = speed
         self.IMAGES_RIGHT = r
         self.IMAGES_LEFT = l
@@ -45,22 +46,27 @@ class Enemy(PG.sprite.DirtySprite):
         self.attacked_player = False
         self.moved = False
 
-
     def get_rect(self):
         return self.rect
-
-    def will_attack(self):
-        attack_prob = random.randint(0, 500)
-        if (attack_prob == 1):
-            return True
-        return False
-
 
     def get_face(self):
         return self.face
 
     def get_attacked_player(self):
         return self.attacked_player
+
+    def decrement_health(self, dmg):
+        self.health -= dmg
+        print("dec")
+        print(self.health)
+        if(self.health <= 0):
+            self.kill()
+
+    def will_attack(self):
+        attack_prob = random.randint(0, 500)
+        if (attack_prob == 1):
+            return True
+        return False
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
@@ -159,11 +165,7 @@ class Enemy(PG.sprite.DirtySprite):
         if(random.randint(0, 200) == 0):
             self.direction = random.randint(0, 3)
         dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
-        self.interval = int(interval)
         move_dist = 1*dist*interval
-        
-        print("spd " + str(self.speed))
-        print("dir " + str(self.direction))
         if self.direction == 0:  # down key
             self.rect.y += move_dist  # move down
             #self.rect = self.image.get_rect()

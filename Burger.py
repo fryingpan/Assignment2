@@ -10,9 +10,10 @@ import pygame.image as PI
 from Player import Player
 from Enemy import Enemy
 from Trap import Puddle
-from Item import IceCreamScoop
-
-
+from Item import BreadDrop
+from Item import LettuceDrop
+from Item import MeatDrop
+from Item import BurgerDrop
 
 class Burger(Enemy):
     IMAGE_UP = None
@@ -31,6 +32,7 @@ class Burger(Enemy):
         self.front_image = self.image
         #######
         #attributes to be passed to parent for parent function use
+        self.health = 100
         self.speed = 4*fps
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
@@ -41,18 +43,22 @@ class Burger(Enemy):
         self.IMAGES_FRONT = []
         self.IMAGES_BACK = []
         self.load_images()
-        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.speed)
-
-
-    # def drop_item(self):
-    #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)
+        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.health, self.speed)
 
     def attack(self, surface):
-        #create puddle at your location
-        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
+        ###
+        pass
 
     def drop_item(self, surface):
-        return IceCreamScoop(self.rect.x, self.rect.y, surface)
+        d = random.randint(0,9)
+        if(d == 0):
+            return BurgerDrop(self.rect.x, self.rect.y, surface)
+        if(d > 0 and d < 4):
+            return MeatDrop(self.rect.x, self.rect.y, surface)
+        if(d >= 4 and d <7):
+            return LettuceDrop(self.rect.x, self.rect.y, surface)
+        if(d >= 7):
+            return BreadDrop(self.rect.x, self.rect.y, surface)
 
     def get_face(self):
         return self.face
@@ -66,10 +72,6 @@ class Burger(Enemy):
             pass
 
     def load_images(self):
-        # Enemy.IMAGES_RIGHT = []
-        # Enemy.IMAGES_LEFT = []
-        # Enemy.IMAGES_FRONT = []
-        # Enemy.IMAGES_BACK = []
         sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
             .convert_alpha()
         sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
