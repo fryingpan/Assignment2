@@ -17,6 +17,7 @@ import sys
 import pygame.display as PD
 import pygame.sprite as PS
 import pygame.image as PI
+import Globals
 
 #camera variables
 WIN_WIDTH = 800
@@ -47,14 +48,18 @@ class Camera(object):
 
         scrollx = 0
         scrolly = 0
+        # moving left
         if playerx < boundx[0]:
-                scrollx -= boundx[0] - playerx
+                scrollx -= boundx[0] - (playerx + 3)
+        # moving right
         elif playerx > boundx[1]:
-                scrollx += playerx - boundx[1]
+                scrollx += (playerx + 3) - (boundx[1] )
+        # moving up 
         if playery < boundy[0]:
-                scrolly -= boundy[0] - playery
+                scrolly -= boundy[0] - (playery + 3)
+        # moving down        
         elif playery > boundy[1]:
-                scrolly += playery - boundy[1]
+                scrolly += (playery + 3) - (boundy[1] )
 
         if scrollx != 0 or scrolly != 0:
                 move = True
@@ -63,15 +68,18 @@ class Camera(object):
         return move
 
     #update where the camera needs to be in the big map
-    def update(self, target_coordinates, screen, bigmap):
+    def update(self, target_coordinates, bigmap):
         moved = self.apply(target_coordinates)
         if moved:
             self.check_boundary()
             self.background = bigmap. \
                 subsurface(self.cameraxy[0], self.cameraxy[1],
                            WIN_WIDTH, WIN_HEIGHT)
+        # Globals.SCREEN.blit(self.background, (0, 0))
 
-        screen.blit(self.background, (0, 0))
+    def draw(self):
+        Globals.SCREEN.blit(self.background, (0, 0))
+
 
     #check that the camera doesn't go off the map
     def check_boundary(self):

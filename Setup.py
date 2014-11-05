@@ -236,9 +236,8 @@ class Game(object):
 
 
         #update camera's position on the map
-        background = self.camera.update(self.character.get_coordinates(),
-                                                                        Globals.SCREEN, self.map.get_surface()
-                                                                        )
+        
+        self.camera.update(self.character.get_coordinates(), self.map.get_surface())
         #####temporary code to detect for door objective###############
         if(self.character.rect.x > 2200 and self.character.rect.x < 2700
                 and self.character.rect.y > 250 and self.character.rect.y < 400
@@ -247,6 +246,7 @@ class Game(object):
                 self.objective.changeObj(1)
 
         self.allsprites.update(self.block_group, self.player_group)
+
 
         #Locals.SCORE = self.character.score
         if(Locals.CHANGESTATE == "Menu"):
@@ -318,6 +318,7 @@ class Game(object):
 
         ##draw dirty sprites
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
+        self.camera.draw()
         PG.display.update(rects)
 
 #        if(self.character.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
