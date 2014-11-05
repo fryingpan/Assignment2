@@ -49,6 +49,26 @@ class Burger(Enemy):
         ###
         pass
 
+    def move(self, bg, player, interval):
+        # dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
+        # move_dist = math.ceil(1*dist*interval)
+        # print(move_dist)
+        # if player.sprites()[0].get_y() > self.rect.y:  # down key
+        #     self.rect.y += move_dist  # move down
+        #     self.face = 'd'
+        # else:  # up key
+        #     self.rect.y -= move_dist  # move up
+        #     self.face = 'u'
+        # if player.sprites()[0].get_x() > self.rect.x:  # right key
+        #     self.rect.x += move_dist  # move right
+        #     self.face = 'r'
+        # else:  # left key
+        #     self.rect.x -= move_dist  # move left
+        #     self.face = 'l'
+        # #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
+        self.handle_collision(bg)
+        self.handle_collision(player)
+
     def drop_item(self, surface):
         d = random.randint(0,9)
         if(d == 0):

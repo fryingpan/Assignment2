@@ -57,8 +57,6 @@ class Enemy(PG.sprite.DirtySprite):
 
     def decrement_health(self, dmg):
         self.health -= dmg
-        print("dec")
-        print(self.health)
         if(self.health <= 0):
             self.kill()
 
@@ -161,32 +159,32 @@ class Enemy(PG.sprite.DirtySprite):
         #     self.moved = True
         self.dirty = 1
 
-    def move(self, bg, player, interval):
-        if(random.randint(0, 200) == 0):
-            self.direction = random.randint(0, 3)
-        dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
-        move_dist = 1*dist*interval
-        if self.direction == 0:  # down key
-            self.rect.y += move_dist  # move down
-            #self.rect = self.image.get_rect()
-            self.face = 'd'
-            self.handle_collision(bg)
-        elif self.direction == 1:  # up key
-            self.rect.y -= move_dist  # move up
-            #self.rect = self.image.get_rect()
-            self.face = 'u'
-            self.handle_collision(bg)
-        elif self.direction == 2:  # right key
-            self.rect.x += move_dist  # move right
-            #self.rect = self.image.get_rect()
-            self.face = 'r'
-            self.handle_collision(bg)
-        elif self.direction == 3:  # left key
-            self.rect.x -= move_dist  # move left
-            #self.rect = self.image.get_rect()
-            self.face = 'l'
-            self.handle_collision(bg)
-        self.handle_collision(player)
+    # def move(self, bg, player, interval):
+    #     if(random.randint(0, 200) == 0):
+    #         self.direction = random.randint(0, 3)
+    #     dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
+    #     move_dist = 1*dist*interval
+    #     if self.direction == 0:  # down key
+    #         self.rect.y += move_dist  # move down
+    #         #self.rect = self.image.get_rect()
+    #         self.face = 'd'
+    #         self.handle_collision(bg)
+    #     elif self.direction == 1:  # up key
+    #         self.rect.y -= move_dist  # move up
+    #         #self.rect = self.image.get_rect()
+    #         self.face = 'u'
+    #         self.handle_collision(bg)
+    #     elif self.direction == 2:  # right key
+    #         self.rect.x += move_dist  # move right
+    #         #self.rect = self.image.get_rect()
+    #         self.face = 'r'
+    #         self.handle_collision(bg)
+    #     elif self.direction == 3:  # left key
+    #         self.rect.x -= move_dist  # move left
+    #         #self.rect = self.image.get_rect()
+    #         self.face = 'l'
+    #         self.handle_collision(bg)
+    #     self.handle_collision(player)
 
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
