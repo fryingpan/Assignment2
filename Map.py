@@ -378,7 +378,7 @@ class Map(object):
         for block in self.object_group:
             block.draw_block(background)
         for spot in self.spots_to_be_filled:
-            print self.grass_array[0]
+            #print self.grass_array[0]
             background.blit(self.grass_array[0], spot)
 
         return background
