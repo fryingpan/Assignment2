@@ -5,8 +5,8 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
-from Player import Player
-from Enemy import Enemy
+# from Player import Player
+# from Enemy import Enemy
 
 class Trap(PS.DirtySprite):
 
@@ -14,13 +14,17 @@ class Trap(PS.DirtySprite):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, surface, rect, lifetime):
+    def __init__(self, surface, rect, lifetime, thetype, image = None, animation = True):
         PS.DirtySprite.__init__(self)
         self.rect = rect
         # the life of the trap
+        if image is not None:
+            self.image = image
         self.lifetime = lifetime
         self.x = self.rect.x
         self.y = self.rect.y
+        self.type = thetype
+        self.animation = animation
         # booleans to start animation 
         self.dropped = False
         self.disappear = False
@@ -28,32 +32,37 @@ class Trap(PS.DirtySprite):
         # number of animation frames
         self.num_frames = 3
         # whether the trap has collided with the player
-        self.trap_attack = False
+        self.ptrap_attack = False
+        self.etrap_attack = False
         # whether the trap need to be removed from the list of traps in SetUp
         self.remove = False
         self.surface = surface
         self.load_images()
 
 
-
     def update(self, bg, player_group):
         self.trap_attack = False
-        if not self.dropped:
-            self.drop_animation()
-            self.draw(self.surface, False)
-        elif self.lifetime <= 70:
-            self.disappear_animation()
-            if not self.disappear:
+        if self.animation:
+            if not self.dropped:
+                self.drop_animation()
                 self.draw(self.surface, False)
+            elif self.lifetime <= 70:
+                self.disappear_animation()
+                if not self.disappear:
+                    self.draw(self.surface, False)
+                else:
+                    self.remove = True
             else:
-                self.remove = True
-        else:
-            self.draw(self.surface, True)
-        collisions = self.handle_collisions(player_group)
-        if len(collisions) > 0:
-            self.trap_attack = True
+                self.draw(self.surface, True)
+            collisions = self.handle_collisions(player_group)
+            if len(collisions) > 0:
+                self.trap_attack = True
+        else: 
+            collisions = self.handle_collisions(bg)
         self.dirty = 1
 
+    def get_type(self):
+        return self.type
 
     def will_remove(self):
         return self.remove
@@ -61,8 +70,8 @@ class Trap(PS.DirtySprite):
     def get_trap_attack(self):
         return self.trap_attack
 
-    def handle_collisions(self, player_group):
-        return PS.spritecollide(self, player_group, False)
+    def handle_collisions(self, group):
+        return PS.spritecollide(self, group, False)
 
     def set_anim_start(self):
         # start at index 0 of image array(array containing animation frames)
@@ -142,9 +151,10 @@ class Puddle(Trap):
         self.disappear = False
         self.set_anim_start()
         self.num_frames = 3
+        self.type = 'E'
 
         #initialize parent class
-        Trap.__init__(self, surface, rect, self.lifetime)
+        Trap.__init__(self, surface, rect, self.lifetime, self.type)
 
 
     #load animation images
@@ -170,31 +180,3 @@ class Puddle(Trap):
             imageArray.append(surface)
         return imageArray
 
-
-#to add to Set up
-
-#From Trap import Puddle
-
-# self.trap_list = []
-
-
-# weapon_attack = False
-
-#             for trap in self.trap_list:
-#                 trap.weapon_update(self.map.get_surface(),
-#                                        self.player_group)
-#                 if (trap.get_trap_attack() and self.invincibility_count == 0):
-#                     weapon_attack = True
-#                 if trap.will_remove():
-#                     self.trap_list.remove(trap)
-
-
-#             for icecream in self.icecream_list.sprites():
-#                 icecream_face = icecream.get_face()
-#                 #see if the enemy will release weapon/attack
-#                 if (icecream.will_attack()):
-#                     #get a new puddle sprite
-#                     new_trap = icecream.attack()
-#                     #add the new trap to the list of traps
-#                     self.trap_list.append(new_trap)
-#                 icecream.draw(self.map.get_surface())
