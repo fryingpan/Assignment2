@@ -24,25 +24,24 @@ class Burger(Enemy):
     CYCLE = .6
 
     def __init__(self, xlocation, ylocation,fps=1):
+        ######unique attributes parent class doesn't have
+        self.enemy_ID = 2  # icecream ID
         self.image = PI.load("FPGraphics/burger/burgerFront.png") \
             .convert_alpha()
         self.front_image = self.image
+        #######
+        #attributes to be passed to parent for parent function use
+        self.speed = 4*fps
         self.rect = self.image.get_rect()
-        self.load_images()
         self.rect.x = xlocation
         self.rect.y = ylocation
 
-        self.speed = 4*fps
-        self.direction = random.randint(0, 3)
-        #self.angle = random.randint(0, 360) * (math.pi/180)
-        self.face = 'u'
-        self.time = 0.0
-        self.frame = 0
-        self.WIDTH = 100
-        self.HEIGHT = 100
-        self.enemy_ID = 1  # icecream ID
-
-        Enemy.__init__(self, self.rect, self.speed)
+        self.IMAGES_RIGHT = []
+        self.IMAGES_LEFT = []
+        self.IMAGES_FRONT = []
+        self.IMAGES_BACK = []
+        self.load_images()
+        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.speed)
 
 
     # def drop_item(self):
@@ -53,7 +52,6 @@ class Burger(Enemy):
         return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
 
     def drop_item(self, surface):
-        print "dropping item"
         return IceCreamScoop(self.rect.x, self.rect.y, surface)
 
     def get_face(self):
@@ -68,11 +66,10 @@ class Burger(Enemy):
             pass
 
     def load_images(self):
-        print("burger")
-        Enemy.IMAGES_RIGHT = []
-        Enemy.IMAGES_LEFT = []
-        Enemy.IMAGES_FRONT = []
-        Enemy.IMAGES_BACK = []
+        # Enemy.IMAGES_RIGHT = []
+        # Enemy.IMAGES_LEFT = []
+        # Enemy.IMAGES_FRONT = []
+        # Enemy.IMAGES_BACK = []
         sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
             .convert_alpha()
         sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
@@ -81,12 +78,11 @@ class Burger(Enemy):
             .convert_alpha()
         sheetB = PI.load("FPGraphics/burger/burgerbackWalk.png") \
             .convert_alpha()
-        Enemy.IMAGES_RIGHT = self.load_images_helper(Enemy.IMAGES_RIGHT,
+        self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
                                                      sheetR)
-        Enemy.IMAGES_LEFT = self.load_images_helper(Enemy.IMAGES_LEFT,
+        self.IMAGES_LEFT = self.load_images_helper(self.IMAGES_LEFT,
                                                     sheetL)
-        Enemy.IMAGES_FRONT = self.load_images_helper(Enemy.IMAGES_FRONT,
+        self.IMAGES_FRONT = self.load_images_helper(self.IMAGES_FRONT,
                                                      sheetF)
-        Enemy.IMAGES_BACK = self.load_images_helper(Enemy.IMAGES_BACK,
+        self.IMAGES_BACK = self.load_images_helper(self.IMAGES_BACK,
                                                     sheetB)
-

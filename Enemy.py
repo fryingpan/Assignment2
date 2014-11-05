@@ -22,27 +22,29 @@ class Enemy(PG.sprite.DirtySprite):
 
     CYCLE = .6
 
-    def __init__(self, rect, speed=1):
+    def __init__(self, rect, r,l,f,b,speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.DirtySprite.__init__(self)
-        #self.image = PI.load("FPGraphics/Food/IceCreamWalkFront.png") \
-        #    .convert_alpha()
+        #take attributes from derived class
         self.rect = rect
-        #self.load_images()
         self.rect.x = rect.x
         self.rect.y = rect.y
-
         self.speed = speed
+        self.IMAGES_RIGHT = r
+        self.IMAGES_LEFT = l
+        self.IMAGES_FRONT = f
+        self.IMAGES_BACK = b
+        self.WIDTH = rect.width
+        self.HEIGHT = rect.height
+
         self.direction = random.randint(0, 3)
-        #self.angle = random.randint(0, 360) * (math.pi/180)
         self.face = 'u'
         self.time = 0.0
         self.frame = 0
-        self.WIDTH = 100
-        self.HEIGHT = 100
         self.invincibility_count = 0
         self.attacked_player = False
         self.moved = False
+
 
     def get_rect(self):
         return self.rect
@@ -156,9 +158,12 @@ class Enemy(PG.sprite.DirtySprite):
     def move(self, bg, player, interval):
         if(random.randint(0, 200) == 0):
             self.direction = random.randint(0, 3)
-        dist = self.speed  # distance moved in 1 frame, try changing it to 5
-        self.interval = interval
+        dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
+        self.interval = int(interval)
         move_dist = 1*dist*interval
+        
+        print("spd " + str(self.speed))
+        print("dir " + str(self.direction))
         if self.direction == 0:  # down key
             self.rect.y += move_dist  # move down
             #self.rect = self.image.get_rect()
@@ -227,7 +232,6 @@ class Enemy(PG.sprite.DirtySprite):
     def load_images_helper(self, imageArray, sheet):
         #key = sheet.get_at((0,0))
         #hereeeeee
-        print("eemy")
         alphabg = (23, 23, 23)
         for i in range(0, 4):
             surface = PG.Surface((100, 100))
