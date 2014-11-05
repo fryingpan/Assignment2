@@ -56,7 +56,7 @@ class Player(PS.DirtySprite):
         self.load_images()
         #self.speed both determines the speed of the player &
         #ensures the the player moves at an integer distance during play (arbitrary value)
-        self.speed = 400
+        self.speed = 1
         self.time = 0.0
         self.frame = 0
         self.got_key = False
@@ -186,22 +186,22 @@ class Player(PS.DirtySprite):
         self.interval = interval
         key = PG.key.get_pressed()
         if key[PG.K_DOWN]:  # down key
-            self.rect.y += int(self.speed*self.interval)  # move down
+            self.rect.y += self.speed # move down
             #self.rect = self.image.get_rect()
             self.face = 'd'
             self.handle_collision(bg)
         elif key[PG.K_UP]:  # up key
-            self.rect.y -= int(self.speed*self.interval)  # move up
+            self.rect.y -= self.speed  # move up
             #self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
         elif key[PG.K_RIGHT]:  # right key
-            self.rect.x += int(self.speed*self.interval)  # move right
+            self.rect.x += self.speed  # move right
             #self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
         elif key[PG.K_LEFT]:  # left key
-            self.rect.x -= int(self.speed*self.interval)  # move left
+            self.rect.x -= self.speed  # move left
             #self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
