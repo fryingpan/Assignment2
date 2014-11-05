@@ -17,8 +17,6 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
-    SCORE = 0
-    ADDED = 0
 
 
 #All this below is from before
@@ -31,13 +29,8 @@ class HighScores:
         self.time = 0.0
         Globals.SCREEN.fill(PC.Color("black"))
         self.text_surface = self.get_text_surface()
-
-    ###Old updating high scores page from masterfile.py
-#        if Locals.SCORE != 0 and Locals.ADDED == 0:
-#            addScoretoText()
-#            Locals.ADDED = 1
-#        if Locals.ADDED != 0:  # if we've added something already
-#            Locals.SCORE = 0  # reset new high score
+        addScoretoText()
+        self.text_surface = self.get_text_surface()
 
     def render(self):
 
@@ -75,25 +68,15 @@ class HighScores:
         return surface
 
 
-#def run(elapsed, event):
-#    Locals.STATE.render()
-#    PDI.flip()
-#    Locals.STATE.update(elapsed)
-
-#    for event in PE.get():
-#        if event.type == PG.QUIT:
-#            return False
-#        else:
-#            if(Locals.STATE.event(event) is False):
-#                return False
-
-
 def addScoretoText():  # only run if SCORE !=0
-    f = open('scores.txt', 'a')
-    scoretoAdd = str(Locals.SCORE)
-    toAdd = "Player " + scoretoAdd + "\n"
-    f.write(toAdd)
-    f.close()
+    if Globals.SCORE > 0:
+        f = open('scores.txt', 'a')
+        scoretoAdd = str(Globals.SCORE)
+        toAdd = Globals.PLAYERNAME + " " + scoretoAdd + "\n"
+        f.write(toAdd)
+        f.close()
+    Globals.SCORE = 0
+
 
 
 def render_text(string, font, rect, text_color, background_color):

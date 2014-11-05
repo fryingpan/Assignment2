@@ -23,6 +23,7 @@ try:
     from objective import Objective
     import pygame.mixer as PM
     import Globals
+    import inputbox
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -40,7 +41,7 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
-    SCORE = 0
+    #SCORE = 0
 
 
 class Game(object):
@@ -238,7 +239,6 @@ class Game(object):
         background = self.camera.update(self.character.get_coordinates(),
                                                                         Globals.SCREEN, self.map.get_surface()
                                                                         )
-        # print(self.character.get_coordinates())
         #####temporary code to detect for door objective###############
         if(self.character.rect.x > 2200 and self.character.rect.x < 2700
                 and self.character.rect.y > 250 and self.character.rect.y < 400
@@ -248,9 +248,10 @@ class Game(object):
 
         self.allsprites.update(self.block_group, self.player_group)
 
-        Locals.SCORE = self.character.score
+        #Locals.SCORE = self.character.score
         if(Locals.CHANGESTATE == "Menu"):
                 PM.music.fadeout(1000)
+                Globals.SCORE = self.character.score
                 return False
 
         ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
@@ -273,6 +274,9 @@ class Game(object):
                             self.change_level(self.level)
                         else:
                             PM.music.fadeout(1000)
+                            if self.character.score > 0:
+                                Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                                Globals.SCORE = self.character.score
                             Globals.STATE = "Menu"
         if(self.character.health <= 0):
                 Globals.SCREEN.blit(self.lose_image, self.end_image_position)
@@ -281,6 +285,9 @@ class Game(object):
                 else:
 
                         PM.music.fadeout(1000)
+                        if self.character.score > 0:
+                            Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                            Globals.SCORE = self.character.score
                         Globals.STATE = "Menu"
         ##Item Display
         if (self.character.pill == True):
@@ -347,13 +354,15 @@ class Game(object):
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
+                if self.character.score > 0:
+                    Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                    Globals.SCORE = self.character.score
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 self.objective.updateBanner()
 
     def change_level(self, currentLevel):
-        print "CHANGING LEVELS"
         self.level = 2
         del self.map
         Map.GRASS_ARRAY = []

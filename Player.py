@@ -323,7 +323,6 @@ class Player(PS.DirtySprite):
             try:
                     self.image = imageArray[self.frame].convert_alpha()
             except IndexError:
-                    print("IMG ERROR")
                     self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
                         .convert_alpha()
                     self.face = list(self.face)[0]
