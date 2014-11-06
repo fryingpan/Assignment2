@@ -23,7 +23,7 @@ try:
     from objective import Objective
     import pygame.mixer as PM
     import Globals
-    import inputbox
+    import inputbox as inbx
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -53,7 +53,6 @@ class Game(object):
         PD.set_caption("Master Chef's wicked adventure " +
                        "with his ice cream buddies")
 
-
         ###(Declare interface)#####
         self.objective = Objective(Globals.SCREEN)
         PM.music.load("music/gameplay.mod")
@@ -72,9 +71,9 @@ class Game(object):
                                   "specialEffects/ULOSE.png").convert_alpha()
         self.end_time = 1000
         self.end_image_position = (100, 178)
-        #items 
+        #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
-                                 "lactasePill.png").convert_alpha()
+                                "lactasePill.png").convert_alpha()
         ######(Initialize objects on screen)####
         ##draw map/background
         self.level = 1
@@ -86,22 +85,25 @@ class Game(object):
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
         self.num_enemies = 0
-        self.num_enemies += self.map.get_num_enemies(1) #icecream 
-        self.num_enemies += self.map.get_num_enemies(2) #burger
+        self.num_enemies += self.map.get_num_enemies(1)  # icecream
+        self.num_enemies += self.map.get_num_enemies(2)  # burger
         self.remainingEnemies = self.num_enemies
-        print("b " + str(self.map.get_num_enemies(2)) + " i " + str(self.map.get_num_enemies(1)))
+        print("b " + str(self.map.get_num_enemies(2)) + " i " +
+              str(self.map.get_num_enemies(1)))
         #create icecream group
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
-        self.enemy_list = PS.Group() #all enemies
+        self.enemy_list = PS.Group()  # all enemies
 
         #place enemies (icecream)
         for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e,1), self.map.get_enemy_coordy(e,1))
+            icecream = IceCream(self.map.get_enemy_coordx(e, 1),
+                                self.map.get_enemy_coordy(e, 1))
             self.icecream_list.add(icecream)
         #burger
         for e in range(self.map.get_num_enemies(2)):
-            burger = Burger(self.map.get_enemy_coordx(e,2), self.map.get_enemy_coordy(e,2))
+            burger = Burger(self.map.get_enemy_coordx(e, 2),
+                            self.map.get_enemy_coordy(e, 2))
             self.burger_list.add(burger)
 
         self.enemy_list.add(self.icecream_list)
@@ -118,30 +120,34 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group,
+                                          self.icecream_list,
+                                          self.burger_list, self.trap_group,
+                                          self.item_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
-        self.invincibility_count = 0 #player's invinicibility frame time
-        self.enemy_ID = -1  # what kind of enemy by ID (-1 means no enemy) used for collisions
-        self.make_disappear = False #if true, tells map to update w/o key & door
+        self.invincibility_count = 0  # player's invinicibility frame time
+        #what kind of enemy by ID (-1 means no enemy) used for collisions
+        self.enemy_ID = -1
+        #if true, tells map to update w/o key & door
+        self.make_disappear = False
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
 
-
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
-#lv1_cutscene = Cutscene(Globals.SCREEN, self.level) Must be init only ONCE, figure out where to put later!
+#lv1_cutscene = Cutscene(Globals.SCREEN, self.level)
+#Must be init only ONCE, figure out where to put later!
 #music
 #-1 loop should loop forever
 #        PM.music.play(-1) Put with cutscene
 ##############################
 
-
     def update(self):
         ###(variables)####
-        trap_attack = False #tells if a trap attacked
+        trap_attack = False  # tells if a trap attacked
         self.enemy_ID = -1
 
         ###(attacks on player)####
@@ -154,7 +160,8 @@ class Game(object):
                 if trap.will_remove():
                         self.trap_list.remove(trap)
                         self.trap_group.remove(trap)
-                # self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+                #self.allsprites = PS.LayeredDirty(self.player_group,
+                    #self.icecream_list, self.trap_group, self.item_group)
         ##icecream attacks
         for icecream in self.icecream_list.sprites():
                 #see if the enemy will release weapon/attack
@@ -164,7 +171,8 @@ class Game(object):
                         #add the new trap to the list of traps
                         self.trap_list.append(new_trap)
                         self.trap_group.add(new_trap)
-                # self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.trap_group, self.item_group)
+                #self.allsprites = PS.LayeredDirty(self.player_group,
+                    #self.icecream_list, self.trap_group, self.item_group)
 
                 if(icecream.get_attacked_player() or trap_attack):
                         if trap_attack:
@@ -198,7 +206,8 @@ class Game(object):
                         self.character.invincibility_frames()
                 self.invincibility_count -= 1
 
-        self.character.handle_keys(self.block_group, self.enemy_list, self.item_group, self.map.get_surface()) #self.interval)
+        self.character.handle_keys(self.block_group, self.enemy_list,
+                                   self.item_group, self.map.get_surface())
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()
         for item in new_items:
@@ -221,10 +230,11 @@ class Game(object):
                 self.item_list.remove(item)
                 self.item_group.remove(item)
 
-        #update the allsprites    
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
-
-
+        #update the allsprites
+        self.allsprites = PS.LayeredDirty(self.player_group,
+                                          self.icecream_list,
+                                          self.burger_list, self.trap_group,
+                                          self.item_group)
 
         #cheese/door handling
         self.make_disappear = self.character.get_open_door()
@@ -233,14 +243,13 @@ class Game(object):
                 self.background = self.map.update_background()
                 self.make_disappear = False
 
-
         #update camera's position on the map
-        
-        self.camera.update(self.character.get_coordinates(), self.map.get_surface())
+        self.camera.update(self.character.get_coordinates(),
+                           self.map.get_surface())
         #####temporary code to detect for door objective###############
         if(self.character.rect.x > 2200 and self.character.rect.x < 2700
                 and self.character.rect.y > 250 and self.character.rect.y < 400
-                and self.cheesed == True):
+                and self.cheesed is True):
                 self.cheesed = False
                 self.objective.changeObj(1)
 
@@ -253,16 +262,18 @@ class Game(object):
 
         ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
         #adding objective banner here
-        self.objective.updateObjective() ##change so that banner only appears when necessary
+        #change so that banner only appears when necessary
+        self.objective.updateObjective()
 
         s = "Score: " + str(Globals.SCORE)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-                                         (25, 550))
+                            (25, 550))
         s = "Health: " + str(self.character.health)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-                                         (25, 520))
+                            (25, 520))
 
-        if(Globals.SCORE == self.num_enemies): # - 1): #!!!! less than one for cutscene bug
+        if(Globals.SCORE == self.num_enemies):  # - 1):
+                #^!!!! less than one for cutscene bug
                 Globals.SCREEN.blit(self.win_image, self.end_image_position)
                 if(self.end_time > 0):
                         self.end_time -= 1
@@ -272,7 +283,8 @@ class Game(object):
                         else:
                             PM.music.fadeout(1000)
                             if Globals.SCORE > 0:
-                                Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                                Globals.PLAYERNAME = str(inbx.ask(
+                                    Globals.SCREEN, 'Name'))
                                 #Globals.SCORE = self.character.score
                             Globals.STATE = "Menu"
         if(self.character.health <= 0):
@@ -282,12 +294,13 @@ class Game(object):
                 else:
                         PM.music.fadeout(1000)
                         if Globals.SCORE > 0:
-                            Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                            Globals.PLAYERNAME = str(inbx.ask(
+                                Globals.SCREEN, 'Name'))
                             #Globals.SCORE = self.character.score
                         Globals.STATE = "Menu"
         ##Item Display
-        if (self.character.pill == True):
-            Globals.SCREEN.blit(self.pill_img, (750,550))
+        if (self.character.pill is True):
+            Globals.SCREEN.blit(self.pill_img, (750, 550))
         ###########################################################
 
         #######Pad Handling############
@@ -299,8 +312,8 @@ class Game(object):
 
 #        ###(interface stuff)####
 #        #adding objective banner here
-#        self.objective.updateObjective() ##change so that banner only appears when necessary
-
+#        self.objective.updateObjective()
+#        ##change so that banner only appears when necessary
 
         if self.make_disappear:
                 self.background = self.map.update_background()
@@ -308,7 +321,7 @@ class Game(object):
 
         ##objective; organize later
         self.remainingEnemies = self.num_enemies - Globals.SCORE
-        if self.remainingEnemies < self.num_enemies and self.killed == True:
+        if self.remainingEnemies < self.num_enemies and self.killed is True:
                 self.killed = False
                 self.objective.changeObj(2)
 
@@ -329,7 +342,7 @@ class Game(object):
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
                 if Globals.SCORE > 0:
-                    Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
+                    Globals.PLAYERNAME = str(inbx.ask(Globals.SCREEN, 'Name'))
                     # Globals.SCORE = self.character.score
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
@@ -341,10 +354,11 @@ class Game(object):
         del self.map
         Map.GRASS_ARRAY = []
         Map.PAD_ARRAY = []
-        self.map = Map.Map('mapfile.txt', self.level)
+        ##new map is different than level 1's map, of course.
+        self.map = Map.Map('mapfilelvl2.txt', self.level)
 
-        self.num_enemies += self.map.get_num_enemies(1) #icecream
-        self.num_enemies += self.map.get_num_enemies(2) #burger
+        self.num_enemies += self.map.get_num_enemies(1)  # icecream
+        self.num_enemies += self.map.get_num_enemies(2)  # burger
 #        self.map.TILES_LOADED = False
 #        self.map.GRASS_ARRAY = []
 #        self.map.grass_array = self.map.GRASS_ARRAY
@@ -360,11 +374,13 @@ class Game(object):
         PD.update()
 
         for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e,1), self.map.get_enemy_coordy(e,1))
+            icecream = IceCream(self.map.get_enemy_coordx(e, 1),
+                                self.map.get_enemy_coordy(e, 1))
             self.icecream_list.add(icecream)
         #burger
         for e in range(self.map.get_num_enemies(2)):
-            burger = Burger(self.map.get_enemy_coordx(e,2), self.map.get_enemy_coordy(e,2))
+            burger = Burger(self.map.get_enemy_coordx(e, 2),
+                            self.map.get_enemy_coordy(e, 2))
             self.burger_list.add(burger)
 
         self.enemy_list.add(self.icecream_list)
@@ -381,17 +397,19 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group, self.icecream_list, self.burger_list, self.trap_group, self.item_group)
+        self.allsprites = PS.LayeredDirty(self.player_group,
+                                          self.icecream_list,
+                                          self.burger_list, self.trap_group,
+                                          self.item_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
-        self.invincibility_count = 0 #player's invinicibility frame time
-        self.enemy_ID = -1  # what kind of enemy by ID (-1 means no enemy) used for collisions
-        self.make_disappear = False #if true, tells map to update w/o key & door
+        self.invincibility_count = 0  # player's invinicibility frame time
+        #what kind of enemy by ID (-1 means no enemy) used for collisions
+        self.enemy_ID = -1
+        #if true, tells map to update w/o key & door
+        self.make_disappear = False
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
         self.render()
-
-
-
