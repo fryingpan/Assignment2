@@ -66,7 +66,6 @@ class Player(PS.DirtySprite):
         self.dmg_count = 0
         self.invincibility_frame = PI.load("FPGraphics/emptyImg.png") \
             .convert_alpha()
-        self.score = 0
         self.weapon = Weapon()
         self.moved = False
         self.interval = 0
@@ -96,9 +95,6 @@ class Player(PS.DirtySprite):
 
     def get_items_of_killed(self):
         return self.items_of_killed
-
-    def inc_score(self):
-        self.score += 1
 
     def get_open_door(self):
         returned = self.opened_door
@@ -147,13 +143,13 @@ class Player(PS.DirtySprite):
                     collision.disappear()
                     print "got item"
 
-            if collision.get_type() == "K":
+            if collision.get_type() == "K": #found key
                 collision.kill()
                 self.pill = True
                 #self.open_door(bg)
                 self.got_key = True
-            if collision.get_type() == "D":
-                if self.pill == True:
+            if collision.get_type() == "D": #at a door 
+                if self.pill == True: #unlockable door
                     self.at_door = True
                     
             if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
@@ -230,10 +226,6 @@ class Player(PS.DirtySprite):
 
             #attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
-            # for collision in collisions:
-            #     self.health += 1
-            #     self.score = self.score + 1
-                # collision.kill()
             if self.at_door == True:
                 self.open_door(bg)
                 self.pill = False
@@ -242,11 +234,12 @@ class Player(PS.DirtySprite):
             killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
                                              self.face, screen, enemy_bg)
             for killed in killed_enemies:
-                print len(killed_enemies)
+                #print len(killed_enemies)
                 self.items_of_killed.append(killed.drop_item(screen))
                 self.health += 1
-                self.score += 1
-                killed.kill()
+                killed.decrement_health(1)
+                # self.score += 1
+                # killed.kill()
                 
             #self.weapon.draw(screen)
             self.attack_pose = True

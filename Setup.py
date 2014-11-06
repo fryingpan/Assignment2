@@ -83,7 +83,6 @@ class Game(object):
         self.camera = cam.Camera(self.map.get_surface())
         ##draw sprites
         self.character = Player(Globals.DELTA)
-        #Locals.SCORE = self.character.score
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
         self.num_enemies = 0
@@ -247,25 +246,23 @@ class Game(object):
 
         self.allsprites.update(self.block_group, self.player_group)
 
-
-        #Locals.SCORE = self.character.score
         if(Locals.CHANGESTATE == "Menu"):
                 PM.music.fadeout(1000)
-                Globals.SCORE = self.character.score
+                # Globals.SCORE = self.character.score
                 return False
 
         ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
         #adding objective banner here
         self.objective.updateObjective() ##change so that banner only appears when necessary
 
-        s = "Score: " + str(self.character.score)
+        s = "Score: " + str(Globals.SCORE)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
                                          (25, 550))
         s = "Health: " + str(self.character.health)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
                                          (25, 520))
 
-        if(self.character.score == self.num_enemies): # - 1): #!!!! less than one for cutscene bug
+        if(Globals.SCORE == self.num_enemies): # - 1): #!!!! less than one for cutscene bug
                 Globals.SCREEN.blit(self.win_image, self.end_image_position)
                 if(self.end_time > 0):
                         self.end_time -= 1
@@ -274,20 +271,19 @@ class Game(object):
                             self.change_level(self.level)
                         else:
                             PM.music.fadeout(1000)
-                            if self.character.score > 0:
+                            if Globals.SCORE > 0:
                                 Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
-                                Globals.SCORE = self.character.score
+                                #Globals.SCORE = self.character.score
                             Globals.STATE = "Menu"
         if(self.character.health <= 0):
                 Globals.SCREEN.blit(self.lose_image, self.end_image_position)
                 if(self.end_time > 0):
                         self.end_time -= 1
                 else:
-
                         PM.music.fadeout(1000)
-                        if self.character.score > 0:
+                        if Globals.SCORE > 0:
                             Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
-                            Globals.SCORE = self.character.score
+                            #Globals.SCORE = self.character.score
                         Globals.STATE = "Menu"
         ##Item Display
         if (self.character.pill == True):
@@ -311,7 +307,7 @@ class Game(object):
                 self.make_disappear = False
 
         ##objective; organize later
-        self.remainingEnemies = self.num_enemies - self.character.score
+        self.remainingEnemies = self.num_enemies - Globals.SCORE
         if self.remainingEnemies < self.num_enemies and self.killed == True:
                 self.killed = False
                 self.objective.changeObj(2)
@@ -320,29 +316,6 @@ class Game(object):
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
         self.camera.draw()
         PG.display.update(rects)
-
-#        if(self.character.score == self.num_enemies - 1): #!!!! less than one for cutscene bug
-#                Globals.SCREEN.blit(self.win_image, self.end_image_position)
-#                if(self.end_time > 0):
-#                        self.end_time -= 1
-#                else:
-#                        PM.music.fadeout(1000)
-#                        Globals.STATE = "Menu"
-#        if(self.character.health <= 0):
-#                Globals.SCREEN.blit(self.lose_image, self.end_image_position)
-#                if(self.end_time > 0):
-#                        self.end_time -= 1
-#                else:
-
-#                        PM.music.fadeout(1000)
-#                        Globals.STATE = "Menu"
-
-#        s = "Score: " + str(self.character.score)
-#        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-#                                         (25, 550))
-#        s = "Health: " + str(self.character.health)
-#        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-#                                         (25, 520))
 
         PD.flip()
 
@@ -355,9 +328,9 @@ class Game(object):
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
-                if self.character.score > 0:
+                if Globals.SCORE > 0:
                     Globals.PLAYERNAME = str(inputbox.ask(Globals.SCREEN, 'Name'))
-                    Globals.SCORE = self.character.score
+                    # Globals.SCORE = self.character.score
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:

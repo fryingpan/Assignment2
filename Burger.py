@@ -33,7 +33,7 @@ class Burger(Enemy):
         #######
         #attributes to be passed to parent for parent function use
         self.health = 100
-        self.speed = 4*fps
+        self.speed = 1
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
         self.rect.y = ylocation
@@ -43,6 +43,7 @@ class Burger(Enemy):
         self.IMAGES_FRONT = []
         self.IMAGES_BACK = []
         self.load_images()
+        self.c = 0
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.health, self.speed)
 
     def attack(self, surface):
@@ -50,22 +51,27 @@ class Burger(Enemy):
         pass
 
     def move(self, bg, player, interval):
-        # dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
-        # move_dist = math.ceil(1*dist*interval)
-        # print(move_dist)
-        # if player.sprites()[0].get_y() > self.rect.y:  # down key
-        #     self.rect.y += move_dist  # move down
-        #     self.face = 'd'
-        # else:  # up key
-        #     self.rect.y -= move_dist  # move up
-        #     self.face = 'u'
-        # if player.sprites()[0].get_x() > self.rect.x:  # right key
-        #     self.rect.x += move_dist  # move right
-        #     self.face = 'r'
-        # else:  # left key
-        #     self.rect.x -= move_dist  # move left
-        #     self.face = 'l'
-        # #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
+        ran = random.randint(0,10)
+        if(ran < 3): #slow him down cuz he hella scary when he's fast
+            dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
+            move_dist = math.ceil(dist*interval)
+            if player.sprites()[0].rect.y > self.rect.y:
+                self.rect.y += move_dist  # move down
+                self.face = 'd'
+            else:
+                self.rect.y -= move_dist  # move up
+                self.face = 'u'
+            if player.sprites()[0].rect.x > self.rect.x:
+                self.rect.x += move_dist  # move right
+                self.face = 'r'
+            else:
+                self.rect.x -= move_dist  # move left
+                self.face = 'l'
+        if(self.rect.x <0 and self.c == 0):
+            self.c = 1
+            print("x " + str(player.sprites()[0].rect.x) + " y " + str(player.sprites()[0].rect.y))
+
+        #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
         self.handle_collision(bg)
         self.handle_collision(player)
 
