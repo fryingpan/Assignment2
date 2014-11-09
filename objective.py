@@ -14,7 +14,7 @@ import random
 import Globals
 
 class Objective(object):
-    def __init__(self, screen):
+    def __init__(self, screen, lvl =1):
         self.image = PI.load("FPGraphics/specialEffects/objective.png").convert_alpha()
         self.font = PF.SysFont('Arial', 25)
         self.text_color = (0,0,0)

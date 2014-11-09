@@ -7,6 +7,7 @@ try:
     from pygame.locals import *
     import pygame.time as PT
     import sys
+    from Lvl_Data import Lvl_Data
     from Player import Player
     from IceCream import IceCream
     from Burger import Burger
@@ -54,10 +55,6 @@ class Game(object):
                        "with his ice cream buddies")
 
         ###(Declare interface)#####
-        self.objective = Objective(Globals.SCREEN)
-        self.updated_obj = True
-        PM.music.load("music/gameplay.mod")
-        PM.music.play(-1)
 
         #Globals.SCREEN = PD.set_mode((800, 600))
         #do we use this SCREEN_rect?
@@ -66,59 +63,28 @@ class Game(object):
         self.font = PF.SysFont('Arial', 25)
 
         #Win/Lose items
+        self.end_time = 100
         self.win_image = PI.load("FPGraphics/" +
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.end_time = 100
-        self.end_image_position = (100, 178)
+        self.MAX_LEVEL = 2
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()
         ######(Initialize objects on screen)####
         ##draw map/background
-        self.level = 1
-        self.map = Map.Map('mapfile.txt', self.level)
-        self.background = self.map.create_background()
-        self.camera = cam.Camera(self.map.get_surface())
-        self.camera_background = None
+        
         ##draw sprites
         self.character = Player(Globals.DELTA)
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
-        self.num_enemies = 0
-        self.num_enemies += self.map.get_num_enemies(1)  # icecream
-        self.num_enemies += self.map.get_num_enemies(2)  # burger
-        self.remainingEnemies = self.num_enemies
-        print("b " + str(self.map.get_num_enemies(2)) + " i " +
-              str(self.map.get_num_enemies(1)))
+        # self.remainingEnemies = self.num_enemies
         #create icecream group
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
         self.enemy_list = PS.Group()  # all enemies
-
-        #place enemies (icecream)
-        for e in range(self.map.get_num_enemies(1)):
-            icecream = IceCream(self.map.get_enemy_coordx(e, 1),
-                                self.map.get_enemy_coordy(e, 1))
-            self.icecream_list.add(icecream)
-        #burger
-        for e in range(self.map.get_num_enemies(2)):
-            burger = Burger(self.map.get_enemy_coordx(e, 2),
-                            self.map.get_enemy_coordy(e, 2))
-            self.burger_list.add(burger)
-
-        self.enemy_list.add(self.icecream_list)
-        self.enemy_list.add(self.burger_list)
-
-        #get block sprite group from the map file
-        self.block_group = self.map.get_object_group()
-
-        #list that holds traps
-        self.trap_list = []
         self.trap_group = PS.Group()
-
-        self.item_list = []
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
@@ -127,7 +93,17 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list)
-        self.allsprites.clear(Globals.SCREEN, self.background)
+        
+        #variables to be handled in change_level method
+        self.objective = None
+        self.updated_obj = True
+        self.map = None
+        self.num_enemies = 0
+        self.background = None
+        self.end_time = 100
+        self.end_image_position = (100, 178)
+        self.make_disappear = False
+        self.block_group = None
 
         ####(Level variables)####
         self.invincibility_count = 0  # player's invinicibility frame time
@@ -139,6 +115,8 @@ class Game(object):
         self.cheesed = True
         self.killed = True
 
+        self.level = 1
+        self.change_level(self.level)
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -293,11 +271,11 @@ class Game(object):
                 self.background = self.map.update_background()
                 self.make_disappear = False
 
-        ##objective; organize later
-        self.remainingEnemies = self.num_enemies - Globals.SCORE
-        if self.remainingEnemies < self.num_enemies and self.killed is True:
-                self.killed = False
-                self.objective.changeObj(2)
+        # ##objective; organize later
+        # self.remainingEnemies = self.num_enemies - Globals.SCORE
+        # if self.remainingEnemies < self.num_enemies and self.killed is True:
+        #         self.killed = False
+        #         self.objective.changeObj(2)
 
         ##draw dirty sprites
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
@@ -325,15 +303,17 @@ class Game(object):
                 if(self.end_time > 0):
                         self.end_time -= 1
                 else:
-                        if self.level == 1:
-                            self.change_level(self.level)
-                        else:
-                            PM.music.fadeout(1000)
-                            if Globals.SCORE > 0:
-                                Globals.PLAYERNAME = str(inbx.ask(
-                                    Globals.SCREEN, 'Name'))
-                                #Globals.SCORE = self.character.score
-                            Globals.STATE = "Menu"
+                    if(self.level < self.MAX_LEVEL):
+                        self.level += 1
+                        self.change_level(self.level)
+                    elif(self.level == self.MAX_LEVEL):
+                        PM.music.fadeout(1000)
+                        if Globals.SCORE > 0:
+                            Globals.PLAYERNAME = str(inbx.ask(
+                                Globals.SCREEN, 'Name'))
+                            #Globals.SCORE = self.character.score
+                        Globals.STATE = "Menu"
+
         if(self.character.health <= 0):
                 Globals.SCREEN.blit(self.lose_image, self.end_image_position)
                 if(self.end_time > 0):
@@ -370,29 +350,34 @@ class Game(object):
                 self.updated_obj = self.objective.updateBanner()
 
     def change_level(self, currentLevel):
-        self.level = 2
-        del self.map
+        self.level = currentLevel
+        ldata = Lvl_Data(self.level)
+        self.objective = ldata.objective
+        self.updated_obj = True
+        PM.music.load(ldata.music_file)
+        PM.music.play(-1)
+
+        #interpretting mapfile.txt
+        if(self.level > 1):
+            del self.map
         Map.GRASS_ARRAY = []
         Map.PAD_ARRAY = []
         ##new map is different than level 1's map, of course.
-        self.map = Map.Map('mapfilelvl2.txt', self.level)
+        self.map = Map.Map(ldata.map_file, self.level)
+        self.camera = cam.Camera(self.map.get_surface())
+        self.camera_background = None
 
         self.num_enemies += self.map.get_num_enemies(1)  # icecream
         self.num_enemies += self.map.get_num_enemies(2)  # burger
-#        self.map.TILES_LOADED = False
-#        self.map.GRASS_ARRAY = []
-#        self.map.grass_array = self.map.GRASS_ARRAY
-#        self.map.grasstiles = []
-#        self.map.grass_type = []
 
-        self.end_time = 100
-        self.make_disappear = False
+        #may want to change this to be determined by mapfile.txt
+        self.character.rect.x = ldata.character_pos_x
+        self.character.rect.y = ldata.character_pos_y
 
-        self.character.rect.x = 100
-        self.character.rect.y = 100
         self.background = self.map.create_background()
+        self.allsprites.clear(Globals.SCREEN, self.background)
         Globals.SCREEN.blit(self.background, (0, 0))
-
+        
         PD.update()
 
         for e in range(self.map.get_num_enemies(1)):
@@ -413,10 +398,10 @@ class Game(object):
 
         #list that holds traps
         self.trap_list = []
-        self.trap_group = PS.Group()
+        # self.trap_group = PS.Group()
 
         self.item_list = []
-        self.item_group = PS.Group()
+        # self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
         self.allsprites = PS.LayeredDirty(self.player_group,
@@ -434,4 +419,6 @@ class Game(object):
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
+        self.make_disappear = False
+        self.update()
         self.render()

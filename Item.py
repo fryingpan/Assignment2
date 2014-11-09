@@ -75,6 +75,7 @@ class BreadDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/breadDrop.png").convert_alpha()
 		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
 		# x position
 		self.rect.x = x_coor + 25
 		# y position

@@ -302,8 +302,7 @@ class Player(PS.DirtySprite):
                         self.image = self.IMAGES_FRONT[0]
                     else:
                         self.image = PI.load("FPGraphics/MC/" +
-                                             "MCwalk/MCFront.png").
-                        convert_alpha()
+                                             "MCwalk/MCFront.png").convert_alpha()
                     self.attack_pose = False
         self.dirty = 1
 
@@ -385,14 +384,10 @@ class Player(PS.DirtySprite):
                                                          sheetB)
             # load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCFrontFPOnePiece.png").
-            convert_alpha()
+                                          "MCFrontFPOnePiece.png").convert_alpha()
             Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCBackPOnePiece.png").
-            convert_alpha()
+                                          "MCBackPOnePiece.png").convert_alpha()
             Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCRightFPOnePiece.png").
-            convert_alpha()
+                                          "MCRightFPOnePiece.png").convert_alpha()
             Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCLeftFPOnePiece.png").
-            convert_alpha()
+                                          "MCLeftFPOnePiece.png").convert_alpha()

@@ -8,12 +8,18 @@ Josh Holstein
 Run the following to run the program:
 python masterfile.py
 
-We have created a second level: Chili. We introduce more enemies as well as the Oven "pads" that damage the player if the player walks over it. If you kill all enemies in level one, you win that level and move on to level 2.
+Since we did most of our refactoring last week, we spent this week
+fixing bugs and adding features that we didn't get to fully implement.
 
-The implementation of the oven (and later, the fridge) pads is much like the tiles for grass because the player can walk over these pads. In the game's update method, we check for rect collision. If the Player runs over this pad, his health decreases.
-
-In general game coding progress, we have used this week to refactor our code. We worked with James to better organize our modules and make it so that adding modules in the future would be easier.
-We got rid of extraneous methods and made sure that correct code are in each state's respective render and update methods.
+-The burger enemy now follows the player; The burger has 3 hp and will
+drop 3 items before being killed
+	-we still have to ork out kinks in the burger movement (collision
+	with walls makes it teleport)
+-we refactored the level changing such that we may change the levels
+by incrementing the self.level as opposed to using 'magic numbers.'
+	-Lvl_data class was added to hold levels' data
+-otherwise, we did genera refactoring like making the code more neat
+and more efficient.
 
 
 Todo List
