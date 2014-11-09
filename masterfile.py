@@ -76,7 +76,6 @@ def loop():
             Globals.CURRENTSTATE = "Quit"
             Globals.RUNNING = False
 
-
         state.update()
         interval += elapsed
 
