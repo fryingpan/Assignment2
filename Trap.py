@@ -5,8 +5,7 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
-# from Player import Player
-# from Enemy import Enemy
+
 
 class Trap(PS.DirtySprite):
 
@@ -14,7 +13,8 @@ class Trap(PS.DirtySprite):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, surface, rect, lifetime, thetype, image = None, animation = True):
+    def __init__(self, surface, rect, lifetime, thetype, image=None,
+                 animation=True):
         PS.DirtySprite.__init__(self)
         self.rect = rect
         # the life of the trap
@@ -25,7 +25,7 @@ class Trap(PS.DirtySprite):
         self.y = self.rect.y
         self.type = thetype
         self.animation = animation
-        # booleans to start animation 
+        # booleans to start animation
         self.dropped = False
         self.disappear = False
         self.set_anim_start()
@@ -39,25 +39,28 @@ class Trap(PS.DirtySprite):
         self.surface = surface
         self.load_images()
 
-
     def update(self, bg, player_group):
         self.trap_attack = False
         if self.animation:
+            # start drop animation once item is dropped
             if not self.dropped:
                 self.drop_animation()
                 self.draw(self.surface, False)
+            # start disappear animation
             elif self.lifetime <= 300:
                 self.disappear_animation()
                 if not self.disappear:
                     self.draw(self.surface, False)
                 else:
                     self.remove = True
+            # else display the static image
             else:
                 self.draw(self.surface, True)
+            # check if enemy trap collides with the player
             collisions = self.handle_collisions(player_group)
             if len(collisions) > 0:
                 self.trap_attack = True
-        else: 
+        else:
             collisions = self.handle_collisions(bg)
         self.dirty = 1
 
@@ -81,12 +84,16 @@ class Trap(PS.DirtySprite):
 
     def drop_animation(self):
         if not self.dropped:
+            # set the image to the correct animation frame
             self.update_anim(Trap.IMAGES_APPEAR, self.frame_num)
+            # change the animation frame to display
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
                 self.frame_count = 80
+            # decrement the lifetime of the frame
             elif self.frame_count > 0:
                 self.frame_count -= 1
+            # animation is done so the item is done being dropped
             else:
                 self.dropped = True
                 self.set_anim_start()
@@ -102,13 +109,17 @@ class Trap(PS.DirtySprite):
 
     def disappear_animation(self):
         if not self.disappear:
+            # set the image to the correct animation frame
             self.update_anim(Trap.IMAGES_DISAPPEAR, self.frame_num)
+            # change the animation frame
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
                 self.frame_count = 80
+            # decrement the lifetime of the frame
             elif self.frame_count > 0:
                 self.frame_count -= 1
                 self.lifetime -= 1
+            # once disappear animation id done, item should disappear
             else:
                 self.disappear = True
 
@@ -117,27 +128,24 @@ class Trap(PS.DirtySprite):
             self.image = imageArray[index].convert_alpha()
         except IndexError:
             pass
-            # self.image = self.static_image.convert_alpha()
-            # self.face = list(self.face)[0]
 
 
 class Puddle(Trap):
-
+    # Class variables
     IMAGE = None
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
     def __init__(self, rect, surface):
-        #how long the puddle will last before it disappears
+        # how long the puddle will last before it disappears
         self.lifetime = 6000
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
-                .convert_alpha()
+            .convert_alpha()
         Trap.static_image = Trap.IMAGE
         Trap.image = self.static_image
-
+        # load animation images
         self.load_images()
-
         if not Puddle.IMAGE:
             Puddle.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
                 .convert_alpha()
@@ -152,12 +160,10 @@ class Puddle(Trap):
         self.set_anim_start()
         self.num_frames = 3
         self.type = 'E'
-
-        #initialize parent class
+        # initialize parent class
         Trap.__init__(self, surface, rect, self.lifetime, self.type)
 
-
-    #load animation images
+    # load animation images
     def load_images(self):
         Trap.IMAGES_APPEAR = []
         Trap.IMAGES_DISAPPEAR = []
@@ -171,7 +177,8 @@ class Puddle(Trap):
             Trap.IMAGES_DISAPPEAR, sheetD)
 
     def load_images_helper(self, imageArray, sheet):
-        #split images into an array. Each individual imagae in the sheet is 50x50
+        # split images into an array. Each individual
+        # imagae in the sheet is 50x50
         alphabg = (23, 23, 23)
         for i in range(0, 3):
             surface = PG.Surface((50, 50))
@@ -179,4 +186,3 @@ class Puddle(Trap):
             surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
             imageArray.append(surface)
         return imageArray
-
