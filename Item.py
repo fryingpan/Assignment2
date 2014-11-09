@@ -1,3 +1,9 @@
+'''
+Team: Fryingpan
+author: Carla
+edited: Mary
+'''
+
 import random
 import pygame as PG
 import pygame.display as PD
@@ -5,8 +11,6 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
-# from Player import Player
-# from Enemy import Enemy
 
 
 class Item(PS.DirtySprite):
@@ -44,73 +48,107 @@ class Item(PS.DirtySprite):
 	def disappear(self):
 		self.remove = True
 
-	def appear(self):
-		pass
 		
-
+# Ice Cream Drop
 class IceCreamScoop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
 		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
+		# x position
 		self.rect.x = x_coor + 25
+		# y position
 		self.rect.y = y_coor + 25
+		# from what enemy its from
 		self.type = 1
+		# how long the item is available to grab
 		self.lifetime = 800
+		# surface
 		Item.surface = surface
+		# how many times the item may be used by the player
 		Item.use_count = 3
-
-
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
+
+# Burger Drop
 class BreadDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/breadDrop.png").convert_alpha()
 		self.image = Item.IMAGE
-		self.rect = self.image.get_rect()
+		# x position
 		self.rect.x = x_coor + 25
+		# y position
 		self.rect.y = y_coor + 25
+		# from what enemy its from
 		self.type = 1
+		# how long the item is available to grab
 		self.lifetime = 800
+		# surface
 		Item.surface = surface
+		# how many times the item may be used by the player
 		Item.use_count = 3
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
+
+
+# Burger Drop
 class LettuceDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/lettuceDrop.png").convert_alpha()
 		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
+		# x position
 		self.rect.x = x_coor + 25
+		# y position
 		self.rect.y = y_coor + 25
+		# from what enemy its from
 		self.type = 1
+		# how long the item is available to grab
 		self.lifetime = 800
+		# surface
 		Item.surface = surface
+		# how many times the item may be used by the player
 		Item.use_count = 3
 		Item.__init__(self, self.rect, self.type, self.lifetime)
+		
 
+# Burger Drop
 class MeatDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/meatDrop.png").convert_alpha()
 		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
+		# x position
 		self.rect.x = x_coor + 25
+		# y position
 		self.rect.y = y_coor + 25
+		# from what enemy its from
 		self.type = 1
+		# how long the item is available to grab
 		self.lifetime = 800
+		# surface
 		Item.surface = surface
+		# how many times the item may be used by the player
 		Item.use_count = 3
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
+
+# Burger Drop
 class BurgerDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
 		self.image = Item.IMAGE
 		self.rect = self.image.get_rect()
+		# x position
 		self.rect.x = x_coor + 25
+		# y position
 		self.rect.y = y_coor + 25
+		# from what enemy its from
 		self.type = 1
+		# how long the item is available to grab
 		self.lifetime = 800
+		# surface
 		Item.surface = surface
+		# how many times the item may be used by the player
 		Item.use_count = 3
 		Item.__init__(self, self.rect, self.type, self.lifetime)
