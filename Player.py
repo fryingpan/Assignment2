@@ -234,13 +234,17 @@ class Player(PS.DirtySprite):
             killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
                                              self.face, screen, enemy_bg)
             for killed in killed_enemies:
-                #print len(killed_enemies)
-                self.items_of_killed.append(killed.drop_item(screen))
-                self.health += 1
-                killed.decrement_health(1)
-                # self.score += 1
-                # killed.kill()
-                
+                if(killed.last_hit == 0):
+                    #print len(killed_enemies)
+                    self.items_of_killed.append(killed.drop_item(screen))
+                    #self.health += 1
+                    killed.decrement_health(1)
+                    # self.score += 1
+                    # killed.kill()
+                    killed.last_hit = 80
+                else:
+                    killed.last_hit -= 1
+
             #self.weapon.draw(screen)
             self.attack_pose = True
 

@@ -32,7 +32,7 @@ class Burger(Enemy):
         self.front_image = self.image
         #######
         #attributes to be passed to parent for parent function use
-        self.health = 100
+        self.health = 3
         self.speed = 1
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
@@ -45,6 +45,7 @@ class Burger(Enemy):
         self.load_images()
         self.c = 0
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.health, self.speed)
+        self.drop_num = 3;
 
     def attack(self, surface):
         ###
@@ -76,15 +77,15 @@ class Burger(Enemy):
         self.handle_collision(player)
 
     def drop_item(self, surface):
-        d = random.randint(0,9)
-        if(d == 0):
-            return BurgerDrop(self.rect.x, self.rect.y, surface)
-        if(d > 0 and d < 4):
-            return MeatDrop(self.rect.x, self.rect.y, surface)
-        if(d >= 4 and d <7):
-            return LettuceDrop(self.rect.x, self.rect.y, surface)
-        if(d >= 7):
-            return BreadDrop(self.rect.x, self.rect.y, surface)
+            d = random.randint(0,9)
+            if(d == 0):
+                return BurgerDrop(self.rect.x, self.rect.y, surface)
+            if(d > 0 and d < 4):
+                return MeatDrop(self.rect.x, self.rect.y, surface)
+            if(d >= 4 and d <7):
+                return LettuceDrop(self.rect.x, self.rect.y, surface)
+            if(d >= 7):
+                return BreadDrop(self.rect.x, self.rect.y, surface)
 
     def get_face(self):
         return self.face

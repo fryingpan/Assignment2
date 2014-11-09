@@ -45,6 +45,8 @@ class Enemy(PG.sprite.DirtySprite):
         self.invincibility_count = 0
         self.attacked_player = False
         self.moved = False
+        self.last_hit = 0;
+        self.last_hit_save = -1;
 
     def get_rect(self):
         return self.rect
@@ -52,15 +54,19 @@ class Enemy(PG.sprite.DirtySprite):
     def get_face(self):
         return self.face
 
+    def get_last_hit(self):
+        return self.last_hit
+
     def get_attacked_player(self):
         return self.attacked_player
 
     def decrement_health(self, dmg):
+        print(self.last_hit)
         self.health -= dmg
-        print(self.health)
         if(self.health <= 0):
             Globals.SCORE += 1 #change num of points per type of enemy?
             self.kill()
+        print("health " + str(self.health))
 
     def will_attack(self):
         attack_prob = random.randint(0, 500)

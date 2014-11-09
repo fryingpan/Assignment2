@@ -70,7 +70,7 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.end_time = 200
+        self.end_time = 100
         self.end_image_position = (100, 178)
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
@@ -185,6 +185,16 @@ class Game(object):
                         self.invincibility_count = 200
                         #see which enemy attacked the player
                         self.enemy_ID = icecream.get_ID()
+
+        ##burger attacks
+        for burger in self.burger_list.sprites():
+                if(burger.get_attacked_player() or trap_attack):
+                        if trap_attack:
+                                trap_attack = False
+                        #if so start invincibility count after attack
+                        self.invincibility_count = 200
+                        #see which enemy attacked the player
+                        self.enemy_ID = burger.get_ID()
 
 #        ##Icecream & puddle attack on player
 #        for icecream in self.icecream_list.sprites():
@@ -375,7 +385,7 @@ class Game(object):
 #        self.map.grasstiles = []
 #        self.map.grass_type = []
 
-        self.end_time = 200
+        self.end_time = 100
         self.make_disappear = False
 
         self.character.rect.x = 100
