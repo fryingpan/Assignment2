@@ -70,7 +70,7 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.end_time = 1000
+        self.end_time = 200
         self.end_image_position = (100, 178)
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
@@ -373,9 +373,11 @@ class Game(object):
 #        self.map.grasstiles = []
 #        self.map.grass_type = []
 
-        self.end_time = 1000
+        self.end_time = 200
         self.make_disappear = False
 
+        self.character.rect.x = 100
+        self.character.rect.y = 100
         self.background = self.map.create_background()
         Globals.SCREEN.blit(self.background, (0, 0))
 
