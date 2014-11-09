@@ -77,6 +77,7 @@ class Block(PG.sprite.DirtySprite):
         if self.type == 'K' or self.type == 'D':
             self.dirty = 1
 
+
 class Map(object):
     GRASS_ARRAY = []
     PAD_ARRAY = []
@@ -97,7 +98,7 @@ class Map(object):
             self.grid_size = [50, 50]
             self.grid_dimensions = self.get_dimensions(self.map)
             self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0],
-                                                       self.grid_dimensions[1] * self.grid_size[1]]
+                                   self.grid_dimensions[1] * self.grid_size[1]]
             self.surface = PG.Surface(self.pix_dimensions)
             self.object_group = PG.sprite.Group()
 
@@ -112,22 +113,23 @@ class Map(object):
             self.allPads = PS.Group()
 
             #block arrays
-            self.wallBlocksV = [] #vertical V
-            self.wallBlocksH = [] #horizontal H
-            self.wallBlocksE = [] #edges/corners; correspond to index num (see load_blocks)
-            self.doorBlocks = [] # D
-            self.shrubBlocks = [] # S
+            self.wallBlocksV = []  # vertical V
+            self.wallBlocksH = []  # horizontal H
+            self.wallBlocksE = []
+            # edges/corners; correspond to index num (see load_blocks)
+            self.doorBlocks = []  # D
+            self.shrubBlocks = []  # S
             #tree top = T, tree bottom = Y
             #so it's like ty thank you isn't that cute
-            self.treeBlocksT = [] # T
-            self.treeBlocksB = [] # Y
-            self.keyBlocks = [] #K
-            self.ICBlock = [] #I (icecream spots)
+            self.treeBlocksT = []  # T
+            self.treeBlocksB = []  # Y
+            self.keyBlocks = []  # K
+            self.ICBlock = []  # I (icecream spots)
             self.disappearing_blocks = PS.Group()
 
             #enemy stuff
-            self.ic_coord = [] #icecream
-            self.br_coord = [] #burger
+            self.ic_coord = []  # icecream
+            self.br_coord = []  # burger
 
             self.spots_to_be_filled = []
             #create map from mapfile
@@ -139,22 +141,23 @@ class Map(object):
         return self.disappearing_blocks
 
     def load_grass_tiles(self, lvl):
-            print "LEVEL IN MAP: " + str(lvl)
+#            print "LEVEL IN MAP: " + str(lvl)
             tile_array = []
             if(lvl == 1):
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile3.png"))
             if(lvl == 2):
-                print "loading level 2 tiles!"
-                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile.png"))
-                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
-                tile_array.append(PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv2Tiles/chiliTile.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
             return tile_array
 
     def load_pad_tiles(self):
             array = []
-            #change these images later. right now a hot tile is the top of a corncob :3
             array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
             array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
             return array
@@ -180,9 +183,12 @@ class Map(object):
             self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETR.png"))
             self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBL.png"))
             self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBR.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubCauli.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubRadish.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv1shrubCauli.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv1shrubRadish.png"))
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT2.png"))
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT3.png"))
@@ -190,16 +196,26 @@ class Map(object):
             self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB2.png"))
             self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB3.png"))
         if(lvl == 2):
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2wall1.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2wall2.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2wall3.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2shrub1.png"))
-            self.shrubBlocks.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2shrub2.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2TreeT1.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv1treeT1.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv2Tiles/lv2TreesB1.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv1treeB1.png"))
+            self.wallBlocksV.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2wall1.png"))
+            self.wallBlocksV.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2wall2.png"))
+            self.wallBlocksV.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2wall3.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2shrub1.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2shrub2.png"))
+            self.treeBlocksT.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2TreeT1.png"))
+            self.treeBlocksT.append(
+                PI.load("FPGraphics/tiles/lv1treeT1.png"))
+            self.treeBlocksB.append(
+                PI.load("FPGraphics/tiles/lv2Tiles/lv2TreesB1.png"))
+            self.treeBlocksB.append(
+                PI.load("FPGraphics/tiles/lv1treeB1.png"))
 
     def get_surface(self):
             return self.surface
@@ -238,61 +254,80 @@ class Map(object):
             for y in range(self.grid_dimensions[0]):
                 # wall blocks
                 if char_list[y] == 'V':
-                    new_block = create_Block(self.wallBlocksV[random.randint(0,len(self.wallBlocksV))-1],
+                    new_block = create_Block(self.wallBlocksV
+                                             [random.randint(0, len(self.
+                                                             wallBlocksV))-1],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 elif char_list[y] == 'H':
-                    new_block = create_Block(self.wallBlocksH[random.randint(0,len(self.wallBlocksH))-1],
+                    new_block = create_Block(self.wallBlocksH
+                                             [random.randint(0, len(self.
+                                                             wallBlocksH))-1],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 # key block
                 elif char_list[y] == 'K':
                     #change to just an obj later or whatever
                     new_block = create_Block(self.keyBlocks[0],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
                 # Door blocks
                 elif char_list[y] == 'D':
-                    new_block = create_Block(self.doorBlocks[random.randint(0,len(self.doorBlocks))-1],
+                    new_block = create_Block(self.doorBlocks
+                                             [random.randint(0, len(self.
+                                                             doorBlocks))-1],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
                 elif char_list[y] == 'S':
-                    new_block = create_Block(self.shrubBlocks[random.randint(0,len(self.shrubBlocks))-1],
+                    new_block = create_Block(self.shrubBlocks
+                                             [random.randint(0, len(self.
+                                                             shrubBlocks))-1],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 elif char_list[y] == 'T':
-                    randType = random.randint(0,len(self.treeBlocksT))-1
+                    randType = random.randint(0, len(self.treeBlocksT))-1
                     treeblockType.append(randType)
                     new_block = create_Block(self.treeBlocksT[randType],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 elif char_list[y] == 'Y':
-                    new_block = create_Block(self.treeBlocksB[treeblockType.popleft()],
+                    new_block = create_Block(self.treeBlocksB
+                                             [treeblockType.popleft()],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 elif char_list[y] == 'I':
                     self.ic_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
                 elif char_list[y] == 'B':
                     self.br_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] != '.' and char_list[y] != ',': #edges image are determined by index
+                elif char_list[y] != '.' and char_list[y] != ',':
+                #edges image are determined by index
                     print(char_list[y])
-                    new_block = create_Block(self.wallBlocksE[int(char_list[y])],
+                    new_block = create_Block(self.wallBlocksE
+                                             [int(char_list[y])],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
-                                                     self.grid_size[1]), char_list[y])
+                                                     self.grid_size[1]),
+                                             char_list[y])
                 #set the block & add to obj group
                 new_block.set_rectTop(y_coor)
                 new_block.set_rectLeft(x_coor)
@@ -301,61 +336,51 @@ class Map(object):
                 #####(Tiles)######
                 # if char_list[y] == '.':
                     #add pair of coordinates
-                tile_index = random.randint(0,2)
+                tile_index = random.randint(0, 2)
                 self.grass_type.append(tile_index)
                 self.grasstiles.append((x_coor, y_coor))
 
                 ##added pad tiles##
                 if char_list[y] == ',':
-                    self.pad_type.append(0) #0 or 1, type for hot or cold pads
+                    self.pad_type.append(0)
+                    # 0 or 1, type for hot or cold pads
                     self.padtiles.append((x_coor, y_coor))
-                    newPad = Pad.create_Pad(self.pad_array[0], self.pad_array[0].get_rect(), 0)
+                    newPad = Pad.create_Pad(self.pad_array[0],
+                                            self.pad_array[0].get_rect(), 0)
                     newPad.set_rectLeft(x_coor)
                     newPad.set_rectTop(y_coor)
                     self.allPads.add(newPad)
                     print "created hot"
-                    #for some reason the rect x and y 0-out after this
                 ###################
 
                 x_coor += self.grid_size[0]
 
             y_coor += self.grid_size[1]
 
-    def get_enemy_coordx(self, index, enemy_type = 1):
+    def get_enemy_coordx(self, index, enemy_type=1):
         if enemy_type == 1:
             return self.ic_coord[index][0]
         if enemy_type == 2:
             return self.br_coord[index][0]
 
-    def get_enemy_coordy(self, index, enemy_type = 1):
+    def get_enemy_coordy(self, index, enemy_type=1):
         if enemy_type == 1:
             return self.ic_coord[index][1]
         if enemy_type == 2:
             return self.br_coord[index][1]
 
-    def get_num_enemies(self, enemy_type = 1):
+    def get_num_enemies(self, enemy_type=1):
         if enemy_type == 1:
             return len(self.ic_coord)
         if enemy_type == 2:
             return len(self.br_coord)
 
-
         ############ Pad Handling here? ############
     def pad_hurt_player(self, player):
-            #if player's rect collides with the pad tile's rect,
-                #lower player health
-            #padtiles is the coordinates of every single pad
-#                collisions = PS.spritecollide(player, self.allPads, False)
-#                print collisions
-#                for pad in collisions:
-#                    print "here"
-#                    player.health -= 1
-            for pad in self.allPads:
-                if pad.rect.colliderect(player.rect):
-                    #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
-                    pad.i_am_hot(player)
-
-
+        for pad in self.allPads:
+            if pad.rect.colliderect(player.rect):
+                #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
+                pad.i_am_hot(player)
         ###########################################
 
     def update_background(self):
@@ -378,12 +403,9 @@ class Map(object):
         for block in self.object_group:
             block.draw_block(background)
         for spot in self.spots_to_be_filled:
-            #print self.grass_array[0]
             background.blit(self.grass_array[0], spot)
 
         return background
-            
-
 
     #called in the setup/game class
     def draw_map(self):
@@ -393,10 +415,9 @@ class Map(object):
         # else:
         #   print "ERROR: grasstile != grass_type. Map.py line 183"
 
-
         for block in self.object_group:
             block.draw_block(self.surface)
-            
+
     def create_background(self):
         background = self.surface
         background = background.convert()
@@ -418,13 +439,8 @@ class Map(object):
             block.draw_block(background)
         return background
 
+
 #creates a new block sprite
 def create_Block(img, rect, t):
     new_block = Block(img, rect, t)
     return new_block
-
-
-# class Tiles(PS.DirtySprite):
-#   def __init__(self):
-#       PS.DirtySprite.__init__(self, group):
-        
