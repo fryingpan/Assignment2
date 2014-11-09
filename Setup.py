@@ -55,6 +55,7 @@ class Game(object):
 
         ###(Declare interface)#####
         self.objective = Objective(Globals.SCREEN)
+        self.updated_obj = True
         PM.music.load("music/gameplay.mod")
         PM.music.play(-1)
 
@@ -262,49 +263,6 @@ class Game(object):
                 # Globals.SCORE = self.character.score
                 return False
 
-        ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
-        #adding objective banner here
-        #change so that banner only appears when necessary
-        # self.objective.updateObjective(self.map.get_surface())
-
-        # s = "Score: " + str(Globals.SCORE)
-        # Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-        #                     (25, 550))
-        # s = "Health: " + str(self.character.health)
-        # Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-        #                     (25, 520))
-
-        # if(Globals.SCORE == self.num_enemies):  # - 1):
-        #         #^!!!! less than one for cutscene bug
-        #         Globals.SCREEN.blit(self.win_image, self.end_image_position)
-        #         if(self.end_time > 0):
-        #                 self.end_time -= 1
-        #         else:
-        #                 if self.level == 1:
-        #                     self.change_level(self.level)
-        #                 else:
-        #                     PM.music.fadeout(1000)
-        #                     if Globals.SCORE > 0:
-        #                         Globals.PLAYERNAME = str(inbx.ask(
-        #                             Globals.SCREEN, 'Name'))
-        #                         #Globals.SCORE = self.character.score
-        #                     Globals.STATE = "Menu"
-        # if(self.character.health <= 0):
-        #         Globals.SCREEN.blit(self.lose_image, self.end_image_position)
-        #         if(self.end_time > 0):
-        #                 self.end_time -= 1
-        #         else:
-        #                 PM.music.fadeout(1000)
-        #                 if Globals.SCORE > 0:
-        #                     Globals.PLAYERNAME = str(inbx.ask(
-        #                         Globals.SCREEN, 'Name'))
-        #                     #Globals.SCORE = self.character.score
-        #                 Globals.STATE = "Menu"
-        # ##Item Display
-        # if (self.character.pill is True):
-        #     Globals.SCREEN.blit(self.pill_img, (750, 550))
-        # ###########################################################
-
         #######Pad Handling############
         self.map.pad_hurt_player(self.character)
 
@@ -330,14 +288,15 @@ class Game(object):
         ##draw dirty sprites
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
         self.draw_screen()
-        # self.camera.draw()
         PG.display.update(rects)
 
         PD.flip()
 
     def draw_screen(self):
         Globals.SCREEN.blit(self.camera_background, (0, 0))
-        self.objective.updateObjective()
+        # check if objective banner needs to be drawn to screen
+        if self.updated_obj:
+            self.objective.updateObjective()
 
         s = "Score: " + str(Globals.SCORE)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
@@ -393,7 +352,8 @@ class Game(object):
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
-                self.objective.updateBanner()
+                # see if banner still needs to be shown (self.updated_obj gets True)
+                self.updated_obj = self.objective.updateBanner()
 
     def change_level(self, currentLevel):
         self.level = 2

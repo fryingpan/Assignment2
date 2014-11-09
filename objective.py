@@ -49,12 +49,18 @@ class Objective(object):
             self.killedText()        
 
     def updateBanner(self):
+        # print len(self.current_obj)
         if(len(self.current_obj) > 0):
             #print("banner up")
             #print(str(self.current_obj))
             # self.screen.blit(self.image, (0, 0))
             # self.screen.blit(self.font.render(self.current_obj.pop(), True, self.text_color), (50, 30))
             self.current_text = self.current_obj.pop()
+            # return True if there are still more instructions to show
+            if (len(self.current_obj) > 0):
+                return True
+        # return False if there are no more instructions to show
+        return False
 
     def lactoseText(self):
         lactose = []
