@@ -216,13 +216,15 @@ class Game(object):
         new_items = self.character.get_items_of_killed()
         for item in new_items:
             self.item_list.append(item)
-            self.item_group.add(item)
+            if(item != None):
+                self.item_group.add(item)
 
         #check if any of the items need to be removed (lifetime == 0)
         for item in self.item_list:
-            if item.will_remove():
-                self.item_list.remove(item)
-                self.item_group.remove(item)
+            if(item != None):
+                if item.will_remove():
+                    self.item_list.remove(item)
+                    self.item_group.remove(item)
 
         player_items = self.character.get_player_items()
         for item in player_items:
