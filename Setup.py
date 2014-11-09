@@ -122,10 +122,11 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group,
+        self.allsprites = PS.LayeredDirty(self.item_group, 
+                                          self.trap_group,
+                                          self.player_group,
                                           self.icecream_list,
-                                          self.burger_list, self.trap_group,
-                                          self.item_group)
+                                          self.burger_list)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
@@ -234,10 +235,11 @@ class Game(object):
                 self.item_group.remove(item)
 
         #update the allsprites
-        self.allsprites = PS.LayeredDirty(self.player_group,
+        self.allsprites = PS.LayeredDirty(self.item_group, 
+                                          self.trap_group,
+                                          self.player_group,
                                           self.icecream_list,
-                                          self.burger_list, self.trap_group,
-                                          self.item_group)
+                                          self.burger_list)
 
         #cheese/door handling
         self.make_disappear = self.character.get_open_door()

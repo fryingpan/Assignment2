@@ -46,7 +46,7 @@ class Trap(PS.DirtySprite):
             if not self.dropped:
                 self.drop_animation()
                 self.draw(self.surface, False)
-            elif self.lifetime <= 70:
+            elif self.lifetime <= 300:
                 self.disappear_animation()
                 if not self.disappear:
                     self.draw(self.surface, False)
@@ -77,14 +77,14 @@ class Trap(PS.DirtySprite):
         # start at index 0 of image array(array containing animation frames)
         self.frame_num = 0
         # time of each animation frame
-        self.frame_count = 12
+        self.frame_count = 100
 
     def drop_animation(self):
         if not self.dropped:
             self.update_anim(Trap.IMAGES_APPEAR, self.frame_num)
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
-                self.frame_count = 12
+                self.frame_count = 80
             elif self.frame_count > 0:
                 self.frame_count -= 1
             else:
@@ -105,7 +105,7 @@ class Trap(PS.DirtySprite):
             self.update_anim(Trap.IMAGES_DISAPPEAR, self.frame_num)
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
-                self.frame_count = 12
+                self.frame_count = 80
             elif self.frame_count > 0:
                 self.frame_count -= 1
                 self.lifetime -= 1
@@ -129,7 +129,7 @@ class Puddle(Trap):
 
     def __init__(self, rect, surface):
         #how long the puddle will last before it disappears
-        self.lifetime = 500
+        self.lifetime = 6000
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
                 .convert_alpha()
