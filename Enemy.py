@@ -1,5 +1,8 @@
-# Assignment 2
-
+'''
+Team: fryingpan
+author: Carla, Mary, Katie
+edited: Carla, Mary, Katie
+'''
 import random
 import pygame as PG
 import pygame.display as PD
@@ -10,22 +13,20 @@ import pygame.image as PI
 from Player import Player
 import Globals
 
-PG.init()
-
 
 class Enemy(PG.sprite.DirtySprite):
+    # Class variables
     IMAGE_UP = None
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
     IMAGE_LEFT = None
     FACE_STRING = ['u', 'd', 'r', 'l']
-
     CYCLE = .6
 
-    def __init__(self, rect, r,l,f,b,health =1,speed=1):
+    def __init__(self, rect, r, l, f, b, health=1, speed=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.DirtySprite.__init__(self)
-        #take attributes from derived class
+        # take attributes from derived class
         self.rect = rect
         self.rect.x = rect.x
         self.rect.y = rect.y
@@ -37,7 +38,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.IMAGES_BACK = b
         self.WIDTH = rect.width
         self.HEIGHT = rect.height
-
         self.direction = random.randint(0, 3)
         self.face = 'u'
         self.time = 0.0
@@ -45,8 +45,8 @@ class Enemy(PG.sprite.DirtySprite):
         self.invincibility_count = 0
         self.attacked_player = False
         self.moved = False
-        self.last_hit = 0;
-        self.last_hit_save = -1;
+        self.last_hit = 0
+        self.last_hit_save = -1
 
     def get_rect(self):
         return self.rect
@@ -64,9 +64,9 @@ class Enemy(PG.sprite.DirtySprite):
         print(self.last_hit)
         self.health -= dmg
         if(self.health <= 0):
-            Globals.SCORE += 1 #change num of points per type of enemy?
+            Globals.SCORE += 1  # change num of points per type of enemy?
             self.kill()
-        print("health " + str(self.health))
+        # print("health " + str(self.health))
 
     def will_attack(self):
         attack_prob = random.randint(0, 500)
@@ -77,7 +77,6 @@ class Enemy(PG.sprite.DirtySprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
-            # print type(collisions[0])
             if(self.invincibility_count == 0):
                 self.attacked_player = True
                 self.invincibility_count = 200
@@ -88,7 +87,6 @@ class Enemy(PG.sprite.DirtySprite):
                     if(self.rect.x +
                        self.rect.width) >= collision.rect.left:
                         self.rect.x = collision.rect.left - self.rect.width
-
             elif self.face == 'l':
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
@@ -118,18 +116,18 @@ class Enemy(PG.sprite.DirtySprite):
 
         if(self.invincibility_count > 0):
             self.invincibility_count -= 1
-            #print("invisib " + str(self.invincibility_count))
-        #check that the new movement is within the boundaries
-        #if self.check_collide() is True:
-        #    self.direction = random.randint(0, 1)
-         #   self.angle = random.randint(0, 360) * (math.pi/180)
+            # print("invisib " + str(self.invincibility_count))
+        # check that the new movement is within the boundaries
+        # if self.check_collide() is True:
+        # self.direction = random.randint(0, 1)
+        # self.angle = random.randint(0, 360) * (math.pi/180)
 
         ENEMY_IMAGE_LENGTH = 4  # all Enemy sprite has 12 frames
-        #update time
+        # update time
         self.time = self.time + Globals.DELTA
         if self.time > Enemy.CYCLE:
             self.time = 0.0
-        #update frame?
+        # update frame?
         frame = int(self.time / (Enemy.CYCLE / ENEMY_IMAGE_LENGTH))
         if frame != self.frame:
                 self.frame = frame
@@ -151,36 +149,7 @@ class Enemy(PG.sprite.DirtySprite):
                     self.image = self.IMAGES_FRONT[0]
                 else:
                     self.image = self.front_image.convert_alpha()
-        # if (self.rect.x != x_location) or (self.rect.y != y_location):
-        #     self.moved = True
         self.dirty = 1
-
-    # def move(self, bg, player, interval):
-    #     if(random.randint(0, 200) == 0):
-    #         self.direction = random.randint(0, 3)
-    #     dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
-    #     move_dist = 1*dist*interval
-    #     if self.direction == 0:  # down key
-    #         self.rect.y += move_dist  # move down
-    #         #self.rect = self.image.get_rect()
-    #         self.face = 'd'
-    #         self.handle_collision(bg)
-    #     elif self.direction == 1:  # up key
-    #         self.rect.y -= move_dist  # move up
-    #         #self.rect = self.image.get_rect()
-    #         self.face = 'u'
-    #         self.handle_collision(bg)
-    #     elif self.direction == 2:  # right key
-    #         self.rect.x += move_dist  # move right
-    #         #self.rect = self.image.get_rect()
-    #         self.face = 'r'
-    #         self.handle_collision(bg)
-    #     elif self.direction == 3:  # left key
-    #         self.rect.x -= move_dist  # move left
-    #         #self.rect = self.image.get_rect()
-    #         self.face = 'l'
-    #         self.handle_collision(bg)
-    #     self.handle_collision(player)
 
     def set_face(self, Enemy_face):
         if Enemy_face == 'u':
@@ -226,8 +195,8 @@ class Enemy(PG.sprite.DirtySprite):
     #     return collide
 
     def load_images_helper(self, imageArray, sheet):
-        #key = sheet.get_at((0,0))
-        #hereeeeee
+        # key = sheet.get_at((0,0))
+        # hereeeeee
         alphabg = (23, 23, 23)
         for i in range(0, 4):
             surface = PG.Surface((100, 100))
@@ -236,7 +205,7 @@ class Enemy(PG.sprite.DirtySprite):
             imageArray.append(surface)
         return imageArray
 
-    #this will all end up in the key handler
+    # this will all end up in the key handler
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()

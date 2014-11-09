@@ -7,7 +7,6 @@ import math
 import pygame.image as PI
 
 
-
 class Trap(PS.DirtySprite):
 
     IMAGE = None
