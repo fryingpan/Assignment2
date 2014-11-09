@@ -1,10 +1,10 @@
 '''
 Assignment 2
 Fryingpan
+authors:
 Carla Castro
 Mary Yen
 Katie Chang
-Josh Holstein
 '''
 
 import pygame as PG
@@ -33,12 +33,12 @@ class Player(PS.DirtySprite):
     IMAGES_LEFT_DMG = None
     IMAGES_FRONT_DMG = None
     IMAGES_BACK_DMG = None
-    #attack images
+    # attack images
     IMG_ATTACK_D = None  # 100 x 150 dimensions
     IMG_ATTACK_U = None
     IMG_ATTACK_R = None
     IMG_ATTACK_L = None
-
+    # Animation cycle variables
     CYCLE = 0.5
     ADCYCLE = .05
     WIDTH = 100
@@ -54,14 +54,15 @@ class Player(PS.DirtySprite):
         self.rect.y = 100
         self.face = 'd'
         self.load_images()
-        #self.speed both determines the speed of the player &
-        #ensures the the player moves at an integer distance during play (arbitrary value)
+        # self.speed both determines the speed of the player &
+        # ensures the the player moves at an integer distance
+        # during play (arbitrary value)
         self.speed = 1
         self.time = 0.0
         self.frame = 0
         self.got_key = False
-        #will turn to True once you've run into the yellow block
-        #collision conditions, if true, we will not move in that direction
+        # will turn to True once you've run into the yellow block
+        # collision conditions, if true, we will not move in that direction
         self.health = 1000
         self.dmg_count = 0
         self.invincibility_frame = PI.load("FPGraphics/emptyImg.png") \
@@ -71,10 +72,10 @@ class Player(PS.DirtySprite):
         self.interval = 0
         self.opened_door = False
         self.pill = False
-        self.at_door = -1 #allows player to open door if player has key
+        self.at_door = -1  # allows player to open door if player has key
         self.attack_pose = False
         self.items_of_killed = []
-
+        # Item Variables
         self.grab_item = False
         self.item = False
         self.item_use_count = 0
@@ -86,12 +87,11 @@ class Player(PS.DirtySprite):
 
     def drop_item(self, surface):
         if self.item_type == 1:
-            "used item"
-            self.player_items.append(Item.IceCreamScoop(self.rect.x, self.rect.y, surface))
+            self.player_items.append(Item.IceCreamScoop(self.rect.x,
+                                                        self.rect.y, surface))
         self.item_use_count -= 1
         if self.item_use_count == 0:
                     self.item = False
-
 
     def get_items_of_killed(self):
         return self.items_of_killed
@@ -134,24 +134,23 @@ class Player(PS.DirtySprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         for collision in collisions:
-            #check if collided with an item
+            # check if collided with an item
             if type(collision.get_type()) is int:
                 if self.grab_item:
                     self.item = True
                     self.item_use_count = collision.get_use_count()
                     self.item_type = collision.get_type()
                     collision.disappear()
-                    print "got item"
+                    # print "got item"
 
-            if collision.get_type() == "K": #found key
+            if collision.get_type() == "K":  # found key
                 collision.kill()
                 self.pill = True
-                #self.open_door(bg)
+                # self.open_door(bg)
                 self.got_key = True
-            if collision.get_type() == "D": #at a door 
-                if self.pill == True: #unlockable door
+            if collision.get_type() == "D":  # at a door
+                if self.pill:  # unlockable door
                     self.at_door = True
-                    
             if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
                 if(self.rect.x + self.rect.width
                    ) >= collision.rect.left:
@@ -182,38 +181,37 @@ class Player(PS.DirtySprite):
         self.interval = interval
         key = PG.key.get_pressed()
         if key[PG.K_DOWN]:  # down key
-            self.rect.y += self.speed # move down
-            #self.rect = self.image.get_rect()
+            self.rect.y += self.speed  # move down
+            # self.rect = self.image.get_rect()
             self.face = 'd'
             self.handle_collision(bg)
         elif key[PG.K_UP]:  # up key
             self.rect.y -= self.speed  # move up
-            #self.rect = self.image.get_rect()
+            # self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
         elif key[PG.K_RIGHT]:  # right key
             self.rect.x += self.speed  # move right
-            #self.rect = self.image.get_rect()
+            # self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
         elif key[PG.K_LEFT]:  # left key
             self.rect.x -= self.speed  # move left
-            #self.rect = self.image.get_rect()
+            # self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
-        #grab item if available
+        # grab item if available
         elif key[PG.K_a]:
-            #check if you already have an item
+            # check if you already have an item
             if not self.item:
                 self.grab_item = True
                 self.handle_collision(item_group)
-        #drop item if you have one
+        # drop item if you have one
         elif key[PG.K_d]:
             if self.item:
                 self.drop_item(screen)
                 if self.item_use_count == 0:
                     self.item = False
-
         elif key[PG.K_SPACE]:  # space key ATTACK
             if 'r' in self.face:
                 self.image = self.IMG_ATTACK_R
@@ -223,38 +221,31 @@ class Player(PS.DirtySprite):
                 self.image = self.IMG_ATTACK_D
             if 'u' in self.face:
                 self.image = self.IMG_ATTACK_U
-
-            #attack collisions
+            # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
-            if self.at_door == True:
+            if self.at_door:
                 self.open_door(bg)
                 self.pill = False
                 self.at_door = False
-            #for x in range(100):
+            # for x in range(100):
             killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
-                                             self.face, screen, enemy_bg)
+                                                self.face, screen, enemy_bg)
             for killed in killed_enemies:
                 if(killed.last_hit == 0):
-                    #print len(killed_enemies)
+                    # print len(killed_enemies)
                     self.items_of_killed.append(killed.drop_item(screen))
-                    #self.health += 1
+                    # self.health += 1
                     killed.decrement_health(1)
                     # self.score += 1
                     # killed.kill()
                     killed.last_hit = 80
                 else:
                     killed.last_hit -= 1
-
-            #self.weapon.draw(screen)
+            # self.weapon.draw(screen)
             self.attack_pose = True
-
             standing = True
-
-
-                #pass
         else:  # ds = down 'standing' (not moving) **********
             standing = True
-
         if standing:
             if self.face == 'd':
                     self.face = 'ds'
@@ -270,9 +261,8 @@ class Player(PS.DirtySprite):
         x_location = self.rect.x
         y_location = self.rect.y
         PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
-        #update time and frame
+        # update time and frame
         key = PG.key.get_pressed()
-
         self.time = self.time + Globals.DELTA
         if self.time > Player.CYCLE:
             self.time = 0.0
@@ -282,7 +272,7 @@ class Player(PS.DirtySprite):
             if(self.dmg_count > 0):
                 self.dmg_count -= 1
                 self.face = list(self.face)[0]
-                #DMG
+                # DMG
                 if(self.face == 'r'):
                     self.update_image(self.IMAGES_RIGHT_DMG)
                 elif(self.face == 'u'):
@@ -300,7 +290,7 @@ class Player(PS.DirtySprite):
                     self.update_image(self.IMAGES_LEFT)
                 elif (self.face == 'd'):
                     self.update_image(self.IMAGES_FRONT)
-                #standing
+                # standing
                 elif self.attack_pose is False:
                     if(self.face == 'rs'):
                         self.image = self.IMAGES_RIGHT[0]
@@ -312,21 +302,22 @@ class Player(PS.DirtySprite):
                         self.image = self.IMAGES_FRONT[0]
                     else:
                         self.image = PI.load("FPGraphics/MC/" +
-                                             "MCwalk/MCFront.png").convert_alpha()
+                                             "MCwalk/MCFront.png").
+                        convert_alpha()
                     self.attack_pose = False
         self.dirty = 1
 
     def update_image(self, imageArray):
             try:
-                    self.image = imageArray[self.frame].convert_alpha()
+                self.image = imageArray[self.frame].convert_alpha()
             except IndexError:
-                    self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
-                        .convert_alpha()
-                    self.face = list(self.face)[0]
+                self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
+                    .convert_alpha()
+                self.face = list(self.face)[0]
 
     def draw(self, screen, block_group):
             """ Draw on surface """
-            #key = PG.key.get_pressed()
+            # key = PG.key.get_pressed()
             self.check_boundary(screen)
             # blit yourself at your current position
             screen.blit(self.image, (self.rect.x, self.rect.y))
@@ -335,31 +326,31 @@ class Player(PS.DirtySprite):
             width = screen.get_width() * 2
             height = screen.get_height() * 2
             if self.rect.x < 0:
-                    self.rect.x = 0
+                self.rect.x = 0
             elif self.rect.x > (width - self.image.get_width()):
-                    self.rect.x = width - self.image.get_width()
+                self.rect.x = width - self.image.get_width()
             if self.rect.y < 0:
-                    self.rect.y = 0
+                self.rect.y = 0
             elif self.rect.y > (height - self.image.get_height()):
-                    self.rect.y = (height - self.image.get_height())
+                self.rect.y = (height - self.image.get_height())
 
     def load_images_helper(self, imageArray, sheet):
             alphabg = (23, 23, 23)
             for i in range(3, 7):
-                    surface = PG.Surface((100, 100))
-                    surface.set_colorkey(alphabg)
-                    surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
-                    imageArray.append(surface)
+                surface = PG.Surface((100, 100))
+                surface.set_colorkey(alphabg)
+                surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+                imageArray.append(surface)
             for i in range(5, 0, -1):
-                    surface = PG.Surface((100, 100))
-                    surface.set_colorkey(alphabg)
-                    surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
-                    imageArray.append(surface)
+                surface = PG.Surface((100, 100))
+                surface.set_colorkey(alphabg)
+                surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+                imageArray.append(surface)
             for i in range(0, 3):
-                    surface = PG.Surface((100, 100))
-                    surface.set_colorkey(alphabg)
-                    surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
-                    imageArray.append(surface)
+                surface = PG.Surface((100, 100))
+                surface.set_colorkey(alphabg)
+                surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+                imageArray.append(surface)
             return imageArray
 
     def load_images(self):
@@ -392,13 +383,16 @@ class Player(PS.DirtySprite):
                                                           sheetF)
             Player.IMAGES_BACK = self.load_images_helper(Player.IMAGES_BACK,
                                                          sheetB)
-
-            #load attack images
+            # load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCFrontFPOnePiece.png").convert_alpha()
+                                          "MCFrontFPOnePiece.png").
+            convert_alpha()
             Player.IMG_ATTACK_U = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCBackPOnePiece.png").convert_alpha()
+                                          "MCBackPOnePiece.png").
+            convert_alpha()
             Player.IMG_ATTACK_R = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCRightFPOnePiece.png").convert_alpha()
+                                          "MCRightFPOnePiece.png").
+            convert_alpha()
             Player.IMG_ATTACK_L = PI.load("FPGraphics/MC/MCattack/" +
-                                          "MCLeftFPOnePiece.png").convert_alpha()
+                                          "MCLeftFPOnePiece.png").
+            convert_alpha()
