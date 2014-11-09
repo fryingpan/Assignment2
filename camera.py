@@ -55,13 +55,13 @@ class Camera(object):
                 scrollx -= boundx[0] - (playerx + 3)
         # moving right
         elif playerx > boundx[1]:
-                scrollx += (playerx + 3) - (boundx[1] )
-        # moving up 
+                scrollx += (playerx + 3) - (boundx[1])
+        # moving up
         if playery < boundy[0]:
                 scrolly -= boundy[0] - (playery + 3)
-        # moving down        
+        # moving down
         elif playery > boundy[1]:
-                scrolly += (playery + 3) - (boundy[1] )
+                scrolly += (playery + 3) - (boundy[1])
 
         if scrollx != 0 or scrolly != 0:
                 move = True
