@@ -9,6 +9,7 @@ import pygame.time as PT
 ###### this class will be called by Map.py
     ## ~ Block class
 
+
 ###### Hot / Cold Pad Class
 class Pad(PS.DirtySprite):
     def __init__(self, img, rect, t):
@@ -73,5 +74,3 @@ class Pad(PS.DirtySprite):
 def create_Pad(img, rect, t):
     new_pad = Pad(img, rect, t)
     return new_pad
-
-
