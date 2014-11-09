@@ -8,13 +8,15 @@ import pygame.image as PI
 # from Player import Player
 # from Enemy import Enemy
 
+
 class Trap(PS.DirtySprite):
 
     IMAGE = None
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, surface, rect, lifetime, thetype, image = None, animation = True):
+    def __init__(self, surface, rect, lifetime, thetype,
+                 image=None, animation=True):
         PS.DirtySprite.__init__(self)
         self.rect = rect
         # the life of the trap
@@ -25,7 +27,7 @@ class Trap(PS.DirtySprite):
         self.y = self.rect.y
         self.type = thetype
         self.animation = animation
-        # booleans to start animation 
+        # booleans to start animation
         self.dropped = False
         self.disappear = False
         self.set_anim_start()
@@ -38,7 +40,6 @@ class Trap(PS.DirtySprite):
         self.remove = False
         self.surface = surface
         self.load_images()
-
 
     def update(self, bg, player_group):
         self.trap_attack = False
@@ -57,7 +58,7 @@ class Trap(PS.DirtySprite):
             collisions = self.handle_collisions(player_group)
             if len(collisions) > 0:
                 self.trap_attack = True
-        else: 
+        else:
             collisions = self.handle_collisions(bg)
         self.dirty = 1
 
@@ -132,7 +133,7 @@ class Puddle(Trap):
         self.lifetime = 6000
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
-                .convert_alpha()
+            .convert_alpha()
         Trap.static_image = Trap.IMAGE
         Trap.image = self.static_image
 
@@ -156,7 +157,6 @@ class Puddle(Trap):
         #initialize parent class
         Trap.__init__(self, surface, rect, self.lifetime, self.type)
 
-
     #load animation images
     def load_images(self):
         Trap.IMAGES_APPEAR = []
@@ -171,7 +171,7 @@ class Puddle(Trap):
             Trap.IMAGES_DISAPPEAR, sheetD)
 
     def load_images_helper(self, imageArray, sheet):
-        #split images into an array. Each individual imagae in the sheet is 50x50
+        #split images into an array. Each image in the sheet is 50x50
         alphabg = (23, 23, 23)
         for i in range(0, 3):
             surface = PG.Surface((50, 50))
@@ -179,4 +179,3 @@ class Puddle(Trap):
             surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
             imageArray.append(surface)
         return imageArray
-
