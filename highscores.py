@@ -5,6 +5,8 @@ from pygame import display as PDI
 from pygame import event as PE
 from pygame.locals import *
 import Globals
+import pygame.mixer as PM
+
 
 #Container for Local variables
 class Locals(object):
@@ -24,7 +26,8 @@ class HighScores:
 
     def __init__(self):
         #PG.font.init()
-
+        PM.music.load("music/highscores.mod")
+        PM.music.play(-1)
         self.color = PC.Color("black")
         self.time = 0.0
         Globals.SCREEN.fill(PC.Color("black"))
@@ -54,6 +57,7 @@ class HighScores:
         fadeout = 0.2
         for ev in event:
             if ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
+                    PM.music.fadeout(1000)
                     Globals.STATE = "Menu"
 
     def get_text_surface(self):
@@ -76,7 +80,6 @@ def addScoretoText():  # only run if SCORE !=0
         f.write(toAdd)
         f.close()
     Globals.SCORE = 0
-
 
 
 def render_text(string, font, rect, text_color, background_color):

@@ -13,7 +13,6 @@ from Trap import Puddle
 from Item import IceCreamScoop
 
 
-
 class IceCream(Enemy):
     IMAGE_UP = None
     IMAGE_DOWN = None
@@ -23,7 +22,7 @@ class IceCream(Enemy):
 
     CYCLE = .6
 
-    def __init__(self, xlocation, ylocation,fps=1):
+    def __init__(self, xlocation, ylocation, fps=1):
         ######unique attributes parent class doesn't have
         self.enemy_ID = 1  # icecream ID
         self.image = PI.load("FPGraphics/Food/IceCreamFront.png") \
@@ -42,8 +41,9 @@ class IceCream(Enemy):
         self.IMAGES_FRONT = []
         self.IMAGES_BACK = []
         self.load_images()
-        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT, self.IMAGES_LEFT, self.IMAGES_FRONT, self.IMAGES_BACK, self.health, self.speed)
-
+        Enemy.__init__(self, self.rect, self.IMAGES_RIGHT,
+                       self.IMAGES_LEFT, self.IMAGES_FRONT,
+                       self.IMAGES_BACK, self.health, self.speed)
 
     # def drop_item(self):
     #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)
@@ -55,7 +55,8 @@ class IceCream(Enemy):
     def move(self, bg, player, interval):
         if(random.randint(0, 200) == 0):
             self.direction = random.randint(0, 3)
-        dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
+        dist = int(self.speed)
+        # distance moved in 1 frame, try changing it to 5
         move_dist = dist*interval
         if self.direction == 0:  # down key
             self.rect.y += move_dist  # move down
@@ -69,7 +70,7 @@ class IceCream(Enemy):
         elif self.direction == 3:  # left key
             self.rect.x -= move_dist  # move left
             self.face = 'l'
-        self.handle_collision(bg)    
+        self.handle_collision(bg)
         self.handle_collision(player)
 
     def drop_item(self, surface):
@@ -96,11 +97,10 @@ class IceCream(Enemy):
         sheetB = PI.load("FPGraphics/Food/IceCreamWalkBack.png") \
             .convert_alpha()
         self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
-                                                     sheetR)
+                                                    sheetR)
         self.IMAGES_LEFT = self.load_images_helper(self.IMAGES_LEFT,
-                                                    sheetL)
+                                                   sheetL)
         self.IMAGES_FRONT = self.load_images_helper(self.IMAGES_FRONT,
-                                                     sheetF)
+                                                    sheetF)
         self.IMAGES_BACK = self.load_images_helper(self.IMAGES_BACK,
-                                                    sheetB)
-
+                                                   sheetB)
