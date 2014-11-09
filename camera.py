@@ -78,16 +78,6 @@ class Camera(object):
                 subsurface(self.cameraxy[0], self.cameraxy[1],
                            WIN_WIDTH, WIN_HEIGHT)
         return self.background
-        # Globals.SCREEN.blit(self.background, (0, 0))
-
-    def draw(self):
-        self.font = PF.SysFont('Arial', 25)
-        s = "WOO"
-        Globals.SCREEN.blit(self.background, (0, 0))
-        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
-                                        (25, 350))
-
-
 
     #check that the camera doesn't go off the map
     def check_boundary(self):
