@@ -1,3 +1,9 @@
+'''
+Team: fryingpan
+author: Carla
+edited: Katie
+'''
+
 import sys
 import math
 import pygame as PG
@@ -10,7 +16,8 @@ from pygame import image
 from pygame.locals import *
 import Globals
 
-#Container for Local variables
+
+# Container for Local variables
 class Locals(object):
     RUNNING = True
     SCREEN = None
@@ -24,7 +31,7 @@ class Locals(object):
 
 
 class Title:
-
+    # Class variables
     IMAGES = None
 
     def __init__(self):
@@ -32,19 +39,18 @@ class Title:
         self.time = 0.0
         if not Title.IMAGES:
                 Title.IMAGES = self.load_images()
-
         Globals.SCREEN = PDI.set_mode((800, 600), PG.DOUBLEBUF | PG.HWSURFACE)
         Globals.WIDTH = Globals.SCREEN.get_width()
         Globals.HEIGHT = Globals.SCREEN.get_height()
-
         self.images = Title.IMAGES
-
+        # enemy image position
         self.enemyx = Globals.WIDTH
         self.enemyy = Globals.HEIGHT - self.images[0].get_height()
+        # player image position
         self.playerx = 0 - self.images[1].get_width()
         self.playery = Globals.HEIGHT - self.images[1].get_height()
-
         Globals.SCREEN.fill(PC.Color("white"))
+        # Animation for tile text
         bigfont = PG.font.Font(None, 60)
         self.renderer = textWavey(bigfont, "Frying Pan", (252, 222, 128), 4)
         self.inst_surf = PF.Font(None, 35)
@@ -62,17 +68,16 @@ class Title:
     def render(self):
         # surf = Globals.FONT.render("Title Screen", True, self.color)
         Globals.SCREEN.fill(self.color)
+        # render text animation
         self.text = self.renderer.animate().convert()
-
-
-
+        # get width and height of text box
         width, height = self.text.get_size()
+        # draw images and text to the screen
         Globals.SCREEN.blit(self.images[2], (0, 0))
         Globals.SCREEN.blit(self.images[0], (self.enemyx, self.enemyy))
         Globals.SCREEN.blit(self.images[1], (self.playerx, self.playery))
         Globals.SCREEN.blit(self.text, (Globals.WIDTH/2 - width/2,
                                         Globals.HEIGHT/15))
-
         surf = self.inst_surf.render("Press SPACE to Continue", True,
                                      self.color)
         surf_width, surf_height = surf.get_size()
@@ -80,14 +85,17 @@ class Title:
                                    Globals.HEIGHT/2 - surf_height*7))
         PDI.flip()
 
+    # Move player image
     def move_player(self):
         if self.playerx < -17:
             self.playerx += 20
 
+    # Move enemy image
     def move_enemy(self):
         if self.enemyx > (Globals.WIDTH - self.enemyx):
             self.enemyx -= 20
 
+    # update images
     def update(self):
         self.time = 0.1
         self.move_player()
@@ -99,14 +107,16 @@ class Title:
             self.color = PC.Color(value, value, value)
 
     def event(self, event):
-        #Allows quitting pygame and changing states
-        #added changes for multiple states to allow testing
+        # Allows quitting pygame and changing states
+        # added changes for multiple states to allow testing
         for ev in event:
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
                 Globals.STATE = 'Menu'
 
+
+# Class for the wavy text animation
 class textWavey:
     def __init__(self, font, message, fontcolor, amount=10):
         # 42, 5, 2
