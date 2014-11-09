@@ -80,6 +80,7 @@ class Game(object):
         self.map = Map.Map('mapfile.txt', self.level)
         self.background = self.map.create_background()
         self.camera = cam.Camera(self.map.get_surface())
+        self.camera_background = None
         ##draw sprites
         self.character = Player(Globals.DELTA)
         self.player_group = PS.GroupSingle(self.character)
@@ -135,6 +136,7 @@ class Game(object):
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
+
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -244,7 +246,7 @@ class Game(object):
                 self.make_disappear = False
 
         #update camera's position on the map
-        self.camera.update(self.character.get_coordinates(),
+        self.camera_background = self.camera.update(self.character.get_coordinates(),
                            self.map.get_surface())
         #####temporary code to detect for door objective###############
         if(self.character.rect.x > 2200 and self.character.rect.x < 2700
@@ -263,6 +265,78 @@ class Game(object):
         ###WAS IN RENDER BUT WORKS BETTER IN UPDATE####
         #adding objective banner here
         #change so that banner only appears when necessary
+        # self.objective.updateObjective(self.map.get_surface())
+
+        # s = "Score: " + str(Globals.SCORE)
+        # Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+        #                     (25, 550))
+        # s = "Health: " + str(self.character.health)
+        # Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+        #                     (25, 520))
+
+        # if(Globals.SCORE == self.num_enemies):  # - 1):
+        #         #^!!!! less than one for cutscene bug
+        #         Globals.SCREEN.blit(self.win_image, self.end_image_position)
+        #         if(self.end_time > 0):
+        #                 self.end_time -= 1
+        #         else:
+        #                 if self.level == 1:
+        #                     self.change_level(self.level)
+        #                 else:
+        #                     PM.music.fadeout(1000)
+        #                     if Globals.SCORE > 0:
+        #                         Globals.PLAYERNAME = str(inbx.ask(
+        #                             Globals.SCREEN, 'Name'))
+        #                         #Globals.SCORE = self.character.score
+        #                     Globals.STATE = "Menu"
+        # if(self.character.health <= 0):
+        #         Globals.SCREEN.blit(self.lose_image, self.end_image_position)
+        #         if(self.end_time > 0):
+        #                 self.end_time -= 1
+        #         else:
+        #                 PM.music.fadeout(1000)
+        #                 if Globals.SCORE > 0:
+        #                     Globals.PLAYERNAME = str(inbx.ask(
+        #                         Globals.SCREEN, 'Name'))
+        #                     #Globals.SCORE = self.character.score
+        #                 Globals.STATE = "Menu"
+        # ##Item Display
+        # if (self.character.pill is True):
+        #     Globals.SCREEN.blit(self.pill_img, (750, 550))
+        # ###########################################################
+
+        #######Pad Handling############
+        self.map.pad_hurt_player(self.character)
+
+        PD.update()  # update the screen
+
+    def render(self):
+
+#        ###(interface stuff)####
+#        #adding objective banner here
+#        self.objective.updateObjective()
+#        ##change so that banner only appears when necessary
+
+        if self.make_disappear:
+                self.background = self.map.update_background()
+                self.make_disappear = False
+
+        ##objective; organize later
+        self.remainingEnemies = self.num_enemies - Globals.SCORE
+        if self.remainingEnemies < self.num_enemies and self.killed is True:
+                self.killed = False
+                self.objective.changeObj(2)
+
+        ##draw dirty sprites
+        rects = self.allsprites.draw(self.map.get_surface(), self.background)
+        self.draw_screen()
+        # self.camera.draw()
+        PG.display.update(rects)
+
+        PD.flip()
+
+    def draw_screen(self):
+        Globals.SCREEN.blit(self.camera_background, (0, 0))
         self.objective.updateObjective()
 
         s = "Score: " + str(Globals.SCORE)
@@ -302,35 +376,7 @@ class Game(object):
         if (self.character.pill is True):
             Globals.SCREEN.blit(self.pill_img, (750, 550))
         ###########################################################
-
-        #######Pad Handling############
-        self.map.pad_hurt_player(self.character)
-
-        PD.update()  # update the screen
-
-    def render(self):
-
-#        ###(interface stuff)####
-#        #adding objective banner here
-#        self.objective.updateObjective()
-#        ##change so that banner only appears when necessary
-
-        if self.make_disappear:
-                self.background = self.map.update_background()
-                self.make_disappear = False
-
-        ##objective; organize later
-        self.remainingEnemies = self.num_enemies - Globals.SCORE
-        if self.remainingEnemies < self.num_enemies and self.killed is True:
-                self.killed = False
-                self.objective.changeObj(2)
-
-        ##draw dirty sprites
-        rects = self.allsprites.draw(self.map.get_surface(), self.background)
-        self.camera.draw()
-        PG.display.update(rects)
-
-        PD.flip()
+        
 
     def event(self, event):
         #Allows quitting pygame and changing states

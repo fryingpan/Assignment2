@@ -11,6 +11,7 @@ import pygame.color as PC
 import pygame.event as PE
 import pygame.font as PF
 import random
+import Globals
 
 class Objective(object):
     def __init__(self, screen):
@@ -26,8 +27,8 @@ class Objective(object):
 
     #puts banner and then objective on top
     def updateObjective(self):
-        self.screen.blit(self.image, (0, 0))
-        self.screen.blit(self.font.render(self.current_text, True, self.text_color), (50, 30))
+        Globals.SCREEN.blit(self.image, (0, 0))
+        Globals.SCREEN.blit(self.font.render(self.current_text, True, self.text_color), (50, 30))
         #self.updateBanner()
 
         # if whichText == 0:
