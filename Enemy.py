@@ -84,42 +84,30 @@ class Enemy(PG.sprite.DirtySprite):
         else:
             if self.face == 'r':
                 collisions = PS.spritecollide(self, bg, False)
-                once = True
                 for collision in collisions:
-                    if once:
-                        if(self.rect.x +
-                           self.rect.width) >= collision.rect.left:
-                            self.rect.x = collision.rect.left - self.rect.width
-                            once = False
+                    if(self.rect.x +
+                       self.rect.width) >= collision.rect.left:
+                        self.rect.x = collision.rect.left - self.rect.width
 
             elif self.face == 'l':
                 collisions = PS.spritecollide(self, bg, False)
-                once = True
                 for collision in collisions:
-                    if once:
-                        if (self.rect.x) <= (collision.rect.left +
-                                             collision.rect.width):
-                            self.rect.x = collision.rect.left + \
-                                collision.rect.width
-                            once = False
+                    if (self.rect.x) <= (collision.rect.left +
+                                         collision.rect.width):
+                        self.rect.x = collision.rect.left + \
+                            collision.rect.width
             elif self.face == 'd':
-                once = True
                 for collision in collisions:
-                    if once:
-                        if(self.rect.y +
-                           self.rect.height) >= collision.rect.top:
-                            self.rect.y = collision.rect.top - self.rect.height
-                            once = False
+                    if(self.rect.y +
+                       self.rect.height) >= collision.rect.top:
+                        self.rect.y = collision.rect.top - self.rect.height
             elif self.face == 'u':
                 collisions = PS.spritecollide(self, bg, False)
-                once = True
                 for collision in collisions:
-                    if once:
-                        if (self.rect.y <= (collision.rect.top +
-                                            collision.rect.height)):
-                            self.rect.y = collision.rect.top + \
-                                collision.rect.height
-                            once = False
+                    if (self.rect.y <= (collision.rect.top +
+                                        collision.rect.height)):
+                        self.rect.y = collision.rect.top + \
+                            collision.rect.height
 
     def update(self, bg, player):
         self.moved = False

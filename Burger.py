@@ -52,29 +52,41 @@ class Burger(Enemy):
         pass
 
     def move(self, bg, player, interval):
+        moved = False
+
+
         ran = random.randint(0,10)
+        move_dist = 0
         if(ran < 3): #slow him down cuz he hella scary when he's fast
             dist = int(self.speed)  # distance moved in 1 frame, try changing it to 5
             move_dist = math.ceil(dist*interval)
             if player.sprites()[0].rect.y > self.rect.y:
                 self.rect.y += move_dist  # move down
                 self.face = 'd'
-            else:
+                moved = True
+            elif player.sprites()[0].rect.y < self.rect.y:
                 self.rect.y -= move_dist  # move up
                 self.face = 'u'
+                moved = True
             if player.sprites()[0].rect.x > self.rect.x:
                 self.rect.x += move_dist  # move right
                 self.face = 'r'
-            else:
+                moved = True
+            elif player.sprites()[0].rect.x < self.rect.x:
                 self.rect.x -= move_dist  # move left
                 self.face = 'l'
+                moved = True
+
+            self.handle_collision(bg)
+            self.handle_collision(player)
         if(self.rect.x <0 and self.c == 0):
             self.c = 1
             print("x " + str(player.sprites()[0].rect.x) + " y " + str(player.sprites()[0].rect.y))
 
-        #print("x " + str(self.rect.x) + " y " + str(self.rect.y))
-        self.handle_collision(bg)
-        self.handle_collision(player)
+        # print("x " + str(self.rect.x) + " y " + str(self.rect.y))
+        print moved
+        # self.handle_collision(bg)
+        # self.handle_collision(player)
 
     def drop_item(self, surface):
             d = random.randint(0,9)
