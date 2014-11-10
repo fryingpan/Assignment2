@@ -9,18 +9,23 @@ Run the following to run the program:
 python masterfile.py
 
 Since we did most of our refactoring last week, we spent this week
-fixing bugs and adding features that we didn't get to fully implement.
+fixing bugs and editing features that we didn't get to fully implement.
 
 -The burger enemy now follows the player; The burger has 3 hp and will
 drop 3 items before being killed
-	-we still have to ork out kinks in the burger movement (collision
+	-we still have to work out kinks in the burger movement (collision
 	with walls makes it teleport)
 -we refactored the level changing such that we may change the levels
 by incrementing the self.level as opposed to using 'magic numbers.'
 	-Lvl_data class was added to hold levels' data
 -otherwise, we did genera refactoring like making the code more neat
 and more efficient.
+-Both burgers and icecreams will hurt you. Be careful.
 
+-Pep8'd all modules that we use.
+-We also fixed the player attacks such that the images don't flicker, and the collision detection to kill enemies only works when the weapon collides with the enemy (and not the player himself). This was a problem because we ended up making the weapon and player into one unified image / sprite, so every time a weapon hit an enemy, it also hurt the player. This is fixed.
+
+-We have a better level 2! A new text mapfile that adds the Heat Pads which hurt the player. 
 
 Todo List
 ----------
