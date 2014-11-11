@@ -86,7 +86,6 @@ class Map(object):
             #load the grass images into an array
             TILES_LOADED = False
 
-            print "trying to find loading tiles" + str(TILES_LOADED)
             if not TILES_LOADED:
                     Map.GRASS_ARRAY = self.load_grass_tiles(lvl)
                     Map.PAD_ARRAY = self.load_pad_tiles()
