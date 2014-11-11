@@ -81,6 +81,7 @@ class Player(PS.DirtySprite):
         self.item_use_count = 0
         self.item_type = 0
         self.player_items = []
+        self.readjust_attack = False
 
     def get_player_items(self):
         return self.player_items
@@ -220,6 +221,7 @@ class Player(PS.DirtySprite):
             if 'd' in self.face:
                 self.image = self.IMG_ATTACK_D
             if 'u' in self.face:
+                self.readjust_attack = True
                 self.image = self.IMG_ATTACK_U
             # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
@@ -258,8 +260,6 @@ class Player(PS.DirtySprite):
 
     def update(self, bg, selfgroup):
         self.moved = False
-        x_location = self.rect.x
-        y_location = self.rect.y
         PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
         # update time and frame
         key = PG.key.get_pressed()
@@ -309,6 +309,7 @@ class Player(PS.DirtySprite):
     def update_image(self, imageArray):
             try:
                 self.image = imageArray[self.frame].convert_alpha()
+
             except IndexError:
                 self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
                     .convert_alpha()
