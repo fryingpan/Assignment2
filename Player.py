@@ -150,10 +150,10 @@ class Player(PS.DirtySprite):
                 # self.open_door(bg)
                 self.got_key = True
                 self.modified_map = True
-            if collision.get_type().isdigit():  # at a door
+            if isinstance(collision.get_type(), str) and collision.get_type().isdigit():  # at a door
                 if self.pill:  # unlockable door
                     self.at_door_num = collision.get_type()
-                    print("CAN OPEN " + collision.get_type())
+                    # print("CAN OPEN " + collision.get_type())
                 else:
                     self.at_door_num = -1
             else:
@@ -216,7 +216,8 @@ class Player(PS.DirtySprite):
                 self.handle_collision(item_group)
         # drop item if you have one
         elif key[PG.K_d]:
-            if self.item:
+            if self.item and self.can_drop:
+                self.can_drop = False
                 self.drop_item(screen)
                 if self.item_use_count == 0:
                     self.item = False
@@ -256,6 +257,8 @@ class Player(PS.DirtySprite):
                 self.pill = False
         else:  # ds = down 'standing' (not moving) **********
             standing = True
+        if not key[PG.K_d]:
+            self.can_drop = True
         if standing:
             if self.face == 'd':
                     self.face = 'ds'
