@@ -199,6 +199,7 @@ class Game(object):
 
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface())
+
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()
         for item in new_items:
@@ -222,6 +223,8 @@ class Game(object):
             if item.will_remove():
                 self.item_list.remove(item)
                 self.item_group.remove(item)
+                self.character.remove_player_item(item)
+        print player_items
 
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.item_group, 

@@ -83,6 +83,9 @@ class Player(PS.DirtySprite):
         self.item_type = 0
         self.player_items = []
 
+    def remove_player_item(self, item):
+        self.player_items.remove(item)
+
     def get_player_items(self):
         return self.player_items
 
@@ -209,7 +212,7 @@ class Player(PS.DirtySprite):
             self.face = 'l'
             self.handle_collision(bg)
         # grab item if available
-        elif key[PG.K_a]:
+        elif key[PG.K_s]:
             # check if you already have an item
             if not self.item:
                 self.grab_item = True
