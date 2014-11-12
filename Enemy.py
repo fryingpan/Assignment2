@@ -69,7 +69,7 @@ class Enemy(PG.sprite.DirtySprite):
         # print("health " + str(self.health))
 
     def will_attack(self):
-        attack_prob = random.randint(0, 500)
+        attack_prob = random.randint(0, 800)
         if (attack_prob == 1):
             return True
         return False
