@@ -82,7 +82,6 @@ class Player(PS.DirtySprite):
         self.item_use_count = 0
         self.item_type = 0
         self.player_items = []
-        self.readjust_attack = False
 
     def get_player_items(self):
         return self.player_items
@@ -188,6 +187,7 @@ class Player(PS.DirtySprite):
         self.grab_item = False
         self.interval = interval
         key = PG.key.get_pressed()
+        temp = self.rect.x
         if key[PG.K_DOWN]:  # down key
             self.rect.y += self.speed  # move down
             # self.rect = self.image.get_rect()
@@ -228,7 +228,6 @@ class Player(PS.DirtySprite):
             if 'd' in self.face:
                 self.image = self.IMG_ATTACK_D
             if 'u' in self.face:
-                self.readjust_attack = True
                 self.image = self.IMG_ATTACK_U
             # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
@@ -312,7 +311,7 @@ class Player(PS.DirtySprite):
                     else:
                         self.image = PI.load("FPGraphics/MC/" +
                                              "MCwalk/MCFront.png").convert_alpha()
-                    self.attack_pose = False
+#                    self.attack_pose = False
         self.dirty = 1
 
     def update_image(self, imageArray):
@@ -329,6 +328,10 @@ class Player(PS.DirtySprite):
             # key = PG.key.get_pressed()
             self.check_boundary(screen)
             # blit yourself at your current position
+#            print "player's draw 332"
+#            if self.attack_pose is True and 'l' in self.face:
+#                screen.blit(self.image, (self.rect.x-50, self.rect.y))
+#            else:
             screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def check_boundary(self, screen):

@@ -56,18 +56,16 @@ class Pad(PS.DirtySprite):
 
     ###hurts player, enemy (??how??)
     def i_am_hot(self, player):
-            print "here"
             player.health -= 1
 
-    ###animates player into an ice cube?
-    #def i_am_cold():
-
-#    def update(self, delta, bg, player):
-#            if self.type == 'K' or self.type == 'D':
-#                    self.dirty = 1
-
-
-##Load images
+    ###slows down player
+    def i_am_cold(self, player):
+            print "herro i am cold"
+            for x in range(100):
+                #sloooow down player.
+                #but make sure he can still kinda move,
+                #else he's just stuck there foreverrr
+                player.speed = 1
 
 ##creates a new pad sprite
 #called by Map.py
