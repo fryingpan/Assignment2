@@ -79,7 +79,7 @@ def loop():
         state.update()
         interval += elapsed
 
-        while interval > .03:
+        while interval > .02:
             #print elapsed
 #fix later? only needed in the game state.
             Globals.DELTA = elapsed
@@ -90,7 +90,7 @@ def loop():
             if event:
                 state.event(event)
 
-            interval -= .03
+            interval -= .02
 
 
 #elif Globals.STATE == "Game":
