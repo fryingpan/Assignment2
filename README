@@ -26,12 +26,18 @@ and more efficient.
 -We also fixed the player attacks such that the images don't flicker, and the collision detection to kill enemies only works when the weapon collides with the enemy (and not the player himself). This was a problem because we ended up making the weapon and player into one unified image / sprite, so every time a weapon hit an enemy, it also hurt the player. This is fixed.
 
 -We have a better level 2! A new text mapfile that adds the Heat Pads which hurt the player. 
+-The bugs in the items and drop system are also fixed.
+
 
 Todo List
 ----------
--Find a way to compress imgs! - Mary
--Mary - fix banner
--Tiles: Mary will fix shrubs, etc for alpha
+
+-Tutorial (in banners)
+    -change to signs (press 'r' to read)
+    -How to use items
+    -fix cheese door tutorial
+    -start with sign at beginning to tell you how to read signs (press 'n' to read through)
+
 -item system
     -probably don't need to KEEP key in an inventory; simply open the door when you get the key?
         -inventory includes key
@@ -41,18 +47,36 @@ Todo List
         -key to drop item in case player picked it up by accident
         -item uses different key from frying pan
     -Icecream weapon: let player drop puddles (show how many puddles you have left to drop)
-
-Carla:
-    -have enemy drop item when killed
-    -player pick up item
-    -player use item (w/key other than space bar)    
+    -be able to use or eat
 
 Enemy
 	-Enemy AI: follow player when you get close
 
+Carla:
+    -player use item (w/key other than space bar)    
+
+Mary:
+    -make menu screen image
+    -make lettuce
+    -make another cutscene
+    -make doors distinct
+        -make the player detect door by whether door is num type
+    -restrict movement space of homing enemies (justification/handwave: want to force player to find enemies)
+    -fix dmg frames
+
+Katie
+    -fix atk img
+    -animate hot pads
+    -make cold pads (slow down player)
+
+Somebody do this:
+    -make player eat item drop for health
+    -implement new enemy (lettuce)
+    -change the win/lose to display different dialogs (random)
+    -Make frying pan dmg more accurate
+
 -Weapons - Katie
     -fix animation - Katie
--look into why damage is wonky
 -music/sound
 
 -more enemies
@@ -60,7 +84,12 @@ Enemy
     -could change to tablets?
 
 High Score Page Fix
+
     
+REMINDERS FOR BETA
+-Turn on Cutscenes
+-Make cooler levels
+
 Our schedule
 =============
 Beta - NOV 19

@@ -174,14 +174,14 @@ class Map(object):
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall2.png"))
             self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH1.png"))
             self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH2.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHL.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHR.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVD.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVU.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETL.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETR.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBL.png"))
-            self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBR.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHL.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHR.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVD.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVU.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETL.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETR.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBL.png"))
+            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBR.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
             self.shrubBlocks.append(
@@ -279,16 +279,16 @@ class Map(object):
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
                 # Door blocks
-                elif char_list[y] == 'D':
-                    new_block = create_Block(self.doorBlocks
-                                             [random.randint(0, len(self.
-                                                             doorBlocks))-1],
-                                             PG.Rect(x_coor, y_coor,
-                                                     self.grid_size[0],
-                                                     self.grid_size[1]),
-                                             char_list[y])
-                    self.disappearing_blocks.add(new_block)
-                    self.spots_to_be_filled.append((x_coor, y_coor))
+                # elif char_list[y] == 'D':
+                    # new_block = create_Block(self.doorBlocks
+                    #                          [random.randint(0, len(self.
+                    #                                          doorBlocks))-1],
+                    #                          PG.Rect(x_coor, y_coor,
+                    #                                  self.grid_size[0],
+                    #                                  self.grid_size[1]),
+                    #                          char_list[y])
+                    # self.disappearing_blocks.add(new_block)
+                    # self.spots_to_be_filled.append((x_coor, y_coor))
                 elif char_list[y] == 'S':
                     new_block = create_Block(self.shrubBlocks
                                              [random.randint(0, len(self.
@@ -312,21 +312,24 @@ class Map(object):
                                                      self.grid_size[0],
                                                      self.grid_size[1]),
                                              char_list[y])
-                elif char_list[y] == 'I':
+                elif char_list[y] == 'I': #icecream
                     self.ic_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] == 'B':
+                elif char_list[y] == 'B': #burger
                     self.br_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] != '.' and char_list[y] != ',':
-                #edges image are determined by index
-                    print(char_list[y])
-                    new_block = create_Block(self.wallBlocksE
-                                             [int(char_list[y])],
-                                             PG.Rect(x_coor, y_coor,
-                                                     self.grid_size[0],
-                                                     self.grid_size[1]),
-                                             char_list[y])
+                elif char_list[y].isdigit():
+                    #number, so we put doors here
+                    new_block = create_Block(self.doorBlocks
+                                                 [random.randint(0, len(self.
+                                                                 doorBlocks))-1],
+                                                 PG.Rect(x_coor, y_coor,
+                                                         self.grid_size[0],
+                                                         self.grid_size[1]),
+                                                 char_list[y])
+                    self.disappearing_blocks.add(new_block)
+                    self.spots_to_be_filled.append((x_coor, y_coor))
+                
                 #set the block & add to obj group
                 new_block.set_rectTop(y_coor)
                 new_block.set_rectLeft(x_coor)
@@ -349,7 +352,6 @@ class Map(object):
                     newPad.set_rectLeft(x_coor)
                     newPad.set_rectTop(y_coor)
                     self.allPads.add(newPad)
-                    print "created hot"
                 ###################
 
                 x_coor += self.grid_size[0]
@@ -401,8 +403,8 @@ class Map(object):
 
         for block in self.object_group:
             block.draw_block(background)
-        for spot in self.spots_to_be_filled:
-            background.blit(self.grass_array[0], spot)
+        # for spot in self.spots_to_be_filled:
+        #     background.blit(self.grass_array[0], spot)
 
         return background
 

@@ -70,10 +70,11 @@ class Player(PS.DirtySprite):
         self.weapon = Weapon()
         self.moved = False
         self.interval = 0
-        self.opened_door = False
+        self.modified_map = False
         self.pill = False
-        self.at_door = -1  # allows player to open door if player has key
+        self.at_door_num = -1  # allows player to open door if player has key
         self.attack_pose = False
+        
         self.items_of_killed = []
         # Item Variables
         self.grab_item = False
@@ -97,9 +98,9 @@ class Player(PS.DirtySprite):
     def get_items_of_killed(self):
         return self.items_of_killed
 
-    def get_open_door(self):
-        returned = self.opened_door
-        self.opened_door = False
+    def get_modified_map(self):
+        returned = self.modified_map
+        self.modified_map = False
         return returned
 
     def get_rect_if_moved(self):
@@ -128,9 +129,9 @@ class Player(PS.DirtySprite):
 
     def open_door(self, bg):  # pass the enire block group.
         for block in bg:
-            if block.get_type() == 'D':
+            if block.get_type() == self.at_door_num:
                 block.kill()
-        self.opened_door = True
+        self.modified_map = True
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
@@ -149,9 +150,15 @@ class Player(PS.DirtySprite):
                 self.pill = True
                 # self.open_door(bg)
                 self.got_key = True
-            if collision.get_type() == "D":  # at a door
+                self.modified_map = True
+            if collision.get_type().isdigit():  # at a door
                 if self.pill:  # unlockable door
-                    self.at_door = True
+                    self.at_door_num = collision.get_type()
+                    print("CAN OPEN " + collision.get_type())
+                else:
+                    self.at_door_num = -1
+            else:
+                self.at_door_num = -1
             if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
                 if(self.rect.x + self.rect.width
                    ) >= collision.rect.left:
@@ -225,10 +232,7 @@ class Player(PS.DirtySprite):
                 self.image = self.IMG_ATTACK_U
             # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
-            if self.at_door:
-                self.open_door(bg)
-                self.pill = False
-                self.at_door = False
+
             # for x in range(100):
             killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
                                                 self.face, screen, enemy_bg)
@@ -246,6 +250,11 @@ class Player(PS.DirtySprite):
             # self.weapon.draw(screen)
             self.attack_pose = True
             standing = True
+
+            #handle locked doors
+            if self.at_door_num != -1: 
+                self.open_door(bg)
+                self.pill = False
         else:  # ds = down 'standing' (not moving) **********
             standing = True
         if standing:

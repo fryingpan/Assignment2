@@ -102,15 +102,14 @@ class Game(object):
         self.background = None
         self.end_time = 100
         self.end_image_position = (100, 178)
-        self.make_disappear = False
         self.block_group = None
 
         ####(Level variables)####
         self.invincibility_count = 0  # player's invinicibility frame time
         #what kind of enemy by ID (-1 means no enemy) used for collisions
         self.enemy_ID = -1
-        #if true, tells map to update w/o key & door
-        self.make_disappear = False
+        #if true, tells map to redraw
+        self.map_modified = False
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
@@ -232,11 +231,9 @@ class Game(object):
                                           self.burger_list)
 
         #cheese/door handling
-        self.make_disappear = self.character.get_open_door()
-
-        if self.make_disappear:
+        if self.character.get_modified_map():
                 self.background = self.map.update_background()
-                self.make_disappear = False
+                self.map_modified = False
 
         #update camera's position on the map
         self.camera_background = self.camera.update(self.character.get_coordinates(),
@@ -267,9 +264,9 @@ class Game(object):
 #        self.objective.updateObjective()
 #        ##change so that banner only appears when necessary
 
-        if self.make_disappear:
+        if self.map_modified:
                 self.background = self.map.update_background()
-                self.make_disappear = False
+                self.map_modified = False
 
         # ##objective; organize later
         # self.remainingEnemies = self.num_enemies - Globals.SCORE
@@ -415,10 +412,9 @@ class Game(object):
         #what kind of enemy by ID (-1 means no enemy) used for collisions
         self.enemy_ID = -1
         #if true, tells map to update w/o key & door
-        self.make_disappear = False
+        self.map_modified = False
         ##temp obj conditions
         self.cheesed = True
         self.killed = True
-        self.make_disappear = False
         self.update()
         self.render()
