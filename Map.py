@@ -155,7 +155,8 @@ class Map(object):
                     PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
             return tile_array
 
-    def load_pad_tiles(self):
+    def load_pad_tiles(self): ##CHANGE THIS TO CALL PAD CLASS'S LOAD IMAGES.
+            ##we want to do animation at this level, much like Enemy does animation for IceCream
             array = []
             array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
             array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
@@ -343,12 +344,24 @@ class Map(object):
                 self.grasstiles.append((x_coor, y_coor))
 
                 ##added pad tiles##
+                #HOT
                 if char_list[y] == ',':
                     self.pad_type.append(0)
                     # 0 or 1, type for hot or cold pads
                     self.padtiles.append((x_coor, y_coor))
                     newPad = Pad.create_Pad(self.pad_array[0],
                                             self.pad_array[0].get_rect(), 0)
+                    newPad.set_rectLeft(x_coor)
+                    newPad.set_rectTop(y_coor)
+                    self.allPads.add(newPad)
+
+                #COLD
+                if char_list[y] == ';':
+                    self.pad_type.append(1)
+                    # 0 or 1, type for hot or cold pads
+                    self.padtiles.append((x_coor, y_coor))
+                    newPad = Pad.create_Pad(self.pad_array[0],
+                                            self.pad_array[0].get_rect(), 1)
                     newPad.set_rectLeft(x_coor)
                     newPad.set_rectTop(y_coor)
                     self.allPads.add(newPad)
@@ -381,7 +394,10 @@ class Map(object):
         for pad in self.allPads:
             if pad.rect.colliderect(player.rect):
                 #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
-                pad.i_am_hot(player)
+                if pad.type == 0:
+                    pad.i_am_hot(player)
+                elif pad.type == 1:
+                    pad.i_am_cold(player)
         ###########################################
 
     def update_background(self):
@@ -396,7 +412,7 @@ class Map(object):
         else:
             print "ERROR: grasstile != grass_type. Map.py line 183"
 
-            #####bliting hot / cold########
+            #####bliting hot / cold???########
         for (pad, padtype) in zip(self.padtiles, self.pad_type):
             background.blit(self.pad_array[padtype], pad)
             #############################
@@ -432,6 +448,8 @@ class Map(object):
             print "ERROR: grasstile != grass_type. Map.py line 183"
 
         #####bliting hot / cold########
+        #Won't need to define which pads are specifically in which level
+        #That is defined in our map txt files
         for (pad, padtype) in zip(self.padtiles, self.pad_type):
             background.blit(self.pad_array[padtype], pad)
         #############################
