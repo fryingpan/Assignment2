@@ -68,6 +68,7 @@ def loop():
             state = Menu.Menu()
         elif Globals.STATE == "Game" and Globals.CURRENTSTATE != "Game":
             Globals.CURRENTSTATE = "Game"
+            Globals.SCORE = 0
             state = Game.Game()
         elif Globals.STATE == "Score" and Globals.CURRENTSTATE != "Score":
             Globals.CURRENTSTATE = "Score"

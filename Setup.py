@@ -348,8 +348,15 @@ class Game(object):
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.updateBanner()
+                
+    def reset_level(self):
+        for item in self.item_group.sprites():
+            self.item_group.remove(item)
+        for trap in self.trap_group.sprites():
+            self.trap_group.remove(trap)
 
     def change_level(self, currentLevel):
+        self.reset_level()
         self.level = currentLevel
         ldata = Lvl_Data(self.level)
         self.objective = ldata.objective
@@ -421,3 +428,5 @@ class Game(object):
         self.killed = True
         self.update()
         self.render()
+
+        
