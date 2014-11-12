@@ -13,7 +13,7 @@ class Trap(PS.DirtySprite):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, surface, rect, lifetime, thetype, image=None,
+    def __init__(self, surface, rect, thetype, user, lifetime=8000, image=None,
                  animation=True):
         PS.DirtySprite.__init__(self)
         self.rect = rect
@@ -24,6 +24,7 @@ class Trap(PS.DirtySprite):
         self.x = self.rect.x
         self.y = self.rect.y
         self.type = thetype
+        self.user = user
         self.animation = animation
         # booleans to start animation
         self.dropped = False
@@ -37,7 +38,8 @@ class Trap(PS.DirtySprite):
         # whether the trap need to be removed from the list of traps in SetUp
         self.remove = False
         self.surface = surface
-        self.load_images()
+        if animation:
+            self.load_images()
 
     def update(self, bg, player_group):
         self.trap_attack = False
@@ -57,9 +59,10 @@ class Trap(PS.DirtySprite):
             else:
                 self.draw(self.surface, True)
             # check if enemy trap collides with the player
-            collisions = self.handle_collisions(player_group)
-            if len(collisions) > 0:
-                self.trap_attack = True
+            if self.user == 'E':
+                collisions = self.handle_collisions(player_group)
+                if len(collisions) > 0:
+                    self.trap_attack = True
         else:
             collisions = self.handle_collisions(bg)
         self.dirty = 1
@@ -161,7 +164,7 @@ class Puddle(Trap):
         self.num_frames = 3
         self.type = 'E'
         # initialize parent class
-        Trap.__init__(self, surface, rect, self.lifetime, self.type)
+        Trap.__init__(self, surface, rect, self.type, 'E', self.lifetime)
 
     # load animation images
     def load_images(self):

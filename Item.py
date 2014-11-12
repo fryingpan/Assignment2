@@ -62,7 +62,7 @@ class IceCreamScoop(Item):
 		# from what enemy its from
 		self.type = 1
 		# how long the item is available to grab
-		self.lifetime = 800
+		self.lifetime = 2000
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player

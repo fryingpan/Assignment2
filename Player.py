@@ -17,6 +17,7 @@ import pygame.image as PI
 from Weapon import Weapon
 import Globals
 import Item
+from Trap import Trap
 
 
 class Player(PS.DirtySprite):
@@ -82,6 +83,7 @@ class Player(PS.DirtySprite):
         self.item_use_count = 0
         self.item_type = 0
         self.player_items = []
+        self.player_traps = []
 
     def remove_player_item(self, item):
         self.player_items.remove(item)
@@ -93,9 +95,29 @@ class Player(PS.DirtySprite):
         if self.item_type == 1:
             self.player_items.append(Item.IceCreamScoop(self.rect.x,
                                                         self.rect.y, surface))
+
+    def drop_trap(self, surface):
+        if (self.item_type == 1):
+            image = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
+        rect = image.get_rect()
+        rect.x = self.rect.x
+        rect.y = self.rect.y
+        self.player_traps.append(Trap(surface,         # surface to be drawn in
+                                     rect,             # rect of the image 
+                                     self.item_type,   # the type of trap
+                                     'P',              # Player is the user 
+                                     None,             # lifetime 
+                                     image,            # image 
+                                     False))           # if the trap will be animated
+
+        if len(self.player_traps) > 0:
+            print "dropped trap"
         self.item_use_count -= 1
         if self.item_use_count == 0:
-                    self.item = False
+            self.item = False
+
+    def get_player_traps(self):
+        return self.player_traps
 
     def get_items_of_killed(self):
         return self.items_of_killed
@@ -211,6 +233,12 @@ class Player(PS.DirtySprite):
             # self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
+
+        elif key[PG.K_a]:
+            if self.item and self.can_drop:
+                self.drop_trap(screen)
+                self.can_drop = False
+
         # grab item if available
         elif key[PG.K_s]:
             # check if you already have an item
@@ -220,10 +248,8 @@ class Player(PS.DirtySprite):
         # drop item if you have one
         elif key[PG.K_d]:
             if self.item and self.can_drop:
-                self.can_drop = False
                 self.drop_item(screen)
-                if self.item_use_count == 0:
-                    self.item = False
+                self.item = False
         elif key[PG.K_SPACE]:  # space key ATTACK
             if 'r' in self.face:
                 self.image = self.IMG_ATTACK_R
@@ -260,7 +286,7 @@ class Player(PS.DirtySprite):
                 self.pill = False
         else:  # ds = down 'standing' (not moving) **********
             standing = True
-        if not key[PG.K_d]:
+        if not key[PG.K_a]:
             self.can_drop = True
         if standing:
             if self.face == 'd':
