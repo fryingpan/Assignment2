@@ -59,8 +59,6 @@ Mary:
     -make menu screen image
     -make lettuce
     -make another cutscene
-    -make doors distinct
-        -make the player detect door by whether door is num type
     -restrict movement space of homing enemies (justification/handwave: want to force player to find enemies)
     -fix dmg frames
 

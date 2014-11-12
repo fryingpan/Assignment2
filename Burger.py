@@ -31,6 +31,7 @@ class Burger(Enemy):
         self.image = PI.load("FPGraphics/burger/burgerFront.png") \
             .convert_alpha()
         self.front_image = self.image
+        self.bound_factor = 2
         #######
         #attributes to be passed to parent for parent function use
         self.health = 3
@@ -38,13 +39,16 @@ class Burger(Enemy):
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
         self.rect.y = ylocation
+        self.xboundl = xlocation - self.rect.width*self.bound_factor
+        self.yboundt = ylocation - self.rect.width*self.bound_factor
+        self.xboundr = xlocation + self.rect.width*self.bound_factor
+        self.yboundb = ylocation + self.rect.width*self.bound_factor
 
         self.IMAGES_RIGHT = []
         self.IMAGES_LEFT = []
         self.IMAGES_FRONT = []
         self.IMAGES_BACK = []
         self.load_images()
-        self.c = 0
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT,
                        self.IMAGES_LEFT, self.IMAGES_FRONT,
                        self.IMAGES_BACK, self.health, self.speed)
@@ -62,27 +66,21 @@ class Burger(Enemy):
             dist = int(self.speed)
             # distance moved in 1 frame, try changing it to 5
             move_dist = math.ceil(dist*interval)
-            if player.sprites()[0].rect.y > self.rect.y:
+            if player.sprites()[0].rect.y > self.rect.y and self.rect.y <= self.yboundb:
                 self.rect.y += move_dist  # move down
                 self.face = 'd'
-            elif player.sprites()[0].rect.y < self.rect.y:
+            elif player.sprites()[0].rect.y < self.rect.y and self.rect.y >= self.yboundt:
                 self.rect.y -= move_dist  # move up
                 self.face = 'u'
-            if player.sprites()[0].rect.x > self.rect.x:
+            if player.sprites()[0].rect.x > self.rect.x and self.rect.x <= self.xboundr:
                 self.rect.x += move_dist  # move right
                 self.face = 'r'
-            elif player.sprites()[0].rect.x < self.rect.x:
+            elif player.sprites()[0].rect.x < self.rect.x and self.rect.x >= self.xboundl:
                 self.rect.x -= move_dist  # move left
                 self.face = 'l'
 
             self.handle_collision(bg)
             self.handle_collision(player)
-        if(self.rect.x < 0 and self.c == 0):
-            self.c = 1
-            print("x " + str(player.sprites()[0].rect.x) + " y "
-                  + str(player.sprites()[0].rect.y))
-
-        # print("x " + str(self.rect.x) + " y " + str(self.rect.y))
 
     def drop_item(self, surface):
             d = random.randint(0, 9)
