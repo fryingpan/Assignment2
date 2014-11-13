@@ -66,7 +66,7 @@ class IceCreamScoop(Item):
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player
-		Item.use_count = 3
+		Item.use_count = 10
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
