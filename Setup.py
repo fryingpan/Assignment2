@@ -11,6 +11,7 @@ try:
     from Player import Player
     from IceCream import IceCream
     from Burger import Burger
+    import pad as Pad
     import pygame.sprite as PS
     import pygame.display as PD
     import pygame.color as PC
@@ -84,15 +85,17 @@ class Game(object):
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
         self.enemy_list = PS.Group()  # all enemies
+        self.pad_list = PS.Group()
         self.trap_group = PS.Group()
         self.item_group = PS.Group()
 
-        #allsprites has all dirty sprites (player, enemies, traps)
+        #allsprites has all dirty sprites (player, enemies, traps, pads)
         self.allsprites = PS.LayeredDirty(self.item_group, 
                                           self.trap_group,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list)
+                                          self.burger_list,
+                                          self.pad_list)
         
         #variables to be handled in change_level method
         self.objective = None
@@ -121,9 +124,6 @@ class Game(object):
 ######STUFF WE GOTTA PUT SOMEWHERE##########
 #lv1_cutscene = Cutscene(Globals.SCREEN, self.level)
 #Must be init only ONCE, figure out where to put later!
-#music
-#-1 loop should loop forever
-#        PM.music.play(-1) Put with cutscene
 ##############################
 
     def update(self):
@@ -197,6 +197,15 @@ class Game(object):
                         self.character.invincibility_frames()
                 self.invincibility_count -= 1
 
+        ##Pad damage here
+        for pad in self.pad_list.sprites():
+            if pad.rect.colliderect(self.character.rect):
+                #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
+                if pad.type == 0:
+                    pad.i_am_hot(self.character)
+                elif pad.type == 1:
+                    pad.i_am_cold(self.character)
+
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface())
 
@@ -224,14 +233,15 @@ class Game(object):
                 self.item_list.remove(item)
                 self.item_group.remove(item)
                 self.character.remove_player_item(item)
-        print player_items
+        #print player_items
 
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.item_group, 
                                           self.trap_group,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list)
+                                          self.burger_list,
+                                          self.pad_list)
 
         #cheese/door handling
         if self.character.get_modified_map():
@@ -255,8 +265,8 @@ class Game(object):
                 # Globals.SCORE = self.character.score
                 return False
 
-        #######Pad Handling############
-        self.map.pad_hurt_player(self.character)
+#        #######Pad Handling############
+#        self.map.pad_hurt_player(self.character)
 
         PD.update()  # update the screen
 
@@ -387,6 +397,7 @@ class Game(object):
         
         PD.update()
 
+        #icecream
         for e in range(self.map.get_num_enemies(1)):
             icecream = IceCream(self.map.get_enemy_coordx(e, 1),
                                 self.map.get_enemy_coordy(e, 1))
@@ -399,6 +410,15 @@ class Game(object):
 
         self.enemy_list.add(self.icecream_list)
         self.enemy_list.add(self.burger_list)
+
+        #pads
+        for e in range(len(self.map.padtiles)):
+            print "line 418"
+            if self.map.pad_type[e] == 0:  # hot
+                print self.map.get_pad_x(e)
+                newPad = Pad.create_Pad(self.map.get_pad_x(e),
+                                        self.map.get_pad_y(e), 0)
+                self.pad_list.add(newPad)
 
         #get block sprite group from the map file
         self.block_group = self.map.get_object_group()
@@ -414,7 +434,8 @@ class Game(object):
         self.allsprites = PS.LayeredDirty(self.player_group,
                                           self.icecream_list,
                                           self.burger_list, self.trap_group,
-                                          self.item_group)
+                                          self.item_group,
+                                          self.pad_list)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####

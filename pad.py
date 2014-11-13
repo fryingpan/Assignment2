@@ -9,6 +9,7 @@ import random
 
 ###### this class will be called by Map.py
     ## ~ Block class
+    ##NOT ANYMORE. PAD WILL NOW BE AN 'ENEMY' THAT DOESN'T MOVE.
 
 
 ###### Hot / Cold Pad Class
@@ -17,12 +18,13 @@ class Pad(PS.DirtySprite):
 
     CYCLE = .6
 
-    def __init__(self, img, rect, t):
+    def __init__(self, xcoord, ycoord, t):
         PS.DirtySprite.__init__(self)
-        self.image = img
-        self.rect = rect
-        self.x = 0
-        self.y = 0
+        self.image = PI.load("FPGraphics/tiles/lv2Tiles/heatPad.png") \
+            .convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = xcoord
+        self.rect.y = ycoord
         self.width = 0
         self.height = 0
         #type can be hot or cold
@@ -30,6 +32,8 @@ class Pad(PS.DirtySprite):
         ##Images for animation
         self.IMAGES = []
         self.load_images(self.type)
+        self.time = 0.0
+        self.frame = 0
 
     #hot or cold?
     def get_type(self):
@@ -93,15 +97,31 @@ class Pad(PS.DirtySprite):
     def load_images_helper(self, imageArray, sheet):
         alphabg = (23, 23, 23)
         for i in range(0, 5):
-            surface = PG.Surface((100, 100))
+            surface = PG.Surface((50, 50))
             surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+            surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
             imageArray.append(surface)
         return imageArray
+
+    def update(self, bg, player):
+        PAD_IMAGE_LENGTH = 5
+        self.time = self.time + Globals.DELTA
+        if self.time > Pad.CYCLE:
+            self.time = 0.0
+        frame = int(self.time / (Pad.CYCLE / PAD_IMAGE_LENGTH))
+        if frame != self.frame:
+            self.frame = frame
+            self.update_image(self.IMAGES)
+
+    def update_image(self, imageArray):
+        try:
+            self.image = imageArray[self.frame].convert_alpha()
+        except IndexError:
+            self.image = imageArray[0].convert_alpha()
 
 
 ##creates a new pad sprite
 #called by Map.py
-def create_Pad(img, rect, t):
-    new_pad = Pad(img, rect, t)
+def create_Pad(x, y, t):
+    new_pad = Pad(x, y, t)
     return new_pad
