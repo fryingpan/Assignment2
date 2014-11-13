@@ -88,6 +88,9 @@ class Player(PS.DirtySprite):
     def remove_player_item(self, item):
         self.player_items.remove(item)
 
+    def remove_player_trap(self, item):
+        self.player_traps.remove(item)
+
     def get_player_items(self):
         return self.player_items
 
@@ -106,7 +109,7 @@ class Player(PS.DirtySprite):
                                      rect,             # rect of the image 
                                      self.item_type,   # the type of trap
                                      'P',              # Player is the user 
-                                     None,             # lifetime 
+                                     8000,             # lifetime 
                                      image,            # image 
                                      False))           # if the trap will be animated
 
