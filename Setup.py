@@ -92,10 +92,10 @@ class Game(object):
         #allsprites has all dirty sprites (player, enemies, traps, pads)
         self.allsprites = PS.LayeredDirty(self.item_group, 
                                           self.trap_group,
+                                          self.pad_list,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list,
-                                          self.pad_list)
+                                          self.burger_list)
         
         #variables to be handled in change_level method
         self.objective = None
@@ -238,10 +238,10 @@ class Game(object):
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.item_group, 
                                           self.trap_group,
+                                          self.pad_list,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list,
-                                          self.pad_list)
+                                          self.burger_list)
 
         #cheese/door handling
         if self.character.get_modified_map():
@@ -431,11 +431,12 @@ class Game(object):
         # self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.player_group,
+        self.allsprites = PS.LayeredDirty(self.item_group,
+                                          self.trap_group,
+                                          self.pad_list,
+                                          self.player_group,
                                           self.icecream_list,
-                                          self.burger_list, self.trap_group,
-                                          self.item_group,
-                                          self.pad_list)
+                                          self.burger_list)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
