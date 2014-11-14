@@ -43,7 +43,6 @@ class Locals(object):
     FADEINTIME = 5.0
     FADEOUTTIME = 0.2
     CHANGESTATE = "None"
-    #SCORE = 0
 
 
 class Game(object):
@@ -56,11 +55,6 @@ class Game(object):
                        "with his ice cream buddies")
 
         ###(Declare interface)#####
-
-        #Globals.SCREEN = PD.set_mode((800, 600))
-        #do we use this SCREEN_rect?
-#        Globals.SCREEN_rect = Globals.SCREEN.get_rect()
-        #fonts
         self.font = PF.SysFont('Arial', 25)
 
         #Win/Lose items
@@ -78,6 +72,7 @@ class Game(object):
         
         ##draw sprites
         self.character = Player(Globals.DELTA)
+        self.INVINCIBILITY_TIME =  500
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
         # self.remainingEnemies = self.num_enemies
@@ -108,7 +103,7 @@ class Game(object):
         self.block_group = None
 
         ####(Level variables)####
-        self.invincibility_count = 0  # player's invinicibility frame time
+        Globals.INVINCIBILITY_COUNT = 0  # player's invinicibility frame time
         #what kind of enemy by ID (-1 means no enemy) used for collisions
         self.enemy_ID = -1
         #if true, tells map to redraw
@@ -136,7 +131,7 @@ class Game(object):
         ##trap handling
         for trap in self.trap_list:
                 trap.update(None, self.player_group)
-                if (trap.get_trap_attack() and self.invincibility_count == 0):
+                if (trap.get_trap_attack() and Globals.INVINCIBILITY_COUNT == 0):
                         trap_attack = True
                 if trap.will_remove():
                         self.trap_list.remove(trap)
@@ -159,7 +154,7 @@ class Game(object):
                         if trap_attack:
                                 trap_attack = False
                         #if so start invincibility count after attack
-                        self.invincibility_count = 200
+                        Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                         #see which enemy attacked the player
                         self.enemy_ID = icecream.get_ID()
 
@@ -169,7 +164,7 @@ class Game(object):
                         if trap_attack:
                                 trap_attack = False
                         #if so start invincibility count after attack
-                        self.invincibility_count = 200
+                        Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                         #see which enemy attacked the player
                         self.enemy_ID = burger.get_ID()
 
@@ -181,21 +176,21 @@ class Game(object):
 #                        if trap_attack:
 #                                trap_attack = False
 #                        #if so start invincibility count after attack
-#                        self.invincibility_count = 200
+#                        Globals.INVINCIBILITY_COUNT = 200
 #                        #see which enemy attacked the player
 #                        self.enemy_ID = icecream.get_ID()
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
-        if(self.enemy_ID != -1 and self.invincibility_count == 200):
+        if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
                 self.character.decrement_health(self.enemy_ID)
                 self.enemy_ID = -1
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
-        if(self.invincibility_count > 0):
-                if(self.invincibility_count % 50 == 0):
+        if(Globals.INVINCIBILITY_COUNT > 0):
+                if(Globals.INVINCIBILITY_COUNT % 50 == 0):
                         self.character.invincibility_frames()
-                self.invincibility_count -= 1
+                Globals.INVINCIBILITY_COUNT -= 1
 
         ##Pad damage here
         for pad in self.pad_list.sprites():
@@ -439,7 +434,7 @@ class Game(object):
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####
-        self.invincibility_count = 0  # player's invinicibility frame time
+        Globals.INVINCIBILITY_COUNT = 0  # player's invinicibility frame time
         #what kind of enemy by ID (-1 means no enemy) used for collisions
         self.enemy_ID = -1
         #if true, tells map to update w/o key & door
