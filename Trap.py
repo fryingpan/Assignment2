@@ -13,14 +13,15 @@ class Trap(PS.DirtySprite):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, surface, rect, thetype, user, lifetime=8000, image=None,
+    def __init__(self, surface, rect, thetype, user, lifetime, image=None,
                  animation=True):
         PS.DirtySprite.__init__(self)
         self.rect = rect
+        self.lifetime = lifetime
         # the life of the trap
         if image is not None:
             self.image = image
-        self.lifetime = lifetime
+            # self.lifetime = lifetime*50
         self.x = self.rect.x
         self.y = self.rect.y
         self.type = thetype
@@ -47,24 +48,30 @@ class Trap(PS.DirtySprite):
             # start drop animation once item is dropped
             if not self.dropped:
                 self.drop_animation()
-                self.draw(self.surface, False)
+                # self.draw(self.surface, False)
             # start disappear animation
-            elif self.lifetime <= 300:
+            elif self.lifetime <= 100:
                 self.disappear_animation()
-                if not self.disappear:
-                    self.draw(self.surface, False)
-                else:
+                # if not self.disappear:
+                    # self.draw(self.surface, False)
+                if self.disappear:
                     self.remove = True
             # else display the static image
             else:
-                self.draw(self.surface, True)
+                self.image = self.static_image
+                # self.draw(self.surface, True)
+                self.lifetime -= 1
             # check if enemy trap collides with the player
             if self.user == 'E':
                 collisions = self.handle_collisions(player_group)
                 if len(collisions) > 0:
                     self.trap_attack = True
         else:
-            collisions = self.handle_collisions(bg)
+            self.lifetime -= 1
+            # print self.lifetime
+            if self.lifetime <= 0:
+                self.remove = True
+            # collisions = self.handle_collisions(bg)
         self.dirty = 1
 
     def get_type(self):
@@ -102,13 +109,11 @@ class Trap(PS.DirtySprite):
                 self.set_anim_start()
         self.lifetime -= 1
 
-    def draw(self, surface, static_image):
-        if self.lifetime > 0:
-            if static_image:
-                surface.blit(self.static_image, (self.x, self.y))
-            else:
-                surface.blit(self.image, (self.x, self.y))
-        self.lifetime -= 1
+    # def draw(self, surface, static_image):
+    #     if static_image:
+    #         surface.blit(self.static_image, (self.x, self.y))
+    #     else:
+    #         surface.blit(self.image, (self.x, self.y))
 
     def disappear_animation(self):
         if not self.disappear:
@@ -141,7 +146,7 @@ class Puddle(Trap):
 
     def __init__(self, rect, surface):
         # how long the puddle will last before it disappears
-        self.lifetime = 6000
+        self.lifetime = 400
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
             .convert_alpha()

@@ -215,24 +215,23 @@ class Game(object):
             self.item_list.append(item)
             if(item != None):
                 self.item_group.add(item)
-
         #check if any of the items need to be removed (lifetime == 0)
         for item in self.item_list:
-            if(item != None):
-                if item.will_remove():
-                    self.item_list.remove(item)
-                    self.item_group.remove(item)
-
-        player_items = self.character.get_player_items()
-        for item in player_items:
-            self.item_list.append(item)
-            self.item_group.add(item)
-
-        for item in player_items:
+            # if(item != None):
             if item.will_remove():
                 self.item_list.remove(item)
                 self.item_group.remove(item)
-                self.character.remove_player_item(item)
+
+        player_items = self.character.get_player_traps()
+        for item in player_items:
+            self.trap_list.append(item)
+            self.trap_group.add(item)
+
+        for item in player_items:
+            if item.will_remove():
+                self.trap_list.remove(item)
+                self.trap_group.remove(item)
+                self.character.remove_player_trap(item)
         #print player_items
 
         #update the allsprites
