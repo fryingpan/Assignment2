@@ -351,9 +351,11 @@ class Player(PS.DirtySprite):
 
     def update_image(self, imageArray):
             try:
+                print(self.frame)
                 self.image = imageArray[self.frame].convert_alpha()
 
             except IndexError:
+                print("PLAYER IMG ERROR")
                 self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
                     .convert_alpha()
                 self.face = list(self.face)[0]

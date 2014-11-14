@@ -52,7 +52,7 @@ class IceCream(Enemy):
         #create puddle at your location
         return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
 
-    def move(self, bg, player, interval):
+    def move(self, player, interval):
         if(random.randint(0, 200) == 0):
             self.direction = random.randint(0, 5)
         dist = int(self.speed)
@@ -69,8 +69,6 @@ class IceCream(Enemy):
         elif self.direction == 3:  # left key
             self.rect.x -= int(dist)  # move left
             self.face = 'l'
-        self.handle_collision(bg)
-        self.handle_collision(player)
 
     def drop_item(self, surface):
         return IceCreamScoop(self.rect.x, self.rect.y, surface)

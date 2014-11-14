@@ -58,7 +58,7 @@ class Burger(Enemy):
         ###
         pass
 
-    def move(self, bg, player, interval):
+    def move(self, player, interval):
 
         ran = random.randint(0, 10)
         move_dist = 0
@@ -78,9 +78,6 @@ class Burger(Enemy):
             elif player.sprites()[0].rect.x < self.rect.x and self.rect.x >= self.xboundl:
                 self.rect.x -= move_dist  # move left
                 self.face = 'l'
-
-            self.handle_collision(bg)
-            self.handle_collision(player)
 
     def drop_item(self, surface):
             d = random.randint(0, 9)

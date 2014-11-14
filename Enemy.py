@@ -44,7 +44,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.frame = 0
         self.invincibility_count = 0
         self.attacked_player = False
-        self.moved = False
         self.last_hit = 0
         self.last_hit_save = -1
 
@@ -74,45 +73,46 @@ class Enemy(PG.sprite.DirtySprite):
             return True
         return False
 
-    def handle_collision(self, bg):
-        collisions = PS.spritecollide(self, bg, False)
+    def handle_player(self, player):
+        collisions = PS.spritecollide(self, player, False)
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
             if(self.invincibility_count == 0):
                 self.attacked_player = True
                 self.invincibility_count = 200
-        else:
-            if self.face == 'r':
-                collisions = PS.spritecollide(self, bg, False)
-                for collision in collisions:
-                    if(self.rect.x +
-                       self.rect.width) >= collision.rect.left:
-                        self.rect.x = collision.rect.left - self.rect.width
-            elif self.face == 'l':
-                collisions = PS.spritecollide(self, bg, False)
-                for collision in collisions:
-                    if (self.rect.x) <= (collision.rect.left +
-                                         collision.rect.width):
-                        self.rect.x = collision.rect.left + \
-                            collision.rect.width
-            elif self.face == 'd':
-                for collision in collisions:
-                    if(self.rect.y +
-                       self.rect.height) >= collision.rect.top:
-                        self.rect.y = collision.rect.top - self.rect.height
-            elif self.face == 'u':
-                collisions = PS.spritecollide(self, bg, False)
-                for collision in collisions:
-                    if (self.rect.y <= (collision.rect.top +
-                                        collision.rect.height)):
-                        self.rect.y = collision.rect.top + \
-                            collision.rect.height
+
+    def handle_collision(self, bg):
+        collisions = PS.spritecollide(self, bg, False)
+        if self.face == 'r':
+            collisions = PS.spritecollide(self, bg, False)
+            for collision in collisions:
+                if(self.rect.x +
+                   self.rect.width) >= collision.rect.left:
+                    self.rect.x = collision.rect.left - self.rect.width
+        elif self.face == 'l':
+            collisions = PS.spritecollide(self, bg, False)
+            for collision in collisions:
+                if (self.rect.x) <= (collision.rect.left +
+                                     collision.rect.width):
+                    self.rect.x = collision.rect.left + \
+                        collision.rect.width
+        elif self.face == 'd':
+            for collision in collisions:
+                if(self.rect.y +
+                   self.rect.height) >= collision.rect.top:
+                    self.rect.y = collision.rect.top - self.rect.height
+        elif self.face == 'u':
+            collisions = PS.spritecollide(self, bg, False)
+            for collision in collisions:
+                if (self.rect.y <= (collision.rect.top +
+                                    collision.rect.height)):
+                    self.rect.y = collision.rect.top + \
+                        collision.rect.height
 
     def update(self, bg, player):
-        self.moved = False
-        x_location = self.rect.x
-        y_location = self.rect.y
         self.attacked_player = False
-        self.move(bg, player, Globals.DELTA)
+        self.move(player, Globals.DELTA)
+        self.handle_collision(bg)
+        self.handle_player(player)
 
         if(self.invincibility_count > 0):
             self.invincibility_count -= 1
