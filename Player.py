@@ -26,10 +26,6 @@ class Player(PS.DirtySprite):
     IMAGES_LEFT = None
     IMAGES_FRONT = None
     IMAGES_BACK = None
-    IMAGES_RIGHT_ACCEL = None
-    IMAGES_LEFT_ACCEL = None
-    IMAGES_FRONT_ACCEL = None
-    IMAGES_BACK_ACCEL = None
     IMAGES_RIGHT_DMG = None
     IMAGES_LEFT_DMG = None
     IMAGES_FRONT_DMG = None
@@ -323,6 +319,7 @@ class Player(PS.DirtySprite):
                 elif(self.face == 'l'):
                     self.update_image(self.IMAGES_LEFT_DMG)
                 elif(self.face == 'd'):
+                    print(self.frame)
                     self.update_image(self.IMAGES_FRONT_DMG)
             else:
                 if (self.face == 'r'):
@@ -351,7 +348,6 @@ class Player(PS.DirtySprite):
 
     def update_image(self, imageArray):
             try:
-                print(self.frame)
                 self.image = imageArray[self.frame].convert_alpha()
 
             except IndexError:
@@ -407,14 +403,11 @@ class Player(PS.DirtySprite):
             Player.IMAGES_LEFT = []
             Player.IMAGES_FRONT = []
             Player.IMAGES_BACK = []
-            Player.IMAGES_RIGHT_ACCEL = []
-            Player.IMAGES_LEFT_ACCEL = []
-            Player.IMAGES_FRONT_ACCEL = []
-            Player.IMAGES_BACK_ACCEL = []
             Player.IMAGES_RIGHT_DMG = []
             Player.IMAGES_LEFT_DMG = []
             Player.IMAGES_FRONT_DMG = []
             Player.IMAGES_BACK_DMG = []
+            #walking imgs
             sheetR = PI.load("FPGraphics/MC/MCwalk/MCRightWalk.png")\
                 .convert_alpha()
             sheetL = PI.load("FPGraphics/MC/MCwalk/MCLeftWalk.png")\
@@ -423,7 +416,6 @@ class Player(PS.DirtySprite):
                 .convert_alpha()
             sheetB = PI.load("FPGraphics/MC/MCwalk/MCBackWalk.png")\
                 .convert_alpha()
-
             Player.IMAGES_RIGHT = self.load_images_helper(Player.IMAGES_RIGHT,
                                                           sheetR)
             Player.IMAGES_LEFT = self.load_images_helper(Player.IMAGES_LEFT,
@@ -432,6 +424,23 @@ class Player(PS.DirtySprite):
                                                           sheetF)
             Player.IMAGES_BACK = self.load_images_helper(Player.IMAGES_BACK,
                                                          sheetB)
+            #dmg imgs
+            sheetDR = PI.load("FPGraphics/MC/MCwalk/MCDMGRight.png")\
+                .convert_alpha()
+            sheetDL = PI.load("FPGraphics/MC/MCwalk/MCDMGLeft.png")\
+                .convert_alpha()
+            sheetDF = PI.load("FPGraphics/MC/MCwalk/MCDMGFront.png")\
+                .convert_alpha()
+            sheetDB = PI.load("FPGraphics/MC/MCwalk/MCDMGBack.png")\
+                .convert_alpha()
+            Player.IMAGES_RIGHT_DMG = self.load_images_helper(Player.IMAGES_RIGHT_DMG,
+                                                          sheetDR)
+            Player.IMAGES_LEFT_DMG = self.load_images_helper(Player.IMAGES_LEFT_DMG,
+                                                         sheetDL)
+            Player.IMAGES_FRONT_DMG = self.load_images_helper(Player.IMAGES_FRONT_DMG,
+                                                          sheetDF)
+            Player.IMAGES_BACK_DMG = self.load_images_helper(Player.IMAGES_BACK_DMG,
+                                                         sheetDB)
             # load attack images
             Player.IMG_ATTACK_D = PI.load("FPGraphics/MC/MCattack/" +
                                           "MCFrontFPOnePiece.png").convert_alpha()
