@@ -91,6 +91,9 @@ class Pad(PS.DirtySprite):
             sheet = PI.load("FPGraphics/tiles/lv2Tiles/heatPadAnim.png") \
                 .convert_alpha()
         ##load cold pad images
+        if t == 1:
+            sheet = PI.load("FPGraphics/tiles/lv2Tiles/coldPadAnim.png") \
+                .convert_alpha()
         #else:
         self.IMAGES = self.load_images_helper(self.IMAGES, sheet)
 

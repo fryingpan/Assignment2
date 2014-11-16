@@ -63,7 +63,7 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.MAX_LEVEL = 2
+        self.MAX_LEVEL = 3
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()

@@ -153,6 +153,15 @@ class Map(object):
                     PI.load("FPGraphics/tiles/lv2Tiles/chiliTile1.png"))
                 tile_array.append(
                     PI.load("FPGraphics/tiles/lv2Tiles/chiliTile2.png"))
+            if(lvl == 3):
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv3Tiles/ICTile1.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv3Tiles/ICTile2.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv3Tiles/ICTile3.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv3Tiles/ICTile4.png"))
             return tile_array
 
 #    def load_pad_tiles(self): ##CHANGE THIS TO CALL PAD CLASS'S LOAD IMAGES.
@@ -173,16 +182,6 @@ class Map(object):
         if(lvl == 1):
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall1.png"))
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall2.png"))
-            self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH1.png"))
-            self.wallBlocksH.append(PI.load("FPGraphics/tiles/lv1WallH2.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHL.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEHR.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVD.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEVU.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETL.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallETR.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBL.png"))
-            # self.wallBlocksE.append(PI.load("FPGraphics/tiles/lv1WallEBR.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv1shrubBroc.png"))
             self.shrubBlocks.append(
@@ -216,6 +215,24 @@ class Map(object):
                 PI.load("FPGraphics/tiles/lv2Tiles/lv2TreesB1.png"))
             self.treeBlocksB.append(
                 PI.load("FPGraphics/tiles/lv1treeB1.png"))
+        if(lvl == 3):
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall1.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall2.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall3.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall4.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall5.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub1.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub2.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub3.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub4.png"))
+            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeT1.png"))
+            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeT2.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB1.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB2.png"))
 
     def get_surface(self):
             return self.surface
@@ -279,17 +296,6 @@ class Map(object):
                                              char_list[y])
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
-                # Door blocks
-                # elif char_list[y] == 'D':
-                    # new_block = create_Block(self.doorBlocks
-                    #                          [random.randint(0, len(self.
-                    #                                          doorBlocks))-1],
-                    #                          PG.Rect(x_coor, y_coor,
-                    #                                  self.grid_size[0],
-                    #                                  self.grid_size[1]),
-                    #                          char_list[y])
-                    # self.disappearing_blocks.add(new_block)
-                    # self.spots_to_be_filled.append((x_coor, y_coor))
                 elif char_list[y] == 'S':
                     new_block = create_Block(self.shrubBlocks
                                              [random.randint(0, len(self.
