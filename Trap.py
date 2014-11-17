@@ -48,12 +48,9 @@ class Trap(PS.DirtySprite):
             # start drop animation once item is dropped
             if not self.dropped:
                 self.drop_animation()
-                # self.draw(self.surface, False)
             # start disappear animation
-            elif self.lifetime <= 100:
+            elif self.lifetime <= 200:
                 self.disappear_animation()
-                # if not self.disappear:
-                    # self.draw(self.surface, False)
                 if self.disappear:
                     self.remove = True
             # else display the static image
@@ -61,17 +58,18 @@ class Trap(PS.DirtySprite):
                 self.image = self.static_image
                 # self.draw(self.surface, True)
                 self.lifetime -= 1
-            # check if enemy trap collides with the player
-            if self.user == 'E':
-                collisions = self.handle_collisions(player_group)
-                if len(collisions) > 0:
-                    self.trap_attack = True
         else:
             self.lifetime -= 1
-            # print self.lifetime
             if self.lifetime <= 0:
+                print "player trap to be removed"
                 self.remove = True
             # collisions = self.handle_collisions(bg)
+        # check if enemy trap collides with the player
+        if self.user == 'E':
+            collisions = self.handle_collisions(player_group)
+            if len(collisions) > 0:
+                self.trap_attack = True
+
         self.dirty = 1
 
     def get_type(self):
@@ -90,7 +88,7 @@ class Trap(PS.DirtySprite):
         # start at index 0 of image array(array containing animation frames)
         self.frame_num = 0
         # time of each animation frame
-        self.frame_count = 100
+        self.frame_count = 60
 
     def drop_animation(self):
         if not self.dropped:
@@ -99,7 +97,7 @@ class Trap(PS.DirtySprite):
             # change the animation frame to display
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
-                self.frame_count = 80
+                self.frame_count = 60
             # decrement the lifetime of the frame
             elif self.frame_count > 0:
                 self.frame_count -= 1
@@ -122,7 +120,7 @@ class Trap(PS.DirtySprite):
             # change the animation frame
             if self.frame_count == 0 and self.frame_num < self.num_frames:
                 self.frame_num += 1
-                self.frame_count = 80
+                self.frame_count = 60
             # decrement the lifetime of the frame
             elif self.frame_count > 0:
                 self.frame_count -= 1
@@ -146,7 +144,7 @@ class Puddle(Trap):
 
     def __init__(self, rect, surface):
         # how long the puddle will last before it disappears
-        self.lifetime = 400
+        self.lifetime = 1600
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
             .convert_alpha()

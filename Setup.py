@@ -85,9 +85,9 @@ class Game(object):
         self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps, pads)
-        self.allsprites = PS.LayeredDirty(self.item_group, 
-                                          self.trap_group,
+        self.allsprites = PS.LayeredDirty(self.trap_group,
                                           self.pad_list,
+                                          self.item_group,
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list)
@@ -127,58 +127,38 @@ class Game(object):
         self.enemy_ID = -1
 
         ###(attacks on player)####
-
         ##trap handling
-        for trap in self.trap_list:
-                trap.update(None, self.player_group)
-                if (trap.get_trap_attack() and Globals.INVINCIBILITY_COUNT == 0):
-                        trap_attack = True
-                if trap.will_remove():
-                        self.trap_list.remove(trap)
-                        self.trap_group.remove(trap)
-                #self.allsprites = PS.LayeredDirty(self.player_group,
-                    #self.icecream_list, self.trap_group, self.item_group)
+        for trap in self.trap_group.sprites():
+            if (trap.get_trap_attack() and Globals.INVINCIBILITY_COUNT == 0):
+                trap_attack = True
+            if trap.will_remove():
+                self.trap_group.remove(trap)
         ##icecream attacks
         for icecream in self.icecream_list.sprites():
-                #see if the enemy will release weapon/attack
-                if (icecream.will_attack()):
-                        #get a new puddle sprite
-                        new_trap = icecream.attack(self.map.get_surface())
-                        #add the new trap to the list of traps
-                        self.trap_list.append(new_trap)
-                        self.trap_group.add(new_trap)
-                #self.allsprites = PS.LayeredDirty(self.player_group,
-                    #self.icecream_list, self.trap_group, self.item_group)
+            #see if the enemy will release weapon/attack
+            if (icecream.will_attack()):
+                #get a new puddle sprite
+                new_trap = icecream.attack(self.map.get_surface())
+                #add the new trap to the list of traps
+                self.trap_group.add(new_trap)
 
-                if(icecream.get_attacked_player() or trap_attack):
-                        if trap_attack:
-                                trap_attack = False
-                        #if so start invincibility count after attack
-                        Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
-                        #see which enemy attacked the player
-                        self.enemy_ID = icecream.get_ID()
+            if(icecream.get_attacked_player() or trap_attack):
+                if trap_attack:
+                    trap_attack = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = icecream.get_ID()
 
         ##burger attacks
         for burger in self.burger_list.sprites():
-                if(burger.get_attacked_player() or trap_attack):
-                        if trap_attack:
-                                trap_attack = False
-                        #if so start invincibility count after attack
-                        Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
-                        #see which enemy attacked the player
-                        self.enemy_ID = burger.get_ID()
-
-#        ##Icecream & puddle attack on player
-#        for icecream in self.icecream_list.sprites():
-#                #update position and collisions
-#                #see if ice cream collided with player
-#                if(icecream.get_attacked_player() or trap_attack):
-#                        if trap_attack:
-#                                trap_attack = False
-#                        #if so start invincibility count after attack
-#                        Globals.INVINCIBILITY_COUNT = 200
-#                        #see which enemy attacked the player
-#                        self.enemy_ID = icecream.get_ID()
+            if(burger.get_attacked_player() or trap_attack):
+                if trap_attack:
+                    trap_attack = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = burger.get_ID()
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
@@ -207,32 +187,25 @@ class Game(object):
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()
         for item in new_items:
-            self.item_list.append(item)
             if(item != None):
                 self.item_group.add(item)
-        #check if any of the items need to be removed (lifetime == 0)
-        for item in self.item_list:
+            #check if any of the items need to be removed (lifetime == 0)
             # if(item != None):
+        for item in self.item_group.sprites():
             if item.will_remove():
-                self.item_list.remove(item)
                 self.item_group.remove(item)
 
-        player_items = self.character.get_player_traps()
-        for item in player_items:
-            self.trap_list.append(item)
-            self.trap_group.add(item)
-
-        for item in player_items:
-            if item.will_remove():
-                self.trap_list.remove(item)
-                self.trap_group.remove(item)
-                self.character.remove_player_trap(item)
-        #print player_items
+        player_traps = self.character.get_player_traps()
+        for trap in player_traps:
+            self.trap_group.add(trap)
+        # for traps in player_traps:
+            if trap.will_remove():
+                self.character.remove_player_trap(trap)
 
         #update the allsprites
-        self.allsprites = PS.LayeredDirty(self.item_group, 
-                                          self.trap_group,
+        self.allsprites = PS.LayeredDirty(self.trap_group,
                                           self.pad_list,
+                                          self.item_group,
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list)
@@ -421,13 +394,12 @@ class Game(object):
         self.trap_list = []
         # self.trap_group = PS.Group()
 
-        self.item_list = []
         # self.item_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps)
-        self.allsprites = PS.LayeredDirty(self.item_group,
-                                          self.trap_group,
+        self.allsprites = PS.LayeredDirty(self.trap_group,
                                           self.pad_list,
+                                          self.item_group,
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list)
