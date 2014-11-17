@@ -358,6 +358,7 @@ class Game(object):
         self.map = Map.Map(ldata.map_file, self.level)
         self.camera = cam.Camera(self.map.get_surface())
         self.camera_background = None
+        self.pad_list.empty()
 
         self.num_enemies += self.map.get_num_enemies(1)  # icecream
         self.num_enemies += self.map.get_num_enemies(2)  # burger
@@ -388,11 +389,13 @@ class Game(object):
 
         #pads
         for e in range(len(self.map.padtiles)):
-            print "line 418"
             if self.map.pad_type[e] == 0:  # hot
-                print self.map.get_pad_x(e)
                 newPad = Pad.create_Pad(self.map.get_pad_x(e),
                                         self.map.get_pad_y(e), 0)
+                self.pad_list.add(newPad)
+            if self.map.pad_type[e] == 1:  # cold
+                newPad = Pad.create_Pad(self.map.get_pad_x(e),
+                                        self.map.get_pad_y(e), 1)
                 self.pad_list.add(newPad)
 
         #get block sprite group from the map file

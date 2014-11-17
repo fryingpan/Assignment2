@@ -31,7 +31,7 @@ class Lvl_Data(object):
             self.character_pos_x = 100
             self.character_pos_y = 100
         if(lvl == 2):
-            self.music_file = "music/gameplay.mod"
+            self.music_file = "music/gameplay2.mod"
             self.map_file = 'mapfilelvl2.txt'
             self.cutscene = None
             self.objective = Objective(lvl)
@@ -39,7 +39,7 @@ class Lvl_Data(object):
             self.character_pos_y = 100
         if(lvl == 3):
             self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfilelvl2.txt'
+            self.map_file = 'mapfilelvl3.txt'
             self.cutscene = None
             self.objective = Objective(lvl)
             self.character_pos_x = 100

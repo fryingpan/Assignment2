@@ -401,18 +401,6 @@ class Map(object):
     def get_pad_y(self, index):
         return self.padtiles[index][1]
 
-#        ############ Pad Handling here? ############
-#        ########### Will probably move to SETUP #####
-#    def pad_hurt_player(self, player):
-#        for pad in self.allPads:
-#            if pad.rect.colliderect(player.rect):
-#                #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
-#                if pad.type == 0:
-#                    pad.i_am_hot(player)
-#                elif pad.type == 1:
-#                    pad.i_am_cold(player)
-#        ###########################################
-
     def update_background(self):
         background = self.surface
         background = background.convert()
@@ -425,11 +413,6 @@ class Map(object):
         else:
             print "ERROR: grasstile != grass_type. Map.py line 183"
 
-#            #####bliting hot / cold######
-#        for (pad, padtype) in zip(self.padtiles, self.pad_type):
-#            background.blit(self.pad_array[padtype], pad)
-#            #############################
-
         for block in self.object_group:
             block.draw_block(background)
         # for spot in self.spots_to_be_filled:
@@ -439,11 +422,6 @@ class Map(object):
 
     #called in the setup/game class
     def draw_map(self):
-        # if len(self.grasstiles) == len(self.grass_type):
-        #   for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
-        #       self.surface.blit(self.grass_array[gtype], grasstile)
-        # else:
-        #   print "ERROR: grasstile != grass_type. Map.py line 183"
 
         for block in self.object_group:
             block.draw_block(self.surface)
@@ -459,13 +437,6 @@ class Map(object):
                 background.blit(self.grass_array[gtype], grasstile)
         else:
             print "ERROR: grasstile != grass_type. Map.py line 183"
-
-#        #####bliting hot / cold########
-#        #Won't need to define which pads are specifically in which level
-#        #That is defined in our map txt files
-#        for (pad, padtype) in zip(self.padtiles, self.pad_type):
-#            background.blit(self.pad_array[padtype], pad)
-#        #############################
 
         for block in self.object_group:
             block.draw_block(background)

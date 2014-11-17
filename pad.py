@@ -67,7 +67,7 @@ class Pad(PS.DirtySprite):
     def set_rectTop(self, rectTop):
             self.rect.y = rectTop
 
-    ###hurts player, enemy (??how??)
+    ###hurts player
     def i_am_hot(self, player):
             toHurt = random.randrange(100)
             #this is a lame hack but it does slow down
@@ -76,14 +76,18 @@ class Pad(PS.DirtySprite):
             if toHurt == 1:
                 player.health -= 1
 
-    ###slows down player
+    ###speeds up player
     def i_am_cold(self, player):
-            print "herro i am cold"
-            for x in range(50):
-                #SPEED player.
-                player.speed = 3
-            #return to NORMAL after the time
+            player.speed = 3
+            start = PT.get_ticks()
+            while PT.get_ticks() - start < 10:
+                continue
             player.speed = 1
+#            for i in range(100):
+#                #SPEED player.
+#                pass
+#            #return to NORMAL after the time
+#            player.speed = 1
 
     def load_images(self, t):
         ##load hot pad images
@@ -92,7 +96,7 @@ class Pad(PS.DirtySprite):
                 .convert_alpha()
         ##load cold pad images
         if t == 1:
-            sheet = PI.load("FPGraphics/tiles/lv2Tiles/coldPadAnim.png") \
+            sheet = PI.load("FPGraphics/tiles/lv3Tiles/coldPadAnim.png") \
                 .convert_alpha()
         #else:
         self.IMAGES = self.load_images_helper(self.IMAGES, sheet)
