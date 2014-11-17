@@ -20,7 +20,12 @@ they disappear. For now, the player can drop a total of 10 traps after picking u
 the item. If the player desides they don't want the item and they want to drop it,
 they can press the 'd' key to get rid of it. 
 
-
+New graphics were also made for level 3, and old graphics (such as damage frames
+and walls in lvl1) were updated and fixed. The player now may open multiple doors
+given that he has lactase pills for them (originally, the pill opened all doors
+on the map). The burger will now only follow the player within a restricted area.
+The idea is to force the player to search for the enemies instead of letting the
+enemies easily come to him.
 
 Todo List
 ----------
