@@ -8,25 +8,18 @@ Josh Holstein
 Run the following to run the program:
 python masterfile.py
 
-Since we did most of our refactoring last week, we spent this week
-fixing bugs and editing features that we didn't get to fully implement.
+New features were added for the player this week. Everytime he defeats an 
+ice cream enemy they drop an ice cream scoop. The ice cream scoop is 
+available for a short period of time before it disappears. The player can pick up the 
+item by pressing the 's' key to use it as a trap for other enemies or they
+can choose to eat it by pressing the 'e' key to earn an extra 10 health points.
+If they drop the trap, the trap will be live for a short period of time before
+it expires and disappears. If they choose to eat it then the item will disappear.
+To drop the trap, the 'a' key is pressed. Then, if an enemy touches the trap, 
+they disappear. For now, the player can drop a total of 10 traps after picking up
+the item. If the player desides they don't want the item and they want to drop it,
+they can press the 'd' key to get rid of it. 
 
--The burger enemy now follows the player; The burger has 3 hp and will
-drop 3 items before being killed
-	-we still have to work out kinks in the burger movement (collision
-	with walls makes it teleport)
--we refactored the level changing such that we may change the levels
-by incrementing the self.level as opposed to using 'magic numbers.'
-	-Lvl_data class was added to hold levels' data
--otherwise, we did genera refactoring like making the code more neat
-and more efficient.
--Both burgers and icecreams will hurt you. Be careful.
-
--Pep8'd all modules that we use.
--We also fixed the player attacks such that the images don't flicker, and the collision detection to kill enemies only works when the weapon collides with the enemy (and not the player himself). This was a problem because we ended up making the weapon and player into one unified image / sprite, so every time a weapon hit an enemy, it also hurt the player. This is fixed.
-
--We have a better level 2! A new text mapfile that adds the Heat Pads which hurt the player. 
--The bugs in the items and drop system are also fixed.
 
 
 Todo List
@@ -53,7 +46,6 @@ Enemy
 	-Enemy AI: follow player when you get close
 
 Carla:
-    -player use item (w/key other than space bar)    
 
 Mary:
     -make menu screen image
@@ -68,7 +60,6 @@ Katie
     -make cold pads (slow down player)
 
 Somebody do this:
-    -make player eat item drop for health
     -implement new enemy (lettuce)
     -change the win/lose to display different dialogs (random)
     -Make frying pan dmg more accurate
