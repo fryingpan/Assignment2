@@ -18,7 +18,9 @@ class Objective(object):
         self.image = PI.load("FPGraphics/specialEffects/objective.png").convert_alpha()
         self.font = PF.SysFont('Arial', 25)
         self.text_color = (0,0,0)
-        self.current_obj = []
+        self.lvl = lvl
+        self.current_obj = [] #current obj displaying
+        self.lvl_objs = []
         self.current_obj.append("")
         self.current_obj.append("Objective: Kill all the food people. They're terrible and not nice.")
         self.current_obj.append("Press 'n' to remember your ingenious plans.")
@@ -26,35 +28,27 @@ class Objective(object):
         self.screen = screen
 
     #puts banner and then objective on top
-    def updateObjective(self):
+    def drawObjective(self):
         Globals.SCREEN.blit(self.image, (0, 0))
         Globals.SCREEN.blit(self.font.render(self.current_text, True, self.text_color), (50, 30))
         #self.updateBanner()
 
-        # if whichText == 0:
-        #     self.screen.blit(self.font.render(text.pop(), True, self.text_color), (50, 30))
-        #     self.current_obj = text
-        # elif whichText == 1:
-        #     self.lactoseText()
-        # elif whichText == 2:
-        #     self.killedText()
-
-    def changeObj(self, whichText):
-        if whichText == 0:
+    def changeObj(self, signID):
+        if signID == 0:
             self.screen.blit(self.font.render(text.pop(), True, self.text_color), (50, 30))
             self.current_obj = text
-        elif whichText == 1:
+        elif signID == 1:
             self.lactoseText()
-        elif whichText == 2:
+        elif signID == 2:
             self.killedText()        
 
-    def updateBanner(self):
+    def loadObjectives(self, lvl):
+        if(lvl == 1):
+            yes = 1
+
+    def updateBanner(self): #update text on banner
         # print len(self.current_obj)
         if(len(self.current_obj) > 0):
-            #print("banner up")
-            #print(str(self.current_obj))
-            # self.screen.blit(self.image, (0, 0))
-            # self.screen.blit(self.font.render(self.current_obj.pop(), True, self.text_color), (50, 30))
             self.current_text = self.current_obj.pop()
             # return True if there are still more instructions to show
             if (len(self.current_obj) > 0):

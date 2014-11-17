@@ -68,8 +68,10 @@ class Player(PS.DirtySprite):
         self.moved = False
         self.interval = 0
         self.modified_map = False
+        self.banner = -1
         self.pill = False
         self.at_door_num = -1  # allows player to open door if player has key
+        self.at_sign_num = -1  # if player is at a sign, allow sign msg to appear on space
         self.attack_pose = False
         
         self.items_of_killed = []
@@ -155,6 +157,9 @@ class Player(PS.DirtySprite):
                 block.kill()
         self.modified_map = True
 
+    def read_sign(self, bg):  # pass the enire block group.
+        self.banner = self.at_sign_num
+
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         for collision in collisions:
@@ -199,10 +204,14 @@ class Player(PS.DirtySprite):
                         self.rect.y = collision.rect.top +\
                             collision.rect.height
 
+            if collision.get_type() == '!':  # at a sign
+                self.at_sign_num = collision.get_id()
+            else:
+                self.at_sign_num = -1
+            #door
             if isinstance(collision.get_type(), str) and collision.get_type().isdigit():  # at a door
                 if self.pill:  # unlockable door
                     self.at_door_num = collision.get_type()
-                    # print("CAN OPEN " + collision.get_type())
                 else:
                     self.at_door_num = -1
             else:
@@ -289,6 +298,9 @@ class Player(PS.DirtySprite):
             self.attack_pose = True
             standing = True
 
+            #handle signs
+            if self.at_sign_num != -1: 
+                self.read_sign()
             #handle locked doors
             if self.at_door_num != -1: 
                 self.open_door(bg)

@@ -32,7 +32,7 @@ class Globals(object):
 
 #Block sprite class
 class Block(PG.sprite.DirtySprite):
-    def __init__(self, img, rect, t):
+    def __init__(self, img, rect, t, ID=None):
         PG.sprite.DirtySprite.__init__(self)
         self.image = img
         self.rect = rect
@@ -42,6 +42,10 @@ class Block(PG.sprite.DirtySprite):
         self.height = 0
         Globals.SCREEN = PDI.get_surface()
         self.type = t
+        self.id = ID
+
+    def get_id(self):
+        return self.id
 
     def get_type(self):
         return self.type
@@ -49,23 +53,8 @@ class Block(PG.sprite.DirtySprite):
     def draw_block(self, map_surface):
         map_surface.blit(self.image, self.rect)
 
-    def get_color(self):
-        return self.color
-
     def get_rect(self):
         return self.rect
-
-    def get_right(self):
-        return self.x + self.rect.width
-
-    def get_left(self):
-        return self.x
-
-    def get_top(self):
-        return self.y
-
-    def get_bottom(self):
-        return self.y + self.rect.height
 
     def set_rectLeft(self, rectLeft):
         self.x = rectLeft
@@ -76,7 +65,6 @@ class Block(PG.sprite.DirtySprite):
     def update(self, delta, bg, player):
         if self.type == 'K' or self.type == 'D':
             self.dirty = 1
-
 
 class Map(object):
     GRASS_ARRAY = []
@@ -180,6 +168,7 @@ class Map(object):
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall2.png"))
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall3.png"))
         self.keyBlocks.append(PI.load("FPGraphics/tiles/lactasePill.png"))
+        self.signImg = (PI.load("FPGraphics/tiles/sign.png"))
         if(lvl == 1):
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall1.png"))
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall2.png"))
@@ -264,6 +253,9 @@ class Map(object):
         #keep track of type of tree block
         treeblockType = deque()
 
+        #counter for sign id
+        sign_id = 0
+
         #traverse the map, creating block sprites
         for x in range(self.grid_dimensions[1]):
             #get the list of characters in the mapfile
@@ -320,6 +312,14 @@ class Map(object):
                                                      self.grid_size[0],
                                                      self.grid_size[1]),
                                              char_list[y])
+                elif char_list[y] == '!': #readable sign
+                    new_block = create_Block(self.signImg,
+                                             PG.Rect(x_coor, y_coor,
+                                                     self.grid_size[0],
+                                                     self.grid_size[1]),
+                                             char_list[y], sign_id)
+                    sign_id += 1
+                #enemies
                 elif char_list[y] == 'I': #icecream
                     self.ic_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
@@ -454,6 +454,6 @@ class Map(object):
 
 
 #creates a new block sprite
-def create_Block(img, rect, t):
-    new_block = Block(img, rect, t)
+def create_Block(img, rect, t, ID = None):
+    new_block = Block(img, rect, t, ID)
     return new_block

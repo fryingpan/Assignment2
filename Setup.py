@@ -34,7 +34,6 @@ except ImportError, err:
     import sys
     sys.exit(1)
 
-
 class Locals(object):
     RUNNING = True
     SCREEN = None
@@ -241,18 +240,21 @@ class Game(object):
 
         #cheese/door handling
         if self.character.get_modified_map():
-                self.background = self.map.update_background()
-                self.map_modified = False
+            self.background = self.map.update_background()
+            self.map_modified = False
+        if self.character.banner != -1: #make sure it doesn't redraw banner already present?
+            self.objective.changeObj(self.character.banner)
+            self.character.banner = -1
 
         #update camera's position on the map
         self.camera_background = self.camera.update(self.character.get_coordinates(),
                            self.map.get_surface())
-        #####temporary code to detect for door objective###############
-        if(self.character.rect.x > 2200 and self.character.rect.x < 2700
-                and self.character.rect.y > 250 and self.character.rect.y < 400
-                and self.cheesed is True):
-                self.cheesed = False
-                self.objective.changeObj(1)
+        # #####temporary code to detect for door objective###############
+        # if(self.character.rect.x > 2200 and self.character.rect.x < 2700
+        #         and self.character.rect.y > 250 and self.character.rect.y < 400
+        #         and self.cheesed is True):
+        #         self.cheesed = False
+        #         self.objective.changeObj(1)
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -274,12 +276,6 @@ class Game(object):
                 self.background = self.map.update_background()
                 self.map_modified = False
 
-        # ##objective; organize later
-        # self.remainingEnemies = self.num_enemies - Globals.SCORE
-        # if self.remainingEnemies < self.num_enemies and self.killed is True:
-        #         self.killed = False
-        #         self.objective.changeObj(2)
-
         ##draw dirty sprites
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
         self.draw_screen()
@@ -291,7 +287,7 @@ class Game(object):
         Globals.SCREEN.blit(self.camera_background, (0, 0))
         # check if objective banner needs to be drawn to screen
         if self.updated_obj:
-            self.objective.updateObjective()
+            self.objective.drawObjective()
 
         s = "Score: " + str(Globals.SCORE)
         Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
