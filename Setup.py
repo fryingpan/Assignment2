@@ -27,6 +27,7 @@ try:
     import pygame.mixer as PM
     import Globals
     import inputbox as inbx
+    import time
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -197,7 +198,7 @@ class Game(object):
                         self.character.invincibility_frames()
                 Globals.INVINCIBILITY_COUNT -= 1
 
-        ##Pad damage here
+        ######Pad damage here
         for pad in self.pad_list.sprites():
             if pad.rect.colliderect(self.character.rect):
                 #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
@@ -205,6 +206,7 @@ class Game(object):
                     pad.i_am_hot(self.character)
                 elif pad.type == 1:
                     pad.i_am_cold(self.character)
+
 
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface())
@@ -258,9 +260,6 @@ class Game(object):
                 PM.music.fadeout(1000)
                 # Globals.SCORE = self.character.score
                 return False
-
-#        #######Pad Handling############
-#        self.map.pad_hurt_player(self.character)
 
         PD.update()  # update the screen
 
