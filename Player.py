@@ -170,23 +170,15 @@ class Player(PS.DirtySprite):
                     self.eat_item = False
                     self.health += 10
                     collision.disappear()
-                    print "ADDED HEALTH"
 
-            if collision.get_type() == "K":  # found key
+            elif collision.get_type() == "K":  # found key
                 collision.kill()
                 self.pill = True
                 # self.open_door(bg)
                 self.got_key = True
                 self.modified_map = True
-            if isinstance(collision.get_type(), str) and collision.get_type().isdigit():  # at a door
-                if self.pill:  # unlockable door
-                    self.at_door_num = collision.get_type()
-                    # print("CAN OPEN " + collision.get_type())
-                else:
-                    self.at_door_num = -1
-            else:
-                self.at_door_num = -1
-            if self.face == 'r' or self.face == 'ra' or self.face == 'rs':
+            
+            elif self.face == 'r' or self.face == 'ra' or self.face == 'rs':
                 if(self.rect.x + self.rect.width
                    ) >= collision.rect.left:
                     self.rect.x = collision.rect.left \
@@ -206,6 +198,15 @@ class Player(PS.DirtySprite):
                                    collision.rect.height)):
                         self.rect.y = collision.rect.top +\
                             collision.rect.height
+
+            if isinstance(collision.get_type(), str) and collision.get_type().isdigit():  # at a door
+                if self.pill:  # unlockable door
+                    self.at_door_num = collision.get_type()
+                    # print("CAN OPEN " + collision.get_type())
+                else:
+                    self.at_door_num = -1
+            else:
+                self.at_door_num = -1
 
     def handle_keys(self, bg, enemy_bg, item_group, screen, interval=0.0065):
         """ Handles Keys """
