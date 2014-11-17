@@ -80,7 +80,8 @@ class Player(PS.DirtySprite):
         self.item_type = 0
         self.player_items = []
         self.player_traps = []
-        self.can_eat = False
+        self.can_eat = True
+        self.eat_item = False
 
     def remove_player_item(self, item):
         self.player_items.remove(item)
@@ -165,6 +166,11 @@ class Player(PS.DirtySprite):
                     self.item_type = collision.get_type()
                     collision.disappear()
                     # print "got item"
+                elif self.eat_item:
+                    self.eat_item = False
+                    self.health += 10
+                    collision.disappear()
+                    print "ADDED HEALTH"
 
             if collision.get_type() == "K":  # found key
                 collision.kill()
@@ -247,6 +253,11 @@ class Player(PS.DirtySprite):
             if self.item and self.can_drop:
                 self.drop_item(screen)
                 self.item = False
+        elif key[PG.K_e]:
+            if not self.item and self.can_eat:
+                self.can_eat = False
+                self.eat_item = True
+                self.handle_collision(item_group)
         elif key[PG.K_SPACE]:  # space key ATTACK
             if 'r' in self.face:
                 self.image = self.IMG_ATTACK_R
@@ -285,6 +296,8 @@ class Player(PS.DirtySprite):
             standing = True
         if not key[PG.K_a]:
             self.can_drop = True
+        if not key[PG.K_e]:
+            self.can_eat = True
         if standing:
             if self.face == 'd':
                     self.face = 'ds'
