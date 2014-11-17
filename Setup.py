@@ -123,14 +123,21 @@ class Game(object):
 
     def update(self):
         ###(variables)####
-        trap_attack = False  # tells if a trap attacked
+        trap_attack_player = False  # tells if a trap attacked
+        trap_attack_enemy = False
+        enemy_attacked = None
         self.enemy_ID = -1
 
         ###(attacks on player)####
         ##trap handling
         for trap in self.trap_group.sprites():
-            if (trap.get_trap_attack() and Globals.INVINCIBILITY_COUNT == 0):
-                trap_attack = True
+            if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
+                trap_attack_player = True
+            if (trap.get_trap_attack_enemy()):
+                enemies_attacked = trap.get_enemies_attacked()
+                if enemies_attacked is not None:
+                    for enemy in enemies_attacked:
+                        enemy.decrement_health(1)
             if trap.will_remove():
                 self.trap_group.remove(trap)
         ##icecream attacks
@@ -142,9 +149,9 @@ class Game(object):
                 #add the new trap to the list of traps
                 self.trap_group.add(new_trap)
 
-            if(icecream.get_attacked_player() or trap_attack):
-                if trap_attack:
-                    trap_attack = False
+            if(icecream.get_attacked_player() or trap_attack_player):
+                if trap_attack_player:
+                    trap_attack_player = False
                 #if so start invincibility count after attack
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
@@ -152,9 +159,9 @@ class Game(object):
 
         ##burger attacks
         for burger in self.burger_list.sprites():
-            if(burger.get_attacked_player() or trap_attack):
-                if trap_attack:
-                    trap_attack = False
+            if(burger.get_attacked_player() or trap_attack_player):
+                if trap_attack_player:
+                    trap_attack_player = False
                 #if so start invincibility count after attack
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
@@ -198,6 +205,7 @@ class Game(object):
         player_traps = self.character.get_player_traps()
         for trap in player_traps:
             self.trap_group.add(trap)
+            trap.set_enemy_list(self.enemy_list)
         # for traps in player_traps:
             if trap.will_remove():
                 self.character.remove_player_trap(trap)

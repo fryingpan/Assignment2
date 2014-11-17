@@ -34,13 +34,18 @@ class Trap(PS.DirtySprite):
         # number of animation frames
         self.num_frames = 3
         # whether the trap has collided with the player
-        self.ptrap_attack = False
-        self.etrap_attack = False
+        self.trap_attack_player = False
+        self.trap_attack_enemy = False
+        self.enemies_attacked = []
         # whether the trap need to be removed from the list of traps in SetUp
         self.remove = False
         self.surface = surface
         if animation:
             self.load_images()
+        self.enemy_list = None
+
+    def set_enemy_list(self, enemy_list):
+        self.enemy_list = enemy_list
 
     def update(self, bg, player_group):
         self.trap_attack = False
@@ -61,15 +66,21 @@ class Trap(PS.DirtySprite):
         else:
             self.lifetime -= 1
             if self.lifetime <= 0:
-                print "player trap to be removed"
                 self.remove = True
             # collisions = self.handle_collisions(bg)
         # check if enemy trap collides with the player
         if self.user == 'E':
             collisions = self.handle_collisions(player_group)
             if len(collisions) > 0:
-                self.trap_attack = True
-
+                self.trap_attack_player = True
+        # else its a player trap
+        else:
+            self.enemies_attacked = []
+            collisions = self.handle_collisions(self.enemy_list)
+            if len(collisions) > 0:
+                self.trap_attack_enemy = True
+            for collision in collisions:
+                self.enemies_attacked.append(collision)
         self.dirty = 1
 
     def get_type(self):
@@ -78,8 +89,15 @@ class Trap(PS.DirtySprite):
     def will_remove(self):
         return self.remove
 
-    def get_trap_attack(self):
-        return self.trap_attack
+    def get_trap_attack_player(self):
+        return self.trap_attack_player
+
+    def get_trap_attack_enemy(self):
+        return self.trap_attack_enemy
+
+    def get_enemies_attacked(self):
+        if len(self.enemies_attacked) > 0:
+            return self.enemies_attacked
 
     def handle_collisions(self, group):
         return PS.spritecollide(self, group, False)

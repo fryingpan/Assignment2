@@ -97,7 +97,7 @@ class Burger(Enemy):
         return self.enemy_ID
 
     def is_alive(self):
-        if self.health == 0:
+        if self.health <= 0:
             #then the enemy is dead
             pass
 

@@ -106,12 +106,9 @@ class Player(PS.DirtySprite):
                                      rect,             # rect of the image 
                                      self.item_type,   # the type of trap
                                      'P',              # Player is the user 
-                                     1400,             # lifetime 
+                                     1600,             # lifetime 
                                      image,            # image 
                                      False))           # if the trap will be animated
-
-        if len(self.player_traps) > 0:
-            print "dropped trap"
         self.item_use_count -= 1
         if self.item_use_count == 0:
             self.item = False
