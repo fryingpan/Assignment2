@@ -43,7 +43,7 @@ class IceCream(Enemy):
         self.load_images()
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT,
                        self.IMAGES_LEFT, self.IMAGES_FRONT,
-                       self.IMAGES_BACK, self.health, self.speed)
+                       self.IMAGES_BACK, self.health)
 
     # def drop_item(self):
     #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)

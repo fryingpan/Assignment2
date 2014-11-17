@@ -11,6 +11,7 @@ try:
     from Player import Player
     from IceCream import IceCream
     from Burger import Burger
+    from Lettuce import Lettuce
     import pad as Pad
     import pygame.sprite as PS
     import pygame.display as PD
@@ -72,13 +73,14 @@ class Game(object):
         
         ##draw sprites
         self.character = Player(Globals.DELTA)
-        self.INVINCIBILITY_TIME =  500
+        self.INVINCIBILITY_TIME =  1000
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
         # self.remainingEnemies = self.num_enemies
         #create icecream group
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
+        self.lettuce_list = PS.Group()
         self.enemy_list = PS.Group()  # all enemies
         self.pad_list = PS.Group()
         self.trap_group = PS.Group()
@@ -90,7 +92,8 @@ class Game(object):
                                           self.item_group,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list)
+                                          self.burger_list,
+                                          self.lettuce_list)
         
         #variables to be handled in change_level method
         self.objective = None
@@ -159,13 +162,28 @@ class Game(object):
 
         ##burger attacks
         for burger in self.burger_list.sprites():
-            if(burger.get_attacked_player() or trap_attack_player):
-                if trap_attack_player:
-                    trap_attack_player = False
+            if(burger.get_attacked_player()):
                 #if so start invincibility count after attack
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = burger.get_ID()
+
+        for lettuce in self.lettuce_list.sprites():
+            ran = random.randint(0, 10)
+            if(ran < 3):
+                lettuce.attack()
+#turn into projectile checker?
+        # ##trap handling
+        # for lc in self.trap_group.sprites():
+        #     if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
+        #         trap_attack_player = True
+        #     if (trap.get_trap_attack_enemy()):
+        #         enemies_attacked = trap.get_enemies_attacked()
+        #         if enemies_attacked is not None:
+        #             for enemy in enemies_attacked:
+        #                 enemy.decrement_health(1)
+        #     if trap.will_remove():
+        #         self.trap_group.remove(trap)
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
@@ -216,7 +234,8 @@ class Game(object):
                                           self.item_group,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list)
+                                          self.burger_list,
+                                          self.lettuce_list)
 
         #cheese/door handling
         if self.character.get_modified_map():
@@ -358,10 +377,10 @@ class Game(object):
         self.map = Map.Map(ldata.map_file, self.level)
         self.camera = cam.Camera(self.map.get_surface())
         self.camera_background = None
-        self.pad_list.empty()
 
         self.num_enemies += self.map.get_num_enemies(1)  # icecream
         self.num_enemies += self.map.get_num_enemies(2)  # burger
+        self.num_enemies += self.map.get_num_enemies(3)  # lettuce
 
         #may want to change this to be determined by mapfile.txt
         self.character.rect.x = ldata.character_pos_x
@@ -383,19 +402,23 @@ class Game(object):
             burger = Burger(self.map.get_enemy_coordx(e, 2),
                             self.map.get_enemy_coordy(e, 2))
             self.burger_list.add(burger)
+        #lettuce
+        for e in range(self.map.get_num_enemies(3)):
+            lettuce = Lettuce(self.map.get_enemy_coordx(e, 3),
+                            self.map.get_enemy_coordy(e, 3))
+            self.lettuce_list.add(lettuce)
 
         self.enemy_list.add(self.icecream_list)
         self.enemy_list.add(self.burger_list)
+        self.enemy_list.add(self.lettuce_list)
 
         #pads
         for e in range(len(self.map.padtiles)):
+            print "line 418"
             if self.map.pad_type[e] == 0:  # hot
+                print self.map.get_pad_x(e)
                 newPad = Pad.create_Pad(self.map.get_pad_x(e),
                                         self.map.get_pad_y(e), 0)
-                self.pad_list.add(newPad)
-            if self.map.pad_type[e] == 1:  # cold
-                newPad = Pad.create_Pad(self.map.get_pad_x(e),
-                                        self.map.get_pad_y(e), 1)
                 self.pad_list.add(newPad)
 
         #get block sprite group from the map file
@@ -413,7 +436,8 @@ class Game(object):
                                           self.item_group,
                                           self.player_group,
                                           self.icecream_list,
-                                          self.burger_list)
+                                          self.burger_list,
+                                          self.lettuce_list)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####

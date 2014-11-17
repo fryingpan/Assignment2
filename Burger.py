@@ -51,7 +51,7 @@ class Burger(Enemy):
         self.load_images()
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT,
                        self.IMAGES_LEFT, self.IMAGES_FRONT,
-                       self.IMAGES_BACK, self.health, self.speed)
+                       self.IMAGES_BACK, self.health)
         self.drop_num = 3
 
     def attack(self, surface):
@@ -59,7 +59,6 @@ class Burger(Enemy):
         pass
 
     def move(self, player, interval):
-
         ran = random.randint(0, 10)
         move_dist = 0
         if(ran < 3):  # slow him down cuz he hella scary when he's fast

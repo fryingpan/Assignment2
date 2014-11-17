@@ -23,7 +23,7 @@ class Enemy(PG.sprite.DirtySprite):
     FACE_STRING = ['u', 'd', 'r', 'l']
     CYCLE = .6
 
-    def __init__(self, rect, r, l, f, b, health=1, speed=1):
+    def __init__(self, rect, r, l, f, b, health=1):
         # Call the parent class (Sprite) constructor
         PG.sprite.DirtySprite.__init__(self)
         # take attributes from derived class
@@ -31,7 +31,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.rect.x = rect.x
         self.rect.y = rect.y
         self.health = health
-        self.speed = speed
         self.IMAGES_RIGHT = r
         self.IMAGES_LEFT = l
         self.IMAGES_FRONT = f
@@ -42,7 +41,7 @@ class Enemy(PG.sprite.DirtySprite):
         self.face = 'u'
         self.time = 0.0
         self.frame = 0
-        Globals.INVINCIBILITY_COUNT = 0
+        # Globals.INVINCIBILITY_COUNT = 0
         self.attacked_player = False
         self.last_hit = 0
         self.last_hit_save = -1
@@ -83,13 +82,11 @@ class Enemy(PG.sprite.DirtySprite):
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
         if self.face == 'r':
-            collisions = PS.spritecollide(self, bg, False)
             for collision in collisions:
                 if(self.rect.x +
                    self.rect.width) >= collision.rect.left:
                     self.rect.x = collision.rect.left - self.rect.width
         elif self.face == 'l':
-            collisions = PS.spritecollide(self, bg, False)
             for collision in collisions:
                 if (self.rect.x) <= (collision.rect.left +
                                      collision.rect.width):
@@ -101,7 +98,6 @@ class Enemy(PG.sprite.DirtySprite):
                    self.rect.height) >= collision.rect.top:
                     self.rect.y = collision.rect.top - self.rect.height
         elif self.face == 'u':
-            collisions = PS.spritecollide(self, bg, False)
             for collision in collisions:
                 if (self.rect.y <= (collision.rect.top +
                                     collision.rect.height)):
