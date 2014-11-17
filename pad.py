@@ -83,11 +83,6 @@ class Pad(PS.DirtySprite):
             while PT.get_ticks() - start < 10:
                 continue
             player.speed = 1
-#            for i in range(100):
-#                #SPEED player.
-#                pass
-#            #return to NORMAL after the time
-#            player.speed = 1
 
     def load_images(self, t):
         ##load hot pad images

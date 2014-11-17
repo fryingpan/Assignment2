@@ -373,6 +373,7 @@ class Game(object):
             del self.map
         Map.GRASS_ARRAY = []
         Map.PAD_ARRAY = []
+        self.pad_list.empty()
         ##new map is different than level 1's map, of course.
         self.map = Map.Map(ldata.map_file, self.level)
         self.camera = cam.Camera(self.map.get_surface())
@@ -414,11 +415,13 @@ class Game(object):
 
         #pads
         for e in range(len(self.map.padtiles)):
-            print "line 418"
             if self.map.pad_type[e] == 0:  # hot
-                print self.map.get_pad_x(e)
                 newPad = Pad.create_Pad(self.map.get_pad_x(e),
                                         self.map.get_pad_y(e), 0)
+                self.pad_list.add(newPad)
+            elif self.map.pad_type[e] == 1:
+                newPad = Pad.create_Pad(self.map.get_pad_x(e),
+                                        self.map.get_pad_y(e), 1)
                 self.pad_list.add(newPad)
 
         #get block sprite group from the map file
