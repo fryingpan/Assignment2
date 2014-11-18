@@ -57,7 +57,7 @@ def drawtextbox(text, textcolor, boxcolor, x, y, width, height, referencestr):
     #Class Defining the state#
 
 class Menu():
-  
+    BACKGROUND = None
 
     #Declares variables for first creation of state and intializes very basic sound and color modules
     def __init__(self):
@@ -65,21 +65,22 @@ class Menu():
         self.time = 0.1
         self.sound = PX.Sound("thx.wav")
         self.sound.play()
+        if not Menu.BACKGROUND:
+            Menu.BACKGROUND = self.load_background()
                 
     def render(self):
-
         Globals.SCREEN.fill(PC.Color('black'))
-        
-        
+        #put background in
+        Globals.SCREEN.blit(Menu.BACKGROUND, (0, 0))
+
         drawtextbox("Title",PC.Color("red"),PC.Color("blue"),10, 20,60,30,"title")
         drawtextbox("Scores",PC.Color("red"),PC.Color("blue"), 10,50,85,30,"scores")
         drawtextbox("Game",PC.Color("red"),PC.Color("blue"),10,80,75,30,"game")
         drawtextbox("Quit",PC.Color("red"),PC.Color("blue"),10,110,60,40,"quit")
-        drawtextbox("Brightness", (37, 200,100), PC.Color("blue"), 10,140,130,30, "brightness")
-        drawtextbox("Volume", (37, 200, 100), PC.Color("blue"), 10,170,90, 30, 'volume')
-        
+#        drawtextbox("Brightness", (37, 200,100), PC.Color("blue"), 10,140,130,30, "brightness")
+#        drawtextbox("Volume", (37, 200, 100), PC.Color("blue"), 10,170,90, 30, 'volume')
         PDI.flip()
-        
+
     def update(self):
         self.time += self.time
         #Fade in code, linear fade based on time
@@ -87,6 +88,7 @@ class Menu():
             ratio = self.time / Locals.FADEINTIME
             value = int(ratio * 255)
             self.color = PC.Color(value, value, value)
+
     def event(self, events):
         mousePress = PG.mouse.get_pressed()
         M_M1 = mousePress[0]
@@ -104,6 +106,10 @@ class Menu():
                 elif objectList['quit'].collidepoint(PG.mouse.get_pos()) == 1:
                     Globals.STATE = "Quit"
                     return False
+
+    def load_background(self):
+        image = PI.load("FPGraphics/Title/menu.png").convert_alpha()
+        return image
 
 
 
