@@ -359,7 +359,7 @@ class Game(object):
         self.level = currentLevel
         ldata = Lvl_Data(self.level)
         self.objective = ldata.objective
-        self.updated_obj = True
+        self.updated_obj = False ######CHANGED
         PM.music.load(ldata.music_file)
         PM.music.play(-1)
 
