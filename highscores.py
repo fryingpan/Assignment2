@@ -59,6 +59,9 @@ class HighScores:
             if ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
                     PM.music.fadeout(1000)
                     Globals.STATE = "Menu"
+            if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
+                    PM.music.fadeout(1000)
+                    Globals.STATE = "Menu"
 
     def get_text_surface(self):
         rect = Rect(100, 100, 300, 300)

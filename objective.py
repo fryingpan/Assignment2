@@ -21,10 +21,8 @@ class Objective(object):
         self.lvl = lvl
         self.current_obj = [] #current obj displaying
         self.lvl_objs = []
-        self.current_obj.append("")
-        self.current_obj.append("Objective: Kill all the food people. They're terrible and not nice.")
-        self.current_obj.append("Press 'n' to remember your ingenious plans.")
-        self.current_text = self.current_obj.pop()
+        self.loadObjectives(lvl)
+        # self.current_text = self.current_obj.pop()
         self.screen = screen
 
     #puts banner and then objective on top
@@ -34,17 +32,25 @@ class Objective(object):
         #self.updateBanner()
 
     def changeObj(self, signID):
-        if signID == 0:
-            self.screen.blit(self.font.render(text.pop(), True, self.text_color), (50, 30))
-            self.current_obj = text
-        elif signID == 1:
-            self.lactoseText()
-        elif signID == 2:
-            self.killedText()        
+        self.current_obj = self.lvl_objs[signID]
+        updateBanner()
 
     def loadObjectives(self, lvl):
-        if(lvl == 1):
-            yes = 1
+        objs = []
+        if(lvl == 1):#0
+            objs.append("Objective: Kill all the food people. They're terrible and not nice.")
+            objs.append("Press 'n' to remember your ingenious plans.")
+            self.lvl_objs.append(objs)
+            objs = []#1
+            objs.append("cheese walls. Look for lactase pills to take to eat through them!")
+            objs.append("You are objs-intolerant, and therefore you can't eat through")
+            self.lvl_objs.append(objs)
+            objs = []#2
+            objs.append("-eat its drop-for health or pick up it up for a weapon!")
+            objs.append("uh")
+            objs.append("eat its corpse-")
+            objs.append("You just objs a food person! In celebration, you can")
+            self.lvl_objs.append(objs)
 
     def updateBanner(self): #update text on banner
         # print len(self.current_obj)
@@ -55,22 +61,3 @@ class Objective(object):
                 return True
         # return False if there are no more instructions to show
         return False
-
-    def lactoseText(self):
-        lactose = []
-        lactose.append("")
-        lactose.append("cheese walls. Look for lactase pills to take to eat through them!")
-        lactose.append("You are lactose-intolerant, and therefore you can't eat through")
-        self.current_obj = lactose
-        self.updateBanner()
-
-    def killedText(self):
-        killed = []
-        killed.append("")
-        killed.append("-eat its drop-for health or pick up it up for a weapon!")
-        killed.append("uh")
-        killed.append("eat its corpse-")
-        killed.append("You just killed a food person! In celebration, you can")
-        self.current_obj = killed
-        key = PG.key.get_pressed()
-        self.updateBanner()
