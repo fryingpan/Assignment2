@@ -47,7 +47,7 @@ class Cutscene(PS.Sprite):
             self.scenes[2].add_text(
                 "You're tired of dealing with this disrespect.", (110, 65))
             self.scenes[2].add_text(
-                "Maybe that's why no one wanted to play with you.", (185, 60))
+                "Maybe that's why no one wanted to play with you.", (110, 65))
 
             self.scenes.append(Scene(
                 PI.load("FPGraphics/story/lv1_3.png").
@@ -63,6 +63,31 @@ class Cutscene(PS.Sprite):
             self.scenes[3].add_over_img(
                 PI.load("FPGraphics/story/lv1_3_sp1.png").
                 convert_alpha(), (20, 25))
+        if(level == 2):
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv2_1.png").
+                convert(), self.screen))
+            self.scenes[0].add_text("You can't let this continue.", (100, 30))
+            self.scenes[0].add_text(
+                "-who are still alive and smug and terrible.",(100, 30))
+            self.scenes[0].add_text(
+                "There are still food people in the nearby chili land-", (100, 30))
+            self.scenes[0].add_text(
+                "As you bask in your glory, you realize something.", (100, 30))
+        if(level == 3):
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv3_1.png").
+                convert(), self.screen))
+            self.scenes[0].add_text(
+                "You know what to do.",(100, 30))
+            self.scenes[0].add_text(
+                "How charming. But full of stupid food people.",(100, 30))
+            self.scenes[0].add_text(
+                "...Somehow there is an icecream land nearby!",(100, 30))
+            self.scenes[0].add_text(
+                "But what's this?",(100, 30))
+            self.scenes[0].add_text(
+                "You've bested the heated and horrible chili land!",(100, 30))
 
     #play all the scenes
     def play(self, level):

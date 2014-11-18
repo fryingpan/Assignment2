@@ -365,7 +365,8 @@ class Game(object):
         self.updated_obj = False ######CHANGED
         PM.music.load(ldata.music_file)
         PM.music.play(-1)
-
+        Cutscene(Globals.SCREEN, self.level)
+        
         #interpretting mapfile.txt
         if(self.level > 1):
             del self.map
