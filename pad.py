@@ -76,13 +76,11 @@ class Pad(PS.DirtySprite):
             if toHurt == 1:
                 player.health -= 1
 
-    ###speeds up player
+    ###slows down player
     def i_am_cold(self, player):
-            player.speed = 3
             start = PT.get_ticks()
             while PT.get_ticks() - start < 10:
                 continue
-            player.speed = 1
 
     def load_images(self, t):
         ##load hot pad images
@@ -103,10 +101,15 @@ class Pad(PS.DirtySprite):
             surface.set_colorkey(alphabg)
             surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
             imageArray.append(surface)
+        for i in range(3, -1, -1):
+            surface = PG.Surface((50, 50))
+            surface.set_colorkey(alphabg)
+            surface.blit(sheet, (0, 0), (i*50, 0, 50, 50))
+            imageArray.append(surface)
         return imageArray
 
     def update(self, bg, player):
-        PAD_IMAGE_LENGTH = 5
+        PAD_IMAGE_LENGTH = 9
         self.time = self.time + Globals.DELTA
         if self.time > Pad.CYCLE:
             self.time = 0.0
