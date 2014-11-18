@@ -78,12 +78,19 @@ class Player(PS.DirtySprite):
         # Item Variables
         self.grab_item = False
         self.item = False
+        self.item_img = None
         self.item_use_count = 0
         self.item_type = 0
         self.player_items = []
         self.player_traps = []
         self.can_eat = True
         self.eat_item = False
+
+    def has_item(self):
+        return self.item
+
+    def get_item_img(self):
+        return self.item_img
 
     def remove_player_item(self, item):
         self.player_items.remove(item)
@@ -99,18 +106,20 @@ class Player(PS.DirtySprite):
             self.player_items.append(Item.IceCreamScoop(self.rect.x,
                                                         self.rect.y, surface))
 
+    def get_item(self):
+        if self.item_type == 1:
+            self.item_img = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
+
     def drop_trap(self, surface):
-        if (self.item_type == 1):
-            image = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
-        rect = image.get_rect()
+        rect = self.item_img.get_rect()
         rect.x = self.rect.x
         rect.y = self.rect.y
         self.player_traps.append(Trap(surface,         # surface to be drawn in
                                      rect,             # rect of the image 
-                                     self.item_type,   # the type of trap
+                                     self.item_img,   # the type of trap
                                      'P',              # Player is the user 
                                      1600,             # lifetime 
-                                     image,            # image 
+                                     self.item_img,            # image 
                                      False))           # if the trap will be animated
         self.item_use_count -= 1
         if self.item_use_count == 0:
@@ -167,8 +176,10 @@ class Player(PS.DirtySprite):
             if type(collision.get_type()) is int:
                 if self.grab_item:
                     self.item = True
+                    # self.modified_map = True
                     self.item_use_count = collision.get_use_count()
                     self.item_type = collision.get_type()
+                    self.get_item()
                     collision.disappear()
                     # print "got item"
                 elif self.eat_item:
