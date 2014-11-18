@@ -325,8 +325,11 @@ class Game(object):
                             #Globals.SCORE = self.character.score
                         Globals.STATE = "Menu"
         ##Item Display
-        if (self.character.pill is True):
+        if (self.character.pill):
             Globals.SCREEN.blit(self.pill_img, (750, 550))
+
+        if self.character.has_item():
+            Globals.SCREEN.blit(self.character.get_item_img(), (700, 550))
         ###########################################################
         
 
