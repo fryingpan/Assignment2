@@ -38,7 +38,6 @@ class Objective(object):
         self.current_obj = self.lvl_objs[signID]
         # print("CURRENT LENGTH " + str(len(self.current_obj)))
         if(self.objPopped == 0):
-            print "poppped"
             self.popNextBannerTxt();
             self.objPopped += 1
 
@@ -54,6 +53,7 @@ class Objective(object):
             if (len(self.current_obj) >= 0):
                 return True
         # return False if there are no more instructions to show
+        self.objPopped = 0
         return False
 
     def loadObjectives(self, lvl):
