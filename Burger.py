@@ -65,16 +65,20 @@ class Burger(Enemy):
             dist = int(self.speed)
             # distance moved in 1 frame, try changing it to 5
             move_dist = math.ceil(dist*interval)
-            if player.sprites()[0].rect.y > self.rect.y and self.rect.y <= self.yboundb:
+            if player.sprites()[0].rect.y > self.rect.y and
+            self.rect.y <= self.yboundb:
                 self.rect.y += move_dist  # move down
                 self.face = 'd'
-            elif player.sprites()[0].rect.y < self.rect.y and self.rect.y >= self.yboundt:
+            elif player.sprites()[0].rect.y < self.rect.y and
+            self.rect.y >= self.yboundt:
                 self.rect.y -= move_dist  # move up
                 self.face = 'u'
-            if player.sprites()[0].rect.x > self.rect.x and self.rect.x <= self.xboundr:
+            if player.sprites()[0].rect.x > self.rect.x and
+            self.rect.x <= self.xboundr:
                 self.rect.x += move_dist  # move right
                 self.face = 'r'
-            elif player.sprites()[0].rect.x < self.rect.x and self.rect.x >= self.xboundl:
+            elif player.sprites()[0].rect.x < self.rect.x and
+            self.rect.x >= self.xboundl:
                 self.rect.x -= move_dist  # move left
                 self.face = 'l'
 
