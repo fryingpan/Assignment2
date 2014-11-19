@@ -12,7 +12,7 @@ import pygame.sprite as PS
 import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
-import pygame.mixer as PM
+import pygame.mixer as PX
 import Globals
 
 
@@ -63,6 +63,7 @@ class Menu():
     def __init__(self):
         self.color = PC.Color("blue")
         self.time = 0.1
+        self.sound = PX.Sound("thx.wav")
         self.sound.play()
         if not Menu.BACKGROUND:
             Menu.BACKGROUND = self.load_background()
