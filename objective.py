@@ -34,21 +34,24 @@ class Objective(object):
 
     def changeObj(self, signID):
         temp = []
-        print("signID " + str(signID))
-        for a in self.lvl_objs[signID]:
-            temp.append(a)
-        self.current_obj = temp
-        print("CURRENT LENGTH " + str(len(self.current_obj)))
+        counter = 0
+        self.current_obj = self.lvl_objs[signID]
+        # print("CURRENT LENGTH " + str(len(self.current_obj)))
         if(self.objPopped == 0):
+            print "poppped"
             self.popNextBannerTxt();
             self.objPopped += 1
 
     def popNextBannerTxt(self): #update text on banner
         # print len(self.current_obj)
+        counter = 0
         if(len(self.current_obj) > 0):
+            # print " length: " + str(len(self.current_obj))
             self.current_text = self.current_obj.pop()
+            # print "counter: " + str(counter) + " length: " + self.current_text
+            counter += 1
             # return True if there are still more instructions to show
-            if (len(self.current_obj) > 0):
+            if (len(self.current_obj) >= 0):
                 return True
         # return False if there are no more instructions to show
         return False
@@ -56,16 +59,16 @@ class Objective(object):
     def loadObjectives(self, lvl):
         objs = []
         if(lvl == 1):#0
-            objs.append("Press 'n' to see the next part of your ingenious plans.")
             objs.append("Objective: Kill all the food people. They're terrible and not nice.")
+            objs.append("Press 'n' to see the next part of your ingenious plans.")
             self.lvl_objs.append(objs)
             objs = []#1
-            objs.append("You are lactose-intolerant, and therefore you can't eat through")
             objs.append("cheese walls. Look for lactase pills to take to eat through them!")
+            objs.append("You are lactose-intolerant, and therefore you can't eat through")
             self.lvl_objs.append(objs)
             objs = []#2
-            objs.append("After you kill food persons, in celebration you can")
+            objs.append("-eat its drop-for health or pick up it up for a weapon!")
+            objs.append("uh") 
             objs.append("eat its corpse-")
-            objs.append("uh")
-            objs.append("-eat its drop-for health or pick up it up for a weapon!") 
+            objs.append("After you kill food persons, in celebration you can")
             self.lvl_objs.append(objs)
