@@ -69,9 +69,10 @@ class Cutscene(PS.Sprite):
                 convert(), self.screen))
             self.scenes[0].add_text("You can't let this continue.", (100, 30))
             self.scenes[0].add_text(
-                "-who are still alive and smug and terrible.",(100, 30))
+                "-who are still alive and smug and terrible.", (100, 30))
             self.scenes[0].add_text(
-                "There are still food people in the nearby chili land-", (100, 30))
+                "There are still food people in the nearby chili land-",
+                (100, 30))
             self.scenes[0].add_text(
                 "As you bask in your glory, you realize something.", (100, 30))
         if(level == 3):
@@ -79,15 +80,15 @@ class Cutscene(PS.Sprite):
                 PI.load("FPGraphics/story/lv3_1.png").
                 convert(), self.screen))
             self.scenes[0].add_text(
-                "You know what to do.",(100, 30))
+                "You know what to do.", (100, 30))
             self.scenes[0].add_text(
-                "How charming. But full of stupid food people.",(100, 30))
+                "How charming. But full of stupid food people.", (100, 30))
             self.scenes[0].add_text(
-                "...Somehow there is an icecream land nearby!",(100, 30))
+                "...Somehow there is an icecream land nearby!", (100, 30))
             self.scenes[0].add_text(
-                "But what's this?",(100, 30))
+                "But what's this?", (100, 30))
             self.scenes[0].add_text(
-                "You've bested the heated and horrible chili land!",(100, 30))
+                "You've bested the heated and horrible chili land!", (100, 30))
 
     #play all the scenes
     def play(self, level):

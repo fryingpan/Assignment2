@@ -181,12 +181,10 @@ class Player(PS.DirtySprite):
                     self.item_type = collision.get_type()
                     self.get_item()
                     collision.disappear()
-                    # print "got item"
                 elif self.eat_item:
                     self.eat_item = False
                     self.health += 10
                     collision.disappear()
-
             elif collision.get_type() == "K":  # found key
                 collision.kill()
                 self.pill = True
@@ -296,7 +294,6 @@ class Player(PS.DirtySprite):
                                                 self.face, screen, enemy_bg)
             for killed in killed_enemies:
                 if(killed.last_hit == 0):
-                    # print len(killed_enemies)
                     self.items_of_killed.append(killed.drop_item(screen))
                     # self.health += 1
                     killed.decrement_health(1)
@@ -354,7 +351,6 @@ class Player(PS.DirtySprite):
                 elif(self.face == 'l'):
                     self.update_image(self.IMAGES_LEFT_DMG)
                 elif(self.face == 'd'):
-                    print(self.frame)
                     self.update_image(self.IMAGES_FRONT_DMG)
             else:
                 if (self.face == 'r'):
@@ -395,11 +391,6 @@ class Player(PS.DirtySprite):
             """ Draw on surface """
             # key = PG.key.get_pressed()
             self.check_boundary(screen)
-            # blit yourself at your current position
-#            print "player's draw 332"
-#            if self.attack_pose is True and 'l' in self.face:
-#                screen.blit(self.image, (self.rect.x-50, self.rect.y))
-#            else:
             screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def check_boundary(self, screen):
