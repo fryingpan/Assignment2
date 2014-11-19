@@ -354,6 +354,7 @@ class Game(object):
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_3:
                 self.level = 3
+                self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.popNextBannerTxt() #returns if true if there is more text, false if not
