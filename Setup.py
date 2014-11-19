@@ -97,6 +97,7 @@ class Game(object):
         
         #variables to be handled in change_level method
         self.objective = None
+        self.objectiveBlit = True
         self.updated_obj = True
         self.map = None
         self.num_enemies = 0
@@ -111,9 +112,6 @@ class Game(object):
         self.enemy_ID = -1
         #if true, tells map to redraw
         self.map_modified = False
-        ##temp obj conditions
-        self.cheesed = True
-        self.killed = True
 
         self.level = 1
         self.change_level(self.level)
@@ -244,6 +242,7 @@ class Game(object):
             self.map_modified = False
         if self.character.banner != -1: #make sure it doesn't redraw banner already present?
             self.objective.changeObj(self.character.banner)
+            self.updated_obj = True
             self.character.banner = -1
 
         #update camera's position on the map
@@ -347,9 +346,20 @@ class Game(object):
                     # Globals.SCORE = self.character.score
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_1:
+                self.level = 1
+                self.change_level(self.level)
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_2:
+                self.level = 2
+                self.change_level(self.level)
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_3:
+                self.level = 3
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 # see if banner still needs to be shown (self.updated_obj gets True)
-                self.updated_obj = self.objective.updateBanner()
+                self.updated_obj = self.objective.popNextBannerTxt() #returns if true if there is more text, false if not
+                self.objectiveBlit = False
+            else:
+                self.objectiveBlit = True
                 
     def reset_level(self):
         for item in self.item_group.sprites():
@@ -365,7 +375,7 @@ class Game(object):
         self.updated_obj = False ######CHANGED
         PM.music.load(ldata.music_file)
         PM.music.play(-1)
-        Cutscene(Globals.SCREEN, self.level)
+        #Cutscene(Globals.SCREEN, self.level)
         
         #interpretting mapfile.txt
         if(self.level > 1):

@@ -166,7 +166,7 @@ class Player(PS.DirtySprite):
                 block.kill()
         self.modified_map = True
 
-    def read_sign(self, bg):  # pass the enire block group.
+    def read_sign(self):  # pass the enire block group.
         self.banner = self.at_sign_num
 
     def handle_collision(self, bg):
