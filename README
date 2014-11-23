@@ -34,54 +34,35 @@ New music is added to level 2. Original source from spacebrain/upfront.
 Todo List
 ----------
 
--Tutorial (in banners)
-    -change to signs (press 'r' to read)
-    -How to use items
-    -fix cheese door tutorial
-    -start with sign at beginning to tell you how to read signs (press 'n' to read through)
+Somebody do this:
+    -do we want something fancy to blend tile imgs?
+        lv 4 is going to be a combo of hot/cold, but not
+        sure if we got time to be that fancy
+    -implement level effects on enemies
+        -ice cream drops more puddles more quickly in hot lv
+        but does the opposite in cold. Not sure if icecream
+        dying off quicker is a good idea, maybe make the
+        puddles stay for a super long time in cold?
+        -burger moves faster in hot, more hp in slow
+    -change the win/lose to display different dialogs (random)
+    -Make frying pan dmg more accurate
+    -burger drop effects; not sure why I made so many drops for
+    burger :( Maybe make them give you an effect when equipped?
+    Meat makes your attack stronger, bread makes you faster, etc?
+    Need to implement random explosion upon eating burger sometime
 
--item system
-    -probably don't need to KEEP key in an inventory; simply open the door when you get the key?
-        -inventory includes key
-    -when player runs over an item, press one key to eat and different key to pick up as weapon.
-    -maybe don't need inventory then? Always hold one item only.
-    -Have icon at bottom: tell what item you're holding, if you're holding a pill
-        -key to drop item in case player picked it up by accident
-        -item uses different key from frying pan
-    -Icecream weapon: let player drop puddles (show how many puddles you have left to drop)
-    -be able to use or eat
-
-Enemy
-	-Enemy AI: follow player when you get close
+===================
+===================
 
 Carla:
 
 Mary:
-    -make menu screen image
-    -make lettuce
-    -make another cutscene
-    -restrict movement space of homing enemies (justification/handwave: want to force player to find enemies)
-    -fix dmg frames
+    -fix signs
+    -make lettuce enemy
+    -make lv 4 graphics
 
 Katie
-    -fix atk img
-    -animate hot pads
-    -make cold pads (slow down player)
-
-Somebody do this:
-    -implement new enemy (lettuce)
-    -change the win/lose to display different dialogs (random)
-    -Make frying pan dmg more accurate
-
--Weapons - Katie
-    -fix animation - Katie
--music/sound
-
--more enemies
--life bar
-    -could change to tablets?
-
-High Score Page Fix
+    
 
     
 REMINDERS FOR BETA
