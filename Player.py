@@ -73,6 +73,9 @@ class Player(PS.DirtySprite):
         self.at_door_num = -1  # allows player to open door if player has key
         self.at_sign_num = -1  # if player is at a sign, allow sign msg to appear on space
         self.attack_pose = False
+
+        #eating sound
+        self.eatEffect = PM.Sound("music/soundeffects/eating.mod")
         
         self.items_of_killed = []
         # Item Variables
@@ -163,7 +166,9 @@ class Player(PS.DirtySprite):
     def open_door(self, bg):  # pass the enire block group.
         for block in bg:
             if block.get_type() == self.at_door_num:
+                ##OR ADD EATING DOOR SOUND HERE.
                 block.kill()
+                self.eatEffect.play(100)
         self.modified_map = True
 
     def read_sign(self):  # pass the enire block group.

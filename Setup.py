@@ -49,6 +49,7 @@ class Locals(object):
 class Game(object):
 
     def __init__(self):
+        PM.pre_init(22050, -16, 2, 4096)
         PG.init()
         ###(Screen stuff)####
         Globals.SCREEN.fill((255, 255, 255))
