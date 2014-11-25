@@ -1,9 +1,8 @@
-11-2
+11-23
 FRYING PAN
 Carla Castro
 Katie Chang
 Mary Yen
-Josh Holstein
 
 Run the following to run the program:
 python masterfile.py
@@ -63,7 +62,7 @@ Mary:
 
 Katie
    -I shall attempt to do the enemy effects in cold/hot 
-
+   -Add eating door sound
     
 REMINDERS FOR BETA
 -Turn on Cutscenes
