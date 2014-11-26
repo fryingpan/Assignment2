@@ -90,7 +90,7 @@ class BreadDrop(Item):
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player
-		Item.use_count = 1500
+		Item.use_count = 2500
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
@@ -133,7 +133,7 @@ class MeatDrop(Item):
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player
-		Item.use_count = 1500
+		Item.use_count = 2500
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
