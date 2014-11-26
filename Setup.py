@@ -86,6 +86,7 @@ class Game(object):
         self.pad_list = PS.Group()
         self.trap_group = PS.Group()
         self.item_group = PS.Group()
+        self.projectile_group = PS.Group()
 
         #allsprites has all dirty sprites (player, enemies, traps, pads)
         self.allsprites = PS.LayeredDirty(self.trap_group,
@@ -94,7 +95,8 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
-                                          self.lettuce_list)
+                                          self.lettuce_list,
+                                          self.projectile_group)
         
         #variables to be handled in change_level method
         self.objective = None
@@ -167,22 +169,38 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = burger.get_ID()
 
+        projectile_attack_player = False  # tells if a projectile attacked
+        projectile_attack_enemy = False
+
+        #lettuce
+          ##projectile handling
+        for projectile in self.projectile_group.sprites():
+            if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT == 0):
+                projectile_attack_player = True
+            if (projectile.projectile_attack_enemy):
+                enemies_attacked = projectile.get_enemies_attacked()
+                if enemies_attacked is not None:
+                    for enemy in enemies_attacked:
+                        enemy.decrement_health(1)
+            # if projectile.will_remove():
+            #     self.projectile_group.remove(projectile)
+        ##lettuce attacks
         for lettuce in self.lettuce_list.sprites():
-            ran = random.randint(0, 10)
-            if(ran < 3):
-                lettuce.attack()
-#turn into projectile checker?
-        # ##trap handling
-        # for lc in self.trap_group.sprites():
-        #     if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
-        #         trap_attack_player = True
-        #     if (trap.get_trap_attack_enemy()):
-        #         enemies_attacked = trap.get_enemies_attacked()
-        #         if enemies_attacked is not None:
-        #             for enemy in enemies_attacked:
-        #                 enemy.decrement_health(1)
-        #     if trap.will_remove():
-        #         self.trap_group.remove(trap)
+            #see if the enemy will release weapon/attack
+            if (lettuce.will_attack()):
+                print("lettuce atk")
+                #get a new puddle sprite
+                new_projectile = lettuce.attack()
+                #add the new projectile to the list of projectiles
+                self.projectile_group.add(new_projectile)
+
+            if(lettuce.get_attacked_player() or projectile_attack_player):
+                if projectile_attack_player:
+                    projectile_attack_player = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = lettuce.get_ID()
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible

@@ -22,16 +22,13 @@ class Objective(object):
         self.current_obj = [] #current obj displaying
         self.lvl_objs = []
         self.loadObjectives(lvl)
-        # self.current_text = self.current_obj.pop()
         self.screen = screen
-        self.objPopped = 0
         self.current_txt_index = 0
 
     #puts banner and then objective on top
     def drawObjective(self):
         Globals.SCREEN.blit(self.image, (0, 0))
         Globals.SCREEN.blit(self.font.render(self.current_text, True, self.text_color), (50, 30))
-        #self.nextBannerTxt()
 
     #given the sign ID, change to current obj sign's obj and make obj appear
     #should only be called once when player first reads a sign
@@ -53,7 +50,6 @@ class Objective(object):
             if (len(self.current_obj) > self.current_txt_index):
                 return True
         # return False if there are no more instructions to show
-        self.objPopped = 0
         self.current_txt_index = 0
         return False
 

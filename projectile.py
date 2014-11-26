@@ -30,12 +30,16 @@ class Projectile(PS.DirtySprite):
         self.boss = boss #boss is the sprite the projectile is fired from
         self.speed = speed
         self.dmg = dmg
+        self.attacked_player = False
         self.frame = 0
         self.lifetime = lifetime
         self.calculate_origin()
-        #self.update() # to avoid ghost sprite in upper left corner, 
-                      # force position calculation.
 
+        self.projectile_attack_player = False
+        self.projectile_attack_enemy = False
+        self.enemies_attacked = []
+
+        #load images from sprite sheet
     def load_images_helper(self, imageArray, sheet):
         # key = sheet.get_at((0,0))
         # hereeeeee
@@ -47,7 +51,7 @@ class Projectile(PS.DirtySprite):
             imageArray.append(surface)
         return imageArray
 
-    # this will all end up in the key handler
+    # change img depending on self.frame
     def update_image(self, imageArray):
         try:
             self.image = imageArray[self.frame].convert_alpha()
@@ -75,11 +79,20 @@ class Projectile(PS.DirtySprite):
                 self.kill()
 
     def handle_enemies(self, enemies):
-        collisions = PS.spritecollide(self, enemies, False)
-        for col in collisions:
-            col.decrement_health(self.dmg)
-            if(self.pass_through == 0):
-                self.kill()
+        collisions = self.handle_collisions(self.enemy_list)
+        if len(collisions) > 0:
+            self.projectile_attack_enemy = True
+        for collision in collisions:
+            self.enemies_attacked.append(collision)
+        # collisions = PS.spritecollide(self, enemies, False)
+        # for col in collisions:
+        #     col.decrement_health(self.dmg)
+        #     if(self.pass_through == 0):
+        #         self.kill()
+
+    def get_enemies_attacked(self):
+        if len(self.enemies_attacked) > 0:
+            return self.enemies_attacked
 
     def update(self, player):
         # ---- kill if too old ---
@@ -95,6 +108,7 @@ class Projectile(PS.DirtySprite):
             self.kill()
         # elif self.pos[1] > Config.height:
         #     self.kill()
+
         #------- move -------
         self.move(Globals.DELTA, self.boss.pdx, self.boss.pdy)
         if(isinstance(self.boss, Player)):

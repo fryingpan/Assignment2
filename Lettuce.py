@@ -52,7 +52,7 @@ class Lettuce(Enemy):
         self.drop_num = 3
 
     def attack(self):
-        LettuceCutter(self,self)
+        return LettuceCutter(self,self)
 
     def move(self, player, interval):
         #stationary character; make it face diff ways?
