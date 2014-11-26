@@ -26,6 +26,9 @@ class Item(PS.DirtySprite):
 		self.grabbed = False
 		self.remove = False
 
+	def get_image(self):
+		return self.image
+
 	def get_use_count(self):
 		return self.use_count
 
@@ -81,13 +84,13 @@ class BreadDrop(Item):
 		# y position
 		self.rect.y = y_coor + 25
 		# from what enemy its from
-		self.type = 1
+		self.type = 2
 		# how long the item is available to grab
-		self.lifetime = 800
+		self.lifetime = 2000
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player
-		Item.use_count = 3
+		Item.use_count = 1500
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
@@ -103,7 +106,7 @@ class LettuceDrop(Item):
 		# y position
 		self.rect.y = y_coor + 25
 		# from what enemy its from
-		self.type = 1
+		self.type = 3
 		# how long the item is available to grab
 		self.lifetime = 800
 		# surface
@@ -124,13 +127,13 @@ class MeatDrop(Item):
 		# y position
 		self.rect.y = y_coor + 25
 		# from what enemy its from
-		self.type = 1
+		self.type = 4
 		# how long the item is available to grab
 		self.lifetime = 800
 		# surface
 		Item.surface = surface
 		# how many times the item may be used by the player
-		Item.use_count = 3
+		Item.use_count = 1500
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
@@ -145,7 +148,7 @@ class BurgerDrop(Item):
 		# y position
 		self.rect.y = y_coor + 25
 		# from what enemy its from
-		self.type = 1
+		self.type = 5
 		# how long the item is available to grab
 		self.lifetime = 800
 		# surface
