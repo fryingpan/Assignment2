@@ -99,7 +99,7 @@ class Game(object):
         #variables to be handled in change_level method
         self.objective = None
         self.objectiveBlit = True
-        self.updated_obj = True
+        self.updated_obj = False
         self.map = None
         self.num_enemies = 0
         self.background = None
@@ -243,18 +243,12 @@ class Game(object):
             self.map_modified = False
         if self.character.banner != -1: #make sure it doesn't redraw banner already present?
             self.objective.changeObj(self.character.banner)
-            self.updated_obj = True
+            self.updated_obj = True #allow banner to be drawn in draw()
             self.character.banner = -1
 
         #update camera's position on the map
         self.camera_background = self.camera.update(self.character.get_coordinates(),
                            self.map.get_surface())
-        # #####temporary code to detect for door objective###############
-        # if(self.character.rect.x > 2200 and self.character.rect.x < 2700
-        #         and self.character.rect.y > 250 and self.character.rect.y < 400
-        #         and self.cheesed is True):
-        #         self.cheesed = False
-        #         self.objective.changeObj(1)
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -358,7 +352,7 @@ class Game(object):
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 # see if banner still needs to be shown (self.updated_obj gets True)
-                self.updated_obj = self.objective.popNextBannerTxt() #returns if true if there is more text, false if not
+                self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
                 self.objectiveBlit = False
             else:
                 self.objectiveBlit = True
@@ -377,7 +371,8 @@ class Game(object):
         self.updated_obj = False ######CHANGED
         PM.music.load(ldata.music_file)
         PM.music.play(-1)
-        Cutscene(Globals.SCREEN, self.level)
+        ####turn back on only for presentations?
+        #Cutscene(Globals.SCREEN, self.level)
         
         #interpretting mapfile.txt
         if(self.level > 1):

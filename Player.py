@@ -68,7 +68,7 @@ class Player(PS.DirtySprite):
         self.moved = False
         self.interval = 0
         self.modified_map = False
-        self.banner = -1
+        self.banner = -1 #holds the ID of the sign that the player just read
         self.pill = False
         self.at_door_num = -1  # allows player to open door if player has key
         self.at_sign_num = -1  # if player is at a sign, allow sign msg to appear on space
