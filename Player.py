@@ -18,7 +18,7 @@ from Weapon import Weapon
 import Globals
 import Item
 from Trap import Trap
-
+import pygame.time as PT
 
 class Player(PS.DirtySprite):
     IMAGES = None
@@ -76,6 +76,7 @@ class Player(PS.DirtySprite):
 
         #eating sound
         self.eatEffect = PM.Sound("music/soundeffects/eating.mod")
+        self.eated = False
         
         self.items_of_killed = []
         # Item Variables
@@ -196,11 +197,15 @@ class Player(PS.DirtySprite):
         return coordinates
 
     def open_door(self, bg):  # pass the enire block group.
+        self.eated = False
         for block in bg:
             if block.get_type() == self.at_door_num:
                 ##OR ADD EATING DOOR SOUND HERE.
                 block.kill()
-                self.eatEffect.play(100)
+                if self.eated is False:
+                    print self.eatEffect.get_volume()
+                    self.eatEffect.play(50)
+                    self.eated = True
         self.modified_map = True
 
     def read_sign(self):  # pass the enire block group.

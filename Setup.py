@@ -49,7 +49,7 @@ class Locals(object):
 class Game(object):
 
     def __init__(self):
-        PM.pre_init(22050, -16, 2, 4096)
+        PM.pre_init(44100, -16, 1, 2048)
         PG.init()
         ###(Screen stuff)####
         Globals.SCREEN.fill((255, 255, 255))
@@ -393,6 +393,7 @@ class Game(object):
         self.updated_obj = False ######CHANGED
         PM.music.load(ldata.music_file)
         PM.music.play(-1)
+        PM.music.set_volume(0.5)
         ####turn back on only for presentations?
         #Cutscene(Globals.SCREEN, self.level)
         
