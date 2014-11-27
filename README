@@ -42,7 +42,7 @@ Somebody do this:
         but does the opposite in cold. Not sure if icecream
         dying off quicker is a good idea, maybe make the
         puddles stay for a super long time in cold?
-        -burger moves faster in hot, more hp in slow
+        -burger moves faster in hot, more hp in cold
     -change the win/lose to display different dialogs (random)
     -Make frying pan dmg more accurate
     -burger drop effects; not sure why I made so many drops for
@@ -64,7 +64,8 @@ Mary:
 
 Katie
    -Add eating door sound
-    
+   -level effects on enemies   
+ 
 Our schedule
 =============
 Beta - NOV 19

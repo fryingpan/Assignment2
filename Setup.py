@@ -432,7 +432,8 @@ class Game(object):
         #burger
         for e in range(self.map.get_num_enemies(2)):
             burger = Burger(self.map.get_enemy_coordx(e, 2),
-                            self.map.get_enemy_coordy(e, 2))
+                            self.map.get_enemy_coordy(e, 2),
+                            self.level)
             self.burger_list.add(burger)
         #lettuce
         for e in range(self.map.get_num_enemies(3)):
