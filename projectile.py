@@ -13,8 +13,10 @@ class Projectile(PS.DirtySprite):
     side = 7 # small side of Projectile rectangle
     vel = 180 # velocity
     mass = 50
-    maxlifetime = 10.0 # seconds
+    maxlifetime = 5.0 # seconds
+    deltaScaleFactor = 8000
     IMAGE_LENGTH = 4  # all Projectile sprite has 12 frames
+    CYCLE = .6
 
     def __init__(self, boss, rect, num_frames, pass_through = 0, lifetime=8000, image=None, speed = 1, dmg = 1):
         PS.DirtySprite.__init__(self)
@@ -32,7 +34,8 @@ class Projectile(PS.DirtySprite):
         self.dmg = dmg
         self.attacked_player = False
         self.frame = 0
-        self.lifetime = lifetime
+        self.lifetime = 0
+        self.time = 0.0 #animations
         self.calculate_origin()
 
         self.projectile_attack_player = False
@@ -66,8 +69,10 @@ class Projectile(PS.DirtySprite):
 
     def handle_player(self, player):
         collisions = PS.spritecollide(self, player, False)
+
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
-            if(self.invincibility_count == 0):
+            if(Globals.PLAYER_INVINCIBILITY == 0):
+                print("hit player")
                 self.attacked_player = True
                 # self.invincibility_count = 200
 
@@ -94,10 +99,11 @@ class Projectile(PS.DirtySprite):
         if len(self.enemies_attacked) > 0:
             return self.enemies_attacked
 
-    def update(self, player):
+    def update(self, bg, player):
         # ---- kill if too old ---
-        self.lifetime += math.ceil(Globals.DELTA)
+        self.lifetime += (Globals.DELTA)
         if self.lifetime > Projectile.maxlifetime:
+            print("KILL")
             self.kill()
         # ----- !!!!TODO kill if out of screen
         if self.rect.x < 0:
@@ -123,7 +129,7 @@ class Projectile(PS.DirtySprite):
         frame = int(self.time / (Projectile.CYCLE / Projectile.IMAGE_LENGTH))
         if frame != self.frame:
                 self.frame = frame
-                self.update_image(self.image)
+                self.update_image(self.IMAGES)
         self.dirty = 1
 
 class LettuceCutter(Projectile):
@@ -131,8 +137,7 @@ class LettuceCutter(Projectile):
 
     def __init__(self, boss, fps=1):
         ######unique attributes parent class doesn't have
-        self.image = PI.load("FPGraphics/burger/burgerFront.png") \
-            .convert_alpha()
+        self.image = PI.load("FPGraphics/lettuce/lCStart.png").convert_alpha()
         #######
         #attributes to be passed to parent for parent function use
         self.speed = 1
@@ -155,5 +160,5 @@ class LettuceCutter(Projectile):
         return self.face
 
     def load_images(self):
-        sheet = PI.load("FPGraphics/testImgs/crappyCounterTestImg.png").convert_alpha()
+        sheet = PI.load("FPGraphics/lettuce/lC.png").convert_alpha()
         self.IMAGES = self.load_images_helper(self.IMAGES,sheet)

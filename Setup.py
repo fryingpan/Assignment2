@@ -188,7 +188,6 @@ class Game(object):
         for lettuce in self.lettuce_list.sprites():
             #see if the enemy will release weapon/attack
             if (lettuce.will_attack()):
-                print("lettuce atk")
                 #get a new puddle sprite
                 new_projectile = lettuce.attack()
                 #add the new projectile to the list of projectiles
@@ -204,7 +203,9 @@ class Game(object):
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
+        #print("inv " + str(Globals.INVINCIBILITY_COUNT))
         if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
+                print(Globals.INVINCIBILITY_COUNT)
                 self.character.decrement_health(self.enemy_ID)
                 self.enemy_ID = -1
         #decrement invincibility count if player is in invincibility
@@ -253,7 +254,8 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
-                                          self.lettuce_list)
+                                          self.lettuce_list,
+                                          self.projectile_group)
 
         #cheese/door handling
         if self.character.get_modified_map():
@@ -380,6 +382,8 @@ class Game(object):
             self.item_group.remove(item)
         for trap in self.trap_group.sprites():
             self.trap_group.remove(trap)
+        for proj in self.projectile_group.sprites():
+            self.projectile_group.remove(proj)
 
     def change_level(self, currentLevel):
         self.reset_level()
@@ -464,7 +468,8 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
-                                          self.lettuce_list)
+                                          self.lettuce_list,
+                                          self.projectile_group)
         self.allsprites.clear(Globals.SCREEN, self.background)
 
         ####(Level variables)####

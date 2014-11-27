@@ -79,7 +79,7 @@ class Lettuce(Enemy):
             .convert_alpha()
         sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
             .convert_alpha()
-        sheetB = PI.load("FPGraphics/burger/burgerbackWalk.png") \
+        sheetB = PI.load("FPGraphics/lettuce/lettuceFrontAn.png") \
             .convert_alpha()
         self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
                                                     sheetR)
