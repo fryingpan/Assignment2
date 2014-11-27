@@ -48,9 +48,11 @@ class IceCream(Enemy):
     # def drop_item(self):
     #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)
 
-    def attack(self, surface):
+        #sending level through so that puddles
+        #in cold level last longer
+    def attack(self, surface, level):
         #create puddle at your location
-        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface)
+        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface, level)
 
     def move(self, player, interval):
         if(random.randint(0, 200) == 0):

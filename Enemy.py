@@ -66,8 +66,17 @@ class Enemy(PG.sprite.DirtySprite):
             self.kill()
         # print("health " + str(self.health))
 
-    def will_attack(self):
-        attack_prob = random.randint(0, 800)
+    ##only used by ice cream?
+    def will_attack(self, level):
+        if level == 2:  # if in hot level
+            attack_prob = random.randint(0, 100)
+            if attack_prob == 1:
+                return True
+        if level == 3:  # in cold level
+            attack_prob = random.randint(0, 1200)
+            if attack_prob == 1:
+                return True
+        attack_prob = random.randint(0, 600)
         if (attack_prob == 1):
             return True
         return False

@@ -25,7 +25,7 @@ class Burger(Enemy):
 
     CYCLE = .6
 
-    def __init__(self, xlocation, ylocation, fps=1):
+    def __init__(self, xlocation, ylocation, level, fps=1):
         ######unique attributes parent class doesn't have
         self.enemy_ID = 2  # icecream ID
         self.image = PI.load("FPGraphics/burger/burgerFront.png") \
@@ -34,8 +34,8 @@ class Burger(Enemy):
         self.bound_factor = 2
         #######
         #attributes to be passed to parent for parent function use
-        self.health = 3
-        self.speed = 1
+        self.health = self.set_health(level)
+        self.speed = self.set_speed(level)
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
         self.rect.y = ylocation
@@ -53,6 +53,20 @@ class Burger(Enemy):
                        self.IMAGES_LEFT, self.IMAGES_FRONT,
                        self.IMAGES_BACK, self.health)
         self.drop_num = 3
+
+    ##set health depending on level.
+    def set_health(self, level):
+        if level == 3:  # cold level, more HP
+            return 6
+        else:  # regular amount otherwise
+            return 3
+
+    ##set speed depending on level.
+    def set_speed(self, level):
+        if level == 2:  # hot level, faster
+            return 5
+        else:
+            return 1
 
     def attack(self, surface):
         ###

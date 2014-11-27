@@ -49,7 +49,7 @@ class Locals(object):
 class Game(object):
 
     def __init__(self):
-        PM.pre_init(44100, -16, 1, 2048)
+        PM.pre_init(44100, -16, 1, 1024)
         PG.init()
         ###(Screen stuff)####
         Globals.SCREEN.fill((255, 255, 255))
@@ -147,9 +147,11 @@ class Game(object):
         ##icecream attacks
         for icecream in self.icecream_list.sprites():
             #see if the enemy will release weapon/attack
-            if (icecream.will_attack()):
+            if (icecream.will_attack(self.level)):
                 #get a new puddle sprite
-                new_trap = icecream.attack(self.map.get_surface())
+                    #sending level through to tell it to make a puddle
+                    #with a longer life
+                new_trap = icecream.attack(self.map.get_surface(), self.level)
                 #add the new trap to the list of traps
                 self.trap_group.add(new_trap)
 
@@ -430,7 +432,8 @@ class Game(object):
         #burger
         for e in range(self.map.get_num_enemies(2)):
             burger = Burger(self.map.get_enemy_coordx(e, 2),
-                            self.map.get_enemy_coordy(e, 2))
+                            self.map.get_enemy_coordy(e, 2),
+                            self.level)
             self.burger_list.add(burger)
         #lettuce
         for e in range(self.map.get_num_enemies(3)):

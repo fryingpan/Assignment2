@@ -203,7 +203,7 @@ class Player(PS.DirtySprite):
                 ##OR ADD EATING DOOR SOUND HERE.
                 block.kill()
                 if self.eated is False:
-                    print self.eatEffect.get_volume()
+#                    print self.eatEffect.get_volume()
                     self.eatEffect.play(50)
                     self.eated = True
         self.modified_map = True
