@@ -15,7 +15,7 @@ class Projectile(PS.DirtySprite):
     mass = 50
     maxlifetime = 5.0 # seconds
     deltaScaleFactor = 8000
-    IMAGE_LENGTH = 4  # all Projectile sprite has 12 frames
+    IMAGE_LENGTH = 2  # all Projectile sprite has 12 frames
     CYCLE = .6
 
     def __init__(self, boss, rect, num_frames, pass_through = 0, lifetime=8000, image=None, speed = 1, dmg = 1):
@@ -42,18 +42,6 @@ class Projectile(PS.DirtySprite):
         self.projectile_attack_enemy = False
         self.enemies_attacked = []
 
-        #load images from sprite sheet
-    def load_images_helper(self, imageArray, sheet):
-        # key = sheet.get_at((0,0))
-        # hereeeeee
-        alphabg = (23, 23, 23)
-        for i in range(0, 4):
-            surface = PG.Surface((50,50))
-            surface.set_colorkey(alphabg)
-            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
-            imageArray.append(surface)
-        return imageArray
-
     # change img depending on self.frame
     def update_image(self, imageArray):
         try:
@@ -64,15 +52,14 @@ class Projectile(PS.DirtySprite):
 
     def calculate_origin(self):
         #add option for offsets for multiple projectiles
-        self.rect.x = self.boss.rect.centerx
-        self.rect.y = self.boss.rect.centery
+        self.rect.centerx = self.boss.rect.centerx
+        self.rect.centery = self.boss.rect.centery
 
     def handle_player(self, player):
         collisions = PS.spritecollide(self, player, False)
 
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
             if(Globals.PLAYER_INVINCIBILITY == 0):
-                print("hit player")
                 self.attacked_player = True
                 # self.invincibility_count = 200
 
@@ -103,7 +90,6 @@ class Projectile(PS.DirtySprite):
         # ---- kill if too old ---
         self.lifetime += (Globals.DELTA)
         if self.lifetime > Projectile.maxlifetime:
-            print("KILL")
             self.kill()
         # ----- !!!!TODO kill if out of screen
         if self.rect.x < 0:
@@ -148,7 +134,7 @@ class LettuceCutter(Projectile):
         Projectile.__init__(self, boss, self.rect, 4, 0, 8000, self.image, 1, 1)
 #(self, boss, rect, num_frames, pass_through = 0, lifetime=8000, image=None, speed = 1, dmg = 1):
     def move(self, interval, pdx, pdy): #pd = projection direction
-        ran = random.randint(0, 10)
+        ran = random.randint(0, 5)
         move_dist = 0
         if(ran < 3):  # slow him down cuz he hella scary when he's fast
             # distance moved in 1 frame, try changing it to 5
@@ -162,3 +148,58 @@ class LettuceCutter(Projectile):
     def load_images(self):
         sheet = PI.load("FPGraphics/lettuce/lC.png").convert_alpha()
         self.IMAGES = self.load_images_helper(self.IMAGES,sheet)
+
+            #load images from sprite sheet
+    def load_images_helper(self, imageArray, sheet):
+        # key = sheet.get_at((0,0))
+        # hereeeeee
+        alphabg = (23, 23, 23)
+        for i in range(0, 3):
+            surface = PG.Surface((50,50))
+            surface.set_colorkey(alphabg)
+            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+            imageArray.append(surface)
+        return imageArray
+
+class CreamCutter(Projectile):
+    CYCLE = .6
+
+    def __init__(self, boss, fps=1):
+        ######unique attributes parent class doesn't have
+        self.image = PI.load("FPGraphics/cupcake/cCStart.png").convert_alpha()
+        #######
+        #attributes to be passed to parent for parent function use
+        self.speed = 1
+        self.rect = self.image.get_rect()
+
+        self.IMAGES = []
+        self.load_images()
+        Projectile.__init__(self, boss, self.rect, 4, 0, 8000, self.image, 1, 1)
+#(self, boss, rect, num_frames, pass_through = 0, lifetime=8000, image=None, speed = 1, dmg = 1):
+    def move(self, interval, pdx, pdy): #pd = projection direction
+        ran = random.randint(0, 10)
+        move_dist = 0
+        if(ran < 3):  # slow him down cuz he hella scary when he's fast
+            # distance moved in 1 frame, try changing it to 5
+            move_dist = math.ceil(self.speed*interval)
+            self.rect.centerx += pdx
+            self.rect.centery += pdy
+
+    def get_face(self):
+        return self.face
+
+    def load_images(self):
+        sheet = PI.load("FPGraphics/cupcake/cC.png").convert_alpha()
+        self.IMAGES = self.load_images_helper(self.IMAGES,sheet)
+
+            #load images from sprite sheet
+    def load_images_helper(self, imageArray, sheet):
+        # key = sheet.get_at((0,0))
+        # hereeeeee
+        alphabg = (23, 23, 23)
+        for i in range(0, 3):
+            surface = PG.Surface((100,100))
+            surface.set_colorkey(alphabg)
+            surface.blit(sheet, (0, 0), (i*100, 0, 100, 100))
+            imageArray.append(surface)
+        return imageArray

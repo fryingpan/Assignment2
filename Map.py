@@ -118,6 +118,7 @@ class Map(object):
             self.ic_coord = []  # icecream
             self.br_coord = []  # burger
             self.lr_coord = []  # lettuce
+            self.cc_coord = []  #cupcake
 
             self.spots_to_be_filled = []
             #create map from mapfile
@@ -151,6 +152,17 @@ class Map(object):
                     PI.load("FPGraphics/tiles/lv3Tiles/ICTile3.png"))
                 tile_array.append(
                     PI.load("FPGraphics/tiles/lv3Tiles/ICTile4.png"))
+            if(lvl == 4):
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv4Tiles/candyTile1.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv4Tiles/candyTile2.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv4Tiles/candyTile3.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv4Tiles/candyTile4.png"))
+                tile_array.append(
+                    PI.load("FPGraphics/tiles/lv4Tiles/candyTile5.png"))
             return tile_array
 
 #    def load_pad_tiles(self): ##CHANGE THIS TO CALL PAD CLASS'S LOAD IMAGES.
@@ -223,6 +235,25 @@ class Map(object):
             self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeT2.png"))
             self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB1.png"))
             self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB2.png"))
+        if(lvl == 4):
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall1.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall2.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall3.png"))
+            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall4.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub1.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub2.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub3.png"))
+            self.shrubBlocks.append(
+                PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub4.png"))
+            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT1.png"))
+            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT2.png"))
+            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT3.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB1.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB2.png"))
+            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB3.png"))
 
     def get_surface(self):
             return self.surface
@@ -329,6 +360,9 @@ class Map(object):
                 elif char_list[y] == 'L': #lettuce
                     self.lr_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
+                elif char_list[y] == 'C': #cupcake
+                    self.cc_coord.append((x_coor, y_coor))
+                    char_list[y] = '.'
                 elif char_list[y].isdigit():
                     #number, so we put doors here
                     new_block = create_Block(self.doorBlocks
@@ -388,6 +422,8 @@ class Map(object):
             return self.br_coord[index][0]
         if enemy_type == 3:
             return self.lr_coord[index][0]
+        if enemy_type == 4:
+            return self.cc_coord[index][0]
 
     def get_enemy_coordy(self, index, enemy_type=1):
         if enemy_type == 1:
@@ -396,6 +432,8 @@ class Map(object):
             return self.br_coord[index][1]
         if enemy_type == 3:
             return self.lr_coord[index][1]
+        if enemy_type == 4:
+            return self.cc_coord[index][1]
 
     def get_num_enemies(self, enemy_type=1):
         if enemy_type == 1:
@@ -404,6 +442,8 @@ class Map(object):
             return len(self.br_coord)
         if enemy_type == 3:
             return len(self.lr_coord)
+        if enemy_type == 4:
+            return len(self.cc_coord)
 
     def get_pad_x(self, index):
         return self.padtiles[index][0]

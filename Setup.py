@@ -12,6 +12,7 @@ try:
     from IceCream import IceCream
     from Burger import Burger
     from Lettuce import Lettuce
+    from Cupcake import Cupcake
     import pad as Pad
     import pygame.sprite as PS
     import pygame.display as PD
@@ -65,7 +66,7 @@ class Game(object):
                                  "specialEffects/UWIN.png").convert_alpha()
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
-        self.MAX_LEVEL = 3
+        self.MAX_LEVEL = 4
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()
@@ -82,6 +83,7 @@ class Game(object):
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
         self.lettuce_list = PS.Group()
+        self.cupcake_list = PS.Group()
         self.enemy_list = PS.Group()  # all enemies
         self.pad_list = PS.Group()
         self.trap_group = PS.Group()
@@ -96,6 +98,7 @@ class Game(object):
                                           self.icecream_list,
                                           self.burger_list,
                                           self.lettuce_list,
+                                          self.cupcake_list,
                                           self.projectile_group)
         
         #variables to be handled in change_level method
@@ -158,6 +161,7 @@ class Game(object):
             if(icecream.get_attacked_player() or trap_attack_player):
                 if trap_attack_player:
                     trap_attack_player = False
+                print("TRAPPED")
                 #if so start invincibility count after attack
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
@@ -189,7 +193,7 @@ class Game(object):
         ##lettuce attacks
         for lettuce in self.lettuce_list.sprites():
             #see if the enemy will release weapon/attack
-            if (lettuce.will_attack()):
+            if (lettuce.will_attack(self.level)):
                 #get a new puddle sprite
                 new_projectile = lettuce.attack()
                 #add the new projectile to the list of projectiles
@@ -203,11 +207,28 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = lettuce.get_ID()
 
+        ##cupcake attacks
+        for cupcake in self.cupcake_list.sprites():
+            #see if the enemy will release weapon/attack
+            if (cupcake.will_attack(self.level)):
+                #get a new puddle sprite
+                new_projectile = cupcake.attack()
+                #add the new projectile to the list of projectiles
+                self.projectile_group.add(new_projectile)
+
+            if(cupcake.get_attacked_player() or projectile_attack_player):
+                if projectile_attack_player:
+                    projectile_attack_player = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = cupcake.get_ID()
+
+
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
         #print("inv " + str(Globals.INVINCIBILITY_COUNT))
         if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
-                print(Globals.INVINCIBILITY_COUNT)
                 self.character.decrement_health(self.enemy_ID)
                 self.enemy_ID = -1
         #decrement invincibility count if player is in invincibility
@@ -256,6 +277,7 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
+                                          self.cupcake_list,
                                           self.lettuce_list,
                                           self.projectile_group)
 
@@ -372,6 +394,9 @@ class Game(object):
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_3:
                 self.level = 3
                 self.change_level(self.level)
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_4:
+                self.level = 4
+                self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
@@ -413,6 +438,7 @@ class Game(object):
         self.num_enemies += self.map.get_num_enemies(1)  # icecream
         self.num_enemies += self.map.get_num_enemies(2)  # burger
         self.num_enemies += self.map.get_num_enemies(3)  # lettuce
+        self.num_enemies += self.map.get_num_enemies(4)  # cupcake
 
         #may want to change this to be determined by mapfile.txt
         self.character.rect.x = ldata.character_pos_x
@@ -440,10 +466,16 @@ class Game(object):
             lettuce = Lettuce(self.map.get_enemy_coordx(e, 3),
                             self.map.get_enemy_coordy(e, 3))
             self.lettuce_list.add(lettuce)
+        #cupcake
+        for e in range(self.map.get_num_enemies(4)):
+            cupcake = Cupcake(self.map.get_enemy_coordx(e, 4),
+                            self.map.get_enemy_coordy(e, 4))
+            self.cupcake_list.add(cupcake)
 
         self.enemy_list.add(self.icecream_list)
         self.enemy_list.add(self.burger_list)
         self.enemy_list.add(self.lettuce_list)
+        self.enemy_list.add(self.cupcake_list)
 
         #pads
         for e in range(len(self.map.padtiles)):
