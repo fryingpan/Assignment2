@@ -56,6 +56,10 @@ Somebody do this:
 Carla:
     -make the enemy jump back when attacked
     -burger drops
+        - meat = longer invincibility count
+        - lettuce = projectile but for now trap
+        - bread = double the speed
+        - burger = trap
 
 Mary:
     -fix signs
