@@ -60,7 +60,7 @@ class Player(PS.DirtySprite):
         self.got_key = False
         # will turn to True once you've run into the yellow block
         # collision conditions, if true, we will not move in that direction
-        self.health = 1000
+        self.health = 100
         self.dmg_count = 0
         self.invincibility_frame = PI.load("FPGraphics/emptyImg.png") \
             .convert_alpha()
@@ -89,6 +89,9 @@ class Player(PS.DirtySprite):
         self.can_eat = True
         self.eat_item = False
 
+        self.effect_time = -1
+        self.change_invincibility = False
+
     def has_item(self):
         return self.item
 
@@ -109,9 +112,38 @@ class Player(PS.DirtySprite):
             self.player_items.append(Item.IceCreamScoop(self.rect.x,
                                                         self.rect.y, surface))
 
+    def chng_invincibility(self):
+        ret = self.change_invincibility
+        self.change_invincibility = False
+        return ret
+
+
+    def get_invincibility(self):
+        return self.new_invincibility
+
     def get_item(self):
+        # if ice cream scoop
         if self.item_type == 1:
             self.item_img = PI.load("FPGraphics/drops/DropIceCream.png").convert_alpha()
+        # if bread drop = faster
+        elif self.item_type == 2:
+            self.item_img = PI.load("FPGraphics/drops/breadDrop.png").convert_alpha()
+            self.speed = 2
+        # if lettuce drop = trap
+        elif self.item_type == 3:
+            self.item_img = PI.load("FPGraphics/drops/lettuceDrop.png").convert_alpha()
+        # if meat drop = longer invincibility
+        elif self.item_type == 4:
+            self.item_img = PI.load("FPGraphics/drops/meatDrop.png").convert_alpha()
+            self.change_invincibility = True
+            self.new_invincibility = 400
+        # if burger drop
+        elif self.item_type == 5:
+            self.item_img = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
+
+    def restore_normal(self):
+        self.speed = 1
+        self.item = False
 
     def drop_trap(self, surface):
         rect = self.item_img.get_rect()
@@ -181,9 +213,16 @@ class Player(PS.DirtySprite):
             if type(collision.get_type()) is int:
                 if self.grab_item:
                     self.item = True
+                    self.item_use_count = -1
+                    self.effect_time = -1
                     # self.modified_map = True
-                    self.item_use_count = collision.get_use_count()
                     self.item_type = collision.get_type()
+                    # if item is to attack the enemy
+                    if self.item_type == 1 or self.item_type == 3 or self.item_type == 5:
+                        self.item_use_count = collision.get_use_count()
+                    # if item is for player effects
+                    else: 
+                        self.effect_time = collision.get_use_count()
                     self.get_item()
                     collision.disappear()
                 elif self.eat_item:
@@ -263,7 +302,8 @@ class Player(PS.DirtySprite):
 
         elif key[PG.K_a]:
             if self.item and self.can_drop:
-                self.drop_trap(screen)
+                if self.item_type == 1 or self.item_type == 3 or self.item_type == 5:
+                    self.drop_trap(screen)
                 self.can_drop = False
 
         # grab item if available
@@ -275,7 +315,6 @@ class Player(PS.DirtySprite):
         # drop item if you have one
         elif key[PG.K_d]:
             if self.item and self.can_drop:
-                self.drop_item(screen)
                 self.item = False
         elif key[PG.K_e]:
             if not self.item and self.can_eat:
@@ -338,6 +377,13 @@ class Player(PS.DirtySprite):
         self.moved = False
         PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
         # update time and frame
+        if self.effect_time > 0:
+            self.effect_time -= 1
+            print self.effect_time
+            if self.effect_time == 0:
+                self.restore_normal()
+
+        
         key = PG.key.get_pressed()
         self.time = self.time + Globals.DELTA
         if self.time > Player.CYCLE:
