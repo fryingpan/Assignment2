@@ -160,9 +160,9 @@ class Puddle(Trap):
     IMAGES_APPEAR = None
     IMAGES_DISAPPEAR = None
 
-    def __init__(self, rect, surface):
+    def __init__(self, rect, surface, level):
         # how long the puddle will last before it disappears
-        self.lifetime = 1600
+        self.lifetime = self.set_life(level)
         # if not Trap.IMAGE:
         Trap.IMAGE = PI.load("FPGraphics/Food/IceCreamPuddle.png") \
             .convert_alpha()
@@ -186,6 +186,13 @@ class Puddle(Trap):
         self.type = 'E'
         # initialize parent class
         Trap.__init__(self, surface, rect, self.type, 'E', self.lifetime)
+
+    ##set lifetime for cold level
+    def set_life(self, level):
+        if level == 3:
+            return 3500
+        else:
+            return 1600
 
     # load animation images
     def load_images(self):
