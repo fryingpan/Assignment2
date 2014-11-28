@@ -13,7 +13,7 @@ Added a new level 4.
 Level 1:
 Level 2:
 Level 3: 11
-Level 4:
+Level 4: 7
 
 Defeat all enemies on a level to get to the next level!
 
@@ -26,15 +26,15 @@ and burgers have more health points.
 and adding more enemies.
 -New Lettuce enemy added. It is an enemy that does not move,
 but throws projectiles that hurt the player.
-
+-Cupcake enemy is similar to lettuce, but throws larger and
+slower projectiles.
+-lvl 4 graphics added
+-fixed signs glitches; we plan to add more signs later.
 
 Todo List
 ----------
 
 Somebody do this:
-    -do we want something fancy to blend tile imgs?
-        lv 4 is going to be a combo of hot/cold, but not
-        sure if we got time to be that fancy
     -implement level effects on enemies
         -ice cream drops more puddles more quickly in hot lv
         but does the opposite in cold. Not sure if icecream

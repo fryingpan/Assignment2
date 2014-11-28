@@ -29,7 +29,7 @@ class Lettuce(Enemy):
     def __init__(self, xlocation, ylocation, fps=1):
         ######unique attributes parent class doesn't have
         self.enemy_ID = 3
-        self.image = PI.load("FPGraphics/burger/burgerFront.png") \
+        self.image = PI.load("FPGraphics/lettuce/lettuce.png") \
             .convert_alpha()
         self.front_image = self.image
         #######
@@ -73,19 +73,19 @@ class Lettuce(Enemy):
             pass
 
     def load_images(self):
-        sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
-            .convert_alpha()
-        sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
-            .convert_alpha()
-        sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
-            .convert_alpha()
+        # sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
+        #     .convert_alpha()
+        # sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
+        #     .convert_alpha()
+        # sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
+        #     .convert_alpha()
         sheetB = PI.load("FPGraphics/lettuce/lettuceFrontAn.png") \
             .convert_alpha()
-        self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
-                                                    sheetR)
-        self.IMAGES_LEFT = self.load_images_helper(self.IMAGES_LEFT,
-                                                   sheetL)
-        self.IMAGES_FRONT = self.load_images_helper(self.IMAGES_FRONT,
-                                                    sheetF)
+        # self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
+        #                                             sheetR)
+        # self.IMAGES_LEFT = self.load_images_helper(self.IMAGES_LEFT,
+        #                                            sheetL)
+        # self.IMAGES_FRONT = self.load_images_helper(self.IMAGES_FRONT,
+        #                                             sheetF)
         self.IMAGES_BACK = self.load_images_helper(self.IMAGES_BACK,
                                                    sheetB)
