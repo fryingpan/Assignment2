@@ -7,28 +7,26 @@ Mary Yen
 Run the following to run the program:
 python masterfile.py
 
-New features were added for the player this week. Everytime he defeats an 
-ice cream enemy they drop an ice cream scoop. The ice cream scoop is 
-available for a short period of time before it disappears. The player can pick up the 
-item by pressing the 's' key to use it as a trap for other enemies or they
-can choose to eat it by pressing the 'e' key to earn an extra 10 health points.
-If they drop the trap, the trap will be live for a short period of time before
-it expires and disappears. If they choose to eat it then the item will disappear.
-To drop the trap, the 'a' key is pressed. Then, if an enemy touches the trap, 
-they disappear. For now, the player can drop a total of 10 traps after picking up
-the item. If the player desides they don't want the item and they want to drop it,
-they can press the 'd' key to get rid of it. 
-Another new feature is that the ice pads have an effect on the player. It slows
-the player's movement for a moment, as if he was freezing.
+Added a new level 4.
 
-New graphics were also made for level 3, and old graphics (such as damage frames
-and walls in lvl1) were updated and fixed. The player now may open multiple doors
-given that he has lactase pills for them (originally, the pill opened all doors
-on the map). The burger will now only follow the player within a restricted area.
-The idea is to force the player to search for the enemies instead of letting the
-enemies easily come to him.
+-List how many enemies are on each level:
+Level 1:
+Level 2:
+Level 3: 11
+Level 4:
 
-New music is added to level 2. Original source from spacebrain/upfront.
+Defeat all enemies on a level to get to the next level!
+
+Implemented this week:
+-Level effects on enemies. In the "hot" level 2, ice cream
+enemies drop more puddles. Burgers move faster. In the
+"cold" level 3, ice cream puddles last longer on the ground,
+and burgers have more health points.
+-We have made our levels harder by making the maps larger
+and adding more enemies.
+-New Lettuce enemy added. It is an enemy that does not move,
+but throws projectiles that hurt the player.
+
 
 Todo List
 ----------
