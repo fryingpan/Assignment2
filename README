@@ -10,8 +10,8 @@ python masterfile.py
 Added a new level 4.
 
 -List how many enemies are on each level:
-Level 1:
-Level 2:
+Level 1:  3
+Level 2:  3
 Level 3: 11
 Level 4: 7
 
@@ -27,7 +27,9 @@ and adding more enemies.
 -New Lettuce enemy added. It is an enemy that does not move,
 but throws projectiles that hurt the player.
 -Cupcake enemy is similar to lettuce, but throws larger and
-slower projectiles.
+slower projectiles. - however, the images cause the file
+to exceed the max size limit, so we will figure out a way
+to compress them before adding.
 -lvl 4 graphics added
 -fixed signs glitches; we plan to add more signs later.
 
@@ -51,6 +53,10 @@ Somebody do this:
 ===================
 ===================
 
+***DO THIS*****
+PUT NUMBER OF ENEMIES IN EACH LEVEL IN README
+REMOVE PRINT STATEMENTS
+
 Carla:
     -make the enemy jump back when attacked
     -burger drops
@@ -58,18 +64,34 @@ Carla:
         - lettuce = projectile but for now trap
         - bread = double the speed
         - burger = trap
+    -heat pad invincibility
+    -look into the longer invincibility on trap
 
 Mary:
-    -fix signs
-    -make lettuce enemy
-    -make lv 4 graphics
-
+    -add signs + tutorial
+    -add back cutscenes
+    -add egg
+    -projectile directions
+    -projectile lag
+    -lettucecutter/cream for player use
+    -make maps bigger/more interesting
+    
 Katie
+    -Joystick compatibility 
+        -Go to DMC for joystick
    -Add eating door sound
-   -level effects on enemies   
-   -attempt to fix the high scores thing where it makes you
-enter your name a bajillion times
+   -level effects on enemies; make more dramatic
  
+Someone do this
+---------------
+-add invincibility to heat pads
+-figure out lag
+    -number of enemies
+    -ice pads
+    -projectiles
+-Sort the high scores + replace scores
+-you have to be super close to the enemy for attacks
+
 Our schedule
 =============
 Beta - NOV 19
