@@ -52,6 +52,10 @@ class Lettuce(Enemy):
         self.drop_num = 3
 
     def attack(self):
+        self.pdx = random.randint(-1, 1)
+        self.pdy = random.randint(-1, 1)
+        if(self.pdx == 0 and self.pdy==0):
+            self.pdx = 1
         return LettuceCutter(self,self)
 
     def move(self, player, interval):

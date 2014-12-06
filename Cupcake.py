@@ -38,6 +38,7 @@ class Cupcake(Enemy):
         self.rect.x = xlocation
         self.rect.y = ylocation
         self.pdx = 0
+        self.xchange  = random.randint(0, 3)
         self.pdy = 1
 
         self.IMAGES_RIGHT = []
@@ -51,6 +52,9 @@ class Cupcake(Enemy):
         self.drop_num = 3
 
     def attack(self):
+        self.xchange += 1
+        self.pdx = self.xchange % 3
+        self.pdx = self.pdx*-1
         return CreamCutter(self,self)
 
     def move(self, player, interval):
@@ -72,19 +76,7 @@ class Cupcake(Enemy):
             pass
 
     def load_images(self):
-        # sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
-        #     .convert_alpha()
-        # sheetL = PI.load("FPGraphics/burger/burgerleftWalk.png") \
-        #     .convert_alpha()
-        # sheetF = PI.load("FPGraphics/burger/burgerFrontWalk.png") \
-        #     .convert_alpha()
         sheetB = PI.load("FPGraphics/cupcake/cupcakeFrontAn.png") \
             .convert_alpha()
-        # self.IMAGES_RIGHT = self.load_images_helper(self.IMAGES_RIGHT,
-        #                                             sheetR)
-        # self.IMAGES_LEFT = self.load_images_helper(self.IMAGES_LEFT,
-        #                                            sheetL)
-        # self.IMAGES_FRONT = self.load_images_helper(self.IMAGES_FRONT,
-        #                                             sheetF)
         self.IMAGES_BACK = self.load_images_helper(self.IMAGES_BACK,
                                                    sheetB)

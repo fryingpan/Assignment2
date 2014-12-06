@@ -38,7 +38,6 @@ class Projectile(PS.DirtySprite):
         self.time = 0.0 #animations
         self.calculate_origin()
 
-        self.projectile_attack_player = False
         self.projectile_attack_enemy = False
         self.enemies_attacked = []
 
@@ -57,9 +56,8 @@ class Projectile(PS.DirtySprite):
 
     def handle_player(self, player):
         collisions = PS.spritecollide(self, player, False)
-
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
-            if(Globals.PLAYER_INVINCIBILITY == 0):
+            if(Globals.INVINCIBILITY_COUNT== 0):
                 self.attacked_player = True
                 # self.invincibility_count = 200
 
