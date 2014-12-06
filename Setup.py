@@ -182,7 +182,7 @@ class Game(object):
         for projectile in self.projectile_group.sprites():
             if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT <= 0):
                 projectile_attack_player = True
-                projectile.attack_player = False
+                projectile.attacked_player = False
                 break
             if (projectile.projectile_attack_enemy):
                 enemies_attacked = projectile.get_enemies_attacked()
@@ -231,6 +231,7 @@ class Game(object):
         #print("inv " + str(Globals.INVINCIBILITY_COUNT))
         if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
             self.character.decrement_health(self.enemy_ID)
+            print("DEC HEALTH")
             self.enemy_ID = -1
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
