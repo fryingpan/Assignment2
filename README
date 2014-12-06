@@ -37,6 +37,7 @@ Todo List
 ----------
 
 Somebody do this:
+    - BUG: player attack precision. Weapon-enemy collision is off.
     -implement level effects on enemies
         -ice cream drops more puddles more quickly in hot lv
         but does the opposite in cold. Not sure if icecream
@@ -58,14 +59,9 @@ PUT NUMBER OF ENEMIES IN EACH LEVEL IN README
 REMOVE PRINT STATEMENTS
 
 Carla:
-    -make the enemy jump back when attacked
-    -burger drops
-        - meat = longer invincibility count
-        - lettuce = projectile but for now trap
-        - bread = double the speed
-        - burger = trap
-    -heat pad invincibility
-    -look into the longer invincibility on trap
+    -BUG: player attack precision. Weapon-enemy collision is off.
+    -make the enemy jump back when attacked (need to fix above)
+    -burger drops*
 
 Mary:
     -add signs + tutorial
