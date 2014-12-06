@@ -34,6 +34,7 @@ class Pad(PS.DirtySprite):
         self.load_images(self.type)
         self.time = 0.0
         self.frame = 0
+        self.burn = False
 
     #hot or cold?
     def get_type(self):
@@ -67,14 +68,20 @@ class Pad(PS.DirtySprite):
     def set_rectTop(self, rectTop):
             self.rect.y = rectTop
 
+    def will_burn(self):
+        if Globals.INVINCIBILITY_COUNT <= 0:
+            return True
+        else:
+            return False
+
     ###hurts player
-    def i_am_hot(self, player):
-            toHurt = random.randrange(100)
-            #this is a lame hack but it does slow down
-            #the player's impending death...
-            #also ANIMATE THESE PADS SOON
-            if toHurt == 1:
-                player.health -= 1
+    # def i_am_hot(self, player):
+    #         toHurt = random.randrange(100)
+    #         #this is a lame hack but it does slow down
+    #         #the player's impending death...
+    #         #also ANIMATE THESE PADS SOON
+    #         if toHurt == 1:
+    #             player.health -= 1
 
     ###slows down player
     def i_am_cold(self, player):
