@@ -94,7 +94,6 @@ class Enemy(PG.sprite.DirtySprite):
                 return True
         if level == 3:  # in cold level
             attack_prob = random.randint(0, 1000)
-            print attack_prob
             if attack_prob == 1:
                 return True
         attack_prob = random.randint(0, 600)
