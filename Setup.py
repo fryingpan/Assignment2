@@ -75,7 +75,7 @@ class Game(object):
         
         ##draw sprites
         self.character = Player(Globals.DELTA)
-        self.INVINCIBILITY_TIME =  1000
+        self.INVINCIBILITY_TIME = Globals.DEFAULT_INVINCIBILITY
         self.player_group = PS.GroupSingle(self.character)
         # adding extra since cutscene bug deletes one
         # self.remainingEnemies = self.num_enemies
@@ -138,7 +138,7 @@ class Game(object):
         ###(attacks on player)####
         ##trap handling
         for trap in self.trap_group.sprites():
-            if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
+            if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT <= 0):
                 trap_attack_player = True
             if (trap.get_trap_attack_enemy()):
                 enemies_attacked = trap.get_enemies_attacked()
@@ -180,8 +180,10 @@ class Game(object):
         #lettuce
           ##projectile handling
         for projectile in self.projectile_group.sprites():
-            if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT == 0):
+            if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT <= 0):
                 projectile_attack_player = True
+                projectile.attack_player = False
+                break
             if (projectile.projectile_attack_enemy):
                 enemies_attacked = projectile.get_enemies_attacked()
                 if enemies_attacked is not None:
@@ -228,14 +230,14 @@ class Game(object):
         #If enemy attacked the player while player not invincible
         #print("inv " + str(Globals.INVINCIBILITY_COUNT))
         if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
-                self.character.decrement_health(self.enemy_ID)
-                self.enemy_ID = -1
+            self.character.decrement_health(self.enemy_ID)
+            self.enemy_ID = -1
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
         if(Globals.INVINCIBILITY_COUNT > 0):
-                if(Globals.INVINCIBILITY_COUNT % 50 == 0):
-                        self.character.invincibility_frames()
-                Globals.INVINCIBILITY_COUNT -= 1
+            if(Globals.INVINCIBILITY_COUNT % 50 == 0):
+                self.character.invincibility_frames()
+            Globals.INVINCIBILITY_COUNT -= 1
 
         ######Pad damage here
         for pad in self.pad_list.sprites():
@@ -249,6 +251,9 @@ class Game(object):
 
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface())
+        if self.character.chng_invincibility():
+            self.INVINCIBILITY_TIME = self.character.get_invincibility()
+
 
         #get new items from the killed enemies
         new_items = self.character.get_items_of_killed()

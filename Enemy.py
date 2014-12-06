@@ -67,22 +67,22 @@ class Enemy(PG.sprite.DirtySprite):
         # print("health " + str(self.health))
 
     def move_back(self, face, bg):
-        dist = 40
+        dist = 60
         moved = 0
         collided = False
         while moved < dist and not collided:
             if 'u' in face:
-                self.rect.y -= 10
-                moved += 10
+                self.rect.y -= 15
+                moved += 15
             elif 'd' in face:
-                self.rect.y += 10
-                moved += 10
+                self.rect.y += 15
+                moved += 15
             elif 'r' in face:
-                self.rect.x += 10
-                moved += 10
+                self.rect.x += 15
+                moved += 15
             elif 'l' in face:
-                self.rect.x -= 10
-                moved += 10
+                self.rect.x -= 15
+                moved += 15
             collided = self.handle_collision(bg)
 
 
@@ -104,7 +104,7 @@ class Enemy(PG.sprite.DirtySprite):
     def handle_player(self, player):
         collisions = PS.spritecollide(self, player, False)
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
-            if(Globals.INVINCIBILITY_COUNT == 0):
+            if(Globals.INVINCIBILITY_COUNT <= 0):
                 self.attacked_player = True
                 # Globals.INVINCIBILITY_COUNT = 200
 
@@ -139,9 +139,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.move(player, Globals.DELTA)
         self.handle_collision(bg)
         self.handle_player(player)
-
-        if(Globals.INVINCIBILITY_COUNT > 0):
-            Globals.INVINCIBILITY_COUNT -= 1
             # print("invisib " + str(Globals.INVINCIBILITY_COUNT))
         # check that the new movement is within the boundaries
         # if self.check_collide() is True:

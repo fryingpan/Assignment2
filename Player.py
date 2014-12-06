@@ -137,7 +137,7 @@ class Player(PS.DirtySprite):
         elif self.item_type == 4:
             self.item_img = PI.load("FPGraphics/drops/meatDrop.png").convert_alpha()
             self.change_invincibility = True
-            self.new_invincibility = 400
+            self.new_invincibility = Globals.DEFAULT_INVINCIBILITY*2
         # if burger drop
         elif self.item_type == 5:
             self.item_img = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
@@ -145,6 +145,8 @@ class Player(PS.DirtySprite):
     def restore_normal(self):
         self.speed = 1
         self.item = False
+        self.change_invincibility = True
+        self.new_invincibility = Globals.DEFAULT_INVINCIBILITY
 
     def drop_trap(self, surface):
         rect = self.item_img.get_rect()
@@ -390,7 +392,6 @@ class Player(PS.DirtySprite):
         # update time and frame
         if self.effect_time > 0:
             self.effect_time -= 1
-            print self.effect_time
             if self.effect_time == 0:
                 self.restore_normal()
 
