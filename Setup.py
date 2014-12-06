@@ -121,6 +121,7 @@ class Game(object):
 
         self.level = 1
         self.change_level(self.level)
+        self.burn_player = False
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -225,29 +226,33 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = cupcake.get_ID()
 
+        self.burn_player =  False
+        ######Pad damage here
+        for pad in self.pad_list.sprites():
+            if pad.rect.colliderect(self.character.rect):
+                #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
+                if pad.type == 0:
+                    # pad.i_am_hot(self.character)
+                    self.burn_player = pad.will_burn()
+                    if self.burn_player:
+                        Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+
+                elif pad.type == 1:
+                    pad.i_am_cold(self.character)
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
         #print("inv " + str(Globals.INVINCIBILITY_COUNT))
-        if(self.enemy_ID != -1 and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
+        if((self.enemy_ID != -1 or self.burn_player) and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
             self.character.decrement_health(self.enemy_ID)
-            print("DEC HEALTH")
             self.enemy_ID = -1
+            self.burn_player = False
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
         if(Globals.INVINCIBILITY_COUNT > 0):
             if(Globals.INVINCIBILITY_COUNT % 50 == 0):
                 self.character.invincibility_frames()
             Globals.INVINCIBILITY_COUNT -= 1
-
-        ######Pad damage here
-        for pad in self.pad_list.sprites():
-            if pad.rect.colliderect(self.character.rect):
-                #DEPENDING ON PAD TYPE, CALL DIFFERENT PAD METHODS
-                if pad.type == 0:
-                    pad.i_am_hot(self.character)
-                elif pad.type == 1:
-                    pad.i_am_cold(self.character)
 
 
         self.character.handle_keys(self.block_group, self.enemy_list,
