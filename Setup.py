@@ -385,19 +385,15 @@ class Game(object):
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_1:
-                self.reset_level()
                 self.level = 1
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_2:
-                self.reset_level()
                 self.level = 2
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_3:
-                self.reset_level()
                 self.level = 3
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_4:
-                self.reset_level()
                 self.level = 4
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
@@ -414,6 +410,14 @@ class Game(object):
             self.trap_group.remove(trap)
         for proj in self.projectile_group.sprites():
             self.projectile_group.remove(proj)
+        for enemy in self.cupcake_list.sprites():
+            self.cupcake_list.remove(enemy)
+        for enemy in self.icecream_list.sprites():
+            self.icecream_list.remove(enemy)
+        for enemy in self.burger_list.sprites():
+            self.burger_list.remove(enemy)
+        for enemy in self.lettuce_list.sprites():
+            self.lettuce_list.remove(enemy)
 
     def change_level(self, currentLevel):
         self.reset_level()

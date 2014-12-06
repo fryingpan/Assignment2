@@ -88,12 +88,12 @@ class Enemy(PG.sprite.DirtySprite):
 
     ##only used by ice cream?
     def will_attack(self, level):
-        if level == 2:  # if in hot level
-            attack_prob = random.randint(0, 2000)
+        if level == 2:  # if in hot level, more often
+            attack_prob = random.randint(0, 75)
             if attack_prob == 1:
                 return True
         if level == 3:  # in cold level
-            attack_prob = random.randint(0, 5000)
+            attack_prob = random.randint(0, 1000)
             if attack_prob == 1:
                 return True
         attack_prob = random.randint(0, 600)

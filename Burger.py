@@ -64,7 +64,7 @@ class Burger(Enemy):
     ##set speed depending on level.
     def set_speed(self, level):
         if level == 2:  # hot level, faster
-            return 5
+            return 6
         else:
             return 1
 
