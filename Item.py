@@ -94,8 +94,6 @@ class BreadDrop(Item):
 		Item.__init__(self, self.rect, self.type, self.lifetime)
 
 
-
-# Burger Drop
 class LettuceDrop(Item):
 	def __init__(self, x_coor, y_coor, surface):
 		Item.IMAGE = PI.load("FPGraphics/drops/lettuceDrop.png").convert_alpha()

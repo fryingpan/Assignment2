@@ -275,6 +275,11 @@ class Game(object):
             if trap.will_remove():
                 self.character.remove_player_trap(trap)
 
+        player_projectiles = self.character.get_player_projectiles()
+        for projectile in player_projectiles:
+            self.projectile_group.add(projectile)
+            #projectile.set_enemy_list(self.enemy_list)
+
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.trap_group,
                                           self.pad_list,
