@@ -328,13 +328,18 @@ class Player(PS.DirtySprite):
                 self.handle_collision(item_group)
         elif key[PG.K_SPACE]:  # space key ATTACK
             if 'r' in self.face:
+                Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_R
             if 'l' in self.face:
+                Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_L
             if 'd' in self.face:
+                Player.HEIGHT = 250
                 self.image = self.IMG_ATTACK_D
             if 'u' in self.face:
+                Player.HEIGHT = 250
                 self.image = self.IMG_ATTACK_U
+
             # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
 
