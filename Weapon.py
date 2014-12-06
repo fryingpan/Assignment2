@@ -4,7 +4,6 @@ Fryingpan
 Carla Castro
 Mary Yen
 Katie Chang
-Josh Holstein
 '''
 
 import pygame as PG
