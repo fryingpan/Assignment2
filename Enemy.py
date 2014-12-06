@@ -71,7 +71,6 @@ class Enemy(PG.sprite.DirtySprite):
         moved = 0
         collided = False
         while moved < dist and not collided:
-            print face
             if 'u' in face:
                 self.rect.y -= 10
                 moved += 10

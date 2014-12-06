@@ -161,7 +161,6 @@ class Game(object):
             if(icecream.get_attacked_player() or trap_attack_player):
                 if trap_attack_player:
                     trap_attack_player = False
-                print("TRAPPED")
                 #if so start invincibility count after attack
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
@@ -386,15 +385,19 @@ class Game(object):
                 Globals.STATE = 'Menu'
                 #Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_1:
+                self.reset_level()
                 self.level = 1
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_2:
+                self.reset_level()
                 self.level = 2
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_3:
+                self.reset_level()
                 self.level = 3
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_4:
+                self.reset_level()
                 self.level = 4
                 self.change_level(self.level)
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
