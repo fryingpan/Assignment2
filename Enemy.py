@@ -66,6 +66,27 @@ class Enemy(PG.sprite.DirtySprite):
             self.kill()
         # print("health " + str(self.health))
 
+    def move_back(self, face, bg):
+        dist = 40
+        moved = 0
+        collided = False
+        while moved < dist and not collided:
+            print face
+            if 'u' in face:
+                self.rect.y -= 10
+                moved += 10
+            elif 'd' in face:
+                self.rect.y += 10
+                moved += 10
+            elif 'r' in face:
+                self.rect.x += 10
+                moved += 10
+            elif 'l' in face:
+                self.rect.x -= 10
+                moved += 10
+            collided = self.handle_collision(bg)
+
+
     ##only used by ice cream?
     def will_attack(self, level):
         if level == 2:  # if in hot level
@@ -112,6 +133,7 @@ class Enemy(PG.sprite.DirtySprite):
                                     collision.rect.height)):
                     self.rect.y = collision.rect.top + \
                         collision.rect.height
+        return (collisions is None)
 
     def update(self, bg, player):
         self.attacked_player = False

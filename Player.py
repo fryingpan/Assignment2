@@ -346,6 +346,7 @@ class Player(PS.DirtySprite):
                     self.items_of_killed.append(killed.drop_item(screen))
                     # self.health += 1
                     killed.decrement_health(1)
+                    killed.move_back(self.face, bg)
                     # self.score += 1
                     # killed.kill()
                     killed.last_hit = 80
