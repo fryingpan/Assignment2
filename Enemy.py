@@ -61,7 +61,7 @@ class Enemy(PG.sprite.DirtySprite):
     def decrement_health(self, dmg):
         # print(self.last_hit)
         self.health -= dmg
-        if(self.health <= 0):
+        if(self.health == 0):
             Globals.SCORE += 1  # change num of points per type of enemy?
             self.kill()
         # print("health " + str(self.health))

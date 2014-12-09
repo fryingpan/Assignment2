@@ -173,14 +173,14 @@ class Player(PS.DirtySprite):
     def get_player_traps(self):
         return self.player_traps
 
-    def throw_projectile(self):
+    def throw_LC(self):
         self.player_projectiles.append(LettuceCutter(self));
 
+    def throw_CC(self):
+        self.player_projectiles.append(CreamCutter(self));
 
     def get_player_projectiles(self):
         return self.player_projectiles
-
-    
 
     def get_items_of_killed(self):
         return self.items_of_killed
@@ -332,8 +332,9 @@ class Player(PS.DirtySprite):
                 if self.item_type == 1 or self.item_type == 5:
                     self.drop_trap(screen)
                 if self.item_type == 3:
-                    self.throw_projectile()
-                
+                    self.throw_LC()
+                if self.item_type == 6:
+                    self.throw_CC()
                 self.can_drop = False
                 self.item_use_count -= 1
                 if self.item_use_count == 0:

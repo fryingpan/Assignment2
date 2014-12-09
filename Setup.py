@@ -70,6 +70,8 @@ class Game(object):
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()
+        
+
         ######(Initialize objects on screen)####
         ##draw map/background
         
@@ -186,6 +188,7 @@ class Game(object):
                 projectile.attacked_player = False
                 break
             if (projectile.projectile_attack_enemy):
+
                 enemies_attacked = projectile.get_enemies_attacked()
                 if enemies_attacked is not None:
                     for enemy in enemies_attacked:
@@ -283,7 +286,7 @@ class Game(object):
         player_projectiles = self.character.get_player_projectiles()
         for projectile in player_projectiles:
             self.projectile_group.add(projectile)
-            #projectile.set_enemy_list(self.enemy_list)
+            projectile.set_enemy_list(self.enemy_list)
 
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.trap_group,
@@ -382,7 +385,10 @@ class Game(object):
             Globals.SCREEN.blit(self.pill_img, (750, 550))
 
         if self.character.has_item():
-            Globals.SCREEN.blit(self.character.get_item_img(), (700, 550))
+            Globals.SCREEN.blit(self.character.get_item_img(), (650, 550))
+            #PG.draw.circle(Globals.SCREEN, (255,255,255), (720,570), 12)
+            Globals.SCREEN.blit(self.font.render("x" + str(self.character.item_use_count), True, (0, 0, 0)),
+                            (700, 570))
         ###########################################################
         
 
