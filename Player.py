@@ -83,7 +83,15 @@ class Player(PS.DirtySprite):
         #eating sound
         self.eatEffect = PM.Sound("music/soundeffects/eating.mod")
         self.eated = False
-        
+        self.EatR = PI.load("FPGraphics/MC/MCwalk/MCRightEat.png")\
+                .convert_alpha()
+        self.EatL = PI.load("FPGraphics/MC/MCwalk/MCLeftEat.png")\
+            .convert_alpha()
+        self.EatF = PI.load("FPGraphics/MC/MCwalk/MCFrontEat.png")\
+            .convert_alpha()
+        self.EatB = PI.load("FPGraphics/MC/MCwalk/MCBackEat.png")\
+            .convert_alpha()
+
         self.items_of_killed = []
         # Item Variables
         self.grab_item = False
@@ -99,6 +107,9 @@ class Player(PS.DirtySprite):
         self.player_projectiles = []
         self.can_eat = True
         self.eat_item = False
+        #consider changing this for MC general img poses...?
+        self.eat_time = 30
+        self.eat_timer = 0
 
         self.effect_time = -1
         self.change_invincibility = False
@@ -236,6 +247,7 @@ class Player(PS.DirtySprite):
 
     def open_door(self, bg):  # pass the enire block group.
         self.eated = False
+        #self.eat_timer = self.eat_time
         for block in bg:
             if block.get_type() == self.at_door_num:
                 ##OR ADD EATING DOOR SOUND HERE.
@@ -270,6 +282,7 @@ class Player(PS.DirtySprite):
                     collision.disappear()
                 elif self.eat_item:
                     self.eat_item = False
+                    self.eat_timer = self.eat_time
                     self.health += 10
                     collision.disappear()
             elif collision.get_type() == "K":  # found key
@@ -312,6 +325,18 @@ class Player(PS.DirtySprite):
                     self.at_door_num = -1
             else:
                 self.at_door_num = -1
+
+    def eat_frames(self):
+        print(self.eat_timer)
+        print(self.face)
+        if self.face == 'ds':
+            self.image = self.EatF
+        if self.face == 'us':
+            self.image = self.EatB
+        if self.face == 'rs':
+            self.image = self.EatR
+        if self.face == 'ls':
+            self.image = self.EatL
 
     def handle_keys(self, bg, enemy_bg, item_group, screen, interval=0.0065):
         """ Handles Keys """
@@ -459,6 +484,8 @@ class Player(PS.DirtySprite):
 
     def update(self, bg, selfgroup):
         self.moved = False
+        if(self.eat_timer > 0):
+            self.eat_timer -= 1
         PLAYER_IMAGE_LENGTH = 12  # all player sprite has 12 frames
         # update time and frame
         if self.effect_time > 0:
@@ -495,6 +522,8 @@ class Player(PS.DirtySprite):
                     self.update_image(self.IMAGES_LEFT)
                 elif (self.face == 'd'):
                     self.update_image(self.IMAGES_FRONT)
+                elif(self.eat_timer > 0):
+                    self.eat_frames()
                 # standing
                 elif self.attack_pose is False:
                     if(self.face == 'rs'):
@@ -559,6 +588,8 @@ class Player(PS.DirtySprite):
             return imageArray
 
     def load_images(self):
+            
+
             Player.IMAGES_RIGHT = []
             Player.IMAGES_LEFT = []
             Player.IMAGES_FRONT = []
