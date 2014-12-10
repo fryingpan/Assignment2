@@ -63,7 +63,7 @@ class Weapon(PS.Sprite):
                 elif "u" in playerFace:
                     self.rectud.x = playerX
                     self.rectud.y = playerY
-                    self.rect = self.rectrl
+                    self.rect = self.rectud
                 elif "d" in playerFace:
                     self.rectud.x = playerX
                     self.rectud.y = playerY
