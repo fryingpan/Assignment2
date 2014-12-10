@@ -116,23 +116,23 @@ class Enemy(PG.sprite.DirtySprite):
             face_copy = self.face
             self.face = self.move_face
         collisions = PS.spritecollide(self, bg, False)
-        if self.face == 'r':
+        if 'r' in self.face:
             for collision in collisions:
                 if(self.rect.x +
                    self.rect.width) >= collision.rect.left:
                     self.rect.x = collision.rect.left - self.rect.width
-        elif self.face == 'l':
+        elif 'l' in self.face:
             for collision in collisions:
                 if (self.rect.x) <= (collision.rect.left +
                                      collision.rect.width):
                     self.rect.x = collision.rect.left + \
                         collision.rect.width
-        elif self.face == 'd':
+        elif 'd' in self.face:
             for collision in collisions:
                 if(self.rect.y +
                    self.rect.height) >= collision.rect.top:
                     self.rect.y = collision.rect.top - self.rect.height
-        elif self.face == 'u':
+        elif 'u' in self.face:
             for collision in collisions:
                 if (self.rect.y <= (collision.rect.top +
                                     collision.rect.height)):
