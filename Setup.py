@@ -29,6 +29,7 @@ try:
     import Globals
     import inputbox as inbx
     import time
+    from joystick import Joystick
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -124,6 +125,9 @@ class Game(object):
         self.level = 1
         self.change_level(self.level)
         self.burn_player = False
+
+        ####Joystick#########
+        self.joy = Joystick()
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -269,7 +273,7 @@ class Game(object):
 
 
         self.character.handle_keys(self.block_group, self.enemy_list,
-                                   self.item_group, self.map.get_surface())
+                                   self.item_group, self.map.get_surface(), None)
         if self.character.chng_invincibility():
             self.INVINCIBILITY_TIME = self.character.get_invincibility()
 
@@ -319,8 +323,9 @@ class Game(object):
             self.character.banner = -1
 
         #update camera's position on the map
-        self.camera_background = self.camera.update(self.character.get_coordinates(),
-                           self.map.get_surface())
+        if self.character.update_camera():
+            self.camera_background = self.camera.update(self.character.get_coordinates(),
+                               self.map.get_surface())
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -403,11 +408,14 @@ class Game(object):
         
 
     def event(self, event):
-        #Allows quitting pygame and changing states
+#        ##joysticks
+#            ##self.joy = Joystick()
+#        while not self.joy.quit_attempt:
+#            self.interaction_phase(Globals.SCREEN, self.character, self.joy)
+
+       #Allows quitting pygame and changing states
         #added changes for multiple states to allow testing
         for ev in event:
-#            if ev.type == PG.QUIT:  # PG.KEYDOWN and ev.key == PG.K_ESCAPE:
-#                Globals.RUNNING = False
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
@@ -434,6 +442,21 @@ class Game(object):
                 self.objectiveBlit = False
             else:
                 self.objectiveBlit = True
+
+    def interaction_phase(self, screen, player, joystick):
+#        for event in joystick.get_events():
+            #movement
+            #using axis
+
+
+            #where attacks, pickups, drops
+
+        if joystick.is_pressed('left'):
+            #move left
+            print "moving left"
+            self.character.handle_keys(self.block_group, self.enemy_list,
+                                       self.item_group, self.map.get_surface(), 'L')
+
                 
     def reset_level(self):
         for item in self.item_group.sprites():
