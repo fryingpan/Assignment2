@@ -102,10 +102,12 @@ class Enemy(PG.sprite.DirtySprite):
         return False
 
     def handle_player(self, player):
+        player.sprites()[0].set_attacking_rect()
         collisions = PS.spritecollide(self, player, False)
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
             if(Globals.INVINCIBILITY_COUNT <= 0):
                 self.attacked_player = True
+        player.sprites()[0].reset_attacking_rect()
                 # Globals.INVINCIBILITY_COUNT = 200
 
     def handle_collision(self, bg):
@@ -139,7 +141,7 @@ class Enemy(PG.sprite.DirtySprite):
         self.move(player, Globals.DELTA)
         self.handle_collision(bg)
         self.handle_player(player)
-            # print("invisib " + str(Globals.INVINCIBILITY_COUNT))
+        # print("invisib " + str(Globals.INVINCIBILITY_COUNT))
         # check that the new movement is within the boundaries
         # if self.check_collide() is True:
         # self.direction = random.randint(0, 1)

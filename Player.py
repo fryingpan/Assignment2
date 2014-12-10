@@ -19,6 +19,7 @@ import Globals
 import Item
 from Trap import Trap
 import pygame.time as PT
+import random
 
 class Player(PS.DirtySprite):
     IMAGES = None
@@ -47,6 +48,7 @@ class Player(PS.DirtySprite):
         self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png") \
             .convert_alpha()
         self.rect = self.image.get_rect()
+        self.rect_copy = self.rect
         self.rect.x = 100
         self.rect.y = 100
         self.face = 'd'
@@ -92,6 +94,21 @@ class Player(PS.DirtySprite):
 
         self.effect_time = -1
         self.change_invincibility = False
+        # self.burger_capacity = random.randint(1, 15)
+        self.burger_capacity = 1
+
+
+    def set_attacking_rect(self):
+        self.attacking_rect = self.rect
+        self.rect = self.rect_copy
+
+    def reset_attacking_rect(self):
+        self.rect = self.attacking_rect
+
+    def update_camera(self):
+        if self.attack_pose:
+            return False
+        return True
 
     def has_item(self):
         return self.item
@@ -140,6 +157,9 @@ class Player(PS.DirtySprite):
             self.new_invincibility = Globals.DEFAULT_INVINCIBILITY*2
         # if burger drop
         elif self.item_type == 5:
+            self.burger_capacity -= 1
+            if self.burger_capacity == 0:
+                self.health = 0
             self.item_img = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
 
     def restore_normal(self):
@@ -286,26 +306,33 @@ class Player(PS.DirtySprite):
         self.interval = interval
         key = PG.key.get_pressed()
         temp = self.rect.x
+
+        self.rect = self.rect_copy
+
         if key[PG.K_DOWN]:  # down key
             self.rect.y += self.speed  # move down
             # self.rect = self.image.get_rect()
             self.face = 'd'
             self.handle_collision(bg)
+            self.rect_copy = self.rect
         elif key[PG.K_UP]:  # up key
             self.rect.y -= self.speed  # move up
             # self.rect = self.image.get_rect()
             self.face = 'u'
             self.handle_collision(bg)
+            self.rect_copy = self.rect
         elif key[PG.K_RIGHT]:  # right key
             self.rect.x += self.speed  # move right
             # self.rect = self.image.get_rect()
             self.face = 'r'
             self.handle_collision(bg)
+            self.rect_copy = self.rect
         elif key[PG.K_LEFT]:  # left key
             self.rect.x -= self.speed  # move left
             # self.rect = self.image.get_rect()
             self.face = 'l'
             self.handle_collision(bg)
+            self.rect_copy = self.rect
 
         elif key[PG.K_a]:
             if self.item and self.can_drop:
@@ -330,17 +357,30 @@ class Player(PS.DirtySprite):
                 self.handle_collision(item_group)
         elif key[PG.K_SPACE]:  # space key ATTACK
             if 'r' in self.face:
-                Player.WIDTH = 250
+                # Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_R
+                self.attack_rect = self.image.get_rect()
+                self.attack_rect.x = self.rect.x 
+                self.attack_rect.y = self.rect.y
             if 'l' in self.face:
-                Player.WIDTH = 250
+                # Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_L
+                self.attack_rect = self.image.get_rect()
+                self.attack_rect.x = self.rect.x - 50
+                self.attack_rect.y = self.rect.y 
             if 'd' in self.face:
-                Player.HEIGHT = 250
+                # Player.HEIGHT = 250
                 self.image = self.IMG_ATTACK_D
+                self.attack_rect = self.image.get_rect()
+                self.attack_rect.x = self.rect.x
+                self.attack_rect.y = self.rect.y
             if 'u' in self.face:
-                Player.HEIGHT = 250
+                # Player.HEIGHT = 250
                 self.image = self.IMG_ATTACK_U
+                self.attack_rect = self.image.get_rect()
+                self.attack_rect.x = self.rect.x
+                self.attack_rect.y = self.rect.y - 50
+            self.rect = self.attack_rect
 
             # attack collisions
             collisions = PS.spritecollide(self, enemy_bg, False)
@@ -348,6 +388,9 @@ class Player(PS.DirtySprite):
             # for x in range(100):
             killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
                                                 self.face, screen, enemy_bg)
+
+            # self.rect = self.rect_copy
+
             for killed in killed_enemies:
                 if(killed.last_hit == 0):
                     self.items_of_killed.append(killed.drop_item(screen))
@@ -385,6 +428,7 @@ class Player(PS.DirtySprite):
                     self.face = 'rs'
             if self.face == 'l':
                     self.face = 'ls'
+
 
     def update(self, bg, selfgroup):
         self.moved = False
