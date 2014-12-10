@@ -59,18 +59,18 @@ class Joystick():
         #r is eat (e)
 
         self.buttons = ['up', 'down', 'left', 'right', 'start', 'attack', 'pickup', 'settrap', 'drop', 'eat']
-        self.key_map = {
-                    PG.K_UP : 'up',
-                    PG.K_DOWN : 'down',
-                    PG.K_LEFT : 'left',
-                    PG.K_RIGHT : 'right',
-                    PG.K_RETURN : 'start',
-                    PG.K_a : 'attack',
-                    PG.K_b : 'pickup',
-                    PG.K_x : 'settrap',
-                    PG.K_y : 'drop',
-                    PG.K_l : 'eat'
-                }
+#        self.key_map = {
+#                    PG.K_UP : 'up',
+#                    PG.K_DOWN : 'down',
+#                    PG.K_LEFT : 'left',
+#                    PG.K_RIGHT : 'right',
+#                    PG.K_RETURN : 'start',
+#                    PG.K_a : 'attack',
+#                    PG.K_b : 'pickup',
+#                    PG.K_x : 'settrap',
+#                    PG.K_y : 'drop',
+#                    PG.K_l : 'eat'
+#                }
 
         self.keys_pressed = {}
         for button in self.buttons:
