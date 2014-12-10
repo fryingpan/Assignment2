@@ -13,6 +13,7 @@ from Trap import Puddle
 from Item import BreadDrop
 from Item import MeatDrop
 from Item import BurgerDrop
+from Item import CreamDrop
 from projectile import Projectile
 from projectile import CreamCutter
 
