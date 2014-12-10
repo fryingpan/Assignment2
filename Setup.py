@@ -70,6 +70,8 @@ class Game(object):
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()
+        
+
         ######(Initialize objects on screen)####
         ##draw map/background
         
@@ -133,6 +135,8 @@ class Game(object):
         ###(variables)####
         trap_attack_player = False  # tells if a trap attacked
         trap_attack_enemy = False
+        projectile_attack_player = False  # tells if a projectile attacked
+        projectile_attack_enemy = False
         enemy_attacked = None
         self.enemy_ID = -1
 
@@ -167,16 +171,7 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = icecream.get_ID()
 
-        ##burger attacks
-        for burger in self.burger_list.sprites():
-            if(burger.get_attacked_player()):
-                #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
-                #see which enemy attacked the player
-                self.enemy_ID = burger.get_ID()
-
-        projectile_attack_player = False  # tells if a projectile attacked
-        projectile_attack_enemy = False
+        
 
         #lettuce
           ##projectile handling
@@ -186,6 +181,7 @@ class Game(object):
                 projectile.attacked_player = False
                 break
             if (projectile.projectile_attack_enemy):
+
                 enemies_attacked = projectile.get_enemies_attacked()
                 if enemies_attacked is not None:
                     for enemy in enemies_attacked:
@@ -208,6 +204,23 @@ class Game(object):
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = lettuce.get_ID()
+
+##burger attacks
+        for burger in self.burger_list.sprites():
+            #see if the enemy will release weapon/attack
+            if (burger.will_attack(self.level)):
+                #get a new puddle sprite
+                new_projectile = burger.attack()
+                #add the new projectile to the list of projectiles
+                self.projectile_group.add(new_projectile)
+
+            if(burger.get_attacked_player() or projectile_attack_player):
+                if projectile_attack_player:
+                    projectile_attack_player = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = burger.get_ID()
 
         ##cupcake attacks
         for cupcake in self.cupcake_list.sprites():
@@ -279,6 +292,11 @@ class Game(object):
         # for traps in player_traps:
             if trap.will_remove():
                 self.character.remove_player_trap(trap)
+
+        player_projectiles = self.character.get_player_projectiles()
+        for projectile in player_projectiles:
+            self.projectile_group.add(projectile)
+            projectile.set_enemy_list(self.enemy_list)
 
         #update the allsprites
         self.allsprites = PS.LayeredDirty(self.trap_group,
@@ -377,7 +395,10 @@ class Game(object):
             Globals.SCREEN.blit(self.pill_img, (750, 550))
 
         if self.character.has_item():
-            Globals.SCREEN.blit(self.character.get_item_img(), (700, 550))
+            Globals.SCREEN.blit(self.character.get_item_img(), (650, 550))
+            #PG.draw.circle(Globals.SCREEN, (255,255,255), (720,570), 12)
+            Globals.SCREEN.blit(self.font.render("x" + str(self.character.item_use_count), True, (0, 0, 0)),
+                            (700, 570))
         ###########################################################
         
 

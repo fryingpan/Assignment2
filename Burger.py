@@ -14,7 +14,8 @@ from Item import BreadDrop
 from Item import LettuceDrop
 from Item import MeatDrop
 from Item import BurgerDrop
-
+from projectile import Projectile
+from projectile import LettuceCutter
 
 class Burger(Enemy):
     IMAGE_UP = None
@@ -43,7 +44,7 @@ class Burger(Enemy):
         self.yboundt = ylocation - self.rect.width*self.bound_factor
         self.xboundr = xlocation + self.rect.width*self.bound_factor
         self.yboundb = ylocation + self.rect.width*self.bound_factor
-
+        self.detect_distance = 250
         self.IMAGES_RIGHT = []
         self.IMAGES_LEFT = []
         self.IMAGES_FRONT = []
@@ -68,33 +69,100 @@ class Burger(Enemy):
         else:
             return 1
 
-    def attack(self, surface):
-        ###
-        pass
+    def attack(self):
+        self.pdx = random.randint(-1, 1)
+        self.pdy = random.randint(-1, 1)
+        if(self.pdx == 0 and self.pdy==0):
+            self.pdx = 1
+        return LettuceCutter(self,self)
 
     def move(self, player, interval):
         ran = random.randint(0, 10)
         move_dist = 0
-        if(ran < 3):  # slow him down cuz he hella scary when he's fast
-            dist = int(self.speed)
-            # distance moved in 1 frame, try changing it to 5
-            move_dist = math.ceil(dist*interval)
-            if player.sprites()[0].rect.y > self.rect.y and \
-            self.rect.y <= self.yboundb:
-                self.rect.y += move_dist  # move down
-                self.face = 'd'
-            elif player.sprites()[0].rect.y < self.rect.y and \
-            self.rect.y >= self.yboundt:
-                self.rect.y -= move_dist  # move up
-                self.face = 'u'
-            if player.sprites()[0].rect.x > self.rect.x and \
-            self.rect.x <= self.xboundr:
-                self.rect.x += move_dist  # move right
-                self.face = 'r'
-            elif player.sprites()[0].rect.x < self.rect.x and \
-            self.rect.x >= self.xboundl:
-                self.rect.x -= move_dist  # move left
-                self.face = 'l'
+        
+        dist = int(self.speed)
+        # distance moved in 1 frame, try changing it to 5
+        move_dist = math.ceil(dist*interval)
+
+        if(player.sprites()[0].rect.y > self.yboundt
+        and player.sprites()[0].rect.y < self.yboundb
+        and player.sprites()[0].rect.x > self.xboundl
+        and player.sprites()[0].rect.x < self.xboundr
+        ):
+            if(ran < 5):  # slow him down cuz he hella scary when he's fast
+                if player.sprites()[0].rect.y > self.rect.y and \
+                self.rect.y <= self.yboundb:
+                    self.rect.y += move_dist  # move down
+                    self.face = 'd'
+                elif player.sprites()[0].rect.y < self.rect.y and \
+                self.rect.y >= self.yboundt:
+                    self.rect.y -= move_dist  # move up
+                    self.face = 'u'
+                if player.sprites()[0].rect.x > self.rect.x and \
+                self.rect.x <= self.xboundr:
+                    self.rect.x += move_dist  # move right
+                    self.face = 'r'
+                elif player.sprites()[0].rect.x < self.rect.x and \
+                self.rect.x >= self.xboundl:
+                    self.rect.x -= move_dist  # move left
+                    self.face = 'l'
+        else:
+            if(ran < 3):  # slow him down cuz he hella scary when he's fast
+                if(random.randint(0, 200) == 0):
+                    self.direction = random.randint(0, 5)
+                # distance moved in 1 frame, try changing it to 5
+                if (self.direction == 0
+                and self.rect.y <= self.yboundb):  # down key
+                    self.rect.y += move_dist  # move down
+                    self.face = 'd'
+                elif (self.direction == 1
+                and self.rect.y >= self.yboundt):  # up key
+                    self.rect.y -= move_dist  # move up
+                    self.face = 'u'
+                elif (self.direction == 2
+                and self.rect.x <= self.xboundr):  # right key
+                    self.rect.x += move_dist  # move right
+                    self.face = 'r'
+                elif (self.direction == 3
+                and self.rect.x >= self.xboundl):  # left key
+                    self.rect.x -= move_dist  # move left
+                    self.face = 'l'
+
+
+            # if player.sprites()[0].rect.y > self.rect.y and \
+            # self.rect.y <= self.yboundb:
+            #     self.rect.y += move_dist  # move down
+            #     self.face = 'd'
+            # elif player.sprites()[0].rect.y < self.rect.y and \
+            # self.rect.y >= self.yboundt:
+            #     self.rect.y -= move_dist  # move up
+            #     self.face = 'u'
+            # if player.sprites()[0].rect.x > self.rect.x and \
+            # self.rect.x <= self.xboundr:
+            #     self.rect.x += move_dist  # move right
+            #     self.face = 'r'
+            # elif player.sprites()[0].rect.x < self.rect.x and \
+            # self.rect.x >= self.xboundl:
+            #     self.rect.x -= move_dist  # move left
+            #     self.face = 'l'
+
+            # if(player.sprites()[0].rect.y > self.rect.y - self.detect_distance
+            #     and player.sprites()[0].rect.y < self.rect.y + self.detect_distance
+            #     and player.sprites()[0].rect.x > self.rect.x - self.detect_distance
+            #     and player.sprites()[0].rect.x < self.rect.x + self.detect_distance
+            #     ):
+            #     if player.sprites()[0].rect.y > self.rect.y:
+            #         self.rect.y += move_dist  # move down
+            #         self.face = 'd'
+            #     elif player.sprites()[0].rect.y < self.rect.y:
+            #         self.rect.y -= move_dist  # move up
+            #         self.face = 'u'
+            #     if player.sprites()[0].rect.x > self.rect.x:
+            #         self.rect.x += move_dist  # move right
+            #         self.face = 'r'
+            #     elif player.sprites()[0].rect.x < self.rect.x:
+            #         self.rect.x -= move_dist  # move left
+            #         self.face = 'l'
 
     def drop_item(self, surface):
             d = random.randint(0, 9)

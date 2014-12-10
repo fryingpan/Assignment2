@@ -5,8 +5,6 @@ import pygame.sprite as PS
 import sys
 import math
 import pygame.image as PI
-from Player import Player
-from Enemy import Enemy
 import Globals
 
 class Projectile(PS.DirtySprite):
@@ -40,7 +38,7 @@ class Projectile(PS.DirtySprite):
 
         self.projectile_attack_enemy = False
         self.enemies_attacked = []
-
+        self.enemy_list = []
     # change img depending on self.frame
     def update_image(self, imageArray):
         try:
@@ -56,7 +54,7 @@ class Projectile(PS.DirtySprite):
 
     def handle_player(self, player):
         collisions = PS.spritecollide(self, player, False)
-        if(len(collisions) == 1 and isinstance(collisions[0], Player)):
+        if(len(collisions) == 1 and collisions[0].enemy_ID == -1):
             if(Globals.INVINCIBILITY_COUNT== 0):
                 self.attacked_player = True
                 # self.invincibility_count = 200
@@ -68,8 +66,11 @@ class Projectile(PS.DirtySprite):
             if(len(collisions) > 0):
                 self.kill()
 
-    def handle_enemies(self, enemies):
-        collisions = self.handle_collisions(self.enemy_list)
+    def set_enemy_list(self, enemy_list):
+        self.enemy_list = enemy_list
+
+    def handle_enemies(self):
+        collisions = PS.spritecollide(self, self.enemy_list, False)
         if len(collisions) > 0:
             self.projectile_attack_enemy = True
         for collision in collisions:
@@ -101,9 +102,9 @@ class Projectile(PS.DirtySprite):
 
         #------- move -------
         self.move(Globals.DELTA, self.boss.pdx, self.boss.pdy)
-        if(isinstance(self.boss, Player)):
+        if(self.boss.enemy_ID < 0):
             self.handle_enemies()
-        if(isinstance(self.boss, Enemy)):
+        else:
             self.handle_player(player)
 
         # images
@@ -129,16 +130,20 @@ class LettuceCutter(Projectile):
 
         self.IMAGES = []
         self.load_images()
+        self.ldx = boss.pdx
+        self.ldy = boss.pdy
         Projectile.__init__(self, boss, self.rect, 4, 0, 8000, self.image, 1, 1)
 #(self, boss, rect, num_frames, pass_through = 0, lifetime=8000, image=None, speed = 1, dmg = 1):
     def move(self, interval, pdx, pdy): #pd = projection direction
-        ran = random.randint(0, 5)
-        move_dist = 0
-        if(ran < 3):  # slow him down cuz he hella scary when he's fast
-            # distance moved in 1 frame, try changing it to 5
-            move_dist = math.ceil(self.speed*interval)
-            self.rect.centerx += pdx
-            self.rect.centery += pdy
+        #ran = random.randint(0, 5)
+        #if(ran < 3):
+        self.rect.centerx += self.ldx
+        self.rect.centery += self.ldy
+
+            # # distance moved in 1 frame, try changing it to 5
+            # move_dist = math.ceil(self.speed*interval)
+            # self.rect.centerx += pdx
+            # self.rect.centery += pdy
 
     def get_face(self):
         return self.face
@@ -169,7 +174,8 @@ class CreamCutter(Projectile):
         #attributes to be passed to parent for parent function use
         self.speed = 1
         self.rect = self.image.get_rect()
-
+        self.ldx = boss.pdx
+        self.ldy = boss.pdy
         self.IMAGES = []
         self.load_images()
         Projectile.__init__(self, boss, self.rect, 4, 0, 8000, self.image, 1, 1)

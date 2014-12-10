@@ -189,6 +189,8 @@ class Puddle(Trap):
 
     ##set lifetime for cold level
     def set_life(self, level):
+        if(level) == 2:
+            return 800
         if level == 3:
             return 3500
         else:

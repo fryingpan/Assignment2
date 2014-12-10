@@ -62,7 +62,11 @@ class Cupcake(Enemy):
         pass
 
     def drop_item(self, surface):
-        return BreadDrop(self.rect.x, self.rect.y, surface)
+        d = random.randint(0, 1)
+        if(d == 0):
+            return BreadDrop(self.rect.x, self.rect.y, surface)
+        if(d == 1):
+            return CreamDrop(self.rect.x, self.rect.y, surface)
     
     def get_face(self):
         return self.face

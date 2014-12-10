@@ -61,7 +61,7 @@ class Enemy(PG.sprite.DirtySprite):
     def decrement_health(self, dmg):
         # print(self.last_hit)
         self.health -= dmg
-        if(self.health <= 0):
+        if(self.health == 0):
             Globals.SCORE += 1  # change num of points per type of enemy?
             self.kill()
         # print("health " + str(self.health))
@@ -89,14 +89,14 @@ class Enemy(PG.sprite.DirtySprite):
     ##only used by ice cream?
     def will_attack(self, level):
         if level == 2:  # if in hot level, more often
-            attack_prob = random.randint(0, 75)
+            attack_prob = random.randint(0, 200)
             if attack_prob == 1:
                 return True
         if level == 3:  # in cold level
-            attack_prob = random.randint(0, 1000)
+            attack_prob = random.randint(0, 2000)
             if attack_prob == 1:
                 return True
-        attack_prob = random.randint(0, 600)
+        attack_prob = random.randint(0, 800)
         if (attack_prob == 1):
             return True
         return False

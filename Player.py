@@ -18,8 +18,12 @@ from Weapon import Weapon
 import Globals
 import Item
 from Trap import Trap
+from projectile import Projectile
+from projectile import LettuceCutter
+from projectile import CreamCutter
 import pygame.time as PT
 import random
+
 
 class Player(PS.DirtySprite):
     IMAGES = None
@@ -87,8 +91,12 @@ class Player(PS.DirtySprite):
         self.item_img = None
         self.item_use_count = 0
         self.item_type = 0
+        #projectile movement
+        self.pdx = 0
+        self.pdy = 0
         self.player_items = []
         self.player_traps = []
+        self.player_projectiles = []
         self.can_eat = True
         self.eat_item = False
 
@@ -109,6 +117,8 @@ class Player(PS.DirtySprite):
         if self.attack_pose:
             return False
         return True
+
+        self.enemy_ID = -1
 
     def has_item(self):
         return self.item
@@ -179,12 +189,18 @@ class Player(PS.DirtySprite):
                                      1600,             # lifetime 
                                      self.item_img,            # image 
                                      False))           # if the trap will be animated
-        self.item_use_count -= 1
-        if self.item_use_count == 0:
-            self.item = False
 
     def get_player_traps(self):
         return self.player_traps
+
+    def throw_LC(self):
+        self.player_projectiles.append(LettuceCutter(self));
+
+    def throw_CC(self):
+        self.player_projectiles.append(CreamCutter(self));
+
+    def get_player_projectiles(self):
+        return self.player_projectiles
 
     def get_items_of_killed(self):
         return self.items_of_killed
@@ -311,34 +327,45 @@ class Player(PS.DirtySprite):
 
         if key[PG.K_DOWN]:  # down key
             self.rect.y += self.speed  # move down
-            # self.rect = self.image.get_rect()
             self.face = 'd'
+            self.pdx = 0
+            self.pdy = 1
             self.handle_collision(bg)
             self.rect_copy = self.rect
         elif key[PG.K_UP]:  # up key
             self.rect.y -= self.speed  # move up
-            # self.rect = self.image.get_rect()
             self.face = 'u'
+            self.pdx = 0
+            self.pdy = -1
             self.handle_collision(bg)
             self.rect_copy = self.rect
         elif key[PG.K_RIGHT]:  # right key
             self.rect.x += self.speed  # move right
-            # self.rect = self.image.get_rect()
             self.face = 'r'
+            self.pdx = 1
+            self.pdy = 0
             self.handle_collision(bg)
             self.rect_copy = self.rect
         elif key[PG.K_LEFT]:  # left key
             self.rect.x -= self.speed  # move left
-            # self.rect = self.image.get_rect()
             self.face = 'l'
+            self.pdx = -1
+            self.pdy = 0
             self.handle_collision(bg)
             self.rect_copy = self.rect
 
         elif key[PG.K_a]:
-            if self.item and self.can_drop:
-                if self.item_type == 1 or self.item_type == 3 or self.item_type == 5:
+            if self.item and self.can_drop: #can_drop is used to prevent inaccurate key detection
+                if self.item_type == 1 or self.item_type == 5:
                     self.drop_trap(screen)
+                if self.item_type == 3:
+                    self.throw_LC()
+                if self.item_type == 6:
+                    self.throw_CC()
                 self.can_drop = False
+                self.item_use_count -= 1
+                if self.item_use_count == 0:
+                    self.item = False
 
         # grab item if available
         elif key[PG.K_s]:
