@@ -104,7 +104,7 @@ class Player(PS.DirtySprite):
         self.change_invincibility = False
         # self.burger_capacity = random.randint(1, 15)
         self.burger_capacity = 1
-
+        self.enemy_ID = -1
 
     def set_attacking_rect(self):
         self.attacking_rect = self.rect
