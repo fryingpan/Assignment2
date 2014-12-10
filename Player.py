@@ -108,7 +108,7 @@ class Player(PS.DirtySprite):
         self.can_eat = True
         self.eat_item = False
         #consider changing this for MC general img poses...?
-        self.eat_time = 30
+        self.eat_time = 40
         self.eat_timer = 0
 
         self.effect_time = -1
@@ -257,6 +257,7 @@ class Player(PS.DirtySprite):
                     self.eatEffect.play(50)
                     self.eated = True
         self.modified_map = True
+        self.at_door_num = -1
 
     def read_sign(self):  # pass the enire block group.
         self.banner = self.at_sign_num
@@ -338,7 +339,10 @@ class Player(PS.DirtySprite):
         if self.face == 'ls':
             self.image = self.EatL
 
-    def handle_keys(self, bg, enemy_bg, item_group, screen, interval=0.0065):
+    def handle_joy(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
+        pass
+
+    def handle_keys(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
         """ Handles Keys """
         self.items_of_killed = []
         self.attack_pose = False
@@ -371,7 +375,7 @@ class Player(PS.DirtySprite):
             self.pdy = 0
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_LEFT]:  # left key
+        elif key[PG.K_LEFT] or joyDir == "L":  # left key
             self.rect.x -= self.speed  # move left
             self.face = 'l'
             self.pdx = -1

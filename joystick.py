@@ -133,7 +133,31 @@ class Joystick():
                 self.joystick_config[button] = ('is_button', buttonindex)
                 return True
 
-        ##do hats, axis
+        ##do hats
+        for hatindex in range(joy.get_numhats()):
+            hatstatus = joy.get_hat(hatindex)
+            if hatstatus[0] < -.5 and not self.is_hat_used(hatindex, 'x', -1):
+                self.joystick_config[button] = ('is_hat', hatindex, 'x', -1)
+                return True
+            elif hatstatus[0] > .5 and not self.is_hat_used(hatindex, 'x', 1):
+                self.joystick_config[button] = ('is_hat', hatindex, 'x', 1)
+                return True
+            if hatstatus[1] < -.5 and not self.is_hat_used(hatindex, 'y', -1):
+                self.joystick_config[button] = ('is_hat', hatindex, 'y', -1)
+                return True
+            elif hatstatus[1] > .5 and not self.is_hat_used(hatindex, 'y', 1):
+                self.joystick_config[button] = ('is_hat', hatindex, 'y', 1)
+                return True
+
+        ##axis activity
+        for axisindex in range(js.get_numaxes()):
+            axisstatus = js.get_axis(axisindex)
+            if axisstatus < -.5 and not self.is_axis_used(axisindex, -1):
+                self.joystick_config[button] = ('is_axis', axisindex, -1)
+                return True
+            elif axisstatus > .5 and not self.is_axis_used(axisindex, 1):
+                self.joystick_config[button] = ('is_axis', axisindex, 1)
+                return True
 
         return False
 
@@ -144,10 +168,21 @@ class Joystick():
                 return True
         return False
 
-    #def is_hat_used(self, hatindex, axis, direction):
+    def is_hat_used(self, hatindex, axis, direction):
+        for button in self.buttons:
+            config = self.joystick_config.get(button)
+            if config != None and config[0] == 'is_hat':
+                if config[1] == hatindex and config[2] == axis and config[3] == direction:
+                    return True
+        return False
 
-    #def is_axis_used(self, axisindex, direction):
-
+    def is_axis_used(self, axisindex, direction):
+        for button in self.buttons:
+            config = self.joystick_config.get(button)
+            if config != None and config[0] == 'is_axis':
+                if config[1] == axis_index and config[2] == direction:
+                    return True
+        return False
 
 
 

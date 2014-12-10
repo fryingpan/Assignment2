@@ -275,9 +275,17 @@ class Game(object):
                 self.character.invincibility_frames()
             Globals.INVINCIBILITY_COUNT -= 1
 
-
+        ###Joystick
+        #if joystick exists
+        #if self.joy != None:
+        self.character.handle_joy(self.block_group, self.enemy_list,
+                                  self.item_group, self.map.get_surface(), None)
+        #else:
+        #else just handle_key
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface(), None)
+
+
         if self.character.chng_invincibility():
             self.INVINCIBILITY_TIME = self.character.get_invincibility()
 
