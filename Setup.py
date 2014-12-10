@@ -135,6 +135,8 @@ class Game(object):
         ###(variables)####
         trap_attack_player = False  # tells if a trap attacked
         trap_attack_enemy = False
+        projectile_attack_player = False  # tells if a projectile attacked
+        projectile_attack_enemy = False
         enemy_attacked = None
         self.enemy_ID = -1
 
@@ -169,16 +171,7 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = icecream.get_ID()
 
-        ##burger attacks
-        for burger in self.burger_list.sprites():
-            if(burger.get_attacked_player()):
-                #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
-                #see which enemy attacked the player
-                self.enemy_ID = burger.get_ID()
-
-        projectile_attack_player = False  # tells if a projectile attacked
-        projectile_attack_enemy = False
+        
 
         #lettuce
           ##projectile handling
@@ -211,6 +204,23 @@ class Game(object):
                 Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = lettuce.get_ID()
+
+##burger attacks
+        for burger in self.burger_list.sprites():
+            #see if the enemy will release weapon/attack
+            if (burger.will_attack(self.level)):
+                #get a new puddle sprite
+                new_projectile = burger.attack()
+                #add the new projectile to the list of projectiles
+                self.projectile_group.add(new_projectile)
+
+            if(burger.get_attacked_player() or projectile_attack_player):
+                if projectile_attack_player:
+                    projectile_attack_player = False
+                #if so start invincibility count after attack
+                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = burger.get_ID()
 
         ##cupcake attacks
         for cupcake in self.cupcake_list.sprites():
