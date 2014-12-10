@@ -67,23 +67,24 @@ class Enemy(PG.sprite.DirtySprite):
         # print("health " + str(self.health))
 
     def move_back(self, face, bg):
-        dist = 60
+        self.move_face = face
+        dist = 90
         moved = 0
         collided = False
         while moved < dist and not collided:
             if 'u' in face:
-                self.rect.y -= 15
-                moved += 15
+                self.rect.y -= 1
+                moved += 1
             elif 'd' in face:
-                self.rect.y += 15
-                moved += 15
+                self.rect.y += 1
+                moved += 1
             elif 'r' in face:
-                self.rect.x += 15
-                moved += 15
+                self.rect.x += 1
+                moved += 1
             elif 'l' in face:
-                self.rect.x -= 15
-                moved += 15
-            collided = self.handle_collision(bg)
+                self.rect.x -= 1
+                moved += 1
+            collided = self.handle_collision(bg, True)
 
 
     ##only used by ice cream?
@@ -110,7 +111,10 @@ class Enemy(PG.sprite.DirtySprite):
         player.sprites()[0].reset_attacking_rect()
                 # Globals.INVINCIBILITY_COUNT = 200
 
-    def handle_collision(self, bg):
+    def handle_collision(self, bg, m_back = False):
+        if m_back:
+            face_copy = self.face
+            self.face = self.move_face
         collisions = PS.spritecollide(self, bg, False)
         if self.face == 'r':
             for collision in collisions:
@@ -134,6 +138,8 @@ class Enemy(PG.sprite.DirtySprite):
                                     collision.rect.height)):
                     self.rect.y = collision.rect.top + \
                         collision.rect.height
+        if m_back:
+            self.face = face_copy
         return (collisions is None)
 
     def update(self, bg, player):
