@@ -156,3 +156,23 @@ class BurgerDrop(Item):
 		# how many times the item may be used by the player
 		Item.use_count = 3
 		Item.__init__(self, self.rect, self.type, self.lifetime)
+
+# Cream Drop
+class CreamDrop(Item):
+	def __init__(self, x_coor, y_coor, surface):
+		Item.IMAGE = PI.load("FPGraphics/drops/creamDrop.png").convert_alpha()
+		self.image = Item.IMAGE
+		self.rect = self.image.get_rect()
+		# x position
+		self.rect.x = x_coor + 25
+		# y position
+		self.rect.y = y_coor + 25
+		# from what enemy its from
+		self.type = 5
+		# how long the item is available to grab
+		self.lifetime = 800
+		# surface
+		Item.surface = surface
+		# how many times the item may be used by the player
+		Item.use_count = 3
+		Item.__init__(self, self.rect, self.type, self.lifetime)
