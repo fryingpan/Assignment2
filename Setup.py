@@ -92,6 +92,8 @@ class Game(object):
         self.trap_group = PS.Group()
         self.item_group = PS.Group()
         self.projectile_group = PS.Group()
+        self.enemy_group = PS.Group()
+        self.enemies = None
 
         #allsprites has all dirty sprites (player, enemies, traps, pads)
         self.allsprites = PS.LayeredDirty(self.trap_group,
@@ -103,6 +105,8 @@ class Game(object):
                                           self.lettuce_list,
                                           self.cupcake_list,
                                           self.projectile_group)
+
+
         
         #variables to be handled in change_level method
         self.objective = None
@@ -324,8 +328,8 @@ class Game(object):
 
         #update camera's position on the map
         if self.character.update_camera():
-            self.camera_background = self.camera.update(self.character.get_coordinates(),
-                               self.map.get_surface())
+            self.camera_background, self.enemies = self.camera.update(self.character.get_coordinates(),
+                               self.map.get_surface(), self.enemy_group)
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -473,6 +477,8 @@ class Game(object):
             self.burger_list.remove(enemy)
         for enemy in self.lettuce_list.sprites():
             self.lettuce_list.remove(enemy)
+        for enemy in self.enemy_group.sprites():
+            self.enemy_group.remove(enemy)
 
     def change_level(self, currentLevel):
         self.reset_level()
@@ -517,22 +523,26 @@ class Game(object):
             icecream = IceCream(self.map.get_enemy_coordx(e, 1),
                                 self.map.get_enemy_coordy(e, 1))
             self.icecream_list.add(icecream)
+            self.enemy_group.add(icecream)
         #burger
         for e in range(self.map.get_num_enemies(2)):
             burger = Burger(self.map.get_enemy_coordx(e, 2),
                             self.map.get_enemy_coordy(e, 2),
                             self.level)
             self.burger_list.add(burger)
+            self.enemy_group.add(burger)
         #lettuce
         for e in range(self.map.get_num_enemies(3)):
             lettuce = Lettuce(self.map.get_enemy_coordx(e, 3),
                             self.map.get_enemy_coordy(e, 3))
             self.lettuce_list.add(lettuce)
+            self.enemy_group.add(lettuce)
         #cupcake
         for e in range(self.map.get_num_enemies(4)):
             cupcake = Cupcake(self.map.get_enemy_coordx(e, 4),
                             self.map.get_enemy_coordy(e, 4))
             self.cupcake_list.add(cupcake)
+            self.enemy_group.add(cupcake)
 
         self.enemy_list.add(self.icecream_list)
         self.enemy_list.add(self.burger_list)

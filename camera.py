@@ -69,15 +69,25 @@ class Camera(object):
                 self.cameraxy[1] += scrolly
         return move
 
+    def get_dimensions(self):
+        return self.cameraxy
+
+
     #update where the camera needs to be in the big map
-    def update(self, target_coordinates, bigmap):
+    def update(self, target_coordinates, bigmap, enemy_bg):
         moved = self.apply(target_coordinates)
+        enemy_group = PS.Group()
         if moved:
             self.check_boundary()
             self.background = bigmap. \
                 subsurface(self.cameraxy[0], self.cameraxy[1],
                            WIN_WIDTH, WIN_HEIGHT)
-        return self.background
+        for enemy in enemy_bg:
+            x = enemy.rect.x
+            y = enemy.rect.y
+            if (self.cameraxy[0] <= x <= self.cameraxy[0] + WIN_WIDTH) and (self.cameraxy[1] <= y <= self.cameraxy[0] + WIN_HEIGHT):
+                enemy_group.add(enemy)
+        return self.background, enemy_group
 
     #check that the camera doesn't go off the map
     def check_boundary(self):
