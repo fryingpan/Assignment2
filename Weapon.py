@@ -72,5 +72,4 @@ class Weapon(PS.Sprite):
                 collisions = PS.spritecollide(self, bg, False)
                 for collision in collisions:
                     collision_list.append(collision)
-                    # collision.kill()
                 return collision_list  # to be added to Player's score
