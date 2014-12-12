@@ -131,7 +131,7 @@ class Game(object):
         self.burn_player = False
 
         ####Joystick#########
-        self.joy = Joystick()
+        #self.joy = Joystick()
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -414,8 +414,9 @@ class Game(object):
         if self.character.has_item():
             Globals.SCREEN.blit(self.character.get_item_img(), (650, 550))
             #PG.draw.circle(Globals.SCREEN, (255,255,255), (720,570), 12)
-            Globals.SCREEN.blit(self.font.render("x" + str(self.character.item_use_count), True, (0, 0, 0)),
-                            (700, 570))
+            if(self.character.item_use_count != -1):
+                Globals.SCREEN.blit(self.font.render("x" + str(self.character.item_use_count), True, (0, 0, 0)),
+                                (700, 570))
         ###########################################################
         
 
