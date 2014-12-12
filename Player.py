@@ -108,7 +108,7 @@ class Player(PS.DirtySprite):
         self.can_eat = True
         self.eat_item = False
         #consider changing this for MC general img poses...?
-        self.eat_time = 40
+        self.eat_time = 50
         self.eat_timer = 0
 
         self.effect_time = -1
@@ -182,6 +182,9 @@ class Player(PS.DirtySprite):
             if self.burger_capacity == 0:
                 self.health = 0
             self.item_img = PI.load("FPGraphics/drops/burgerDrop.png").convert_alpha()
+        # if lettuce drop = trap
+        elif self.item_type == 6:
+            self.item_img = PI.load("FPGraphics/drops/creamDrop.png").convert_alpha()
 
     def restore_normal(self):
         self.speed = 1
@@ -247,7 +250,7 @@ class Player(PS.DirtySprite):
 
     def open_door(self, bg):  # pass the enire block group.
         self.eated = False
-        #self.eat_timer = self.eat_time
+        self.eat_timer = self.eat_time
         for block in bg:
             if block.get_type() == self.at_door_num:
                 ##OR ADD EATING DOOR SOUND HERE.
@@ -274,7 +277,7 @@ class Player(PS.DirtySprite):
                     # self.modified_map = True
                     self.item_type = collision.get_type()
                     # if item is to attack the enemy
-                    if self.item_type == 1 or self.item_type == 3 or self.item_type == 5:
+                    if self.item_type == 1 or self.item_type == 3 or self.item_type == 5 or self.item_type == 6:
                         self.item_use_count = collision.get_use_count()
                     # if item is for player effects
                     else: 
@@ -328,8 +331,6 @@ class Player(PS.DirtySprite):
                 self.at_door_num = -1
 
     def eat_frames(self):
-        print(self.eat_timer)
-        print(self.face)
         if self.face == 'ds':
             self.image = self.EatF
         if self.face == 'us':
