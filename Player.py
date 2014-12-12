@@ -443,13 +443,12 @@ class Player(PS.DirtySprite):
             collisions = PS.spritecollide(self, enemy_bg, False)
 
             # for x in range(100):
-            killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
+            if self.can_attack:
+                self.can_attack = False
+                killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
                                                 self.face, screen, enemy_bg)
-
-            # self.rect = self.rect_copy
-
-            for killed in killed_enemies:
-                if(killed.last_hit == 0):
+                for killed in killed_enemies:
+                    # if(killed.last_hit == 0):
                     self.items_of_killed.append(killed.drop_item(screen))
                     # self.health += 1
                     killed.decrement_health(1)
@@ -457,8 +456,8 @@ class Player(PS.DirtySprite):
                     # self.score += 1
                     # killed.kill()
                     killed.last_hit = 80
-                else:
-                    killed.last_hit -= 1
+                    # else:
+                    #     killed.last_hit -= 1
             # self.weapon.draw(screen)
             self.attack_pose = True
             standing = True
@@ -476,6 +475,8 @@ class Player(PS.DirtySprite):
             self.can_drop = True
         if not key[PG.K_e]:
             self.can_eat = True
+        if not key[PG.K_SPACE]:
+            self.can_attack = True
         if standing:
             if self.face == 'd':
                     self.face = 'ds'

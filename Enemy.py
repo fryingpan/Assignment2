@@ -43,7 +43,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.frame = 0
         # Globals.INVINCIBILITY_COUNT = 0
         self.attacked_player = False
-        self.last_hit = 0
         self.last_hit_save = -1
 
     def get_rect(self):
@@ -51,9 +50,6 @@ class Enemy(PG.sprite.DirtySprite):
 
     def get_face(self):
         return self.face
-
-    def get_last_hit(self):
-        return self.last_hit
 
     def get_attacked_player(self):
         return self.attacked_player
