@@ -69,8 +69,10 @@ Mary:
     -add egg
     -projectile directions
         make them different for each lvl
-    -projectile lag
-    -lettucecutter/cream for player use
+    lvl stage change
+        -lvl effects same throughout stages
+        -make multistages
+        -ways to exchange stages
     -make maps bigger/more interesting
     
 Katie
