@@ -490,7 +490,8 @@ class Game(object):
             self.enemy_group.remove(enemy)
 
     def change_level(self, currentLevel):
-        self.reset_level()
+        if(isinstance(self.level, int) or self.level.is_integer()): #this is a new lv, not stage
+            self.reset_level()
         self.level = currentLevel
         ldata = Lvl_Data(self.level)
         self.objective = ldata.objective
@@ -512,11 +513,6 @@ class Game(object):
         self.camera = cam.Camera(self.map.get_surface())
         self.camera_background = None
 
-        self.num_enemies += self.map.get_num_enemies(1)  # icecream
-        self.num_enemies += self.map.get_num_enemies(2)  # burger
-        self.num_enemies += self.map.get_num_enemies(3)  # lettuce
-        self.num_enemies += self.map.get_num_enemies(4)  # cupcake
-
         #may want to change this to be determined by mapfile.txt
         self.character.rect.x = ldata.character_pos_x
         self.character.rect.y = ldata.character_pos_y
@@ -526,6 +522,11 @@ class Game(object):
         Globals.SCREEN.blit(self.background, (0, 0))
         
         PD.update()
+
+        self.num_enemies += self.map.get_num_enemies(1)  # icecream
+        self.num_enemies += self.map.get_num_enemies(2)  # burger
+        self.num_enemies += self.map.get_num_enemies(3)  # lettuce
+        self.num_enemies += self.map.get_num_enemies(4)  # cupcake
 
         #icecream
         for e in range(self.map.get_num_enemies(1)):

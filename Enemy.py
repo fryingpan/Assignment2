@@ -28,8 +28,8 @@ class Enemy(PG.sprite.DirtySprite):
         PG.sprite.DirtySprite.__init__(self)
         # take attributes from derived class
         self.rect = rect
-        self.rect.x = rect.x
-        self.rect.y = rect.y
+        # self.rect.x = rect.x
+        # self.rect.y = rect.y
         self.health = health
         self.IMAGES_RIGHT = r
         self.IMAGES_LEFT = l
