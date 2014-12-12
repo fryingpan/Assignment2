@@ -337,6 +337,8 @@ class Game(object):
         if self.character.update_camera():
             self.camera_background = self.camera.update(self.character.get_coordinates(),
                                self.map.get_surface())
+        # else:
+        #     print(self.camera_background)
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -385,11 +387,11 @@ class Game(object):
                         self.end_time -= 1
                 else:
                     if(self.level < self.MAX_LEVEL):
-                        if(self.level < self.level + .2):
-                            self.level += .1
-                        else:
-                            self.level += 1
-                        # self.level += 1
+                        # if(self.level < self.level + .2):
+                        #     self.level += .1
+                        # else:
+                        #     self.level += 1
+                        self.level += 1
                         self.change_level(self.level)
                     elif(self.level == self.MAX_LEVEL):
                         PM.music.fadeout(1000)
@@ -597,6 +599,8 @@ class Game(object):
         self.cheesed = True
         self.killed = True
         self.update()
+        self.camera_background = self.camera.update(self.character.get_coordinates(),
+                               self.map.get_surface())
         self.render()
 
         
