@@ -168,7 +168,7 @@ class CreamDrop(Item):
 		# y position
 		self.rect.y = y_coor + 25
 		# from what enemy its from
-		self.type = 5
+		self.type = 6
 		# how long the item is available to grab
 		self.lifetime = 800
 		# surface

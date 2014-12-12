@@ -386,7 +386,11 @@ class Game(object):
                         self.end_time -= 1
                 else:
                     if(self.level < self.MAX_LEVEL):
-                        self.level += 1
+                        if(self.level < self.level + .2):
+                            self.level += .1
+                        else:
+                            self.level += 1
+                        # self.level += 1
                         self.change_level(self.level)
                     elif(self.level == self.MAX_LEVEL):
                         PM.music.fadeout(1000)
@@ -490,8 +494,7 @@ class Game(object):
             self.enemy_group.remove(enemy)
 
     def change_level(self, currentLevel):
-        if(isinstance(self.level, int) or self.level.is_integer()): #this is a new lv, not stage
-            self.reset_level()
+        self.reset_level()
         self.level = currentLevel
         ldata = Lvl_Data(self.level)
         self.objective = ldata.objective

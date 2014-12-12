@@ -16,6 +16,7 @@ from Item import MeatDrop
 from Item import BurgerDrop
 from projectile import Projectile
 from projectile import LettuceCutter
+import Globals
 
 class Burger(Enemy):
     IMAGE_UP = None
@@ -57,14 +58,14 @@ class Burger(Enemy):
 
     ##set health depending on level.
     def set_health(self, level):
-        if level == 3:  # cold level, more HP
+        if level == Globals.COLD_LEVEL:  # cold level, more HP
             return 6
         else:  # regular amount otherwise
             return 3
 
     ##set speed depending on level.
     def set_speed(self, level):
-        if level == 2:  # hot level, faster
+        if level == Globals.HOT_LEVEL:  # hot level, faster
             return 6
         else:
             return 1

@@ -30,6 +30,7 @@ class Enemy(PG.sprite.DirtySprite):
         self.rect = rect
         # self.rect.x = rect.x
         # self.rect.y = rect.y
+        self.coord = (rect.x, rect.y) #keeps track of which enemies are present for reloading map
         self.health = health
         self.IMAGES_RIGHT = r
         self.IMAGES_LEFT = l
@@ -60,6 +61,8 @@ class Enemy(PG.sprite.DirtySprite):
         if(self.health == 0):
             Globals.SCORE += 1  # change num of points per type of enemy?
             self.kill()
+            return self.coord #get rid of enemy on map
+        return (-1,-1)
         # print("health " + str(self.health))
 
     def move_back(self, face, bg):
@@ -85,6 +88,7 @@ class Enemy(PG.sprite.DirtySprite):
 
     ##only used by ice cream?
     def will_attack(self, level):
+        level = math.floor(level)
         if level == 2:  # if in hot level, more often
             attack_prob = random.randint(0, 200)
             if attack_prob == 1:

@@ -1,6 +1,7 @@
 #Drawing Functions
 import sys as SYS
 import random
+import math
 import pygame as PG
 import pygame.display as PDI
 import pygame.event as PE
@@ -12,23 +13,7 @@ import pygame.color as PC
 import pygame.mixer as PX
 from collections import deque
 import pad as Pad
-
-mapcolors = {'D': (154, 205, 50),
-             'W': (30, 144, 255), 'K': (255, 255, 0, 255)}
-
-
-class Globals(object):
-    SCREEN = None  # Surface
-    SCREENSURFACE = None
-    OPTIONS = None  # Options list from options.txt
-    WIDTH = None
-    HEIGHT = None
-    STATE = None
-    RUNNING = None
-    OBJECTS = {'None': None}
-    GRID = {'Null': 0}
-    INITIALGRID = {'Null': 0}
-
+import Globals
 
 #Block sprite class
 class Block(PG.sprite.DirtySprite):
@@ -132,6 +117,7 @@ class Map(object):
     def load_grass_tiles(self, lvl):
 #            print "LEVEL IN MAP: " + str(lvl)
             tile_array = []
+            lvl = math.floor(lvl)
             if(lvl == 1):
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile1.png"))
                 tile_array.append(PI.load("FPGraphics/tiles/grassTile2.png"))
@@ -181,6 +167,7 @@ class Map(object):
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall3.png"))
         self.keyBlocks.append(PI.load("FPGraphics/tiles/lactasePill.png"))
         self.signImg = (PI.load("FPGraphics/tiles/sign.png"))
+        lvl = math.floor(lvl)
         if(lvl == 1):
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall1.png"))
             self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv1Wall2.png"))
