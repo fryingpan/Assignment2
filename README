@@ -37,19 +37,13 @@ Todo List
 ----------
 
 Somebody do this:
-    - BUG: player attack precision. Weapon-enemy collision is off.
-    -implement level effects on enemies
-        -ice cream drops more puddles more quickly in hot lv
-        but does the opposite in cold. Not sure if icecream
-        dying off quicker is a good idea, maybe make the
-        puddles stay for a super long time in cold?
-        -burger moves faster in hot, more hp in cold
     -change the win/lose to display different dialogs (random)
-    -Make frying pan dmg more accurate
-    -burger drop effects; not sure why I made so many drops for
-    burger :( Maybe make them give you an effect when equipped?
-    Meat makes your attack stronger, bread makes you faster, etc?
-    Need to implement random explosion upon eating burger sometime
+    -figure out lag
+        -number of enemies
+        -ice pads
+        -projectiles
+    -Sort the high scores + replace scores
+
 
 ===================
 ===================
@@ -59,9 +53,8 @@ PUT NUMBER OF ENEMIES IN EACH LEVEL IN README
 REMOVE PRINT STATEMENTS
 
 Carla:
-    -BUG: player attack precision. Weapon-enemy collision is off.
-    -make the enemy jump back when attacked (need to fix above)
-    -burger drops*
+    - try to make the game faster by only dealing with the enemies 
+    in the dimensions of the camera (basically try to fix lag)
 
 Mary:
     -add signs + tutorial
@@ -81,15 +74,6 @@ Katie
    -Add eating door sound
    -level effects on enemies; make more dramatic
  
-Someone do this
----------------
--add invincibility to heat pads
--figure out lag
-    -number of enemies
-    -ice pads
-    -projectiles
--Sort the high scores + replace scores
--you have to be super close to the enemy for attacks
 
 Our schedule
 =============
