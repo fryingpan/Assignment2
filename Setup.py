@@ -277,8 +277,8 @@ class Game(object):
         ###Joystick
         #if joystick exists
         #if self.joy != None:
-        self.character.handle_joy(self.block_group, self.enemy_list,
-                                  self.item_group, self.map.get_surface(), None)
+        #self.character.handle_joy(self.block_group, self.enemy_list,
+        #                          self.item_group, self.map.get_surface(), None)
         #else:
         #else just handle_key
         self.character.handle_keys(self.block_group, self.enemy_list,

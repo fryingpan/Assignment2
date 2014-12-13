@@ -35,11 +35,11 @@ class ManageEvent():
 
 class Joystick():
 
-#    # all joystick-related events
-#    JOYSTICK = set([
-#        PG.JOYAXISMOTION, PG.JOYBALLMOTION, PG.JOYHATMOTION,
-#        PG.JOYBUTTONUP, PG.JOYBUTTONDOWN
-#    ])
+    # all joystick-related events
+    JOYSTICK = set([
+        PG.JOYAXISMOTION, PG.JOYHATMOTION,
+        PG.JOYBUTTONUP, PG.JOYBUTTONDOWN
+    ])
 
     #our game is one player, will have only one joysticks
     def __init__(self):
@@ -52,13 +52,19 @@ class Joystick():
 
         self.joystick = PJ.Joystick(0)
         self.joystick.init()
+        print self.joystick.get_init()
         #A is attack (space)
         #B is pick up (s)
         #x is set trap (a)
         #y is drop (d)
         #r is eat (e)
 
-        self.buttons = ['up', 'down', 'left', 'right', 'start', 'attack', 'pickup', 'settrap', 'drop', 'eat']
+        self.buttons = [False for i in range(self.joystick.get_numbuttons())]
+        self.button_pos = [(216, 74), (236, 92), (255, 74), (236, 56),
+            (608, 88), (476, 104), (606, 118), (476, 136),
+            (134, 56), (188, 56)]
+
+#        self.buttons = ['up', 'down', 'left', 'right', 'start', 'attack', 'pickup', 'settrap', 'drop', 'eat']
 #        self.key_map = {
 #                    PG.K_UP : 'up',
 #                    PG.K_DOWN : 'down',
@@ -81,7 +87,9 @@ class Joystick():
         self.quit_attempt = False
 
     def is_pressed(self, button):
-        return self.keys_pressed[button]
+        for i in range(len(self.buttons)):
+            if self.buttons[i]:
+                return True
 
     def get_events(self):
         joyEvent = []
@@ -150,8 +158,8 @@ class Joystick():
                 return True
 
         ##axis activity
-        for axisindex in range(js.get_numaxes()):
-            axisstatus = js.get_axis(axisindex)
+        for axisindex in range(joy.get_numaxes()):
+            axisstatus = joy.get_axis(axisindex)
             if axisstatus < -.5 and not self.is_axis_used(axisindex, -1):
                 self.joystick_config[button] = ('is_axis', axisindex, -1)
                 return True
@@ -180,7 +188,7 @@ class Joystick():
         for button in self.buttons:
             config = self.joystick_config.get(button)
             if config != None and config[0] == 'is_axis':
-                if config[1] == axis_index and config[2] == direction:
+                if config[1] == axisindex and config[2] == direction:
                     return True
         return False
 

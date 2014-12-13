@@ -23,6 +23,10 @@ from projectile import LettuceCutter
 from projectile import CreamCutter
 import pygame.time as PT
 import random
+from joystick import Joystick
+import pygame.font as PF
+import pygame.event as PE
+import pygame.joystick as PJ
 
 
 class Player(PS.DirtySprite):
@@ -116,6 +120,12 @@ class Player(PS.DirtySprite):
         # self.burger_capacity = random.randint(1, 15)
         self.burger_capacity = 1
         self.enemy_ID = -1
+
+        ##joystick##
+#        PJ.init()
+        self.joy = Joystick()
+#        self.joy.init()
+#        self.configured = False
 
     def set_attacking_rect(self):
         self.attacking_rect = self.rect
@@ -340,8 +350,65 @@ class Player(PS.DirtySprite):
         if self.face == 'ls':
             self.image = self.EatL
 
+    def configure_phase(self, screen, button, j):
+        j.get_events()
+        success = j.config_button(button)
+        #self.write_text(screen, "Press the " + button + " button", 100, 100)
+        return success
+
+#    def interaction_phase(self, screen, player, j):
+#        if j.is_pressed('left'):
+#            self.handle_ke
+
     def handle_joy(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
-        pass
+        for event in PE.get():
+#            print self.joy.get_numhats()
+            if event.type in Joystick.JOYSTICK:
+                if event.type == PG.JOYBUTTONUP:
+                    self.joy.buttons[event.button] = False
+                elif event.type == PG.JOYBUTTONDOWN:
+                    self.joy.buttons[event.button] = True
+                    print event.button
+
+                if self.joy.buttons[0] == True:
+                    self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
+
+                if event.type == PG.JOYHATMOTION:
+                    if self.joy.joystick.get_hat(0) == (-1, 0):
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
+                    elif self.joy.joystick.get_hat(0) == (0, -1):
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
+                    elif self.joy.joystick.get_hat(0) == (1, 0):
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
+                    elif self.joy.joystick.get_hat(0) == (0, 1):
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+#                else:
+#                    print event
+
+
+
+        ##if event is the
+        ####Event 9-JoyHatMotion (joy = 0 hat = 0)
+        ##move.
+
+
+
+#        button_index = 0
+#        if self.configured is False:
+#            success = self.configure_phase(screen, self.joy.buttons[button_index], self.joy)
+#            if success:
+#                button_index += 1
+#        else:
+# ##            interaction_phase(screen, self, self.joy)
+#            ###put interaction_phase just in this else?
+#            if self.joy.is_pressed('left'):
+#                print "left"
+#                self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval=0.0065)
+
+#        ##movement is an axis
+#        self.joy.get_events()
+#        if self.joy.is_pressed('left'):
+#            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval=0.0065)
 
     def handle_keys(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
         """ Handles Keys """
@@ -355,21 +422,21 @@ class Player(PS.DirtySprite):
 
         self.rect = self.rect_copy
 
-        if key[PG.K_DOWN]:  # down key
+        if key[PG.K_DOWN] or joyDir == "D":  # down key
             self.rect.y += self.speed  # move down
             self.face = 'd'
             self.pdx = 0
             self.pdy = 1
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_UP]:  # up key
+        elif key[PG.K_UP] or joyDir == "U":  # up key
             self.rect.y -= self.speed  # move up
             self.face = 'u'
             self.pdx = 0
             self.pdy = -1
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_RIGHT]:  # right key
+        elif key[PG.K_RIGHT] or joyDir == "R":  # right key
             self.rect.x += self.speed  # move right
             self.face = 'r'
             self.pdx = 1
@@ -412,7 +479,7 @@ class Player(PS.DirtySprite):
                 self.can_eat = False
                 self.eat_item = True
                 self.handle_collision(item_group)
-        elif key[PG.K_SPACE]:  # space key ATTACK
+        elif key[PG.K_SPACE] or joyDir == "Sp":  # space key ATTACK
             if 'r' in self.face:
                 # Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_R
