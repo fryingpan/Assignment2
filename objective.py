@@ -14,7 +14,7 @@ import random
 import Globals
 
 class Objective(object):
-    def __init__(self, screen, lvl=1, stage=1):
+    def __init__(self, lvl=1, stage=1):
         self.image = PI.load("FPGraphics/specialEffects/objective.png").convert_alpha()
         self.font = PF.SysFont('Arial', 25)
         self.text_color = (0,0,0)
@@ -23,7 +23,6 @@ class Objective(object):
         self.current_obj = [] #current obj displaying
         self.lvl_objs = []
         self.loadObjectives(lvl, self.stage)
-        self.screen = screen
         self.current_txt_index = 0
 
     #puts banner and then objective on top
@@ -35,7 +34,6 @@ class Objective(object):
     #should only be called once when player first reads a sign
     def changeObj(self, signID):
         temp = []
-
         self.current_obj = self.lvl_objs[signID]
         #space bar's inaccurate sensitivity often calls this method
         #more than once; this check prevents probs
