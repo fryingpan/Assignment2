@@ -122,6 +122,8 @@ class Player(PS.DirtySprite):
         self.burger_capacity = 1
         self.enemy_ID = -1
 
+        self.can_attack = True
+
         ##joystick##
 #        PJ.init()
         self.joy = Joystick()
@@ -385,9 +387,12 @@ class Player(PS.DirtySprite):
                     Globals.STATE = 'Menu'
 #                    pass
 
-
+                #attack
                 if self.joy.buttons[0] == True:  # A button
                     self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
+                #pickup
+                if self.joy.buttons[1] == True:  # B button
+                    self.handle_keys(bg, enemy_bg, item_group, screen, 'Pu', interval)
 
 
                 ##if event is the
@@ -405,14 +410,14 @@ class Player(PS.DirtySprite):
 
                 ####Event 7-JoyAxisMotion (joy = 0 axis 0 for LR, 1 for UD)
                 if event.type == PG.JOYAXISMOTION:  # these are for left ball
-                    if self.joy.joystick.get_axis(0) < 0.01: # left
+                    if self.joy.joystick.get_axis(0) < 0.3: # left
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-                    elif self.joy.joystick.get_axis(0) > 0.01: # right
+                    elif self.joy.joystick.get_axis(0) > 0.3: # right
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
 
-                    if self.joy.joystick.get_axis(1) > 0.01:  # down
+                    if self.joy.joystick.get_axis(1) > 0.3:  # down
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-                    elif self.joy.joystick.get_axis(1) < 0.01:  # up
+                    elif self.joy.joystick.get_axis(1) < 0.3:  # up
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
 
 
@@ -474,7 +479,7 @@ class Player(PS.DirtySprite):
                     self.item = False
 
         # grab item if available
-        elif key[PG.K_s]:
+        elif key[PG.K_s] or joyDir == "Pu":
             # check if you already have an item
             if not self.item:
                 self.grab_item = True
