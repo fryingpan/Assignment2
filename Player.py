@@ -27,6 +27,7 @@ from joystick import Joystick
 import pygame.font as PF
 import pygame.event as PE
 import pygame.joystick as PJ
+import inputbox as inbx
 
 
 class Player(PS.DirtySprite):
@@ -277,6 +278,12 @@ class Player(PS.DirtySprite):
 
     def handle_collision(self, bg):
         collisions = PS.spritecollide(self, bg, False)
+
+        if len(collisions) == 0:
+            self.at_sign_num = -1
+            self.at_door_num = -1
+            pass
+
         for collision in collisions:
             # check if collided with an item
             if type(collision.get_type()) is int:
@@ -364,51 +371,53 @@ class Player(PS.DirtySprite):
         for event in PE.get():
 #            print self.joy.get_numhats()
             if event.type in Joystick.JOYSTICK:
+                print event
                 if event.type == PG.JOYBUTTONUP:
                     self.joy.buttons[event.button] = False
                 elif event.type == PG.JOYBUTTONDOWN:
                     self.joy.buttons[event.button] = True
-                    print event.button
 
-                if self.joy.buttons[0] == True:
+                ####Exit
+                if self.joy.buttons[6] == True:  # back button
+                    if Globals.SCORE > 0:
+                        Globals.PLAYERNAME = str(inbx.ask(Globals.SCREEN, 'Name'))
+                        # Globals.SCORE = self.character.score
+                    Globals.STATE = 'Menu'
+#                    pass
+
+
+                if self.joy.buttons[0] == True:  # A button
                     self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
 
-                if event.type == PG.JOYHATMOTION:
-                    if self.joy.joystick.get_hat(0) == (-1, 0):
+
+                ##if event is the
+                ####Event 9-JoyHatMotion (joy = 0 hat = 0)
+                ##move.
+                #if event.type == PG.JOYHATMOTION:  # arrow pad
+#                    if self.joy.joystick.get_hat(0) == (-1, 0):
+#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
+#                    elif self.joy.joystick.get_hat(0) == (0, -1):
+#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
+#                    elif self.joy.joystick.get_hat(0) == (1, 0):
+#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
+#                    elif self.joy.joystick.get_hat(0) == (0, 1):
+#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+
+                ####Event 7-JoyAxisMotion (joy = 0 axis 0 for LR, 1 for UD)
+                if event.type == PG.JOYAXISMOTION:  # these are for left ball
+                    if self.joy.joystick.get_axis(0) < 0.01: # left
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-                    elif self.joy.joystick.get_hat(0) == (0, -1):
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-                    elif self.joy.joystick.get_hat(0) == (1, 0):
+                    elif self.joy.joystick.get_axis(0) > 0.01: # right
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
-                    elif self.joy.joystick.get_hat(0) == (0, 1):
+
+                    if self.joy.joystick.get_axis(1) > 0.01:  # down
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
+                    elif self.joy.joystick.get_axis(1) < 0.01:  # up
                         self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+
+
 #                else:
 #                    print event
-
-
-
-        ##if event is the
-        ####Event 9-JoyHatMotion (joy = 0 hat = 0)
-        ##move.
-
-
-
-#        button_index = 0
-#        if self.configured is False:
-#            success = self.configure_phase(screen, self.joy.buttons[button_index], self.joy)
-#            if success:
-#                button_index += 1
-#        else:
-# ##            interaction_phase(screen, self, self.joy)
-#            ###put interaction_phase just in this else?
-#            if self.joy.is_pressed('left'):
-#                print "left"
-#                self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval=0.0065)
-
-#        ##movement is an axis
-#        self.joy.get_events()
-#        if self.joy.is_pressed('left'):
-#            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval=0.0065)
 
     def handle_keys(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
         """ Handles Keys """
