@@ -13,102 +13,62 @@ import Globals
 from objective import Objective
 
 class Lvl_Data(object):
-    def __init__(self, lvl = 1):
+    def __init__(self, lvl = 1, stage=1):
         self.music_file = ""
         self.map_file = ""
         self.cutscene = None
         self.objective = None
         self.character_pos_x = 0
         self.character_pos_y = 0
-        self.load(lvl)
+        self.load(lvl, stage)
 
-    def load(self,lvl):
-        print(lvl)
-        print("load lvl")
+    def load(self,lvl, stage):
         if(lvl == 1):
+            if stage == 1:
+                self.map_file = 'mapfile.txt'
+            elif stage == 2 :
+                self.map_file = 'mapfile.txt'
+            elif stage == 3:
+                self.map_file = 'mapfile.txt'
             self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
             self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 1.1):
-            print("got to 1.1")
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 1.2):
-            print("got to 1.2")
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
+            self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
             self.character_pos_y = 100
         elif(lvl == 2):
+            if stage == 1:
+                self.map_file = 'mapfilelvl2.txt'
+            elif stage == 2:
+                self.map_file = 'mapfilelvl2.txt'
+            elif stage == 3:
+                self.map_file = 'mapfilelvl2.txt'
             self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfilelvl2.txt'
             self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 2.1):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 2.2):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
+            self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
             self.character_pos_y = 100
         elif(lvl == 3):
+            if stage == 1:
+                self.map_file = 'mapfilelvl3.txt'
+            elif stage == 2:
+                self.map_file = 'mapfilelvl3.txt'
+            elif stage == 3:
+                self.map_file = 'mapfilelvl3.txt'
             self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfilelvl3.txt'
             self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 3.1):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 3.2):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
+            self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
             self.character_pos_y = 100
         elif(lvl == 4):
+            if stage == 1:
+                self.map_file = 'mapfilelvl4.txt'
+            elif stage == 2:
+                self.map_file = 'mapfilelvl4.txt'
+            elif stage == 3:
+                self.map_file = 'mapfilelvl4.txt'
             self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfilelvl4.txt'
             self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 4.1):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
-            self.character_pos_x = 100
-            self.character_pos_y = 100
-        elif(lvl == 4.2):
-            self.music_file = "music/gameplay.mod"
-            self.map_file = 'mapfile.txt'
-            self.cutscene = None
-            self.objective = Objective(lvl)
+            self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
             self.character_pos_y = 100
         return self.map_file
