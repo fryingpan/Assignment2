@@ -30,6 +30,7 @@ try:
     import inputbox as inbx
     import time
     from joystick import Joystick
+    import pygame.joystick as PJ
 
 except ImportError, err:
     print "%s Failed to Load Module: %s" % (__file__, err)
@@ -132,7 +133,8 @@ class Game(object):
         self.burn_player = False
 
         ####Joystick#########
-        #self.joy = Joystick()
+        self.setofJoy = Joystick()  # the set of joysticks
+        self.joy = self.setofJoy.joystick
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -277,12 +279,10 @@ class Game(object):
             Globals.INVINCIBILITY_COUNT -= 1
 
         ###Joystick
-        #if joystick exists
-        #if self.joy != None:
-        #self.character.handle_joy(self.block_group, self.enemy_list,
-        #                          self.item_group, self.map.get_surface(), None)
-        #else:
-        #else just handle_key
+        #joystick missing error checking happens in player
+        if self.joy != None:
+            self.character.handle_joy(self.block_group, self.enemy_list,
+                                      self.item_group, self.map.get_surface(), None)
         self.character.handle_keys(self.block_group, self.enemy_list,
                                    self.item_group, self.map.get_surface(), None)
 

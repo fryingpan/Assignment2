@@ -43,16 +43,16 @@ class Joystick():
 
     #our game is one player, will have only one joysticks
     def __init__(self):
-        PJ.init()
-        self.joystick = None
+        PJ.init()  # initializes PJ module, NOT joystick itself
         self.names = []
+
+        self.joystick = PJ.Joystick(0)
+        self.joystick.init()
 
         ##assuming just 1 joystick
         self.names.append(PJ.Joystick(0).get_name())
 
-        self.joystick = PJ.Joystick(0)
-        self.joystick.init()
-        print self.joystick.get_init()
+
         #A is attack (space)
         #B is pick up (s)
         #x is set trap (a)

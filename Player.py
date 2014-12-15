@@ -365,64 +365,64 @@ class Player(PS.DirtySprite):
         #self.write_text(screen, "Press the " + button + " button", 100, 100)
         return success
 
-#    def interaction_phase(self, screen, player, j):
-#        if j.is_pressed('left'):
-#            self.handle_ke
-
     def handle_joy(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
-        for event in PE.get():
-#            print self.joy.get_numhats()
-            if event.type in Joystick.JOYSTICK:
-                print event
-                if event.type == PG.JOYBUTTONUP:
-                    self.joy.buttons[event.button] = False
-                elif event.type == PG.JOYBUTTONDOWN:
-                    self.joy.buttons[event.button] = True
+        try:
+            for event in PE.get():
+    #            print self.joy.get_numhats()
+                if event.type in Joystick.JOYSTICK:
+                    print event
+                    if event.type == PG.JOYBUTTONUP:
+                        self.joy.buttons[event.button] = False
+                    elif event.type == PG.JOYBUTTONDOWN:
+                        self.joy.buttons[event.button] = True
 
-                ####Exit
-                if self.joy.buttons[6] == True:  # back button
-                    if Globals.SCORE > 0:
-                        Globals.PLAYERNAME = str(inbx.ask(Globals.SCREEN, 'Name'))
-                        # Globals.SCORE = self.character.score
-                    Globals.STATE = 'Menu'
-#                    pass
+                    ####Exit
+                    if self.joy.buttons[6] == True:  # back button
+                        if Globals.SCORE > 0:
+                            Globals.PLAYERNAME = str(inbx.ask(Globals.SCREEN, 'Name'))
+                            # Globals.SCORE = self.character.score
+                        Globals.STATE = 'Menu'
+    #                    pass
 
-                #attack
-                if self.joy.buttons[0] == True:  # A button
-                    self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
-                #pickup
-                if self.joy.buttons[1] == True:  # B button
-                    self.handle_keys(bg, enemy_bg, item_group, screen, 'Pu', interval)
-
-
-                ##if event is the
-                ####Event 9-JoyHatMotion (joy = 0 hat = 0)
-                ##move.
-                #if event.type == PG.JOYHATMOTION:  # arrow pad
-#                    if self.joy.joystick.get_hat(0) == (-1, 0):
-#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-#                    elif self.joy.joystick.get_hat(0) == (0, -1):
-#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-#                    elif self.joy.joystick.get_hat(0) == (1, 0):
-#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
-#                    elif self.joy.joystick.get_hat(0) == (0, 1):
-#                        self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
-
-                ####Event 7-JoyAxisMotion (joy = 0 axis 0 for LR, 1 for UD)
-                if event.type == PG.JOYAXISMOTION:  # these are for left ball
-                    if self.joy.joystick.get_axis(0) < 0.3: # left
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-                    elif self.joy.joystick.get_axis(0) > 0.3: # right
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
-
-                    if self.joy.joystick.get_axis(1) > 0.3:  # down
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-                    elif self.joy.joystick.get_axis(1) < 0.3:  # up
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+                    #attack
+                    if self.joy.buttons[0] == True:  # A button
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
+                    #pickup
+                    if self.joy.buttons[1] == True:  # B button
+                        self.handle_keys(bg, enemy_bg, item_group, screen, 'Pu', interval)
 
 
-#                else:
-#                    print event
+                    ##if event is the
+                    ####Event 9-JoyHatMotion (joy = 0 hat = 0)
+                    ##move.
+                    if event.type == PG.JOYHATMOTION:  # arrow pad
+                        if self.joy.joystick.get_hat(0) == (-1, 0):
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
+                        elif self.joy.joystick.get_hat(0) == (0, -1):
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
+                        elif self.joy.joystick.get_hat(0) == (1, 0):
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
+                        elif self.joy.joystick.get_hat(0) == (0, 1):
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+
+                    ####Event 7-JoyAxisMotion (joy = 0 axis 0 for LR, 1 for UD)
+                    if event.type == PG.JOYAXISMOTION:  # these are for left ball
+                        if self.joy.joystick.get_axis(0) < 0.3: # left
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
+                        elif self.joy.joystick.get_axis(0) > 0.3: # right
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
+
+                        if self.joy.joystick.get_axis(1) > 0.3:  # down
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
+                        elif self.joy.joystick.get_axis(1) < 0.3:  # up
+                            self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+
+
+    #                else:
+    #                    print event
+
+        except IndexError, err:  # if no joystick
+            pass
 
     def handle_keys(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
         """ Handles Keys """
