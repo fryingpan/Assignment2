@@ -157,7 +157,7 @@ class Game(object):
         for trap in self.trap_group.sprites():
             if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
                 trap_attack_player = True
-                print "setting TRUE"
+                # print "setting TRUE"
             if (trap.get_trap_attack_enemy()):
                 enemies_attacked = trap.get_enemies_attacked()
                 if enemies_attacked is not None:
@@ -179,7 +179,7 @@ class Game(object):
             if(icecream.get_attacked_player() or trap_attack_player):
                 if trap_attack_player:
                     trap_attack_player = False
-                    print "setting FALSE"
+                    # print "setting FALSE"
                 #if so start invincibility count after attack
                 if Globals.INVINCIBILITY_COUNT == 0:
                     Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
@@ -277,7 +277,7 @@ class Game(object):
             self.character.decrement_health(self.enemy_ID)
             self.enemy_ID = -1
             self.burn_player = False
-            print 'decrementing'
+            # print 'decrementing'
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
         if(Globals.INVINCIBILITY_COUNT > 0):
