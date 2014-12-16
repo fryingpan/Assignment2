@@ -155,8 +155,9 @@ class Game(object):
         ###(attacks on player)####
         ##trap handling
         for trap in self.trap_group.sprites():
-            if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT <= 0):
+            if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
                 trap_attack_player = True
+                print "setting TRUE"
             if (trap.get_trap_attack_enemy()):
                 enemies_attacked = trap.get_enemies_attacked()
                 if enemies_attacked is not None:
@@ -178,8 +179,10 @@ class Game(object):
             if(icecream.get_attacked_player() or trap_attack_player):
                 if trap_attack_player:
                     trap_attack_player = False
+                    print "setting FALSE"
                 #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                if Globals.INVINCIBILITY_COUNT == 0:
+                    Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = icecream.get_ID()
 
@@ -188,7 +191,7 @@ class Game(object):
         #lettuce
           ##projectile handling
         for projectile in self.projectile_group.sprites():
-            if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT <= 0):
+            if (projectile.attacked_player and Globals.INVINCIBILITY_COUNT == 0):
                 projectile_attack_player = True
                 projectile.attacked_player = False
                 break
@@ -213,7 +216,8 @@ class Game(object):
                 if projectile_attack_player:
                     projectile_attack_player = False
                 #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                if Globals.INVINCIBILITY_COUNT == 0:
+                    Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = lettuce.get_ID()
 
@@ -230,7 +234,8 @@ class Game(object):
                 if projectile_attack_player:
                     projectile_attack_player = False
                 #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                if Globals.INVINCIBILITY_COUNT == 0:
+                    Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = burger.get_ID()
 
@@ -247,7 +252,8 @@ class Game(object):
                 if projectile_attack_player:
                     projectile_attack_player = False
                 #if so start invincibility count after attack
-                Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                if Globals.INVINCIBILITY_COUNT == 0:
+                    Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
                 #see which enemy attacked the player
                 self.enemy_ID = cupcake.get_ID()
 
@@ -259,9 +265,8 @@ class Game(object):
                 if pad.type == 0:
                     # pad.i_am_hot(self.character)
                     self.burn_player = pad.will_burn()
-                    if self.burn_player:
+                    if self.burn_player and Globals.INVINCIBILITY_COUNT == 0:
                         Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
-
                 elif pad.type == 1:
                     pad.i_am_cold(self.character)
 
@@ -272,12 +277,16 @@ class Game(object):
             self.character.decrement_health(self.enemy_ID)
             self.enemy_ID = -1
             self.burn_player = False
+            print 'decrementing'
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
         if(Globals.INVINCIBILITY_COUNT > 0):
             if(Globals.INVINCIBILITY_COUNT % 50 == 0):
                 self.character.invincibility_frames()
             Globals.INVINCIBILITY_COUNT -= 1
+            # print Globals.INVINCIBILITY_COUNT
+            # if Globals.INVINCIBILITY_COUNT == 0:
+                # print "RESTARTING-------------------------------------------------------"
 
         ###Joystick
         if self.use_joy == 'y':
@@ -571,8 +580,16 @@ class Game(object):
         self.enemy_list.add(self.lettuce_list)
         self.enemy_list.add(self.cupcake_list)
 
+        player_health = 0
+        #get enemy health
+        if self.stage > 1:
+            player_health = self.character.get_health()
+
         self.character = Player(Globals.DELTA)
         self.player_group = PS.GroupSingle(self.character)
+
+        if self.stage > 1:
+            self.character.set_health(player_health, True)
 
         #pads
         for e in range(len(self.map.padtiles)):

@@ -72,7 +72,7 @@ class Player(PS.DirtySprite):
         self.got_key = False
         # will turn to True once you've run into the yellow block
         # collision conditions, if true, we will not move in that direction
-        self.health = 100
+        self.health = 20
         self.dmg_count = 0
         self.invincibility_frame = PI.load("FPGraphics/emptyImg.png") \
             .convert_alpha()
@@ -243,6 +243,18 @@ class Player(PS.DirtySprite):
             return self.rect
         else:
             return None
+
+    def get_health(self):
+        return self.health
+
+    def set_health(self, new_health, check_start=False):
+        self.health = new_health
+        if check_start:
+            self.check_starting_health()
+
+    def check_starting_health(self):
+        if self.health >= 20:
+            self.health = 20
 
     def decrement_health(self, enemy_ID):
         if self.health > 0:
