@@ -42,7 +42,7 @@ class Lvl_Data(object):
                 self.map_file = 'mapfilelvl2.txt'
             elif stage == 3:
                 self.map_file = 'mapfilelvl2.txt'
-            self.music_file = "music/gameplay.mod"
+            self.music_file = "music/gameplay2.mod"
             self.cutscene = None
             self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
@@ -54,7 +54,7 @@ class Lvl_Data(object):
                 self.map_file = 'mapfilelvl3.txt'
             elif stage == 3:
                 self.map_file = 'mapfilelvl3.txt'
-            self.music_file = "music/gameplay.mod"
+            self.music_file = "music/gameplay2.mod"
             self.cutscene = None
             self.objective = Objective(lvl, stage)
             self.character_pos_x = 100
@@ -66,7 +66,7 @@ class Lvl_Data(object):
                 self.map_file = 'mapfilelvl4.txt'
             elif stage == 3:
                 self.map_file = 'mapfilelvl4.txt'
-            self.music_file = "music/gameplay.mod"
+            self.music_file = "music/gameplay3.mod"
             self.cutscene = None
             self.objective = Objective(lvl, stage)
             self.character_pos_x = 100

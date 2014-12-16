@@ -57,10 +57,10 @@ class HighScores:
         fadeout = 0.2
         for ev in event:
             if ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
-                    PM.music.fadeout(1000)
+                    PM.music.fadeout(200)
                     Globals.STATE = "Menu"
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
-                    PM.music.fadeout(1000)
+                    PM.music.fadeout(200)
                     Globals.STATE = "Menu"
 
     def get_text_surface(self):
@@ -83,7 +83,6 @@ def addScoretoText():  # only run if SCORE !=0
         f.write(toAdd)
         f.close()
     Globals.SCORE = 0
-
 
 def render_text(string, font, rect, text_color, background_color):
     final_lines = []
