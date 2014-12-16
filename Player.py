@@ -28,6 +28,7 @@ import pygame.font as PF
 import pygame.event as PE
 import pygame.joystick as PJ
 import inputbox as inbx
+import math
 
 
 class Player(PS.DirtySprite):
@@ -86,8 +87,8 @@ class Player(PS.DirtySprite):
         self.attack_pose = False
 
         #eating sound
-        self.eatEffect = PM.Sound("music/soundeffects/eating.mod")
-        self.eated = False
+#        self.eatEffect = PM.Sound("music/soundeffects/eating.mod")
+#        self.eated = False
         self.EatR = PI.load("FPGraphics/MC/MCwalk/MCRightEat.png")\
                 .convert_alpha()
         self.EatL = PI.load("FPGraphics/MC/MCwalk/MCLeftEat.png")\
@@ -262,16 +263,14 @@ class Player(PS.DirtySprite):
         return coordinates
 
     def open_door(self, bg):  # pass the enire block group.
-        self.eated = False
+#        self.eated = False
         self.eat_timer = self.eat_time
         for block in bg:
             if block.get_type() == self.at_door_num:
-                ##OR ADD EATING DOOR SOUND HERE.
                 block.kill()
-                if self.eated is False:
-#                    print self.eatEffect.get_volume()
-                    self.eatEffect.play(50)
-                    self.eated = True
+#                if self.eated is False:
+#                    self.eatEffect.play(50)
+#                    self.eated = True
         self.modified_map = True
         self.at_door_num = -1
 
@@ -365,66 +364,265 @@ class Player(PS.DirtySprite):
         #self.write_text(screen, "Press the " + button + " button", 100, 100)
         return success
 
-    def handle_joy(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
+    ###Used when joystick is plugged in. Handled slightly different.
+    ##Will try to merge, but considering that calling handle_keys inside handle_joy
+    ##throws off the cycle / animation, I want to avoid that :/
+    def handle_joy(self, bg, enemy_bg, item_group, screen, interval=0.0065):
         try:
+            self.items_of_killed = []
+            self.attack_pose = False
+            standing = True
+            self.grab_item = False
+            self.interval = interval
+            temp = self.rect.x
+            self.rect = self.rect_copy
+            hat_dir = (0, 0)
+            hat_move = False
+            axis_move = False
+            axis_dir0 = 0.0
+            axis_dir1 = 0.0
+
             for event in PE.get():
-    #            print self.joy.get_numhats()
                 if event.type in Joystick.JOYSTICK:
                     print event
                     if event.type == PG.JOYBUTTONUP:
                         self.joy.buttons[event.button] = False
                     elif event.type == PG.JOYBUTTONDOWN:
                         self.joy.buttons[event.button] = True
+                    if event.type == PG.JOYHATMOTION:
+                        if self.joy.joystick.get_hat(0) == (0, 0):
+                            hat_move = False
+                        else:
+                            hat_move = True
+                            if hat_dir == (0, 0):
+                                hat_dir = self.joy.joystick.get_hat(0)
+                    if event.type == PG.JOYAXISMOTION:
+                        if math.fabs(self.joy.joystick.get_axis(0)) < 0.5 and math.fabs(self.joy.joystick.get_axis(1)) < 0.5:
+                            axis_move = False
+                        else:
+                            axis_move = True
+                            if math.fabs(axis_dir0) < 0.5:
+                                axis_dir0 = self.joy.joystick.get_axis(0)
+                            if math.fabs(axis_dir1) < 0.5:
+                                axis_dir1 = self.joy.joystick.get_axis(1)
+
+                    #problem is there's just not another event coming in when joystick is held
+#                    if event.type == PG.JOYAXISMOTION and (math.fabs(self.joy.joystick.get_axis(0)) > 0.5 or math.fabs(self.joy.joystick.get_axis(1)) > 0.5):
+#                        self.joy.axishats[0] = True
+#                        self.joy.axishats[1] = True
+#                    elif (math.fabs(self.joy.joystick.get_axis(0)) < 0.5 or math.fabs(self.joy.joystick.get_axis(1)) < 0.5):
+#                        if math.fabs(self.joy.joystick.get_axis(0)) < 0.5:
+#                            self.joy.axishats[0] = False
+#                        elif math.fabs(self.joy.joystick.get_axis(1)) < 0.5:
+#                            self.joy.axishats[1] = False
+#                    if event.type == PG.JOYHATMOTION and self.joy.joystick.get_hat(0) != (0, 0):
+#                        self.joy.axishats[2] = True
+#                        hat_dir = self.joy.joystick.get_hat(0)
+
+                        #need to be able to set them false somehow
 
                     ####Exit
-                    if self.joy.buttons[6] == True:  # back button
+                    if self.joy.buttons[6] is True:  # back button (L7 on peter's joystick)
                         if Globals.SCORE > 0:
                             Globals.PLAYERNAME = str(inbx.ask(Globals.SCREEN, 'Name'))
-                            # Globals.SCORE = self.character.score
                         Globals.STATE = 'Menu'
-    #                    pass
 
                     #attack
-                    if self.joy.buttons[0] == True:  # A button
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'Sp', interval)
-                    #pickup
-                    if self.joy.buttons[1] == True:  # B button
-                        self.handle_keys(bg, enemy_bg, item_group, screen, 'Pu', interval)
+                    elif self.joy.buttons[0] is True:  # A button (1 button)
+                        if 'r' in self.face:
+                            self.image = self.IMG_ATTACK_R
+                            self.attack_rect = self.image.get_rect()
+                            self.attack_rect.x = self.rect.x
+                            self.attack_rect.y = self.rect.y
+                        if 'l' in self.face:
+                            self.image = self.IMG_ATTACK_L
+                            self.attack_rect = self.image.get_rect()
+                            self.attack_rect.x = self.rect.x - 50
+                            self.attack_rect.y = self.rect.y
+                        if 'd' in self.face:
+                            self.image = self.IMG_ATTACK_D
+                            self.attack_rect = self.image.get_rect()
+                            self.attack_rect.x = self.rect.x
+                            self.attack_rect.y = self.rect.y
+                        if 'u' in self.face:
+                            self.image = self.IMG_ATTACK_U
+                            self.attack_rect = self.image.get_rect()
+                            self.attack_rect.x = self.rect.x
+                            self.attack_rect.y = self.rect.y - 50
+                        self.rect = self.attack_rect
 
+                        collisions = PS.spritecollide(self, enemy_bg, False)
+
+                        if self.can_attack:
+                            self.can_attack = False
+                            killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
+                                                                self.face, screen, enemy_bg)
+                            for killed in killed_enemies:
+                                self.items_of_killed.append(killed.drop_item(screen))
+                                killed.decrement_health(1)
+                                killed.move_back(self.face, bg)
+                                killed.last_hit = 80
+                        self.attack_pose = True
+                        standing = True
+
+                        #handle signs
+                        if self.at_sign_num != -1:
+                            self.read_sign()
+                        #handle locked doors
+                        if self.at_door_num != -1:
+                            self.open_door(bg)
+                            self.pill = False
+                    #pickup
+                    elif self.joy.buttons[1] is True:  # B button (2 button)
+                        if not self.item:
+                            self.grab_item = True
+                            self.handle_collision(item_group)
+                    #make trap
+                    elif self.joy.buttons[2] is True:  # X button (3 button)
+                        if self.item and self.can_drop: #can_drop is used to prevent inaccurate key detection
+                            if self.item_type == 1 or self.item_type == 5:
+                                self.drop_trap(screen)
+                            if self.item_type == 3:
+                                self.throw_LC()
+                            if self.item_type == 6:
+                                self.throw_CC()
+                            self.can_drop = False
+                            self.item_use_count -= 1
+                            if self.item_use_count == 0:
+                                self.item = False
+                    #drop (get rid of held item)
+                    elif self.joy.buttons[3] is True:  # Y button (4 button)
+                        if self.item and self.can_drop:
+                            self.item = False
+                    #eat
+                    elif self.joy.buttons[4] is True:  # LB button / Left shoulder 1 button (L5)
+                        if not self.item and self.can_eat:
+                            self.can_eat = False
+                            self.eat_item = True
+                            self.handle_collision(item_group)
 
                     ##if event is the
                     ####Event 9-JoyHatMotion (joy = 0 hat = 0)
                     ##move.
-                    if event.type == PG.JOYHATMOTION:  # arrow pad
-                        if self.joy.joystick.get_hat(0) == (-1, 0):
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-                        elif self.joy.joystick.get_hat(0) == (0, -1):
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-                        elif self.joy.joystick.get_hat(0) == (1, 0):
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
-                        elif self.joy.joystick.get_hat(0) == (0, 1):
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+#                    elif event.type == PG.JOYHATMOTION:  # arrow pad
+                    elif hat_move is True:
+                        standing = False
+                        if hat_dir == (-1, 0):  # store these into local variables?
+                            self.rect.x -= self.speed  # move left
+                            self.face = 'l'
+                            self.pdx = -1
+                            self.pdy = 0
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif hat_dir == (0, -1):
+                            self.rect.y += self.speed  # move down
+                            self.face = 'd'
+                            self.pdx = 0
+                            self.pdy = 1
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif hat_dir == (1, 0):
+                            self.rect.x += self.speed  # move right
+                            self.face = 'r'
+                            self.pdx = 1
+                            self.pdy = 0
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif hat_dir == (0, 1):
+                            self.rect.y -= self.speed  # move up
+                            self.face = 'u'
+                            self.pdx = 0
+                            self.pdy = -1
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        else:
+                            #STANDING
+                            standing = True
+
+                        if standing:
+#                            self.joy.axishats = [False, False, False]  # not moving at all
+                            if self.face == 'd':
+                                    self.face = 'ds'
+                            if self.face == 'u':
+                                    self.face = 'us'
+                            if self.face == 'r':
+                                    self.face = 'rs'
+                            if self.face == 'l':
+                                    self.face = 'ls'
+
 
                     ####Event 7-JoyAxisMotion (joy = 0 axis 0 for LR, 1 for UD)
-                    if event.type == PG.JOYAXISMOTION:  # these are for left ball
-                        if self.joy.joystick.get_axis(0) < 0.3: # left
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'L', interval)
-                        elif self.joy.joystick.get_axis(0) > 0.3: # right
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'R', interval)
+#                    elif event.type == PG.JOYAXISMOTION:  # these are for left ball
+                    elif axis_move is True:
+                        standing = False
+                        if axis_dir0 < -0.5 : # left
+                            self.rect.x -= self.speed  # move left
+                            self.face = 'l'
+                            self.pdx = -1
+                            self.pdy = 0
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif axis_dir0 > 0.5: # right
+                            self.rect.x += self.speed  # move right
+                            self.face = 'r'
+                            self.pdx = 1
+                            self.pdy = 0
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif axis_dir1 > 0.5:  # down
+                            self.rect.y += self.speed  # move down
+                            self.face = 'd'
+                            self.pdx = 0
+                            self.pdy = 1
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
+                        elif axis_dir1 < -0.5:  # up
+                            self.rect.y -= self.speed  # move up
+                            self.face = 'u'
+                            self.pdx = 0
+                            self.pdy = -1
+                            self.handle_collision(bg)
+                            self.rect_copy = self.rect
 
-                        if self.joy.joystick.get_axis(1) > 0.3:  # down
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'D', interval)
-                        elif self.joy.joystick.get_axis(1) < 0.3:  # up
-                            self.handle_keys(bg, enemy_bg, item_group, screen, 'U', interval)
+#                        #STANDING
+                        else:
+                            #STANDING
+                            standing = True
 
+                        if standing:
+#                            self.joy.axishats = [False, False, False]  # not moving at all
+                            if self.face == 'd':
+                                    self.face = 'ds'
+                            if self.face == 'u':
+                                    self.face = 'us'
+                            if self.face == 'r':
+                                    self.face = 'rs'
+                            if self.face == 'l':
+                                    self.face = 'ls'
 
-    #                else:
-    #                    print event
+                    ##Not using Right axis ball
+                    if standing:
+#                        self.joy.axishats = [False, False, False]  # not moving at all
+                        if self.face == 'd':
+                                self.face = 'ds'
+                        if self.face == 'u':
+                                self.face = 'us'
+                        if self.face == 'r':
+                                self.face = 'rs'
+                        if self.face == 'l':
+                                self.face = 'ls'
+                    if self.joy.buttons[2] is False:
+                        self.can_drop = True
+                    if self.joy.buttons[4] is False:
+                        self.can_eat = True
+                    if self.joy.buttons[0] is False:
+                        self.can_attack = True
 
         except IndexError, err:  # if no joystick
             pass
 
-    def handle_keys(self, bg, enemy_bg, item_group, screen, joyDir, interval=0.0065):
+    ###used when no joystick ( keyboard. )
+    def handle_keys(self, bg, enemy_bg, item_group, screen, interval=0.0065):
         """ Handles Keys """
         self.items_of_killed = []
         self.attack_pose = False
@@ -436,28 +634,28 @@ class Player(PS.DirtySprite):
 
         self.rect = self.rect_copy
 
-        if key[PG.K_DOWN] or joyDir == "D":  # down key
+        if key[PG.K_DOWN]:  # down key
             self.rect.y += self.speed  # move down
             self.face = 'd'
             self.pdx = 0
             self.pdy = 1
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_UP] or joyDir == "U":  # up key
+        elif key[PG.K_UP]:  # up key
             self.rect.y -= self.speed  # move up
             self.face = 'u'
             self.pdx = 0
             self.pdy = -1
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_RIGHT] or joyDir == "R":  # right key
+        elif key[PG.K_RIGHT]:  # right key
             self.rect.x += self.speed  # move right
             self.face = 'r'
             self.pdx = 1
             self.pdy = 0
             self.handle_collision(bg)
             self.rect_copy = self.rect
-        elif key[PG.K_LEFT] or joyDir == "L":  # left key
+        elif key[PG.K_LEFT]:  # left key
             self.rect.x -= self.speed  # move left
             self.face = 'l'
             self.pdx = -1
@@ -465,7 +663,7 @@ class Player(PS.DirtySprite):
             self.handle_collision(bg)
             self.rect_copy = self.rect
 
-        elif key[PG.K_a]:
+        elif key[PG.K_a]:  # or joyDir == "Tr":
             if self.item and self.can_drop: #can_drop is used to prevent inaccurate key detection
                 if self.item_type == 1 or self.item_type == 5:
                     self.drop_trap(screen)
@@ -479,21 +677,21 @@ class Player(PS.DirtySprite):
                     self.item = False
 
         # grab item if available
-        elif key[PG.K_s] or joyDir == "Pu":
+        elif key[PG.K_s]:  # or joyDir == "Pu":
             # check if you already have an item
             if not self.item:
                 self.grab_item = True
                 self.handle_collision(item_group)
         # drop item if you have one
-        elif key[PG.K_d]:
+        elif key[PG.K_d]:  # or joyDir == "Dr":
             if self.item and self.can_drop:
                 self.item = False
-        elif key[PG.K_e]:
+        elif key[PG.K_e]:  # or joyDir == "Noms":
             if not self.item and self.can_eat:
                 self.can_eat = False
                 self.eat_item = True
                 self.handle_collision(item_group)
-        elif key[PG.K_SPACE] or joyDir == "Sp":  # space key ATTACK
+        elif key[PG.K_SPACE]:  # or joyDir == "Sp":  # space key ATTACK
             if 'r' in self.face:
                 # Player.WIDTH = 250
                 self.image = self.IMG_ATTACK_R
@@ -527,7 +725,7 @@ class Player(PS.DirtySprite):
             if self.can_attack:
                 self.can_attack = False
                 killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
-                                                self.face, screen, enemy_bg)
+                                                    self.face, screen, enemy_bg)
                 for killed in killed_enemies:
                     # if(killed.last_hit == 0):
                     self.items_of_killed.append(killed.drop_item(screen))
@@ -552,11 +750,11 @@ class Player(PS.DirtySprite):
                 self.pill = False
         else:  # ds = down 'standing' (not moving) **********
             standing = True
-        if not key[PG.K_a]:
+        if (not key[PG.K_a]):  # or joyDir != "Tr":
             self.can_drop = True
-        if not key[PG.K_e]:
+        if (not key[PG.K_e]):  # or joyDir != "Noms":
             self.can_eat = True
-        if not key[PG.K_SPACE]:
+        if (not key[PG.K_SPACE]):  # or joyDir != "Sp":
             self.can_attack = True
         if standing:
             if self.face == 'd':
@@ -570,6 +768,7 @@ class Player(PS.DirtySprite):
 
 
     def update(self, bg, selfgroup):
+
         self.moved = False
         if(self.eat_timer > 0):
             self.eat_timer -= 1
@@ -632,7 +831,7 @@ class Player(PS.DirtySprite):
                 self.image = imageArray[self.frame].convert_alpha()
 
             except IndexError:
-                print("PLAYER IMG ERROR")
+#                print("PLAYER IMG ERROR")
                 self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
                     .convert_alpha()
                 self.face = list(self.face)[0]

@@ -26,8 +26,8 @@ class HighScores:
 
     def __init__(self):
         #PG.font.init()
-        #PM.music.load("music/highscores.mod")
-        #PM.music.play(-1)
+        PM.music.load("music/highscores.mod")
+        PM.music.play(-1)
         self.color = PC.Color("black")
         self.time = 0.0
         Globals.SCREEN.fill(PC.Color("black"))

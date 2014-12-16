@@ -60,6 +60,8 @@ class Joystick():
         #r is eat (e)
 
         self.buttons = [False for i in range(self.joystick.get_numbuttons())]
+        ##test
+        self.axishats = [False, False, False]  # axis 0, 1; hat 0
         self.button_pos = [(216, 74), (236, 92), (255, 74), (236, 56),
             (608, 88), (476, 104), (606, 118), (476, 136),
             (134, 56), (188, 56)]

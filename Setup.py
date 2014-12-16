@@ -133,8 +133,9 @@ class Game(object):
         self.burn_player = False
 
         ####Joystick#########
-        self.setofJoy = Joystick()  # the set of joysticks
-        self.joy = self.setofJoy.joystick
+        self.joy = Joystick()
+        self.use_joy = str(inbx.ask(Globals.SCREEN, 'Joystick? y/n'))
+        #will revert to KEYBOARD if anything else is entered.
 
 #############################
 ######STUFF WE GOTTA PUT SOMEWHERE##########
@@ -279,12 +280,12 @@ class Game(object):
             Globals.INVINCIBILITY_COUNT -= 1
 
         ###Joystick
-        #joystick missing error checking happens in player
-        if self.joy != None:
+        if self.use_joy == 'y':
             self.character.handle_joy(self.block_group, self.enemy_list,
-                                      self.item_group, self.map.get_surface(), None)
-        self.character.handle_keys(self.block_group, self.enemy_list,
-                                   self.item_group, self.map.get_surface(), None)
+                                      self.item_group, self.map.get_surface())
+        else:
+            self.character.handle_keys(self.block_group, self.enemy_list,
+                                       self.item_group, self.map.get_surface())
 
 
         if self.character.chng_invincibility():
@@ -366,7 +367,7 @@ class Game(object):
         ##draw dirty sprites
         rects = self.allsprites.draw(self.map.get_surface(), self.background)
         self.draw_screen()
-        PG.display.update(rects)
+        PD.update(rects)
 
         PD.flip()
 
@@ -438,6 +439,12 @@ class Game(object):
        #Allows quitting pygame and changing states
         #added changes for multiple states to allow testing
         for ev in event:
+#            if ev.type in Joystick.JOYSTICK:  # only care about objective switching
+#                if ev.type == PG.JOYBUTTONUP:
+#                    self.joy.buttons[ev.button] = False
+#                elif ev.type == PG.JOYBUTTONDOWN:
+#                    self.joy.buttons[ev.button] = True
+
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
                 PM.music.fadeout(1000)
@@ -462,7 +469,7 @@ class Game(object):
                 level = 4
                 self.stage = 1
                 self.change_level(level, self.stage)
-            elif ev.type == PG.KEYDOWN and ev.key == PG.K_n:
+            elif (ev.type == PG.KEYDOWN and ev.key == PG.K_n):  # or self.joy.buttons[5] == True:  # R1 button ():
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
                 self.objectiveBlit = False
