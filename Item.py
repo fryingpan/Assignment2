@@ -22,7 +22,7 @@ class Item(PS.DirtySprite):
 		self.type = theType
 		self.lifetime = lifetime
 		self.surface = Item.surface
-		self.use_count = Item.use_count
+		self.use_count = useCount
 		self.grabbed = False
 		self.remove = False
 		self.health = health
