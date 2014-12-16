@@ -105,6 +105,7 @@ class Player(PS.DirtySprite):
         self.item_img = None
         self.item_use_count = 0
         self.item_type = 0
+        self.item_health = 0
         #projectile movement
         self.pdx = 0
         self.pdy = 0
@@ -313,6 +314,7 @@ class Player(PS.DirtySprite):
                     self.effect_time = -1
                     # self.modified_map = True
                     self.item_type = collision.get_type()
+                    self.item_health = collision.get_health()
                     # if item is to attack the enemy
                     if self.item_type == 1 or self.item_type == 3 or self.item_type == 5 or self.item_type == 6:
                         self.item_use_count = collision.get_use_count()
@@ -324,7 +326,7 @@ class Player(PS.DirtySprite):
                 elif self.eat_item:
                     self.eat_item = False
                     self.eat_timer = self.eat_time
-                    self.health += 10
+                    self.health += collision.get_health()
                     collision.disappear()
             elif collision.get_type() == "K":  # found key
                 collision.kill()
