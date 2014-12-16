@@ -200,6 +200,13 @@ class Player(PS.DirtySprite):
         elif self.item_type == 6:
             self.item_img = PI.load("FPGraphics/drops/creamDrop.png").convert_alpha()
 
+    def is_item_usable(self):
+        if self.item:
+            if self.item_type == 1 or self.item_type == 3 or self.item_type == 5 or self.item_type == 6:
+                return True
+            else: 
+                return False
+
     def restore_normal(self):
         self.speed = 1
         self.item = False
