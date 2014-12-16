@@ -84,7 +84,6 @@ def addScoretoText():  # only run if SCORE !=0
         f.close()
     Globals.SCORE = 0
 
-
 def render_text(string, font, rect, text_color, background_color):
     final_lines = []
     lines = string.splitlines()
