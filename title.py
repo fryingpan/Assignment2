@@ -15,6 +15,7 @@ import pygame.event as PE
 from pygame import image
 from pygame.locals import *
 import Globals
+import pygame.mixer as PM
 
 
 # Container for Local variables
@@ -35,6 +36,9 @@ class Title:
     IMAGES = None
 
     def __init__(self):
+        PM.music.load("music/highscores.mod")
+        PM.music.play(-1)
+
         self.color = PC.Color("white")
         self.time = 0.0
         if not Title.IMAGES:
@@ -113,6 +117,7 @@ class Title:
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 Globals.RUNNING = False
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_SPACE:
+                PM.music.fadeout(200)
                 Globals.STATE = 'Menu'
 
 

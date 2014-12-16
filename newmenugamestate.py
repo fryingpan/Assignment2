@@ -12,7 +12,7 @@ import pygame.sprite as PS
 import pygame.image as PI
 import pygame.time as PT
 import pygame.color as PC
-import pygame.mixer as PX
+import pygame.mixer as PM
 import Globals
 
 
@@ -63,8 +63,8 @@ class Menu():
     def __init__(self):
         self.color = PC.Color("blue")
         self.time = 0.1
-        self.sound = PX.Sound("thx.wav")
-        self.sound.play()
+        PM.music.load("music/highscores.mod")
+        PM.music.play(-1)
         if not Menu.BACKGROUND:
             Menu.BACKGROUND = self.load_background()
                 
@@ -97,6 +97,7 @@ class Menu():
             if event.type == PG.KEYDOWN and event.key == PG.K_ESCAPE:
                 Globals.RUNNING = False
             elif M_M1 == 1:
+                PM.music.fadeout(200)
                 if objectList['title'].collidepoint(PG.mouse.get_pos()) == 1:
                     Globals.STATE = "Title"
                 elif objectList['scores'].collidepoint(PG.mouse.get_pos()) == 1:
