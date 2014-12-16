@@ -55,31 +55,55 @@ class Objective(object):
 
     def loadObjectives(self, lvl, stage):
         objs = []
-        if(lvl == 1 and stage == 1):#0
-            objs.append("Press 'n' to see the next part of your ingenious plans.")
+        if(lvl == 1 and stage == 1):#Will have at least 2 enemies; need to count eggs...
+        #!!!note to self: add lots of egg dudes!!!
+            objs.append("Press [n] to see the next part of your ingenious plans.")
             objs.append("Objective: Kill all the food people. They're terrible and not nice.")
             self.lvl_objs.append(objs)
             objs = []#1
             objs.append("You are lactose-intolerant, and therefore you can't eat through")
-            objs.append("cheese walls. Look for lactase pills to take to eat through them!")
+            objs.append("cheese walls. Look for lactase pills")
+            objs.append("and then press [space] near a wall to take to eat through it!")
             self.lvl_objs.append(objs)
             objs = []#2
-            objs.append("After you kill food persons, in celebration you can")
+            objs.append("There are food persons up ahead!")
+            objs.append("After you kill them, you can")
             objs.append("eat its corpse-")
             objs.append("uh")
-            objs.append("-eat its drop-for health or pick up it up for a weapon!")
+            objs.append("-eat its drop (press [e])-for health")
+            objs.append("or pick up it (press [s]) to use for a weapon! (press [a])")
+            objs.append("If you want a different item, you first have to drop your")
+            objs.append("current item (press [d]).")
             self.lvl_objs.append(objs)
         if(lvl == 1 and stage == 2):#0
-            objs.append("Press 'n' to see the next part of your ingenious plans.")
-            objs.append("Objective: Kill all the food people. They're terrible and not nice.")
-            self.lvl_objs.append(objs)
-            objs = []#1
-            objs.append("You are lactose-intolerant, and therefore you can't eat through")
-            objs.append("cheese walls. Look for lactase pills to take to eat through them!")
+            objs.append("Ice cream dudes are such a mess!")
+            objs.append("They drop nasty ice cream puddles, so be careful where you step.")
+            objs.append("You can also pick up [s] their drops to drop your own puddles [a].")
             self.lvl_objs.append(objs)
             objs = []#2
-            objs.append("After you kill food persons, in celebration you can")
-            objs.append("eat its corpse-")
-            objs.append("uh")
-            objs.append("-eat its drop-for health or pick up it up for a weapon!")
+            objs.append("Did you notice that you can shoot lettuce leaves through walls?")
+            objs.append("Shooting lettuce bends time and space. [a]")
+            objs.append("But you should eat healthy [e] and stuff, too.")
             self.lvl_objs.append(objs)
+        if(lvl == 1 and stage == 3):#0
+            objs.append("Burgers are one of the toughest food persons!")
+            objs.append("Must be because of all the foods they're made of.")
+            objs.append("They drop bread, which will speed you up if used (press [s]).")
+            objs.append("They also drop meat, which gives you a longer invincibility time.")
+            objs.append("And they also drop whole burgers sometimes. Super yummy!")
+            objs.append("...Legend has it that eating a burger can be lethal, but eh.")
+            objs.append("What else are you going to do.")
+            self.lvl_objs.append(objs)
+
+
+"""
+Objective: Kill all the food people. They're terrible and not nice.
+
+
+
+
+
+
+
+
+"""
