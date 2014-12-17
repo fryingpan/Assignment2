@@ -8,8 +8,8 @@ VK...........VS.....4SSSS......,,.....V
 V..........VVVS..L..4....;....,.,.....V
 V.........VVVVV.....4....;....,.,.....V
 VVV11111VVVSSSSVVVVSSSSSSVVVVVVV333333V
-V..........VVVVVVVVVVVVS........,,...,V
+V..........VVVVVVVVVVVVV........,,...,V
 V.......I..VVVVVV..............,,....,V
-V..,,L,,.....2..........I.............V
+V..,,L,,.....2..........B.............V
 VK...........2.......,,,,............KV
 VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
