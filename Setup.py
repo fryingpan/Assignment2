@@ -138,6 +138,10 @@ class Game(object):
         ####Joystick#########
         self.joy = Joystick()
         self.use_joy = str(inbx.ask(Globals.SCREEN, 'Joystick? y/n'))
+
+
+        self.score_health_background = PI.load("FPGraphics/specialEffects/ScoreHealth.png").convert_alpha()
+        self.items_table = PI.load("FPGraphics/specialEffects/ItemsTable.png").convert_alpha()
         #will revert to KEYBOARD if anything else is entered.
 
 #############################
@@ -399,11 +403,14 @@ class Game(object):
         if self.updated_obj:
             self.objective.drawObjective()
 
+        Globals.SCREEN.blit(self.score_health_background, (5, 510))
+        Globals.SCREEN.blit(self.items_table, (645, 545))
+
         s = "Score: " + str(Globals.SCORE)
-        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+        Globals.SCREEN.blit(self.font.render(s, True, (0, 0, 0)),
                             (25, 550))
         s = "Health: " + str(self.character.health)
-        Globals.SCREEN.blit(self.font.render(s, True, (255, 255, 255)),
+        Globals.SCREEN.blit(self.font.render(s, True, (0, 0, 0)),
                             (25, 520))
 
         if(Globals.SCORE == self.num_enemies):  # - 1):
