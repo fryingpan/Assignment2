@@ -8,7 +8,7 @@ import Globals
 import pygame.mixer as PM
 
 
-#Container for Local variables
+# Container for Local variables
 class Locals(object):
     RUNNING = True
     SCREEN = None
@@ -21,11 +21,11 @@ class Locals(object):
     CHANGESTATE = "None"
 
 
-#All this below is from before
+# All this below is from before
 class HighScores:
 
     def __init__(self):
-        #PG.font.init()
+        # PG.font.init()
         PM.music.load("music/highscores.mod")
         PM.music.play(-1)
         self.color = PC.Color("black")
@@ -36,12 +36,10 @@ class HighScores:
         self.text_surface = self.get_text_surface()
 
     def render(self):
-
         width, height = self.text_surface.get_size()
         Globals.SCREEN.blit(self.text_surface,
-                           (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 -
-                            height/2))
-
+                            (Globals.WIDTH/2 - width/2, Globals.HEIGHT/2 -
+                             height/2))
         PDI.flip()
 
     def update(self):
@@ -83,6 +81,7 @@ def addScoretoText():  # only run if SCORE !=0
         f.write(toAdd)
         f.close()
     Globals.SCORE = 0
+
 
 def render_text(string, font, rect, text_color, background_color):
     final_lines = []

@@ -23,13 +23,12 @@ class IceCream(Enemy):
     CYCLE = .6
 
     def __init__(self, xlocation, ylocation, fps=1):
-        ######unique attributes parent class doesn't have
+        # unique attributes parent class doesn't have
         self.enemy_ID = 1  # icecream ID
         self.image = PI.load("FPGraphics/Food/IceCreamFront.png") \
             .convert_alpha()
         self.front_image = self.image
-        #######
-        #attributes to be passed to parent for parent function use
+        # attributes to be passed to parent for parent function use
         self.health = 1
         self.speed = 1*fps
         self.rect = self.image.get_rect()
@@ -44,15 +43,13 @@ class IceCream(Enemy):
         Enemy.__init__(self, self.rect, self.IMAGES_RIGHT,
                        self.IMAGES_LEFT, self.IMAGES_FRONT,
                        self.IMAGES_BACK, self.health)
+        # sending level through so that puddles
+        # in cold level last longer
 
-    # def drop_item(self):
-    #     return IceCreamScoop(self.rect.x, self.rect.y, self.enemy_ID)
-
-        #sending level through so that puddles
-        #in cold level last longer
     def attack(self, surface, level):
-        #create puddle at your location
-        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25, 50, 50), surface, level)
+        # create puddle at your location
+        return Puddle(PG.Rect(self.rect.x+25, self.rect.y+25,
+                              50, 50), surface, level)
 
     def move(self, player, interval):
         if(random.randint(0, 200) == 0):
@@ -80,11 +77,6 @@ class IceCream(Enemy):
 
     def get_ID(self):
         return self.enemy_ID
-
-    def is_alive(self):
-        if self.health == 0:
-            #then the enemy is dead
-            pass
 
     def load_images(self):
         sheetR = PI.load("FPGraphics/Food/IceCreamWalkRight.png") \
