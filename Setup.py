@@ -11,6 +11,7 @@ try:
     from Player import Player
     from IceCream import IceCream
     from Burger import Burger
+    from Egg import Egg
     from Lettuce import Lettuce
     from Cupcake import Cupcake
     import pad as Pad
@@ -87,6 +88,7 @@ class Game(object):
         #create icecream group
         self.icecream_list = PS.Group()
         self.burger_list = PS.Group()
+        self.egg_list = PS.Group()
         self.lettuce_list = PS.Group()
         self.cupcake_list = PS.Group()
         self.enemy_list = PS.Group()  # all enemies
@@ -103,6 +105,7 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
+                                          self.egg_list,
                                           self.lettuce_list,
                                           self.cupcake_list,
                                           self.projectile_group)
@@ -239,10 +242,19 @@ class Game(object):
                 #see which enemy attacked the player
                 self.enemy_ID = burger.get_ID()
 
+##egg attacks
+        for egg in self.egg_list.sprites():
+            if(egg.get_attacked_player()):
+                if Globals.INVINCIBILITY_COUNT == 0:
+                    Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
+                #see which enemy attacked the player
+                self.enemy_ID = egg.get_ID()
+
         ##cupcake attacks
         for cupcake in self.cupcake_list.sprites():
+            print(len(self.cupcake_list))
             #see if the enemy will release weapon/attack
-            if (cupcake.will_attack(self.level)):
+            if cupcake.will_attack(self.level):
                 #get a new puddle sprite
                 new_projectile = cupcake.attack()
                 #add the new projectile to the list of projectiles
@@ -332,6 +344,7 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
+                                          self.egg_list,
                                           self.cupcake_list,
                                           self.lettuce_list,
                                           self.projectile_group)
@@ -513,6 +526,8 @@ class Game(object):
             self.icecream_list.remove(enemy)
         for enemy in self.burger_list.sprites():
             self.burger_list.remove(enemy)
+        for enemy in self.egg_list.sprites():
+            self.egg_list.remove(enemy)
         for enemy in self.lettuce_list.sprites():
             self.lettuce_list.remove(enemy)
 
@@ -552,6 +567,7 @@ class Game(object):
         self.num_enemies += self.map.get_num_enemies(2)  # burger
         self.num_enemies += self.map.get_num_enemies(3)  # lettuce
         self.num_enemies += self.map.get_num_enemies(4)  # cupcake
+        self.num_enemies += self.map.get_num_enemies(5)  # egg
 
         #icecream
         for e in range(self.map.get_num_enemies(1)):
@@ -574,11 +590,18 @@ class Game(object):
             cupcake = Cupcake(self.map.get_enemy_coordx(e, 4),
                             self.map.get_enemy_coordy(e, 4))
             self.cupcake_list.add(cupcake)
+        #egg
+        for e in range(self.map.get_num_enemies(5)):
+            egg = Egg(self.map.get_enemy_coordx(e, 5),
+                            self.map.get_enemy_coordy(e, 5),
+                            self.level)
+            self.egg_list.add(egg)
 
         self.enemy_list.add(self.icecream_list)
         self.enemy_list.add(self.burger_list)
         self.enemy_list.add(self.lettuce_list)
         self.enemy_list.add(self.cupcake_list)
+        self.enemy_list.add(self.egg_list)
 
         player_health = 0
         #get enemy health
@@ -618,6 +641,7 @@ class Game(object):
                                           self.player_group,
                                           self.icecream_list,
                                           self.burger_list,
+                                          self.egg_list,
                                           self.lettuce_list,
                                           self.projectile_group)
 

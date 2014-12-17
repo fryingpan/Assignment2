@@ -104,6 +104,7 @@ class Map(object):
             self.br_coord = []  # burger
             self.lr_coord = []  # lettuce
             self.cc_coord = []  #cupcake
+            self.eg_coord = [] #egg
 
             self.spots_to_be_filled = []
             #create map from mapfile
@@ -350,6 +351,9 @@ class Map(object):
                 elif char_list[y] == 'C': #cupcake
                     self.cc_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
+                elif char_list[y] == 'E': #eg
+                    self.eg_coord.append((x_coor, y_coor))
+                    char_list[y] = '.'
                 elif char_list[y].isdigit():
                     #number, so we put doors here
                     new_block = create_Block(self.doorBlocks
@@ -411,6 +415,8 @@ class Map(object):
             return self.lr_coord[index][0]
         if enemy_type == 4:
             return self.cc_coord[index][0]
+        if enemy_type == 5:
+            return self.eg_coord[index][0]
 
     def get_enemy_coordy(self, index, enemy_type=1):
         if enemy_type == 1:
@@ -421,6 +427,8 @@ class Map(object):
             return self.lr_coord[index][1]
         if enemy_type == 4:
             return self.cc_coord[index][1]
+        if enemy_type == 5:
+            return self.eg_coord[index][1]
 
     def get_num_enemies(self, enemy_type=1):
         if enemy_type == 1:
@@ -431,6 +439,8 @@ class Map(object):
             return len(self.lr_coord)
         if enemy_type == 4:
             return len(self.cc_coord)
+        if enemy_type == 5:
+            return len(self.eg_coord)
 
     def get_pad_x(self, index):
         return self.padtiles[index][0]
