@@ -37,7 +37,7 @@ class Lvl_Data(object):
             self.character_pos_y = 100
         elif(lvl == 2):
             if stage == 1:
-                self.map_file = 'mapfilelvl2.txt'
+                self.map_file = 'mapfilelvl2.1.txt'
             elif stage == 2:
                 self.map_file = 'mapfilelvl2.txt'
 #            elif stage == 3:

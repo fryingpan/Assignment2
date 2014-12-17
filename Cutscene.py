@@ -89,45 +89,60 @@ class Cutscene(PS.Sprite):
                 "But what's this?", (100, 30))
             self.scenes[0].add_text(
                 "You've bested the heated and horrible chili land!", (100, 30))
-        if(level == 3):
+        if(level == 4):
             self.scenes.append(Scene(
-                PI.load("FPGraphics/story/lv3_1.png").
+                PI.load("FPGraphics/story/lv4_1.png").
                 convert(), self.screen))
             self.scenes[0].add_text(
-                "You know what to do.", (100, 30))
+                "It's the last land, so give it your best shot!", (100, 30))
             self.scenes[0].add_text(
-                "How charming. But full of stupid food people.", (100, 30))
+                "Speaking of sweet, check out the sweet candy land nearby.", (100, 30))
             self.scenes[0].add_text(
-                "...Somehow there is an icecream land nearby!", (100, 30))
+                "Sweet victory!", (100, 30))
+        if(level == 5):
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv5_1_1.png").
+                convert(), self.screen))
             self.scenes[0].add_text(
-                "But what's this?", (100, 30))
+                "Everyone is dead!", (100, 30))
             self.scenes[0].add_text(
-                "You've bested the heated and horrible chili land!", (100, 30))
-
-"""
-Sweet victory!
-Speaking of sweet, check out the sweet candy land nearby.
-It's the last land, so give it your best shot!
-
----
-
-At long last you've achieved world domination!
-Everyone is dead!
-...Everyone is dead.
-
-Okay, maybe you didn't factor in how boring the world would be if everyone was dead.
-Or how lonely you'd be.
-But who cares!
-...
-You really wish you thought things through.
-Wait.
-
-That's right.
-Food people reproduce like bunnies.
-Or something.
-Anyway, you should go kill them. When you start a job, you finish it.
-"""
-
+                "At long last you've achieved world domination!", (100, 30))
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv5_1_2.png").
+                convert(), self.screen))
+            self.scenes[1].add_text(
+                "Everyone is dead.", (100, 30))
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv5_2.png").
+                convert(), self.screen))
+            self.scenes[2].add_text(
+                "Wait.", (100, 30))
+            self.scenes[2].add_text(
+                "You really wish you thought things through.", (100, 30))
+            self.scenes[2].add_text(
+                "...", (100, 30))
+            self.scenes[2].add_text(
+                "But who cares!", (100, 30))
+            self.scenes[2].add_text(
+                "Or how lonely you'd be.", (100, 30))
+            self.scenes[2].add_text(
+                "boring the world would be if everyone was dead.",(100,30))
+            self.scenes[2].add_text(
+                "Okay, maybe you should have thought about how ", (100, 30))
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv5_3.png").
+                convert(), self.screen))
+            self.scenes[3].add_text(
+                "When you start a job, you finish it.", (100, 30))
+            self.scenes[3].add_text(
+                "Anyway, you should kill them.", (100, 30))
+            self.scenes[3].add_text(
+                "Or something.", (100, 30))
+            self.scenes[3].add_text(
+                "Food people reproduce like bunnies.", (100, 30))
+            self.scenes[3].add_text(
+                "That's right.", (100, 30))
+            
     #play all the scenes
     def play(self, level):
         count = 0

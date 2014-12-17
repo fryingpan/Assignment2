@@ -433,6 +433,7 @@ class Game(object):
                             Globals.PLAYERNAME = str(inbx.ask(
                                 Globals.SCREEN, 'Name'))
                             #Globals.SCORE = self.character.score
+                            Cutscene(Globals.SCREEN, 5)
                         Globals.STATE = "Menu"
 
         if(self.character.health <= 0):
@@ -498,6 +499,9 @@ class Game(object):
                 level = 4
                 self.stage = 1
                 self.change_level(level, self.stage)
+            elif ev.type == PG.KEYDOWN and ev.key == PG.K_5:
+                Cutscene(Globals.SCREEN, 5)
+                Globals.STATE = "Menu"
             elif (ev.type == PG.KEYDOWN and ev.key == PG.K_n):  # or self.joy.buttons[5] == True:  # R1 button ():
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
@@ -505,19 +509,19 @@ class Game(object):
             else:
                 self.objectiveBlit = True
 
-    def interaction_phase(self, screen, player, joystick):
-#        for event in joystick.get_events():
-            #movement
-            #using axis
+#    def interaction_phase(self, screen, player, joystick):
+##        for event in joystick.get_events():
+#            #movement
+#            #using axis
 
 
-            #where attacks, pickups, drops
+#            #where attacks, pickups, drops
 
-        if joystick.is_pressed('left'):
-            #move left
-            print "moving left"
-            self.character.handle_keys(self.block_group, self.enemy_list,
-                                       self.item_group, self.map.get_surface(), 'L')
+#        if joystick.is_pressed('left'):
+#            #move left
+#            print "moving left"
+#            self.character.handle_keys(self.block_group, self.enemy_list,
+#                                       self.item_group, self.map.get_surface(), 'L')
 
                 
     def reset_level(self):
@@ -550,7 +554,7 @@ class Game(object):
         PM.music.play(-1)
         PM.music.set_volume(0.5)
         ####turn back on only for presentations?
-        #Cutscene(Globals.SCREEN, self.level)
+        Cutscene(Globals.SCREEN, self.level)
         
         #interpretting mapfile.txt
         if(self.level > 1):

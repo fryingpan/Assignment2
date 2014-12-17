@@ -379,12 +379,6 @@ class Player(PS.DirtySprite):
         if self.face == 'ls':
             self.image = self.EatL
 
-    def configure_phase(self, screen, button, j):
-        j.get_events()
-        success = j.config_button(button)
-        #self.write_text(screen, "Press the " + button + " button", 100, 100)
-        return success
-
     ###Used when joystick is plugged in. Handled slightly different.
     ##Will try to merge, but considering that calling handle_keys inside handle_joy
     ##throws off the cycle / animation, I want to avoid that :/

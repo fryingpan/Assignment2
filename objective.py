@@ -94,7 +94,12 @@ class Objective(object):
             objs.append("...Legend has it that eating a burger can be lethal, but eh.")
             objs.append("What else are you going to do.")
             self.lvl_objs.append(objs)
-
+            objs = []
+            objs.append("Is it getting hot in here, or is it just you?")
+            objs.append("Or... It could be those ovens!")
+            objs.append("Try your best not to step on the ovens...")
+            objs.append("...or it could mean your demise.")
+            self.lvl_objs.append(objs)
         if(lvl == 3 and stage == 1):#0
             objs.append("Lookit that sparkly ice! Wanna take a spin?")
             objs.append("Maybe you shouldn't, 'cus they'll make you slooow.")
@@ -104,6 +109,7 @@ class Objective(object):
             objs.append("A snowstorm of icing, that is.")
             objs.append("Watch out for the evil cupcakes,")
             objs.append("because they send hurricanes of their toppings at you.")
+            objs.append("Of course, you can send hurricanes too, if you want.")
             self.lvl_objs.append(objs)
 
 
