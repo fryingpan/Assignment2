@@ -37,7 +37,6 @@ X button: make trap. (3 button.)
 Y button: trash / drop item. (4 button.)
 L1 button: eat item. (L5.)
 Joy Hat #9 and Joy Axis #7 dictate movement.
-
 Due to pygame joystick button detection, some button presses may
 be missed. We believe this is not due to our code, since upon 
 printing all button press events, we notice that not all expected
