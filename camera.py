@@ -21,7 +21,7 @@ import pygame.font as PF
 
 import Globals
 
-#camera variables
+# camera variables
 WIN_WIDTH = 800
 WIN_HEIGHT = 600
 
@@ -31,18 +31,18 @@ class Camera(object):
         self.bigmap = bigmap
         self.bigmap_rect = bigmap.get_rect()
         self.rect = Rect(0, 0, WIN_WIDTH, WIN_HEIGHT)
-        #camera's coordinates relative to the map
+        # camera's coordinates relative to the map
         self.cameraxy = [0, 0]
         self.scrollx = 0
         self.scrolly = 0
         self.background = PG.Surface((WIN_WIDTH, WIN_HEIGHT))
 
-    #apply the character's displacement to the camera
+    # apply the character's displacement to the camera
     def apply(self, playerxy):
         move = False
         playerx, playery = playerxy
 
-        #camera bounds on the x and y axis to keep the player centered
+        # camera bounds on the x and y axis to keep the player centered
         boundx = [WIN_WIDTH*(0.4) + self.cameraxy[0],
                   WIN_WIDTH*(0.6) + self.cameraxy[0]]
         boundy = [WIN_HEIGHT*(0.4) + self.cameraxy[1],
@@ -69,7 +69,7 @@ class Camera(object):
                 self.cameraxy[1] += scrolly
         return move
 
-    #update where the camera needs to be in the big map
+    # update where the camera needs to be in the big map
     def update(self, target_coordinates, bigmap):
         moved = self.apply(target_coordinates)
         enemy_group = PS.Group()
@@ -80,23 +80,23 @@ class Camera(object):
                            WIN_WIDTH, WIN_HEIGHT)
         return self.background
 
-    #check that the camera doesn't go off the map
+    # check that the camera doesn't go off the map
     def check_boundary(self):
         bigmap_width = self.bigmap_rect.width
         bigmap_height = self.bigmap_rect.height
-        #check left
+        # check left
         if self.cameraxy[0] < 0:
             self.cameraxy[0] = 0
             scrollx = 0
-        #check right
+        # check right
         elif self.cameraxy[0] > bigmap_width - WIN_WIDTH:
             self.cameraxy[0] = bigmap_width - WIN_WIDTH
             scrollx = bigmap_width - WIN_WIDTH
-        #check top
+        # check top
         if self.cameraxy[1] < 0:
             self.cameraxy[1] = 0
             scrolly = 0
-        #check bottom
+        # check bottom
         elif self.cameraxy[1] > bigmap_height - WIN_HEIGHT:
             self.cameraxy[1] = bigmap_height - WIN_HEIGHT
             scrolly = 0
