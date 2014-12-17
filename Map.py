@@ -1,4 +1,4 @@
-#Drawing Functions
+# Drawing Functions
 import sys as SYS
 import random
 import math
@@ -15,7 +15,8 @@ from collections import deque
 import pad as Pad
 import Globals
 
-#Block sprite class
+
+# Block sprite class
 class Block(PG.sprite.DirtySprite):
     def __init__(self, img, rect, t, ID=None):
         PG.sprite.DirtySprite.__init__(self)
@@ -51,22 +52,22 @@ class Block(PG.sprite.DirtySprite):
         if self.type == 'K' or self.type == 'D':
             self.dirty = 1
 
+
 class Map(object):
     GRASS_ARRAY = []
     PAD_ARRAY = []
 
     def __init__(self, mapfile, lvl):
-            #load the grass images into an array
+            # load the grass images into an array
             TILES_LOADED = False
 
             if not TILES_LOADED:
                     Map.GRASS_ARRAY = self.load_grass_tiles(lvl)
-#                    Map.PAD_ARRAY = self.load_pad_tiles()
                     TILES_LOADED = True
 
-            ####(prepare to read mapfile)#######
+            # (prepare to read mapfile)#######
             self.map = self.get_map(mapfile)
-            #size of an individual block in the grid
+            # size of an individual block in the grid
             self.grid_size = [50, 50]
             self.grid_dimensions = self.get_dimensions(self.map)
             self.pix_dimensions = [self.grid_dimensions[0] * self.grid_size[0],
@@ -83,31 +84,30 @@ class Map(object):
             self.padtiles = []
             self.pad_type = []  # hot or cold (and/or others)
             self.allPads = PS.Group()
-
-            #block arrays
+            # block arrays
             self.wallBlocksV = []  # vertical V
             self.wallBlocksH = []  # horizontal H
             self.wallBlocksE = []
             # edges/corners; correspond to index num (see load_blocks)
             self.doorBlocks = []  # D
             self.shrubBlocks = []  # S
-            #tree top = T, tree bottom = Y
-            #so it's like ty thank you isn't that cute
+            # tree top = T, tree bottom = Y
+            # so it's like ty thank you isn't that cute
             self.treeBlocksT = []  # T
             self.treeBlocksB = []  # Y
             self.keyBlocks = []  # K
             self.ICBlock = []  # I (icecream spots)
             self.disappearing_blocks = PS.Group()
 
-            #enemy stuff
+            # enemy stuff
             self.ic_coord = []  # icecream
             self.br_coord = []  # burger
             self.lr_coord = []  # lettuce
-            self.cc_coord = []  #cupcake
-            self.eg_coord = [] #egg
+            self.cc_coord = []  # cupcake
+            self.eg_coord = []  # egg
 
             self.spots_to_be_filled = []
-            #create map from mapfile
+            # create map from mapfile
             self.load_blocks(lvl)
             self.objectify_map()
             self.fill()
@@ -116,7 +116,6 @@ class Map(object):
         return self.disappearing_blocks
 
     def load_grass_tiles(self, lvl):
-#            print "LEVEL IN MAP: " + str(lvl)
             tile_array = []
             lvl = math.floor(lvl)
             if(lvl == 1):
@@ -152,17 +151,10 @@ class Map(object):
                     PI.load("FPGraphics/tiles/lv4Tiles/candyTile5.png"))
             return tile_array
 
-#    def load_pad_tiles(self): ##CHANGE THIS TO CALL PAD CLASS'S LOAD IMAGES.
-#            ##we want to do animation at this level, much like Enemy does animation for IceCream
-#            array = []
-#            array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
-#            array.append(PI.load("FPGraphics/tiles/lv2Tiles/heatPad5.png"))
-#            return array
-
     def load_blocks(self, lvl):
-        #note: always load edge blocks with these indeces:
-        #0 = HL; 1 = HR; 2 = VD; 3 = VU; 4 = TL; 5 = TR; 6 = BL; 7 = BR
-        #doors are always cheese
+        # note: always load edge blocks with these indeces:
+        # 0 = HL; 1 = HR; 2 = VD; 3 = VU; 4 = TL; 5 = TR; 6 = BL; 7 = BR
+        # doors are always cheese
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall1.png"))
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall2.png"))
         self.doorBlocks.append(PI.load("FPGraphics/tiles/cheeseWall3.png"))
@@ -206,11 +198,16 @@ class Map(object):
             self.treeBlocksB.append(
                 PI.load("FPGraphics/tiles/lv1treeB1.png"))
         if(lvl == 3):
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall1.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall2.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall3.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall4.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3wall5.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3wall1.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3wall2.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3wall3.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3wall4.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3wall5.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub1.png"))
             self.shrubBlocks.append(
@@ -219,15 +216,23 @@ class Map(object):
                 PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub3.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv3Tiles/lv3shrub4.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeT1.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeT2.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB1.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv3Tiles/lv3TreeB2.png"))
+            self.treeBlocksT.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3TreeT1.png"))
+            self.treeBlocksT.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3TreeT2.png"))
+            self.treeBlocksB.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3TreeB1.png"))
+            self.treeBlocksB.append(PI.load(
+                                    "FPGraphics/tiles/lv3Tiles/lv3TreeB2.png"))
         if(lvl == 4):
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall1.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall2.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall3.png"))
-            self.wallBlocksV.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4wall4.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4wall1.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4wall2.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4wall3.png"))
+            self.wallBlocksV.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4wall4.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub1.png"))
             self.shrubBlocks.append(
@@ -236,12 +241,18 @@ class Map(object):
                 PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub3.png"))
             self.shrubBlocks.append(
                 PI.load("FPGraphics/tiles/lv4Tiles/lv4shrub4.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT1.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT2.png"))
-            self.treeBlocksT.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeT3.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB1.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB2.png"))
-            self.treeBlocksB.append(PI.load("FPGraphics/tiles/lv4Tiles/lv4TreeB3.png"))
+            self.treeBlocksT.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeT1.png"))
+            self.treeBlocksT.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeT2.png"))
+            self.treeBlocksT.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeT3.png"))
+            self.treeBlocksB.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeB1.png"))
+            self.treeBlocksB.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeB2.png"))
+            self.treeBlocksB.append(PI.load(
+                                    "FPGraphics/tiles/lv4Tiles/lv4TreeB3.png"))
 
     def get_surface(self):
             return self.surface
@@ -249,7 +260,7 @@ class Map(object):
     def fill(self):
         self.surface.fill((0, 0, 0))
 
-    #returns list of lines in the mapfile
+    # returns list of lines in the mapfile
     def get_map(self, mapfile):
         with open(mapfile, 'r') as f:
                 lines = f.readlines()
@@ -265,19 +276,19 @@ class Map(object):
             return self.object_group
 
     def objectify_map(self):
-        #the x and y coordinates as you traverse the map
+        # the x and y coordinates as you traverse the map
         x_coor = 0
         y_coor = 0
 
-        #keep track of type of tree block
+        # keep track of type of tree block
         treeblockType = deque()
 
-        #counter for sign id
+        # counter for sign id
         sign_id = 0
 
-        #traverse the map, creating block sprites
+        # traverse the map, creating block sprites
         for x in range(self.grid_dimensions[1]):
-            #get the list of characters in the mapfile
+            # get the list of characters in the mapfile
             char_list = list(self.map[x])
             x_coor = 0
             for y in range(self.grid_dimensions[0]):
@@ -300,7 +311,7 @@ class Map(object):
                                              char_list[y])
                 # key block
                 elif char_list[y] == 'K':
-                    #change to just an obj later or whatever
+                    # change to just an obj later or whatever
                     new_block = create_Block(self.keyBlocks[0],
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
@@ -331,55 +342,53 @@ class Map(object):
                                                      self.grid_size[0],
                                                      self.grid_size[1]),
                                              char_list[y])
-                elif char_list[y] == '!': #readable sign
+                elif char_list[y] == '!':  # readable sign
                     new_block = create_Block(self.signImg,
                                              PG.Rect(x_coor, y_coor,
                                                      self.grid_size[0],
                                                      self.grid_size[1]),
                                              char_list[y], sign_id)
                     sign_id += 1
-                #enemies
-                elif char_list[y] == 'I': #icecream
+                # enemies
+                elif char_list[y] == 'I':  # icecream
                     self.ic_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] == 'B': #burger
+                elif char_list[y] == 'B':  # burger
                     self.br_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] == 'L': #lettuce
+                elif char_list[y] == 'L':  # lettuce
                     self.lr_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] == 'C': #cupcake
+                elif char_list[y] == 'C':  # cupcake
                     self.cc_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
-                elif char_list[y] == 'E': #eg
+                elif char_list[y] == 'E':  # eg
                     self.eg_coord.append((x_coor, y_coor))
                     char_list[y] = '.'
                 elif char_list[y].isdigit():
-                    #number, so we put doors here
-                    new_block = create_Block(self.doorBlocks
-                                                 [random.randint(0, len(self.
-                                                                 doorBlocks))-1],
-                                                 PG.Rect(x_coor, y_coor,
-                                                         self.grid_size[0],
-                                                         self.grid_size[1]),
-                                                 char_list[y])
+                    # number, so we put doors here
+                    new_block =
+                    create_Block(self.doorBlocks[random.randint(0,
+                                                 slen(self.doorBlocks))-1],
+                                 PG.Rect(x_coor, y_coor,
+                                         self.grid_size[0],
+                                         self.grid_size[1]),
+                                 char_list[y])
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
-                
-                #set the block & add to obj group
+                # set the block & add to obj group
                 new_block.set_rectTop(y_coor)
                 new_block.set_rectLeft(x_coor)
                 self.object_group.add(new_block)
 
-                #####(Tiles)######
                 # if char_list[y] == '.':
-                    #add pair of coordinates
+                # add pair of coordinates
                 tile_index = random.randint(0, 2)
                 self.grass_type.append(tile_index)
                 self.grasstiles.append((x_coor, y_coor))
 
-                ##added pad tiles##
-                #HOT
+                # added pad tiles##
+                # HOT
                 if char_list[y] == ',':
                     self.pad_type.append(0)
                     # 0 or 1, type for hot or cold pads
@@ -389,8 +398,7 @@ class Map(object):
 #                    newPad.set_rectLeft(x_coor)
 #                    newPad.set_rectTop(y_coor)
 #                    self.allPads.add(newPad)
-
-                #COLD
+                # COLD
                 if char_list[y] == ';':
                     self.pad_type.append(1)
                     # 0 or 1, type for hot or cold pads
@@ -400,8 +408,6 @@ class Map(object):
 #                    newPad.set_rectLeft(x_coor)
 #                    newPad.set_rectTop(y_coor)
 #                    self.allPads.add(newPad)
-                ###################
-
                 x_coor += self.grid_size[0]
 
             y_coor += self.grid_size[1]
@@ -453,7 +459,7 @@ class Map(object):
         background = background.convert()
         # for block in self.object_group:
         #   block.draw_block(background)
-        #draw grasstiles to the background
+        # draw grasstiles to the background
         if len(self.grasstiles) == len(self.grass_type):
             for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
                 background.blit(self.grass_array[gtype], grasstile)
@@ -467,7 +473,7 @@ class Map(object):
 
         return background
 
-    #called in the setup/game class
+    # called in the setup/game class
     def draw_map(self):
 
         for block in self.object_group:
@@ -478,7 +484,7 @@ class Map(object):
         background = background.convert()
         # for block in self.object_group:
         #   block.draw_block(background)
-        #draw grasstiles to the background
+        # draw grasstiles to the background
         if len(self.grasstiles) == len(self.grass_type):
             for (grasstile, gtype) in zip(self.grasstiles, self.grass_type):
                 background.blit(self.grass_array[gtype], grasstile)
@@ -490,7 +496,7 @@ class Map(object):
         return background
 
 
-#creates a new block sprite
-def create_Block(img, rect, t, ID = None):
+# creates a new block sprite
+def create_Block(img, rect, t, ID=None):
     new_block = Block(img, rect, t, ID)
     return new_block

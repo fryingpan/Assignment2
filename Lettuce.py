@@ -17,23 +17,22 @@ from Item import BurgerDrop
 from projectile import Projectile
 from projectile import LettuceCutter
 
+
 class Lettuce(Enemy):
     IMAGE_UP = None
     IMAGE_DOWN = None
     IMAGE_RIGHT = None
     IMAGE_LEFT = None
     FACE_STRING = ['u', 'd', 'r', 'l']
-
     CYCLE = .6
 
     def __init__(self, xlocation, ylocation, fps=1):
-        ######unique attributes parent class doesn't have
+        # unique attributes parent class doesn't have
         self.enemy_ID = 3
         self.image = PI.load("FPGraphics/lettuce/lettuce.png") \
             .convert_alpha()
         self.front_image = self.image
-        #######
-        #attributes to be passed to parent for parent function use
+        # attributes to be passed to parent for parent function use
         self.health = 3
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
@@ -54,27 +53,18 @@ class Lettuce(Enemy):
     def attack(self):
         self.pdx = random.randint(-1, 1)
         self.pdy = random.randint(-1, 1)
-        if(self.pdx == 0 and self.pdy==0):
+        if(self.pdx == 0 and self.pdy == 0):
             self.pdx = 1
-        return LettuceCutter(self,self)
-
-    def move(self, player, interval):
-        #stationary character; make it face diff ways?
-        pass
+        return LettuceCutter(self, self)
 
     def drop_item(self, surface):
         return LettuceDrop(self.rect.x, self.rect.y, surface)
-    
+
     def get_face(self):
         return self.face
 
     def get_ID(self):
         return self.enemy_ID
-
-    def is_alive(self):
-        if self.health <= 0:
-            #then the enemy is dead
-            pass
 
     def load_images(self):
         # sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
