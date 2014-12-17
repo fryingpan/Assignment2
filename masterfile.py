@@ -1,9 +1,5 @@
-#Game State Implementation
-
-
-#Imports
-
-
+# Game State Implementation
+# Imports
 import os
 import sys as SYS
 import pygame as PG
@@ -18,7 +14,7 @@ import pygame.mixer as PM
 
 
 PG.init()
-#import titlegamestate as Title
+# import titlegamestate as Title
 import newmenugamestate as Menu
 import Setup as Game
 import highscores as Score
@@ -26,7 +22,7 @@ import title
 import Globals
 
 
-#Main Executable entry point
+# Main Executable entry point
 def main():
     initialize()
     loop()
@@ -34,7 +30,7 @@ def main():
 
 
 def initialize():
-    #Creates pygame module and intializes global variables.
+    # Creates pygame module and intializes global variables.
     passed, failed = PG.init()
     if failed > 0:
         print "warning: %d PyGame modules failed to initialize" % failed
@@ -81,8 +77,7 @@ def loop():
         interval += elapsed
 
         while interval > .02:
-            #print elapsed
-#fix later? only needed in the game state.
+            # print elapsed
             Globals.DELTA = elapsed
 
             state.render()
@@ -92,36 +87,6 @@ def loop():
                 state.event(event)
 
             interval -= .02
-
-
-#elif Globals.STATE == "Game":
-
-#    Globals.STATE = Game.Locals.CHANGESTATE
-#    while Globals.STATE == "Game":
-#        new_time = PT.get_ticks()
-#        frame_time = (new_time - self.current_time)/1000.0
-#        self.current_time = new_time
-#        self.clock.tick()
-
-#        Globals.State = Game.Locals.CHANGESTATE
-#        interval = 0.005
-#        if(gamerino.run() is False):
-#            Globals.STATE = Game.Locals.CHANGESTATE
-#    gameScore = Game.Locals.SCORE
-
-
-#elif Globals.STATE == "Scores":
-#    if gameScore != 0:
-#        highscores.Locals.SCORE = gameScore
-#        # give new gamescore to highscores class FIRST
-#    highscores.initialize()
-#    Globals.STATE = highscores.Locals.CHANGESTATE
-#    while Globals.STATE == "Scores":
-#        Globals.STATE = highscores.Locals.CHANGESTATE
-#        last = PT.get_ticks()
-#        elapsed = (PT.get_ticks() - last) / 1000.0
-#        event = PE.get()
-#        highscores.run(elapsed, event)
 
 
 def finalize():

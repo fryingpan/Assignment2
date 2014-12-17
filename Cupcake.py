@@ -17,6 +17,7 @@ from Item import CreamDrop
 from projectile import Projectile
 from projectile import CreamCutter
 
+
 class Cupcake(Enemy):
     IMAGE_UP = None
     IMAGE_DOWN = None
@@ -27,21 +28,19 @@ class Cupcake(Enemy):
     CYCLE = .6
 
     def __init__(self, xlocation, ylocation, fps=1):
-        ######unique attributes parent class doesn't have
+        # unique attributes parent class doesn't have
         self.enemy_ID = 3
         self.image = PI.load("FPGraphics/cupcake/cupcake.png") \
             .convert_alpha()
         self.front_image = self.image
-        #######
-        #attributes to be passed to parent for parent function use
+        # attributes to be passed to parent for parent function use
         self.health = 3
         self.rect = self.image.get_rect()
         self.rect.x = xlocation
         self.rect.y = ylocation
         self.pdx = 0
-        self.xchange  = random.randint(0, 3)
+        self.xchange = random.randint(0, 3)
         self.pdy = 1
-
         self.IMAGES_RIGHT = []
         self.IMAGES_LEFT = []
         self.IMAGES_FRONT = []
@@ -56,10 +55,10 @@ class Cupcake(Enemy):
         self.xchange += 1
         self.pdx = self.xchange % 3
         self.pdx = self.pdx*-1
-        return CreamCutter(self,self)
+        return CreamCutter(self, self)
 
     def move(self, player, interval):
-        #stationary character; make it face diff ways?
+        # stationary character; make it face diff ways?
         pass
 
     def drop_item(self, surface):
@@ -68,17 +67,12 @@ class Cupcake(Enemy):
             return BreadDrop(self.rect.x, self.rect.y, surface)
         if(d == 1):
             return CreamDrop(self.rect.x, self.rect.y, surface)
-    
+
     def get_face(self):
         return self.face
 
     def get_ID(self):
         return self.enemy_ID
-
-    def is_alive(self):
-        if self.health <= 0:
-            #then the enemy is dead
-            pass
 
     def load_images(self):
         sheetB = PI.load("FPGraphics/cupcake/cupcakeFrontAn.png") \
