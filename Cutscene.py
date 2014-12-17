@@ -89,6 +89,44 @@ class Cutscene(PS.Sprite):
                 "But what's this?", (100, 30))
             self.scenes[0].add_text(
                 "You've bested the heated and horrible chili land!", (100, 30))
+        if(level == 3):
+            self.scenes.append(Scene(
+                PI.load("FPGraphics/story/lv3_1.png").
+                convert(), self.screen))
+            self.scenes[0].add_text(
+                "You know what to do.", (100, 30))
+            self.scenes[0].add_text(
+                "How charming. But full of stupid food people.", (100, 30))
+            self.scenes[0].add_text(
+                "...Somehow there is an icecream land nearby!", (100, 30))
+            self.scenes[0].add_text(
+                "But what's this?", (100, 30))
+            self.scenes[0].add_text(
+                "You've bested the heated and horrible chili land!", (100, 30))
+
+"""
+Sweet victory!
+Speaking of sweet, check out the sweet candy land nearby.
+It's the last land, so give it your best shot!
+
+---
+
+At long last you've achieved world domination!
+Everyone is dead!
+...Everyone is dead.
+
+Okay, maybe you didn't factor in how boring the world would be if everyone was dead.
+Or how lonely you'd be.
+But who cares!
+...
+You really wish you thought things through.
+Wait.
+
+That's right.
+Food people reproduce like bunnies.
+Or something.
+Anyway, you should go kill them. When you start a job, you finish it.
+"""
 
     #play all the scenes
     def play(self, level):
