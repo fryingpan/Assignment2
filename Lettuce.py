@@ -66,6 +66,9 @@ class Lettuce(Enemy):
     def get_ID(self):
         return self.enemy_ID
 
+    def move(self, player, interval):
+        pass
+
     def load_images(self):
         # sheetR = PI.load("FPGraphics/burger/burgerrightWalk.png") \
         #     .convert_alpha()

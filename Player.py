@@ -127,10 +127,13 @@ class Player(PS.DirtySprite):
         self.can_attack = True
 
         ##joystick##
-#        PJ.init()
         self.joy = Joystick()
-#        self.joy.init()
-#        self.configured = False
+        self.joyOn = False
+#        self.mvJoy = (0, 0)
+        self.mvD = False
+        self.mvR = False
+        self.mvL = False
+        self.mvU = False
 
     def set_attacking_rect(self):
         self.attacking_rect = self.rect
@@ -399,7 +402,6 @@ class Player(PS.DirtySprite):
 
             for event in PE.get():
                 if event.type in Joystick.JOYSTICK:
-                    print event
                     if event.type == PG.JOYBUTTONUP:
                         self.joy.buttons[event.button] = False
                     elif event.type == PG.JOYBUTTONDOWN:
@@ -407,6 +409,11 @@ class Player(PS.DirtySprite):
                     if event.type == PG.JOYHATMOTION:
                         if self.joy.joystick.get_hat(0) == (0, 0):
                             hat_move = False
+#                            self.mvJoy = (0, 0)
+                            self.mvD = False
+                            self.mvU = False
+                            self.mvR = False
+                            self.mvL = False
                         else:
                             hat_move = True
                             if hat_dir == (0, 0):
@@ -420,21 +427,6 @@ class Player(PS.DirtySprite):
                                 axis_dir0 = self.joy.joystick.get_axis(0)
                             if math.fabs(axis_dir1) < 0.5:
                                 axis_dir1 = self.joy.joystick.get_axis(1)
-
-                    #problem is there's just not another event coming in when joystick is held
-#                    if event.type == PG.JOYAXISMOTION and (math.fabs(self.joy.joystick.get_axis(0)) > 0.5 or math.fabs(self.joy.joystick.get_axis(1)) > 0.5):
-#                        self.joy.axishats[0] = True
-#                        self.joy.axishats[1] = True
-#                    elif (math.fabs(self.joy.joystick.get_axis(0)) < 0.5 or math.fabs(self.joy.joystick.get_axis(1)) < 0.5):
-#                        if math.fabs(self.joy.joystick.get_axis(0)) < 0.5:
-#                            self.joy.axishats[0] = False
-#                        elif math.fabs(self.joy.joystick.get_axis(1)) < 0.5:
-#                            self.joy.axishats[1] = False
-#                    if event.type == PG.JOYHATMOTION and self.joy.joystick.get_hat(0) != (0, 0):
-#                        self.joy.axishats[2] = True
-#                        hat_dir = self.joy.joystick.get_hat(0)
-
-                        #need to be able to set them false somehow
 
                     ####Exit
                     if self.joy.buttons[6] is True:  # back button (L7 on peter's joystick)
@@ -523,33 +515,37 @@ class Player(PS.DirtySprite):
                     elif hat_move is True:
                         standing = False
                         if hat_dir == (-1, 0):  # store these into local variables?
-                            self.rect.x -= self.speed  # move left
-                            self.face = 'l'
-                            self.pdx = -1
-                            self.pdy = 0
-                            self.handle_collision(bg)
-                            self.rect_copy = self.rect
+                            self.mvL = True
+#                            self.rect.x -= self.speed  # move left
+#                            self.face = 'l'
+#                            self.pdx = -1
+#                            self.pdy = 0
+#                            self.handle_collision(bg)
+#                            self.rect_copy = self.rect
                         elif hat_dir == (0, -1):
-                            self.rect.y += self.speed  # move down
-                            self.face = 'd'
-                            self.pdx = 0
-                            self.pdy = 1
-                            self.handle_collision(bg)
-                            self.rect_copy = self.rect
+                            self.mvD = True
+#                            self.rect.y += self.speed  # move down
+#                            self.face = 'd'
+#                            self.pdx = 0
+#                            self.pdy = 1
+#                            self.handle_collision(bg)
+#                            self.rect_copy = self.rect
                         elif hat_dir == (1, 0):
-                            self.rect.x += self.speed  # move right
-                            self.face = 'r'
-                            self.pdx = 1
-                            self.pdy = 0
-                            self.handle_collision(bg)
+                            self.mvR = (1, 0)
+#                            self.rect.x += self.speed  # move right
+#                            self.face = 'r'
+#                            self.pdx = 1
+#                            self.pdy = 0
+#                            self.handle_collision(bg)
                             self.rect_copy = self.rect
                         elif hat_dir == (0, 1):
-                            self.rect.y -= self.speed  # move up
-                            self.face = 'u'
-                            self.pdx = 0
-                            self.pdy = -1
-                            self.handle_collision(bg)
-                            self.rect_copy = self.rect
+                            self.mvU = (0, 1)
+#                            self.rect.y -= self.speed  # move up
+#                            self.face = 'u'
+#                            self.pdx = 0
+#                            self.pdy = -1
+#                            self.handle_collision(bg)
+#                            self.rect_copy = self.rect
                         else:
                             #STANDING
                             standing = True
@@ -739,8 +735,7 @@ class Player(PS.DirtySprite):
             # for x in range(100):
             if self.can_attack:
                 self.can_attack = False
-                killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y,
-                                                    self.face, screen, enemy_bg)
+                killed_enemies = self.weapon.attack(self, self.rect.x, self.rect.y, self.face, screen, enemy_bg)
                 for killed in killed_enemies:
                     # if(killed.last_hit == 0):
                     self.items_of_killed.append(killed.drop_item(screen))
@@ -794,6 +789,50 @@ class Player(PS.DirtySprite):
             if self.effect_time == 0:
                 self.restore_normal()
 
+        if self.joyOn is True:
+            if self.mvL is True:  # store these into local variables?
+                self.rect.x -= self.speed  # move left
+                self.face = 'l'
+                self.pdx = -1
+                self.pdy = 0
+                self.handle_collision(bg)
+                self.rect_copy = self.rect
+            elif self.mvD is True:
+                self.rect.y += self.speed  # move down
+                self.face = 'd'
+                self.pdx = 0
+                self.pdy = 1
+                self.handle_collision(bg)
+                self.rect_copy = self.rect
+            elif self.mvR is True:
+                self.rect.x += self.speed  # move right
+                self.face = 'r'
+                self.pdx = 1
+                self.pdy = 0
+                self.handle_collision(bg)
+                self.rect_copy = self.rect
+            elif self.mvU is True:
+                self.rect.y -= self.speed  # move up
+                self.face = 'u'
+                self.pdx = 0
+                self.pdy = -1
+                self.handle_collision(bg)
+                self.rect_copy = self.rect
+#                else:
+#                    #STANDING
+#                    standing = True
+
+#                if standing:
+##                            self.joy.axishats = [False, False, False]  # not moving at all
+#                    if self.face == 'd':
+#                            self.face = 'ds'
+#                    if self.face == 'u':
+#                            self.face = 'us'
+#                    if self.face == 'r':
+#                            self.face = 'rs'
+#                    if self.face == 'l':
+#                            self.face = 'ls'
+
         
         key = PG.key.get_pressed()
         self.time = self.time + Globals.DELTA
@@ -846,7 +885,6 @@ class Player(PS.DirtySprite):
                 self.image = imageArray[self.frame].convert_alpha()
 
             except IndexError:
-#                print("PLAYER IMG ERROR")
                 self.image = PI.load("FPGraphics/MC/MCwalk/MCFront.png")\
                     .convert_alpha()
                 self.face = list(self.face)[0]

@@ -367,13 +367,7 @@ class Map(object):
                     char_list[y] = '.'
                 elif char_list[y].isdigit():
                     # number, so we put doors here
-                    new_block =
-                    create_Block(self.doorBlocks[random.randint(0,
-                                                 slen(self.doorBlocks))-1],
-                                 PG.Rect(x_coor, y_coor,
-                                         self.grid_size[0],
-                                         self.grid_size[1]),
-                                 char_list[y])
+                    new_block = create_Block(self.doorBlocks[random.randint(0, len(self.doorBlocks))-1], PG.Rect(x_coor, y_coor, self.grid_size[0], self.grid_size[1]), char_list[y])
                     self.disappearing_blocks.add(new_block)
                     self.spots_to_be_filled.append((x_coor, y_coor))
                 # set the block & add to obj group
@@ -468,8 +462,6 @@ class Map(object):
 
         for block in self.object_group:
             block.draw_block(background)
-        # for spot in self.spots_to_be_filled:
-        #     background.blit(self.grass_array[0], spot)
 
         return background
 

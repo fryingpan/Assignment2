@@ -164,7 +164,6 @@ class Game(object):
         for trap in self.trap_group.sprites():
             if (trap.get_trap_attack_player() and Globals.INVINCIBILITY_COUNT == 0):
                 trap_attack_player = True
-                # print "setting TRUE"
             if (trap.get_trap_attack_enemy()):
                 enemies_attacked = trap.get_enemies_attacked()
                 if enemies_attacked is not None:
@@ -186,7 +185,6 @@ class Game(object):
             if(icecream.get_attacked_player() or trap_attack_player):
                 if trap_attack_player:
                     trap_attack_player = False
-                    # print "setting FALSE"
                 #if so start invincibility count after attack
                 if Globals.INVINCIBILITY_COUNT == 0:
                     Globals.INVINCIBILITY_COUNT = self.INVINCIBILITY_TIME
@@ -256,7 +254,6 @@ class Game(object):
 
         ##cupcake attacks
         for cupcake in self.cupcake_list.sprites():
-            print(len(self.cupcake_list))
             #see if the enemy will release weapon/attack
             if cupcake.will_attack(self.level):
                 #get a new puddle sprite
@@ -288,21 +285,16 @@ class Game(object):
 
         ##player damage & invincibility handling
         #If enemy attacked the player while player not invincible
-        #print("inv " + str(Globals.INVINCIBILITY_COUNT))
         if((self.enemy_ID != -1 or self.burn_player) and Globals.INVINCIBILITY_COUNT == self.INVINCIBILITY_TIME):
             self.character.decrement_health(self.enemy_ID)
             self.enemy_ID = -1
             self.burn_player = False
-            # print 'decrementing'
         #decrement invincibility count if player is in invincibility
         #handles player flashing during invincibility
         if(Globals.INVINCIBILITY_COUNT > 0):
             if(Globals.INVINCIBILITY_COUNT % 50 == 0):
                 self.character.invincibility_frames()
             Globals.INVINCIBILITY_COUNT -= 1
-            # print Globals.INVINCIBILITY_COUNT
-            # if Globals.INVINCIBILITY_COUNT == 0:
-                # print "RESTARTING-------------------------------------------------------"
 
         ###Joystick
         if self.use_joy == 'y':
@@ -358,7 +350,6 @@ class Game(object):
             self.background = self.map.update_background()
             self.map_modified = False
         if self.character.banner != -1: #make sure it doesn't redraw banner already presen t?
-            print self.character.banner
             self.objective.changeObj(self.character.banner)
             self.updated_obj = True #allow banner to be drawn in draw()
             self.character.banner = -1
@@ -367,8 +358,6 @@ class Game(object):
         if self.character.update_camera():
             self.camera_background = self.camera.update(self.character.get_coordinates(),
                                self.map.get_surface())
-        # else:
-        #     print(self.camera_background)
 
         self.allsprites.update(self.block_group, self.player_group)
 
@@ -469,11 +458,11 @@ class Game(object):
        #Allows quitting pygame and changing states
         #added changes for multiple states to allow testing
         for ev in event:
-#            if ev.type in Joystick.JOYSTICK:  # only care about objective switching
-#                if ev.type == PG.JOYBUTTONUP:
-#                    self.joy.buttons[ev.button] = False
-#                elif ev.type == PG.JOYBUTTONDOWN:
-#                    self.joy.buttons[ev.button] = True
+            if ev.type in Joystick.JOYSTICK:  # only care about objective switching
+                if ev.type == PG.JOYBUTTONUP:
+                    self.joy.buttons[ev.button] = False
+                elif ev.type == PG.JOYBUTTONDOWN:
+                    self.joy.buttons[ev.button] = True
 
             if ev.type == PG.KEYDOWN and ev.key == PG.K_ESCAPE:
                 #Globals.STATE = 'Menu'
@@ -502,26 +491,12 @@ class Game(object):
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_5:
                 Cutscene(Globals.SCREEN, 5)
                 Globals.STATE = "Menu"
-            elif (ev.type == PG.KEYDOWN and ev.key == PG.K_n):  # or self.joy.buttons[5] == True:  # R1 button ():
+            elif (ev.type == PG.KEYDOWN and ev.key == PG.K_n):
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
                 self.objectiveBlit = False
             else:
                 self.objectiveBlit = True
-
-#    def interaction_phase(self, screen, player, joystick):
-##        for event in joystick.get_events():
-#            #movement
-#            #using axis
-
-
-#            #where attacks, pickups, drops
-
-#        if joystick.is_pressed('left'):
-#            #move left
-#            print "moving left"
-#            self.character.handle_keys(self.block_group, self.enemy_list,
-#                                       self.item_group, self.map.get_surface(), 'L')
 
                 
     def reset_level(self):
@@ -554,7 +529,8 @@ class Game(object):
         PM.music.play(-1)
         PM.music.set_volume(0.5)
         ####turn back on only for presentations?
-        Cutscene(Globals.SCREEN, self.level)
+        if self.stage == 1:
+            Cutscene(Globals.SCREEN, self.level)
         
         #interpretting mapfile.txt
         if(self.level > 1):

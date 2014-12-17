@@ -43,50 +43,54 @@ class Joystick():
 
     #our game is one player, will have only one joysticks
     def __init__(self):
-        PJ.init()  # initializes PJ module, NOT joystick itself
-        self.names = []
+        try:
+            PJ.init()  # initializes PJ module, NOT joystick itself
+            self.names = []
 
-        self.joystick = PJ.Joystick(0)
-        self.joystick.init()
+            self.joystick = PJ.Joystick(0)
+            self.joystick.init()
 
-        ##assuming just 1 joystick
-        self.names.append(PJ.Joystick(0).get_name())
+            ##assuming just 1 joystick
+            self.names.append(PJ.Joystick(0).get_name())
 
 
-        #A is attack (space)
-        #B is pick up (s)
-        #x is set trap (a)
-        #y is drop (d)
-        #r is eat (e)
+            #A is attack (space)
+            #B is pick up (s)
+            #x is set trap (a)
+            #y is drop (d)
+            #r is eat (e)
 
-        self.buttons = [False for i in range(self.joystick.get_numbuttons())]
-        ##test
-        self.axishats = [False, False, False]  # axis 0, 1; hat 0
-        self.button_pos = [(216, 74), (236, 92), (255, 74), (236, 56),
-            (608, 88), (476, 104), (606, 118), (476, 136),
-            (134, 56), (188, 56)]
+            self.buttons = [False for i in range(self.joystick.get_numbuttons())]
+            ##test
+            self.axishats = [False, False, False]  # axis 0, 1; hat 0
+            self.button_pos = [(216, 74), (236, 92), (255, 74), (236, 56),
+                (608, 88), (476, 104), (606, 118), (476, 136),
+                (134, 56), (188, 56)]
 
-#        self.buttons = ['up', 'down', 'left', 'right', 'start', 'attack', 'pickup', 'settrap', 'drop', 'eat']
-#        self.key_map = {
-#                    PG.K_UP : 'up',
-#                    PG.K_DOWN : 'down',
-#                    PG.K_LEFT : 'left',
-#                    PG.K_RIGHT : 'right',
-#                    PG.K_RETURN : 'start',
-#                    PG.K_a : 'attack',
-#                    PG.K_b : 'pickup',
-#                    PG.K_x : 'settrap',
-#                    PG.K_y : 'drop',
-#                    PG.K_l : 'eat'
-#                }
+    #        self.buttons = ['up', 'down', 'left', 'right', 'start', 'attack', 'pickup', 'settrap', 'drop', 'eat']
+    #        self.key_map = {
+    #                    PG.K_UP : 'up',
+    #                    PG.K_DOWN : 'down',
+    #                    PG.K_LEFT : 'left',
+    #                    PG.K_RIGHT : 'right',
+    #                    PG.K_RETURN : 'start',
+    #                    PG.K_a : 'attack',
+    #                    PG.K_b : 'pickup',
+    #                    PG.K_x : 'settrap',
+    #                    PG.K_y : 'drop',
+    #                    PG.K_l : 'eat'
+    #                }
 
-        self.keys_pressed = {}
-        for button in self.buttons:
-            self.keys_pressed[button] = False
+            self.keys_pressed = {}
+            for button in self.buttons:
+                self.keys_pressed[button] = False
 
-        self.joystick_config = {}
+            self.joystick_config = {}
 
-        self.quit_attempt = False
+            self.quit_attempt = False
+
+        except PG.error, err:
+            pass
 
     def is_pressed(self, button):
         for i in range(len(self.buttons)):

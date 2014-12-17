@@ -107,6 +107,9 @@ class Egg(Enemy):
             # then the enemy is dead
             pass
 
+    def drop_item(self, surface):
+        pass
+
     def load_images(self):
         sheetR = PI.load("FPGraphics/egg/eggRightWalk.png") \
             .convert_alpha()

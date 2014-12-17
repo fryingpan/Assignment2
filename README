@@ -7,8 +7,6 @@ Mary Yen
 Run the following to run the program:
 python masterfile.py
 
-Added a new level 4.
-
 -List how many enemies are on each level:
 Level 1: Hello There
   Stage 1: 2 Lettuce, 2 Eggs
@@ -36,50 +34,34 @@ B button: pickup item. (2 button.)
 X button: make trap. (3 button.)
 Y button: trash / drop item. (4 button.)
 L1 button: eat item. (L5.)
+R1 button: Read Objective. (R6.)
 Joy Hat #9 and Joy Axis #7 dictate movement.
 Due to pygame joystick button detection, some button presses may
 be missed. We believe this is not due to our code, since upon 
 printing all button press events, we notice that not all expected
 events are printed. (For example, a button press will be detected,
-but not it's equivalent button up event.)
+but not it's equivalent button up event. This occurs with the arrow
+keys too.)
 
-Todo List
-----------
+Added STAGES to levels. Each stage has an educational component.
+Lvl 1.1 objectives: (1) Game goal.
+(2) Eat the cheese walls.
+(3) Your enemies are the food people.
+Lvl 1.2 objectives: (1) Introduce the Ice Creams.
+(2) Lettuce Shooters.
+Lvl 2.1 objectives: (1) Oven Booby Traps.
+Lvl 2.2 objectives: (1) Difficult Burgers.
+Lvl 3.1 objectives: (1) Frozen Solid Traps.
+(2) Deliciously Dangerous Cupcakes.
 
-Somebody do this:
-    -change the win/lose to display different dialogs (random)
-    -figure out lag
-        -number of enemies
-        -ice pads
-        -projectiles
-    -Sort the high scores + replace scores
+Added Egg enemy.
+Added Interface (Items and health/score - Dining Table)
+Added Cutscenes back.
 
+SHORTCUTS:
+Feel free to hit number buttons 1-5 to get to the respective
+level. Note: hitting key #5 will take you straight to the 
+FINAL CUTSCENE.
 
-===================
-===================
+Pep8'd everything.
 
-***DO THIS*****
-PUT NUMBER OF ENEMIES IN EACH LEVEL IN README
-REMOVE PRINT STATEMENTS
-
-Carla:
-    - try to make the game faster by only dealing with the enemies 
-    in the dimensions of the camera (basically try to fix lag)
-
-Mary:
-    -add signs + tutorial
-    -add back cutscenes
-    -add egg
-    -projectile directions
-        make them different for each lvl
-    lvl stage change
-        -lvl effects same throughout stages
-        -make multistages
-        -ways to exchange stages
-    -make maps bigger/more interesting
-    
-Katie
-   -Joystick compatibility 
-   -FIX eating door sound
-   -fix music in general
-   -High scores page!! 

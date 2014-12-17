@@ -92,15 +92,15 @@ class Burger(Enemy):
                    self.rect.y <= self.yboundb:
                     self.rect.y += move_dist  # move down
                     self.face = 'd'
-                elif player.sprites()[0].rect.y < self.rect.y and
+                elif player.sprites()[0].rect.y < self.rect.y and \
                 self.rect.y >= self.yboundt:
                     self.rect.y -= move_dist  # move up
                     self.face = 'u'
-                if player.sprites()[0].rect.x > self.rect.x and
+                if player.sprites()[0].rect.x > self.rect.x and \
                 self.rect.x <= self.xboundr:
                         self.rect.x += move_dist  # move right
                         self.face = 'r'
-                elif player.sprites()[0].rect.x < self.rect.x and
+                elif player.sprites()[0].rect.x < self.rect.x and \
                 self.rect.x >= self.xboundl:
                     self.rect.x -= move_dist  # move left
                     self.face = 'l'
