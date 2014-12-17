@@ -1,6 +1,7 @@
 VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-V......VVVVVVVSSS.......VVVVVVVVVVVVVVV
-V............VSSSK....I....;....,,....V
+V......VVVVVVVSSS.C.C.C.VVVVVVVVVVVVVVV
+V..........VVSVVV.....................V
+V............VSSSK.........;....,,....V
 V.............SSVVVVV......;...I.,,...V
 VVVSSSSSSSV...S.....SS..,,,,,......,,.V
 V.............S..L..4SSS..............V
