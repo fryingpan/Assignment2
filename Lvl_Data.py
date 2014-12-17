@@ -61,9 +61,9 @@ class Lvl_Data(object):
             self.character_pos_y = 100
         elif(lvl == 4):
             if stage == 1:
-                self.map_file = 'mapfilelvl4.txt'
+                self.map_file = 'mapfile-lvl4-stg1.txt'
             elif stage == 2:
-                self.map_file = 'mapfilelvl4.txt'
+                self.map_file = 'mapfile-lvl4-stg2.txt'
 #            elif stage == 3:
 #                self.map_file = 'mapfilelvl4.txt'
             self.music_file = "music/gameplay3.mod"
