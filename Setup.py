@@ -70,7 +70,7 @@ class Game(object):
         self.lose_image = PI.load("FPGraphics/" +
                                   "specialEffects/ULOSE.png").convert_alpha()
         self.MAX_LEVEL = 4
-        self.MAX_STAGE = 3
+        self.MAX_STAGE = 2
         #items
         self.pill_img = PI.load("FPGraphics/tiles/" +
                                 "lactasePill.png").convert_alpha()
@@ -130,6 +130,8 @@ class Game(object):
         #if true, tells map to redraw
         self.map_modified = False
 
+        # self.level = 1
+        # self.stage = 1
         self.level = 1
         self.stage = 1
         self.change_level(self.level, self.stage)
@@ -406,24 +408,29 @@ class Game(object):
                 level = self.level
                 #^!!!! less than one for cutscene bug
                 Globals.SCREEN.blit(self.win_image, self.end_image_position)
+                #print(self.end_time)
                 if(self.end_time > 0):
                         self.end_time -= 1
                 else:
-                    if(self.level < self.MAX_LEVEL):
+                    
+                    if(self.level <= self.MAX_LEVEL):
                         if self.stage < self.MAX_STAGE:
                             self.stage += 1
                         else: 
                             self.level += 1
                             self.stage = 1
-                        self.change_level(self.level, self.stage)
-                    elif(self.level == self.MAX_LEVEL and self.stage == self.MAX_STAGE):
-                        PM.music.fadeout(1000)
-                        if Globals.SCORE > 0:
-                            Globals.PLAYERNAME = str(inbx.ask(
-                                Globals.SCREEN, 'Name'))
-                            #Globals.SCORE = self.character.score
-                            Cutscene(Globals.SCREEN, 5)
-                        Globals.STATE = "Menu"
+                        if(self.level == self.MAX_LEVEL + 1):
+                            PM.music.fadeout(1000)
+                            if Globals.SCORE > 0:
+                                Globals.PLAYERNAME = str(inbx.ask(
+                                    Globals.SCREEN, 'Name'))
+                                #Globals.SCORE = self.character.score
+                                Cutscene(Globals.SCREEN, 5)
+                            Globals.STATE = "Menu"
+                        else:
+                            self.change_level(self.level, self.stage)
+                    # elif(self.level == self.MAX_LEVEL and self.stage == self.MAX_STAGE):
+                        
 
         if(self.character.health <= 0):
                 Globals.SCREEN.blit(self.lose_image, self.end_image_position)
@@ -491,6 +498,8 @@ class Game(object):
             elif ev.type == PG.KEYDOWN and ev.key == PG.K_5:
                 Cutscene(Globals.SCREEN, 5)
                 Globals.STATE = "Menu"
+            elif (ev.type == PG.KEYDOWN and ev.key == PG.K_p):
+                Globals.SCORE = self.num_enemies
             elif (ev.type == PG.KEYDOWN and ev.key == PG.K_n):
                 # see if banner still needs to be shown (self.updated_obj gets True)
                 self.updated_obj = self.objective.nextBannerTxt() #returns if true if there is more text, false if not
