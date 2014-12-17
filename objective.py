@@ -55,7 +55,7 @@ class Objective(object):
 
     def loadObjectives(self, lvl, stage):
         objs = []
-        if(lvl == 1 and stage == 1):#Will have at least 2 enemies; need to count eggs...
+        if(lvl == 1 and stage == 1):  # Will have at least 2 enemies; need to count eggs...
         #!!!note to self: add lots of egg dudes!!!
             objs.append("Press [n] to see the next part of your ingenious plans.")
             objs.append("Objective: Kill all the food people. They're terrible and not nice.")
@@ -75,7 +75,7 @@ class Objective(object):
             objs.append("If you want a different item, you first have to drop your")
             objs.append("current item (press [d]).")
             self.lvl_objs.append(objs)
-        if(lvl == 1 and stage == 2):#0
+        if(lvl == 1 and stage == 2):  # 0
             objs.append("Ice cream dudes are such a mess!")
             objs.append("They drop nasty ice cream puddles, so be careful where you step.")
             objs.append("You can also pick up [s] their drops to drop your own puddles [a].")
@@ -85,7 +85,14 @@ class Objective(object):
             objs.append("Shooting lettuce bends time and space. [a]")
             objs.append("But you should eat healthy [e] and stuff, too.")
             self.lvl_objs.append(objs)
-        if(lvl == 2 and stage == 1):#0
+
+        if(lvl == 2 and stage == 1):  # 0
+            objs.append("Is it getting hot in here, or is it just you?")
+            objs.append("Or... It could be those ovens!")
+            objs.append("Try your best not to step on the ovens...")
+            objs.append("...or it could mean your demise.")
+            self.lvl_objs.append(objs)
+        if(lvl == 2 and stage == 2):  # burgers
             objs.append("Burgers are one of the toughest food persons!")
             objs.append("Must be because of all the foods they're made of.")
             objs.append("They drop bread, which will speed you up if used (press [s]).")
@@ -94,13 +101,8 @@ class Objective(object):
             objs.append("...Legend has it that eating a burger can be lethal, but eh.")
             objs.append("What else are you going to do.")
             self.lvl_objs.append(objs)
-            objs = []
-            objs.append("Is it getting hot in here, or is it just you?")
-            objs.append("Or... It could be those ovens!")
-            objs.append("Try your best not to step on the ovens...")
-            objs.append("...or it could mean your demise.")
-            self.lvl_objs.append(objs)
-        if(lvl == 3 and stage == 1):#0
+
+        if(lvl == 3 and stage == 1):  # 0
             objs.append("Lookit that sparkly ice! Wanna take a spin?")
             objs.append("Maybe you shouldn't, 'cus they'll make you slooow.")
             self.lvl_objs.append(objs)
