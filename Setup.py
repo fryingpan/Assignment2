@@ -526,6 +526,9 @@ class Game(object):
         for enemy in self.lettuce_list.sprites():
             self.lettuce_list.remove(enemy)
 
+        # A PS Group
+        self.enemy_list.empty()
+
 
     def change_level(self, currentLevel, stage):
         self.reset_level()
