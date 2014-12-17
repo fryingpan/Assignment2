@@ -14,42 +14,38 @@ import pygame.display as PD
 import pygame.sprite as PS
 import pygame.image as PI
 
-PG.init()
-
 
 class Weapon(PS.Sprite):
+    IMAGE_RIGHT = None
+    IMAGE_LEFT = None
+    IMAGE_DOWN = None
+    IMAGE_UP = None
 
-        IMAGE_RIGHT = None
-        IMAGE_LEFT = None
-        IMAGE_DOWN = None
-        IMAGE_UP = None
-
-        def __init__(self):
-                # Call the parent class (Sprite) constructor
-                PS.Sprite.__init__(self)
-                self.imagerl = PI.load("FPGraphics/MC/MCattack/MCRightFPOnePiece.png").convert_alpha()
-                self.imageud = PI.load("FPGraphics/MC/MCattack/MCBackPOnePiece.png").convert_alpha()
-                self.rectrl = self.imagerl.get_rect()
-                self.rectud = self.imageud.get_rect()
-                # self.image = PI.load("FPGraphics/MC/weapon/FPD.png") \
-                #     .convert_alpha()
-                # self.load_images()
-                self.surface = PG.Surface((50, 50))
-                alphabg = (23, 23, 23)
-                self.surface.set_colorkey(alphabg)
-                self.image = self.surface
+    def __init__(self):
+        # Call the parent class (Sprite) constructor
+        PS.Sprite.__init__(self)
+        self.imagerl = PI.load("FPGraphics/MC/MCattack/MCRightFPOnePiece.png")\
+            .convert_alpha()
+        self.imageud = PI.load("FPGraphics/MC/MCattack/MCBackPOnePiece.png")\
+            .convert_alpha()
+        self.rectrl = self.imagerl.get_rect()
+        self.rectud = self.imageud.get_rect()
+        self.surface = PG.Surface((50, 50))
+        alphabg = (23, 23, 23)
+        self.surface.set_colorkey(alphabg)
+        self.image = self.surface
 
         def get_coordinates(self):
                 coordinates = [self.rect.x, self.rect.y]
                 return coordinates
 
-        #so in player, just like holding down r key makes character move r,
-        #only when space bar is held is the sword out.
-        #so in player is where maybe
-        #the weapon will be 'hidden' after space is let go
+        # so in player, just like holding down r key makes character move r,
+        # only when space bar is held is the sword out.
+        # so in player is where maybe
+        # the weapon will be 'hidden' after space is let go
         def attack(self, player, playerX, playerY, playerFace, screen, bg):
-                #this bg is enemy block group
-                #collisions with the new weapon rect!
+                # this bg is enemy block group
+                # collisions with the new weapon rect!
                 score = 0
                 collision_list = []
                 if "r" in playerFace:

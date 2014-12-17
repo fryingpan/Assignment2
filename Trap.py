@@ -187,7 +187,7 @@ class Puddle(Trap):
         # initialize parent class
         Trap.__init__(self, surface, rect, self.type, 'E', self.lifetime)
 
-    ##set lifetime for cold level
+    # set lifetime for cold level
     def set_life(self, level):
         if(level) == 2:
             return 800
