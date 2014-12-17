@@ -98,8 +98,13 @@ class Objective(object):
             objs.append("They drop bread, which will speed you up if used (press [s]).")
             objs.append("They also drop meat, which gives you a longer invincibility time.")
             objs.append("And they also drop whole burgers sometimes. Super yummy!")
-            objs.append("...Legend has it that eating a burger can be lethal, but eh.")
+            objs.append("...Legend has it that a eating burger can be lethal, but eh.")
             objs.append("What else are you going to do.")
+            self.lvl_objs.append(objs)
+            objs = []
+            objs.append("Burgers are delicious, after all.")
+            objs.append("But be sure not to pick them up...")
+            objs.append("Burger zombies are deadly to a stir fry samurai.")
             self.lvl_objs.append(objs)
 
         if(lvl == 3 and stage == 1):  # 0
