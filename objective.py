@@ -85,7 +85,7 @@ class Objective(object):
             objs.append("Shooting lettuce bends time and space. [a]")
             objs.append("But you should eat healthy [e] and stuff, too.")
             self.lvl_objs.append(objs)
-        if(lvl == 1 and stage == 3):#0
+        if(lvl == 2 and stage == 1):#0
             objs.append("Burgers are one of the toughest food persons!")
             objs.append("Must be because of all the foods they're made of.")
             objs.append("They drop bread, which will speed you up if used (press [s]).")
@@ -93,6 +93,17 @@ class Objective(object):
             objs.append("And they also drop whole burgers sometimes. Super yummy!")
             objs.append("...Legend has it that eating a burger can be lethal, but eh.")
             objs.append("What else are you going to do.")
+            self.lvl_objs.append(objs)
+
+        if(lvl == 3 and stage == 1):#0
+            objs.append("Lookit that sparkly ice! Wanna take a spin?")
+            objs.append("Maybe you shouldn't, 'cus they'll make you slooow.")
+            self.lvl_objs.append(objs)
+            objs = []
+            objs.append("There's a snowstorm 'a comin'.")
+            objs.append("A snowstorm of icing, that is.")
+            objs.append("Watch out for the evil cupcakes,")
+            objs.append("because they send hurricanes of their toppings at you.")
             self.lvl_objs.append(objs)
 
 
