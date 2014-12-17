@@ -30,7 +30,8 @@ class Enemy(PG.sprite.DirtySprite):
         self.rect = rect
         # self.rect.x = rect.x
         # self.rect.y = rect.y
-        self.coord = (rect.x, rect.y) #keeps track of which enemies are present for reloading map
+        # keeps track of which enemies are present for reloading map
+        self.coord = (rect.x, rect.y)
         self.health = health
         self.IMAGES_RIGHT = r
         self.IMAGES_LEFT = l
@@ -42,7 +43,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.face = 'u'
         self.time = 0.0
         self.frame = 0
-        # Globals.INVINCIBILITY_COUNT = 0
         self.attacked_player = False
         self.last_hit_save = -1
 
@@ -61,9 +61,8 @@ class Enemy(PG.sprite.DirtySprite):
         if(self.health == 0):
             Globals.SCORE += 1  # change num of points per type of enemy?
             self.kill()
-            return self.coord #get rid of enemy on map
-        return (-1,-1)
-        # print("health " + str(self.health))
+            return self.coord  # get rid of enemy on map
+        return (-1, -1)
 
     def move_back(self, face, bg):
         self.move_face = face
@@ -85,8 +84,7 @@ class Enemy(PG.sprite.DirtySprite):
                 moved += 1
             collided = self.handle_collision(bg, True)
 
-
-    ##only used by ice cream?
+    # only used by ice cream?
     def will_attack(self, level):
         level = math.floor(level)
         if level == 2:  # if in hot level, more often
@@ -106,12 +104,11 @@ class Enemy(PG.sprite.DirtySprite):
         player.sprites()[0].set_attacking_rect()
         collisions = PS.spritecollide(self, player, False)
         if(len(collisions) == 1 and isinstance(collisions[0], Player)):
-            if(Globals.INVINCIBILITY_COUNT <= 0):
+            if(Globals.INVINCIBILITY_COUNT == 0):
                 self.attacked_player = True
         player.sprites()[0].reset_attacking_rect()
-                # Globals.INVINCIBILITY_COUNT = 200
 
-    def handle_collision(self, bg, m_back = False):
+    def handle_collision(self, bg, m_back=False):
         if m_back:
             face_copy = self.face
             self.face = self.move_face
@@ -147,11 +144,6 @@ class Enemy(PG.sprite.DirtySprite):
         self.move(player, Globals.DELTA)
         self.handle_collision(bg)
         self.handle_player(player)
-        # print("invisib " + str(Globals.INVINCIBILITY_COUNT))
-        # check that the new movement is within the boundaries
-        # if self.check_collide() is True:
-        # self.direction = random.randint(0, 1)
-        # self.angle = random.randint(0, 360) * (math.pi/180)
 
         ENEMY_IMAGE_LENGTH = 4  # all Enemy sprite has 12 frames
         # update time
@@ -203,27 +195,6 @@ class Enemy(PG.sprite.DirtySprite):
             self.update_image(self.IMAGES_RIGHT)
         elif(self.face == 'ds'):
             self.update_image(self.IMAGES_BACK)
-
-    # def draw(self, screen):
-    #     """ Draw on surface """
-    #     # blit yourself at your current position
-    #     screen.blit(self.image, (self.rect.x, self.rect.y))
-
-    # def check_collide(self): #check screen collision
-    #     collide = False
-    #     if self.rect.x < 50:
-    #         self.rect.x = 40
-    #         collide = True
-    #     elif self.rect.x > (self.swidth - self.WIDTH):
-    #         self.rect.x = (self.swidth - self.WIDTH - 40)
-    #         collide = True
-    #     if self.rect.y < 50:
-    #         self.rect.y = 40
-    #         collide = True
-    #     elif self.rect.y > (self.sheight - self.HEIGHT):
-    #         self.rect.y = (self.sheight - self.HEIGHT - 40)
-    #         collide = True
-    #     return collide
 
     def load_images_helper(self, imageArray, sheet):
         # key = sheet.get_at((0,0))
