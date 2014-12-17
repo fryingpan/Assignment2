@@ -330,6 +330,8 @@ class Player(PS.DirtySprite):
                     self.eat_item = False
                     self.eat_timer = self.eat_time
                     self.health += collision.get_health()
+                    if self.health > 25:
+                        self.health = 25
                     collision.disappear()
             elif collision.get_type() == "K":  # found key
                 collision.kill()
